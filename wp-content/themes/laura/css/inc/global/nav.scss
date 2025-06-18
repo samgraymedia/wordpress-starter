@@ -1,0 +1,396 @@
+header.header {
+  background-color: rgba($black, 0.95);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid rgba($white, 0.1);
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-md 0;
+
+    h1 {
+      font-size: $font-size-xl;
+      margin-bottom: 0;
+      position: relative;
+      body.home & {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      a {
+        color: $white;
+        text-decoration: none;
+        position: relative;
+        transition: all 0.3s ease;
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-image: linear-gradient(to top, $blue 0%, $white 64%);
+        -webkit-text-fill-color: $white;
+        transition: -webkit-text-fill-color 0.3s ease;
+
+        &::before {
+          content: "";
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, $blue, transparent);
+          transform: scaleX(0);
+          transition: transform 0.3s ease;
+        }
+
+        &:hover {
+          -webkit-text-fill-color: transparent;
+
+          &::before {
+            transform: scaleX(1);
+          }
+        }
+      }
+    }
+
+    .nav-main__inner {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+      .btn {
+        box-shadow: none;
+        font-size: calc($font-size-base - 2px);
+        font-weight: $font-bold;
+        body.home & {
+          opacity: 0;
+          transform: translateY(20px);
+          animation: navSlideUp 0.8s ease-out forwards;
+        }
+      }
+    }
+
+    ul {
+      display: flex;
+      list-style: none;
+      margin-bottom: 0;
+      align-items: center;
+      gap: $spacing-xs;
+      margin-top: 0;
+
+      li {
+        position: relative;
+        margin: 0;
+        padding: 0;
+
+        &:before {
+          content: unset;
+        }
+
+        // Only apply animation on home page
+        body.home & {
+          opacity: 0;
+          transform: translateY(20px);
+          animation: navSlideUp 0.8s ease-out forwards;
+        }
+
+        a {
+          font-size: calc($font-size-base - 2px);
+          font-weight: $font-regular;
+          color: $offWhite;
+          text-decoration: none;
+          padding: $spacing-xs $spacing-sm;
+          position: relative;
+          -webkit-background-clip: text;
+          background-clip: text;
+          background-image: linear-gradient(to top, $blue 0%, $white 64%);
+          -webkit-text-fill-color: $offWhite;
+          transition: -webkit-text-fill-color 0.3s ease;
+          cursor: pointer;
+
+          &::before {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, $blue, transparent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+          }
+
+          &:hover {
+            -webkit-text-fill-color: transparent;
+
+            &::before {
+              transform: scaleX(1);
+            }
+          }
+
+          &.active {
+            background-image: linear-gradient(
+              to top,
+              $blue 20%,
+              lighten($blue, 30%) 100%
+            );
+            -webkit-text-fill-color: transparent;
+
+            &::before {
+              transform: scaleX(1);
+              background: $blue;
+            }
+          }
+        }
+      }
+    }
+    h1,
+    .nav-main__inner ul li,
+    .nav-main__inner .btn {
+      animation: navSlideUp 0.8s ease-out forwards;
+
+      @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{0.7 + ($i * 0.1)}s;
+        }
+      }
+    }
+    .nav-main__inner .btn {
+      animation-delay: 1.4s !important;
+    }
+
+    // Mobile Navigation Toggle Button
+    .mobile-nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: $spacing-xs;
+      z-index: 1001;
+      position: relative;
+
+      .hamburger {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 24px;
+        height: 18px;
+        transition: all 0.3s ease;
+
+        .hamburger-line {
+          width: 100%;
+          height: 2px;
+          background-color: $white;
+          border-radius: 1px;
+          transition: all 0.3s ease;
+          transform-origin: center;
+        }
+      }
+
+      &[aria-expanded="true"] {
+        .hamburger {
+          .hamburger-line {
+            &:nth-child(1) {
+              transform: translateY(8px) rotate(45deg);
+            }
+            &:nth-child(2) {
+              opacity: 0;
+            }
+            &:nth-child(3) {
+              transform: translateY(-8px) rotate(-45deg);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes navSlideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // Subtle shadow when scrolling
+  &.is-scrolled {
+    box-shadow: 0 4px 20px rgba($blue, 0.2);
+  }
+}
+
+// Mobile Navigation Menu
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba($black, 0.98);
+  backdrop-filter: blur(20px);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  overflow-y: auto;
+
+  &[aria-hidden="false"],
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: $spacing-lg;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: $spacing-lg;
+    border-bottom: 1px solid rgba($white, 0.1);
+    margin-bottom: $spacing-lg;
+  }
+
+  &__title {
+    color: $white;
+    font-size: $font-size-lg;
+    margin: 0;
+    font-weight: $font-bold;
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    color: $white;
+    cursor: pointer;
+    padding: $spacing-xs;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: rgba($white, 0.1);
+    }
+
+    svg {
+      display: block;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__cta {
+    margin-top: auto;
+    padding-top: $spacing-lg;
+    border-top: 1px solid rgba($white, 0.1);
+
+    .btn-full {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+// Mobile Menu Styles
+.mobile-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  &__item {
+    border-bottom: 1px solid rgba($white, 0.1);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__link {
+    display: block;
+    padding: $spacing-md $spacing-sm;
+    color: $white;
+    text-decoration: none;
+    font-size: $font-size-base;
+    font-weight: $font-regular;
+    transition: all 0.3s ease;
+    position: relative;
+
+    &:hover {
+      background-color: rgba($white, 0.05);
+      color: $blue;
+    }
+
+    &.active {
+      color: $blue;
+      background-color: rgba($blue, 0.1);
+    }
+  }
+
+  // Nested mobile menus
+  ul {
+    list-style: none;
+    margin: 0;
+    padding-left: $spacing-md;
+    border-left: 2px solid rgba($blue, 0.3);
+    margin-left: $spacing-sm;
+
+    li {
+      border-bottom: 1px solid rgba($white, 0.05);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      a {
+        padding: $spacing-sm $spacing-sm;
+        font-size: calc($font-size-base - 2px);
+        color: rgba($white, 0.8);
+
+        &:hover {
+          color: $blue;
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  header.header {
+    nav {
+      .nav-main__inner {
+        display: none; // Hide desktop navigation on mobile
+      }
+
+      .mobile-nav-toggle {
+        display: block; // Show mobile toggle on mobile
+      }
+    }
+  }
+
+  // Prevent body scroll when mobile menu is open
+  body.mobile-menu-open {
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-nav {
+    display: none; // Hide mobile nav on desktop
+  }
+
+  header.header nav .mobile-nav-toggle {
+    display: none; // Hide mobile toggle on desktop
+  }
+}

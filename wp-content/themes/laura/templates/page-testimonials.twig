@@ -1,0 +1,58 @@
+{% extends "base.twig" %}
+
+{% block content %}
+     {{ post.content }}
+
+<div class="content-wrapper">
+    <article class="post-type-page" id="post-{{ post.ID }}">
+        <div class="wrapper">
+       
+
+            {% set testimonials = function('Timber::get_posts', {
+                'post_type': 'testimonial',
+                'posts_per_page': -1,
+                'orderby': 'menu_order date',
+                'order': 'DESC'
+            }) %}
+
+            <div class="testimonials-grid" role="region" aria-label="Client Testimonials">
+                {% if testimonials %}
+                    {% for testimonial in testimonials %}
+                        <div class="testimonial-card" role="article">
+                            <div class="testimonial-content">
+                                <header>
+                                    <h3>{{ testimonial.name }}</h3>
+                                    {% if testimonial.job_title %}
+                                        <span class="job-title">{{ testimonial.job_title }}</span>
+                                    {% endif %}
+                                    
+                                    {% set event = function('Timber::get_post', testimonial.event) %}
+                                    {% if event %}
+                                        <span class="event-name">{{ event.title }}</span>
+                                    {% endif %}
+                                </header>
+
+                                <div class="star-rating" role="img" aria-label="Rating: {{ testimonial.meta('rating') }} out of 5 stars">
+                                    {% for i in 1..5 %}
+                                        <span class="star {% if i <= testimonial.meta('rating') %}star--filled{% endif %}" aria-hidden="true">★</span>
+                                    {% endfor %}
+                                </div>
+
+                                {% if testimonial.quote %}
+                                    <blockquote>
+                                        <p>{{ testimonial.quote }}</p>
+                                    </blockquote>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="no-testimonials">No testimonials found.</p>
+                {% endif %}
+            </div>
+        </div>
+
+            
+    </article>
+</div>
+{% endblock %} 

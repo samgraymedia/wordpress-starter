@@ -1,0 +1,29 @@
+{#
+Title: Content Grid
+Description: A dynamic grid layout displaying up to 4 content blocks in a responsive format
+Category: formatting
+Icon: <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+Keywords: grid, layout, content blocks, columns, responsive
+Mode: preview
+Align: full
+PostTypes: page post
+SupportsAlign: left right center wide full
+SupportsMode: true
+SupportsMultiple: true
+#}
+
+<div id="content-grid-{{block.id}}" class="content-grid block {{block.classes}}" role="region" aria-label="{{fields.title|default('Content Grid')}}">
+  <div class="wrapper">
+    <div class="content-grid-content">
+      <h2>{{fields.title|default('Content Grid')}}</h2>
+      <p>{{fields.intro|default('Content coming soon')}}</p>
+      <div class="content-grid-list">
+        {% for item in fields.items %}
+          <div class="content-grid-item">
+            <h3>{{item.title|default('Content Grid Item')}}</h3>
+            <p>{{item.content|default('Content coming soon')}}</p>
+          </div>
+        {% endfor %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,142 @@
+.hero {
+  height: calc(100vh - 89px);
+  .hero-bg {
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(1.1);
+    animation: zoomOut 1.5s ease-out forwards;
+
+    @keyframes zoomOut {
+      to {
+        transform: scale(1);
+      }
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba($black, 0.5),
+        rgba($black, 0.9)
+      );
+      opacity: 0;
+      animation: fadeIn 1s ease-out forwards;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: $white;
+      width: 90%;
+      max-width: 800px;
+
+      h1 {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: slideUp 0.8s ease-out forwards;
+        animation-delay: 0.7s;
+        margin-bottom: $spacing-lg;
+        font-size: 3.5rem;
+
+        span {
+          color: $blue;
+        }
+      }
+      h3 {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: slideUp 0.8s ease-out forwards;
+        animation-delay: 0.8s;
+        margin-bottom: $spacing-lg;
+      }
+
+      p {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: slideUp 0.8s ease-out forwards;
+        animation-delay: 1s;
+        font-size: $font-size-lg;
+        color: $offWhite;
+        margin-bottom: $spacing-xl;
+      }
+
+      @keyframes slideUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hero-cta {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: $spacing-md;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: slideUp 0.8s ease-out forwards;
+        animation-delay: 1.4s;
+      }
+    }
+  }
+
+  // Subtle floating particles
+  .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba($blue, 0.2);
+      border-radius: 50%;
+
+      @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+          $size: random(4) + 2px;
+          width: $size;
+          height: $size;
+          animation: float#{$i} #{random(8) + 12}s infinite linear;
+          opacity: random(6) * 0.1;
+          top: random(100) * 1%;
+          left: random(100) * 1%;
+        }
+
+        @keyframes float#{$i} {
+          from {
+            transform: translate(0, 0);
+          }
+          to {
+            transform: translate(#{random(100) - 50}px, #{random(100) - 50}px);
+          }
+        }
+      }
+    }
+  }
+}

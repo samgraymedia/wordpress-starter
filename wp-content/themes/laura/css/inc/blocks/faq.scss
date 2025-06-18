@@ -1,0 +1,104 @@
+.faq {
+  background-color: $offBlack;
+  width: 100%;
+  padding: $spacing-xl 0;
+  .wrapper {
+    max-width: 800px;
+  }
+
+  h2 {
+    text-align: center;
+  }
+
+  p {
+    text-align: center;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  .faq-item {
+    border: 1px solid rgba($black, 0.1);
+    border-radius: $border-radius-md;
+    overflow: hidden;
+    transition: box-shadow $transition-base;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba($black, 0.05);
+    }
+
+    h3 {
+      font-family: $font-primary;
+      font-size: $font-size-lg;
+      font-weight: $font-semibold;
+      padding: $spacing-md;
+      margin: 0;
+      background: $black;
+      cursor: pointer;
+      box-shadow: 0 0px 0px rgba($blue, 1);
+      position: relative;
+      transition: all $transition-base;
+
+      &::after {
+        content: "+";
+        position: absolute;
+        right: $spacing-md;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: $font-size-xl;
+        color: $blue;
+        transition: transform $transition-base;
+      }
+
+      &[aria-expanded="true"] {
+        &::after {
+          transform: translateY(-50%) rotate(45deg);
+        }
+      }
+    }
+
+    .faq-content {
+      font-family: $font-secondary;
+      font-size: $font-size-base;
+      line-height: $line-height-relaxed;
+      color: $white;
+      padding: 0 $spacing-md;
+      max-height: 0;
+      overflow: hidden;
+      box-shadow: 0px 0px 0px 0px $blue inset;
+      transition: all $transition-base;
+
+      border: 1px solid rgba($blue, 0.1);
+
+      &.active {
+        box-shadow: 0px 0px 16px 0px $blue inset;
+        transition: all $transition-base;
+        background: $black;
+        padding: $spacing-md;
+        max-height: 1000px;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .faq {
+    padding: $spacing-lg 0;
+
+    h2 {
+      font-size: $font-size-3xl;
+    }
+
+    p {
+      font-size: $font-size-base;
+    }
+
+    .faq-item h3 {
+      font-size: $font-size-base;
+      padding: $spacing-sm;
+    }
+  }
+}

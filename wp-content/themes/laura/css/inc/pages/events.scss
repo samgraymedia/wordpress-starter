@@ -1,0 +1,160 @@
+.events-grid {
+  display: flex;
+  gap: $spacing-lg;
+  margin: $spacing-xl 0;
+}
+
+.event-card {
+  width: 100%;
+  margin-top: 32px;
+  background: $offBlack;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+  border: 1px solid rgba($white, 0.3);
+  box-shadow: 0 0px 16px rgba($blue, 0);
+  transition: all 0.4s ease;
+  display: flex;
+  align-items: center;
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $blue, transparent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0px 16px rgba($blue, 1);
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+  .event-image {
+    width: 30%;
+  }
+
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-xs;
+    h4 {
+      width: 100%;
+    }
+    .event-date {
+    }
+  }
+
+  .event-content {
+    width: 70%;
+    padding: $spacing-md;
+
+    header {
+      margin-bottom: $spacing-md;
+      position: relative;
+
+      .event-date {
+        display: block;
+        font-family: $font-secondary;
+        font-size: $font-size-sm;
+        color: $blue;
+        font-weight: $font-bold;
+        margin-bottom: $spacing-xs;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+
+      .event-venue {
+        display: block;
+        font-size: $font-size-sm;
+        color: $grey;
+        border-right: 1px solid $blue;
+        padding-right: $spacing-xs;
+      }
+      .event-attendance {
+        svg {
+          margin-right: 5px;
+        }
+      }
+    }
+
+    .event-type,
+    .event-attendance,
+    .services-provided {
+      font-size: $font-size-sm;
+
+      .label {
+        color: $grey;
+        margin-right: 2px;
+      }
+
+      .value {
+        color: $white;
+        font-weight: $font-medium;
+      }
+    }
+
+    .services-provided {
+      .value {
+        display: block;
+        margin-top: $spacing-xs;
+      }
+    }
+
+    .event-description {
+      margin: $spacing-sm 0;
+      font-size: $font-size-base;
+      line-height: $line-height-relaxed;
+      color: $white;
+    }
+
+    .event-link {
+      display: inline-block;
+      margin-top: $spacing-sm;
+      padding: $spacing-xs $spacing-sm;
+      background: $blue;
+      color: $white;
+      text-decoration: none;
+      border-radius: $border-radius-sm;
+      transition: background-color $transition-base;
+
+      &:hover {
+        background: darken($blue, 10%);
+      }
+    }
+  }
+}
+
+.no-events {
+  text-align: center;
+  padding: $spacing-xl;
+  color: $grey;
+  font-size: $font-size-lg;
+}
+
+@media (max-width: $breakpoint-md) {
+  .events-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+    margin: $spacing-lg 0;
+  }
+
+  .event-card {
+    .event-image {
+      height: 180px;
+    }
+
+    .event-content {
+      padding: $spacing-sm;
+
+      header h3 {
+        font-size: $font-size-lg;
+      }
+    }
+  }
+}

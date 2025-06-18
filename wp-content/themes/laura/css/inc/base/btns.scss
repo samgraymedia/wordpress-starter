@@ -1,0 +1,88 @@
+.btn {
+  padding: 5px 30px;
+  border-radius: $border-radius-md;
+  font-size: $font-size-base;
+  line-height: 1.75rem;
+  font-weight: $font-medium;
+  transition: all $transition-base;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-sm;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba($white, 0.8),
+      transparent
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+
+  &:hover {
+    &::before {
+      transform: translateX(100%);
+    }
+  }
+
+  &-primary {
+    background-color: $blue;
+    color: $white;
+    border: 1px solid transparent;
+    box-shadow: 0 4px 12px rgba($blue, 0.2);
+
+    &:hover {
+      background-color: darken($blue, 20%);
+      box-shadow: 0 0px 16px rgba($blue, 0.5);
+    }
+
+    &::before {
+      background: linear-gradient(
+        to right,
+        transparent,
+        rgba($white, 0.8),
+        transparent
+      );
+    }
+  }
+
+  &-secondary {
+    background-color: transparent;
+    color: $white;
+    border: 1px solid rgba($white, 0.2);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0px 12px rgba($white, 0.2);
+
+    &:hover {
+      border-color: $white;
+      background-color: rgba($white, 0.05);
+      box-shadow: 0 0px 12px rgba($white, 1);
+    }
+
+    &::before {
+      background: linear-gradient(to right, transparent, $white, transparent);
+    }
+  }
+
+  // Arrow animation for buttons with icons
+  &-with-arrow {
+    &::after {
+      content: "→";
+      transition: transform 0.3s ease;
+      margin-left: $spacing-sm;
+    }
+
+    &:hover::after {
+      transform: translateX(4px);
+    }
+  }
+}

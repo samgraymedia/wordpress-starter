@@ -1,0 +1,46 @@
+.content-grid {
+  background-color: $black;
+  padding: $spacing-lg;
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      circle at 50% 0%,
+      rgba($blue, 0.2) 0%,
+      transparent 100%
+    );
+    opacity: 0; // start hidden
+    pointer-events: none;
+    transition: opacity $transition-slow;
+  }
+  &:hover {
+    &::before {
+      opacity: 1; // fade in on hover
+    }
+  }
+
+  .content-grid-content {
+    text-align: center;
+  }
+  .content-grid-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-lg;
+    justify-content: center;
+    margin: 0 -#{$spacing-md};
+    .content-grid-item {
+      flex: 0 0 calc(50% - #{$spacing-lg});
+      min-width: 0;
+      padding: $spacing-lg;
+      transition: transform $transition-base;
+      @media (max-width: 768px) {
+        flex: 0 0 100%;
+      }
+    }
+  }
+}

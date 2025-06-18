@@ -1,0 +1,62 @@
+{#
+Title: FAQ Section
+Description: A collapsible FAQ section for displaying frequently asked questions and answers
+Category: formatting
+Icon: <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-help-circle"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+Keywords: faq, questions, answers, accordion, toggle
+Mode: preview
+Align: full
+PostTypes: page post
+SupportsAlign: left right center wide full
+SupportsMode: true
+SupportsMultiple: true
+#}
+<div id="faq-{{block.id}}" class="faq block {{block.classes}}" role="region" aria-label="{{fields.title|default('FAQ')}}">
+  <div class="wrapper">
+    <h2>{{fields.title|default('FAQ')}}</h2>
+    <p>{{fields.lead|default('Frequently Asked Questions')}}</p>
+    <div class="faq-list">
+      {% for item in fields.items %}
+        <div class="faq-item">
+          <h3 id="faq-question-{{block.id}}-{{loop.index}}" 
+              aria-expanded="false"
+              aria-controls="faq-answer-{{block.id}}-{{loop.index}}"
+              data-faq-toggle>{{item.question|default('Question')}}</h3>
+          <div id="faq-answer-{{block.id}}-{{loop.index}}"
+               class="faq-content"
+               role="region"
+               aria-labelledby="faq-question-{{block.id}}-{{loop.index}}">
+            {{item.answer|default('Answer')}}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const faqContainer = document.getElementById('faq-{{block.id}}');
+  const toggles = faqContainer.querySelectorAll('[data-faq-toggle]');
+
+  toggles.forEach(toggle => {
+    toggle.addEventListener('click', function() {
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+      const content = document.getElementById(this.getAttribute('aria-controls'));
+      
+      // Close all other items
+      toggles.forEach(otherToggle => {
+        if (otherToggle !== toggle) {
+          otherToggle.setAttribute('aria-expanded', 'false');
+          const otherContent = document.getElementById(otherToggle.getAttribute('aria-controls'));
+          otherContent.classList.remove('active');
+        }
+      });
+
+      // Toggle current item
+      this.setAttribute('aria-expanded', !isExpanded);
+      content.classList.toggle('active');
+    });
+  });
+});
+</script>

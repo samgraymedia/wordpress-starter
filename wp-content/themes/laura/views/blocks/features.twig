@@ -1,0 +1,76 @@
+{#
+Title: Features
+Description: A dynamic features section to showcase key points, services, or benefits with two variant options
+Category: formatting
+Icon: <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+Keywords: features, services, benefits, highlights, key points
+Mode: preview
+Align: full
+PostTypes: page post
+SupportsAlign: left right center wide full
+SupportsMode: true
+SupportsMultiple: true
+#}
+
+<div id="features-{{block.id}}" class="features block {{block.classes}} variant-{{fields.variant|lower|replace({' ': '-'})}}">
+  <div class="wrapper">
+    {% if fields.variant == 'Variant One' %}
+      <div class="features-content">
+      {% if fields.variant_one.title %}
+        <h2>{{fields.variant_one.title}}</h2>
+      {% endif %}
+      {% if fields.variant_one.lead %}
+        <p>{{fields.variant_one.lead}}</p>
+      {% endif %}
+        <div class="features-list">
+        {% for feature in fields.variant_one.features %}
+          <div class="feature">
+            <img src="{{feature.icon.url}}" alt="{{feature.title}}" />
+            <h3>{{feature.title}}</h3>
+            <p>{{feature.text}}</p>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    {% elseif fields.variant == 'Variant Two' %}
+      <div class="features-content variant-two">
+        {% if fields.variant_two.title %}
+        <h2>{{fields.variant_two.title}}</h2>
+      {% endif %}
+      {% if fields.variant_two.lead %}
+        <p>{{fields.variant_two.lead}}</p>
+      {% endif %}
+      <div class="features-list">
+        {% for feature in fields.variant_two.features %}
+          <div class="feature">
+            <h3>{{feature.title}}</h3>
+            {% if feature.list %}
+              <ul class="feature-list">
+                {% for item in feature.list %}
+                  <li>{{item.item}}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      </div>
+    {% elseif fields.variant == 'Variant Three' %}
+      <div class="features-content variant-three">
+                <h2>{{fields.variant_three.title}}</h2>
+                <p class="stats-subtitle">{{fields.variant_three.lead}}</p>
+                <div class="stats-grid">
+                {% for stat in fields.variant_three.features %}
+                <div class="stat-card">
+         
+                    <span class="stat-number">{{stat.big_title}}</span>
+                    <h3>{{stat.title}}</h3>
+                    <p>{{stat.text}}</p>
+                </div>
+                {% endfor %}
+            </div>
+                
+      </div>
+    {% endif %}
+  </div>
+</div>

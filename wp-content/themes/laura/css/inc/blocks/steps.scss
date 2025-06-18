@@ -1,0 +1,140 @@
+.steps {
+  background-color: $offBlack;
+  padding: $spacing-xl 0;
+  h2,
+  p {
+    text-align: center;
+  }
+
+  .steps__grid {
+    margin-top: $spacing-xl;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-lg;
+    .step {
+      padding: $spacing-md;
+      flex: 0 0 calc(25% - $spacing-lg);
+
+      transition: all 0.4s ease;
+      border: 1px solid rgba($white, 0.3);
+      background-color: $black;
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, $blue, transparent);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+      @media (max-width: 768px) {
+        flex: 0 0 100%;
+      }
+      .step__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: $spacing-sm;
+        .step__number {
+          background-color: $blue;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: $white;
+          position: relative;
+          transition: all 0.3s ease;
+          border: 1px solid rgba($white, 0.1);
+
+          &::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border-radius: 50%;
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba($white, 0.2),
+              transparent
+            );
+            opacity: 0;
+            transition: all 0.3s ease;
+            transform: translateX(0);
+          }
+
+          &::after {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            border: 1px solid transparent;
+            background: linear-gradient(
+              45deg,
+              transparent 25%,
+              rgba($blue, 0) 50%,
+              transparent 75%
+            );
+            opacity: 0;
+            transition: all 0.3s ease;
+          }
+        }
+      }
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 0px 16px rgba($blue, 1);
+        &::before {
+          transform: scaleX(1);
+        }
+        .step__number {
+          transform: translateY(-2px);
+          box-shadow: 0 0px 12px rgba($blue, 1);
+          border-color: rgba($white, 0.2);
+
+          &::before {
+            opacity: 1;
+            transform: translateX(0%);
+            animation: spinGlow 3s linear infinite;
+          }
+
+          &::after {
+            opacity: 1;
+            transform: rotate(180deg);
+            border-color: rgba($blue, 0.3);
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes spinGlow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmerBorder {
+  0% {
+    transform: rotate(0deg) scale(1.1);
+    filter: blur(3px);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+    filter: blur(2px);
+  }
+  100% {
+    transform: rotate(360deg) scale(1.1);
+    filter: blur(3px);
+  }
+}
