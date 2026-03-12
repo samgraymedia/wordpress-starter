@@ -1,0 +1,52 @@
+{#
+    Button Component
+    
+    A flexible button component that can render as <button> or <a> tag
+    Accessible with proper ARIA labels for icons and keyboard support
+    
+    Usage:
+    {% include "components/button.twig" with {
+        text: "Click Me",
+        url: "/path",
+        classes: "btn-primary",
+        icon: "arrow",
+        title: "Icon description"
+    } %}
+    
+    Available Props:
+    - text (required): Button text/label
+    - url: Link URL (renders as <a> if provided)
+    - classes: Additional CSS classes
+    - type: Button type (button, submit, reset) - default: button
+    - icon: Icon class name (without "dashicons-" prefix)
+    - title: Title/aria-label for icon
+    - disabled: Boolean to disable button
+    - target: Link target (_blank, _self, etc)
+    - rel: Link rel attribute
+#}
+
+{% set button_classes = [
+    'btn',
+    classes ?? ''
+] | join(' ') | trim %}
+
+{% if url %}
+    <a 
+        href="{{ url }}" 
+        class="{{ button_classes }}" 
+        {% if target %}target="{{ target }}" rel="{{ rel|default('') }} {% if target == '_blank' %}noopener noreferrer{% endif %}"{% endif %}
+        role="button"
+    >
+        {% if icon %}<span class="dashicons dashicons-{{ icon }}" {% if title %}aria-label="{{ title }}"{% else %}aria-hidden="true"{% endif %}></span>{% endif %}
+        {{ text }}
+    </a>
+{% else %}
+    <button 
+        type="{{ type|default('button') }}" 
+        class="{{ button_classes }}" 
+        {% if disabled %}disabled aria-disabled="true"{% endif %}
+    >
+        {% if icon %}<span class="dashicons dashicons-{{ icon }}" {% if title %}aria-label="{{ title }}"{% else %}aria-hidden="true"{% endif %}></span>{% endif %}
+        {{ text }}
+    </button>
+{% endif %}

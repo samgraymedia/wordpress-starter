@@ -1,0 +1,61 @@
+{#
+    Post Card Component
+    
+    Reusable card for displaying post preview/teaser
+    
+    Usage:
+    {% include "components/post-card.twig" with {
+        post: post_object,
+        show_excerpt: true,
+        show_meta: true
+    } %}
+    
+    Available Props:
+    - post (required): Post object
+    - show_excerpt: Show post excerpt (default: true)
+    - show_meta: Show author/date info (default: true)
+    - show_thumbnail: Show featured image (default: true)
+    - classes: Additional CSS classes for the card
+#}
+
+<article class="post-card {{ classes|default('') }}" id="post-{{ post.ID }}">
+    {% if show_thumbnail|default(true) and post.thumbnail %}
+        <div class="post-card__image">
+            <a href="{{ post.link }}" aria-label="{{ post.title }}">
+                <img 
+                    src="{{ post.thumbnail.src|resize(400, 300) }}" 
+                    alt="{{ post.title }}"
+                    loading="lazy"
+                    decoding="async"
+                    width="400"
+                    height="300"
+                >
+            </a>
+        </div>
+    {% endif %}
+
+    <div class="post-card__content">
+        <h3 class="post-card__title">
+            <a href="{{ post.link }}">{{ post.title }}</a>
+        </h3>
+
+        {% if show_meta|default(true) %}
+            <div class="post-card__meta">
+                <span class="post-card__author">
+                    {{ _e('By') }} <strong>{{ post.author.name }}</strong>
+                </span>
+                <span class="post-card__date">
+                    <time datetime="{{ post.date|date('Y-m-d') }}">{{ post.date|date(_x('M d, Y', 'Date format')) }}</time>
+                </span>
+            </div>
+        {% endif %}
+
+        {% if show_excerpt|default(true) and post.excerpt %}
+            <p class="post-card__excerpt">{{ post.excerpt }}</p>
+        {% endif %}
+
+        <a href="{{ post.link }}" class="post-card__link">
+            {{ _e('Read More') }}<span class="dashicons dashicons-arrow-right" aria-hidden="true"></span>
+        </a>
+    </div>
+</article>

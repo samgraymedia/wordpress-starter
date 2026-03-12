@@ -1,9 +1,13 @@
-{# This file demonstrates using most of the index.twig template and modifying 
-   just a small part. See `search.twig` for an example of another approach #}
+{#
+ Archive Template
+ 
+ This template extends the index template and overrides the content block
+ to customize the archive page display.
+ #}
 
 {% extends "index.twig" %}
 
 {% block content %}
-  <h3>This is my archive</h3>
+  <h1>{{ _e('Archive') }}: {{ archive_title }}</h1>
   {{ parent() }}
 {% endblock %}

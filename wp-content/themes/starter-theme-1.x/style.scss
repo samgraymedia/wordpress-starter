@@ -1,10 +1,33 @@
 /*
 Theme Name: Abbie
 */
+// ============================================================================
+// SCSS Import Order (following SMACSS + BEM methodology)
+// ============================================================================
+
+// 1. Bootstrap framework
 @import "./node_modules/bootstrap/scss/bootstrap";
-@import "./css/inc/base/reset";
+
+// 2. Base styles (variables, functions, mixins, resets)
 @import "./css/inc/base/vars";
+@import "./css/inc/base/reset";
+@import "./css/inc/base/layout";
+@import "./css/inc/base/font";
+
+// 3. Base components (buttons and other elemental components)
 @import "./css/inc/base/btns";
+
+// 4. Reusable components (BEM components)
+@import "./css/inc/components/card";
+@import "./css/inc/components/alert";
+@import "./css/inc/components/badge";
+
+// 5. Global layout sections
 @import "./css/inc/global/nav";
 @import "./css/inc/global/footer";
+
+// 6. Block-specific styles
 @import "./css/inc/blocks/text";
+
+// 7. Utilities and helper classes
+@import "./css/inc/utilities/helpers";

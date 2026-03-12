@@ -1,1 +1,11 @@
-Copyright {{"now"|date('Y')}}
+<div class="wrapper">
+	<div class="footer__content">
+		<p>&copy; {{ "now"|date("Y") }} {{ site.name }}. {{ _e('All rights reserved.') }}</p>
+		
+		{% if menu %}
+		<nav aria-label="{{ _e('Footer Navigation') }}">
+			{% include "menu.twig" with {'items': menu.get_items} %}
+		</nav>
+		{% endif %}
+	</div>
+</div>

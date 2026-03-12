@@ -33,7 +33,7 @@ if ( ! class_exists( 'Timber_Acf_Wp_Blocks' ) ) {
 		/**
 		 * Create blocks based on templates found in Timber's "views/blocks" directory
 		 */
-		public static function timber_block_init() {
+		public static function timber_block_init(): void {
 			// Get an array of directories containing blocks.
 			$directories = self::timber_block_directory_getter();
 
@@ -236,12 +236,12 @@ if ( ! class_exists( 'Timber_Acf_Wp_Blocks' ) ) {
 		/**
 		 * Callback to register blocks
 		 *
-		 * @param array  $block      stores all the data from ACF.
+		 * @param array<string, mixed>  $block      stores all the data from ACF.
 		 * @param string $content    content passed to block.
 		 * @param bool   $is_preview checks if block is in preview mode.
 		 * @param int    $post_id    Post ID.
 		 */
-		public static function timber_blocks_callback( $block, $content = '', $is_preview = false, $post_id = 0 ) {
+		public static function timber_blocks_callback( array $block, string $content = '', bool $is_preview = false, int $post_id = 0 ): void {
 			// Context compatibility.
 			if ( method_exists( 'Timber', 'context' ) ) {
 				$context = Timber::context();
@@ -288,8 +288,9 @@ if ( ! class_exists( 'Timber_Acf_Wp_Blocks' ) ) {
 		 * @param string $slug       File slug.
 		 * @param bool   $is_preview Checks if preview.
 		 * @param bool   $is_example Checks if example.
+		 * @return array<int, string>
 		 */
-		public static function timber_acf_path_render( $slug, $is_preview, $is_example ) {
+		public static function timber_acf_path_render( string $slug, bool $is_preview, bool $is_example ): array {
 			$directories = self::timber_block_directory_getter();
 
 			$ret = array();
@@ -324,9 +325,10 @@ if ( ! class_exists( 'Timber_Acf_Wp_Blocks' ) ) {
 		/**
 		 * Generates the list of subfolders based on current directories
 		 *
-		 * @param array $directories File path array.
+		 * @param array<int, string> $directories File path array.
+		 * @return array<int, string>
 		 */
-		public static function timber_blocks_subdirectories( $directories ) {
+		public static function timber_blocks_subdirectories( array $directories ): array {
 			$ret = array();
 
 			foreach ( $directories as $base_directory ) {
@@ -354,8 +356,10 @@ if ( ! class_exists( 'Timber_Acf_Wp_Blocks' ) ) {
 
 		/**
 		 * Universal function to handle getting folders and subfolders
+		 *
+		 * @return array<int, string>
 		 */
-		public static function timber_block_directory_getter() {
+		public static function timber_block_directory_getter(): array {
 			// Get an array of directories containing blocks.
 			$directories = apply_filters( 'timber/acf-gutenberg-blocks-templates', array( 'views/blocks' ) );
 
@@ -372,10 +376,10 @@ if ( ! class_exists( 'Timber_Acf_Wp_Blocks' ) ) {
 		/**
 		 * Default options setter.
 		 *
-		 * @param  [array] $data - header set data.
-		 * @return [array]
+		 * @param  array<string, mixed> $data - header set data.
+		 * @return array<string, mixed>
 		 */
-		public static function timber_block_default_data( $data ) {
+		public static function timber_block_default_data( array $data ): array {
 			$default_data = apply_filters( 'timber/acf-gutenberg-blocks-default-data', array() );
 			$data_array   = array();
 

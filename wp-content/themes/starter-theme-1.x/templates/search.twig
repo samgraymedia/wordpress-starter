@@ -1,13 +1,28 @@
-{# see `archive.twig` for an alternative strategy of extending templates #}
+{# 
+ Search Results Template
+ 
+ Extends base.twig and displays search results.
+ Uses post-specific teaser templates or falls back to generic tease.twig
+ #}
+
 {% extends "base.twig" %}
 
 {% block content %}
-  {# see `base.twig:27` for where this block's content will be inserted #}
   <div class="content-wrapper">
-    {% for post in posts %}
-      {% include ['tease-'~post.post_type~'.twig', 'tease.twig'] %}
-    {% endfor %}
+    <h1>{{ _e('Search Results') }}: "{{ get_search_query() }}"</h1>
+    
+    {% if posts %}
+      <div class="search-results" role="region" aria-label="{{ _e('Search results') }}">
+        {% for post in posts %}
+          {% include ['tease-'~post.post_type~'.twig', 'tease.twig'] %}
+        {% endfor %}
+      </div>
 
-    {% include 'partial/pagination.twig' with { pagination: posts.pagination({show_all: false, mid_size: 3, end_size: 2}) } %}
+      {% include 'partial/pagination.twig' with { pagination: posts.pagination({show_all: false, mid_size: 3, end_size: 2}) } %}
+    {% else %}
+      <div class="search-no-results" role="status" aria-live="polite">
+        <p>{{ _e('No results found for your search.') }}</p>
+      </div>
+    {% endif %}
   </div>
 {% endblock %}

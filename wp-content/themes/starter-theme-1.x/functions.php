@@ -9,6 +9,11 @@
  */
 
 /**
+ * Load theme configuration and helper classes
+ */
+require_once 'src/theme-config.php';
+
+/**
  * If you are installing Timber as a Composer dependency in your theme, you'll need this block
  * to load your dependencies and initialize Timber. If you are using Timber via the WordPress.org
  * plug-in, you can safely delete this block.
@@ -43,14 +48,16 @@ if ( ! class_exists( 'Timber' ) ) {
 
 /**
  * Sets the directories (inside your theme) to find .twig files
+ * Using configuration from Theme_Config
  */
-Timber::$dirname = array( 'templates', 'views' );
+$timber_config = Theme_Config::get_timber();
+Timber::$dirname = $timber_config['directories'];
 
 /**
  * By default, Timber does NOT autoescape values. Want to enable Twig's autoescape?
  * No prob! Just set this value to true
  */
-Timber::$autoescape = false;
+Timber::$autoescape = $timber_config['autoescape'];
 
 
 /**
@@ -89,58 +96,25 @@ class StarterSite extends Timber\Site {
 		return $context;
 	}
 
-	public function theme_supports() {
-		// Add default posts and comments RSS feed links to head.
-		add_theme_support( 'automatic-feed-links' );
+	public function theme_supports(): void {
+		$theme_support = Theme_Config::get_theme_support();
 
-		/*
-		 * Let WordPress manage the document title.
-		 * By adding theme support, we declare that this theme does not use a
-		 * hard-coded <title> tag in the document head, and expect WordPress to
-		 * provide it for us.
-		 */
-		add_theme_support( 'title-tag' );
+		// Add theme support based on configuration
+		foreach ( $theme_support as $feature => $args ) {
+			if ( true === $args ) {
+				// Boolean support
+				add_theme_support( $feature );
+			} elseif ( is_array( $args ) && ! empty( $args ) ) {
+				// Support with arguments
+				add_theme_support( $feature, $args );
+			}
+		}
 
-		/*
-		 * Enable support for Post Thumbnails on posts and pages.
-		 *
-		 * @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
-		 */
-		add_theme_support( 'post-thumbnails' );
-
-		/*
-		 * Switch default core markup for search form, comment form, and comments
-		 * to output valid HTML5.
-		 */
-		add_theme_support(
-			'html5',
-			array(
-				'comment-form',
-				'comment-list',
-				'gallery',
-				'caption',
-			)
-		);
-
-		/*
-		 * Enable support for Post Formats.
-		 *
-		 * See: https://codex.wordpress.org/Post_Formats
-		 */
-		add_theme_support(
-			'post-formats',
-			array(
-				'aside',
-				'image',
-				'video',
-				'quote',
-				'link',
-				'gallery',
-				'audio',
-			)
-		);
-
-		add_theme_support( 'menus' );
+		// Register menus from configuration
+		$menus = Theme_Config::get_menus();
+		if ( ! empty( $menus ) ) {
+			register_nav_menus( $menus );
+		}
 	}
 
 	/** This Would return 'foo bar!'.
@@ -164,23 +138,69 @@ class StarterSite extends Timber\Site {
 
 }
 require_once( 'src/timber-acf-wp-blocks.php' );
+require_once( 'src/post-types-registry.php' );
 
-	$twig = new \Twig\Environment($loader, [
-    'debug' => true,
-    // ...
-]);
-$twig->addExtension(new \Twig\Extension\DebugExtension());
-
-function add_file_types_to_uploads($file_types){
-$new_filetypes = array();
-$new_filetypes['svg'] = 'image/svg+xml';
-$file_types = array_merge($file_types, $new_filetypes );
-return $file_types;
+// Auto-load blocks
+foreach ( glob( __DIR__ . '/src/blocks/*.php' ) as $block_file ) {
+	require_once $block_file;
 }
-add_filter('upload_mimes', 'add_file_types_to_uploads');
-if( function_exists('acf_add_options_page') ) {
 
-    acf_add_options_page();
-
+/**
+ * Register Image Sizes
+ * Uses configuration from Theme_Config
+ */
+function theme_register_image_sizes(): void {
+	$image_sizes = Theme_Config::get_image_sizes();
+	
+	foreach ( $image_sizes as $size_name => $dimensions ) {
+		add_image_size( $size_name, ...$dimensions );
+	}
 }
+add_action( 'after_setup_theme', 'theme_register_image_sizes' );
+
+/**
+ * Register Sidebars/Widget Areas
+ * Uses configuration from Theme_Config
+ */
+function theme_register_sidebars(): void {
+	$sidebars = Theme_Config::get_sidebars();
+	
+	foreach ( $sidebars as $sidebar_id => $sidebar_args ) {
+		register_sidebar(
+			array_merge(
+				array( 'id' => $sidebar_id ),
+				$sidebar_args
+			)
+		);
+	}
+}
+add_action( 'widgets_init', 'theme_register_sidebars' );
+
+/**
+ * Add custom file types to uploads
+ * Uses configuration from Theme_Config
+ */
+function theme_allow_custom_file_types( array $file_types ): array {
+	$allowed_types = Theme_Config::get( 'uploads' )['allowed_types'] ?? array();
+	return array_merge( $file_types, $allowed_types );
+}
+add_filter( 'upload_mimes', 'theme_allow_custom_file_types' );
+
+/**
+ * Initialize ACF Options Page
+ * Uses configuration from Theme_Config
+ */
+function theme_initialize_acf(): void {
+	if ( ! function_exists( 'acf_add_options_page' ) ) {
+		return;
+	}
+
+	$acf_config = Theme_Config::get_acf();
+	
+	if ( $acf_config['enable_options_page'] ?? false ) {
+		acf_add_options_page();
+	}
+}
+add_action( 'acf/init', 'theme_initialize_acf' );
+
 new StarterSite();

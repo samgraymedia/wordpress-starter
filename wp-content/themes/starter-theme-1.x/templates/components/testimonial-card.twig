@@ -1,0 +1,47 @@
+{#
+    Testimonial Card Component
+    
+    Reusable card for displaying testimonials
+    
+    Usage:
+    {% include "components/testimonial-card.twig" with {
+        post: testimonial_post,
+        show_rating: true
+    } %}
+    
+    Available Props:
+    - post (required): Testimonial post object
+    - show_rating: Display star rating (default: true)
+    - classes: Additional CSS classes
+#}
+
+<blockquote class="testimonial-card {{ classes|default('') }}" id="testimonial-{{ post.ID }}">
+    {% if show_rating|default(true) %}
+        {% set rating = post.get_field('testimonial_rating')|default(5) %}
+        <div class="testimonial-card__rating" aria-label="Rating: {{ rating }} out of 5 stars">
+            {% for i in range(1, 5) %}
+                <span class="dashicons dashicons-star-{{ i <= rating ? 'filled' : 'empty' }}"></span>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="testimonial-card__text">
+        {{ post.get_field('testimonial_text')|default(post.content) }}
+    </div>
+
+    <footer class="testimonial-card__footer">
+        {% if post.thumbnail %}
+            <div class="testimonial-card__image">
+                <img src="{{ post.thumbnail.src|resize(80, 80) }}" alt="{{ post.title }}">
+            </div>
+        {% endif %}
+
+        <div class="testimonial-card__meta">
+            <strong class="testimonial-card__name">{{ post.title }}</strong>
+            {% set location = post.get_field('testimonial_location') %}
+            {% if location %}
+                <div class="testimonial-card__location">{{ location }}</div>
+            {% endif %}
+        </div>
+    </footer>
+</blockquote>

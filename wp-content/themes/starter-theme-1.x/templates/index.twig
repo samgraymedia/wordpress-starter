@@ -1,11 +1,24 @@
 {% extends "base.twig" %}
 
+{% import "macros.twig" as macros %}
+
 {% block content %}
-	<h2>{{ foo }}</h2>
-	<p>{{ qux }}</p>
-	{% for post in posts %}
-		{% include ['tease-'~post.post_type~'.twig', 'tease.twig'] %}
-	{% endfor %}
+	{% include "components/heading.twig" with {
+		level: 1,
+		text: _e("Latest Posts"),
+		accent: true,
+		id: "posts-heading"
+	} %}
+
+	<div class="posts-grid" aria-labelledby="posts-heading">
+		{% for post in posts %}
+			{% include "components/post-card.twig" with {
+				post: post,
+				show_excerpt: true,
+				show_meta: true
+			} %}
+		{% endfor %}
+	</div>
 	
 	{% include 'partial/pagination.twig' with { pagination: posts.pagination({show_all: false, mid_size: 3, end_size: 2}) } %}
 {% endblock %}

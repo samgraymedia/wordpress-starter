@@ -1,61 +1,61 @@
 {% if posts.pagination.pages is not empty %}
-    <nav class="pagination-block">
+    <nav class="pagination-block" aria-label="{{ _e('Pagination Navigation') }}">
         <ul class="pagination">
 
             {# First #}
             {% if posts.pagination.pages|first and posts.pagination.pages|first.current != true %}
-                <li class="first btn">
-                    <a href="{{ posts.pagination.pages|first.link }}">First</a>
+                <li class="pagination__item pagination__first">
+                    <a href="{{ posts.pagination.pages|first.link }}" class="pagination__link">{{ _e('First') }}</a>
                 </li>
             {% else %}
-                <li class="first btn disabled">
-                    <button disabled>First</button>
+                <li class="pagination__item pagination__first">
+                    <span class="pagination__link pagination__link--disabled" aria-disabled="true">{{ _e('First') }}</span>
                 </li>
             {% endif %}
 
             {# Previous #}
             {% if posts.pagination.prev %}
-                <li class="prev btn">
-                    <a href="{{ posts.pagination.prev.link }}">Previous</a>
+                <li class="pagination__item pagination__prev">
+                    <a href="{{ posts.pagination.prev.link }}" class="pagination__link" rel="prev">{{ _e('Previous') }}</a>
                 </li>
             {% else %}
-                <li class="prev btn disabled">
-                    <button disabled>Previous</button>
+                <li class="pagination__item pagination__prev">
+                    <span class="pagination__link pagination__link--disabled" aria-disabled="true">{{ _e('Previous') }}</span>
                 </li>
             {% endif %}
 
             {# Pages #}
             {% for page in posts.pagination.pages %}
                 {% if page.link %}
-                    <li>
-                        <a href="{{ page.link }}" class="{{ page.class }}">{{ page.title }}</a>
+                    <li class="pagination__item">
+                        <a href="{{ page.link }}" class="pagination__link" {% if page.current %}aria-current="page"{% endif %}>{{ page.title }}</a>
                     </li>
                 {% else %}
-                    <li class="current">
-                        <span class="{{ page.class }}">{{ page.title }}</span>
+                    <li class="pagination__item">
+                        <span class="pagination__link pagination__link--current" aria-current="page">{{ page.title }}</span>
                     </li>
                 {% endif %}
             {% endfor %}
 
             {# Next #}
             {% if posts.pagination.next %}
-                <li class="next btn">
-                    <a href="{{ posts.pagination.next.link }}">Next</a>
+                <li class="pagination__item pagination__next">
+                    <a href="{{ posts.pagination.next.link }}" class="pagination__link" rel="next">{{ _e('Next') }}</a>
                 </li>
             {% else %}
-                <li class="next btn disabled">
-                    <button disabled>Next</button>
+                <li class="pagination__item pagination__next">
+                    <span class="pagination__link pagination__link--disabled" aria-disabled="true">{{ _e('Next') }}</span>
                 </li>
             {% endif %}
 
             {# Last #}
             {% if posts.pagination.pages|last and posts.pagination.pages|last.current != true %}
-                <li class="last btn">
-                    <a href="{{ posts.pagination.pages|last.link }}">Last</a>
+                <li class="pagination__item pagination__last">
+                    <a href="{{ posts.pagination.pages|last.link }}" class="pagination__link">{{ _e('Last') }}</a>
                 </li>
             {% else %}
-                <li class="last btn disabled">
-                    <button disabled>Last</button>
+                <li class="pagination__item pagination__last">
+                    <span class="pagination__link pagination__link--disabled" aria-disabled="true">{{ _e('Last') }}</span>
                 </li>
             {% endif %}
 

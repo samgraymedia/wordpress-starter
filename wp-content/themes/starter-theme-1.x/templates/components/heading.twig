@@ -1,0 +1,37 @@
+{#
+    Heading Component
+    
+    Semantic heading with validation for proper nesting and optional decoration
+    
+    Usage:
+    {% include "components/heading.twig" with {
+        level: 2,
+        text: "Section Title",
+        classes: "mb-4",
+        accent: true,
+        id: "section-heading"
+    } %}
+    
+    Available Props:
+    - text (required): Heading text
+    - level: Heading level (1-6, default: 2) - validated for proper nesting
+    - classes: Additional CSS classes
+    - accent: Add accent decoration (default: false)
+    - id: HTML id attribute (recommended for semantics)
+    
+    Note: Heading levels should follow document structure (h1 > h2 > h3, etc)
+#}
+
+{% if level is not defined or level < 1 or level > 6 %}
+    {% set level = 2 %}
+{% endif %}
+
+{% set heading_tag = 'h' ~ level %}
+{% set heading_classes = 'heading heading--' ~ level ~ ' ' ~ (classes|default('')) | trim %}
+
+<{{ heading_tag }} {% if id %}id="{{ id }}"{% endif %} class="{{ heading_classes }}">
+    {% if accent %}
+        <span class="heading__accent" aria-hidden="true"></span>
+    {% endif %}
+    {{ text }}
+</{{ heading_tag }}>

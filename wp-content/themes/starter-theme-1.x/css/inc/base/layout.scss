@@ -1,0 +1,27 @@
+.wrapper {
+  width: 100%;
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 5vw, 2rem);
+
+  &--narrow {
+    max-width: 1200px;
+  }
+
+  // Responsive breakpoints
+  @media screen and (max-width: $breakpoint-md) {
+    padding: 0 1rem;
+  }
+
+  // Ensure content doesn't overflow on very small screens
+  @media screen and (max-width: $breakpoint-sm) {
+    padding: 0 0.75rem;
+  }
+
+  // Add smooth transitions for any width changes
+  transition: padding 0.3s ease-in-out;
+}
+
+.block {
+  padding: $block-padding 0;
+}

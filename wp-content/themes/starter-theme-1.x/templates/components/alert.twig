@@ -1,0 +1,55 @@
+{#
+    Alert/Notice Component
+    
+    Display accessible, dismissible alert messages
+    Uses ARIA live region for announcements
+    
+    Usage:
+    {% include "components/alert.twig" with {
+        type: "info",
+        title: "Notice",
+        message: "This is an informational message",
+        dismissible: true,
+        id: "alert-main"
+    } %}
+    
+    Available Props:
+    - message (required): Alert message text
+    - type: Alert type - info|success|warning|error (default: info)
+    - title: Optional alert title
+    - dismissible: Show close button (default: false)
+    - classes: Additional CSS classes
+    - id: HTML id attribute (recommended)
+    
+    Accessibility: Uses role="alert" and aria-live for screen readers
+#}
+
+{% set alert_id = id|default('alert-' ~ random()) %}
+{% set aria_live = type in ['error', 'warning'] ? 'assertive' : 'polite' %}
+
+<div 
+    class="alert alert--{{ type|default('info') }} {{ classes|default('') }}" 
+    role="alert"
+    aria-live="{{ aria_live }}"
+    aria-atomic="true"
+    id="{{ alert_id }}"
+>
+    {% if dismissible|default(false) %}
+        <button 
+            type="button" 
+            class="alert__close" 
+            aria-label="{{ _e('Close alert') }}"
+            aria-controls="{{ alert_id }}"
+        >
+            <span class="dashicons dashicons-no" aria-hidden="true"></span>
+        </button>
+    {% endif %}
+
+    {% if title %}
+        <h4 class="alert__title">{{ title }}</h4>
+    {% endif %}
+
+    <div class="alert__content">
+        {{ message }}
+    </div>
+</div>

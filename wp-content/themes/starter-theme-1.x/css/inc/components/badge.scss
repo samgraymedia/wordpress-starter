@@ -1,0 +1,72 @@
+/**
+ * Badge Component - BEM Methodology
+ *
+ * Block: .badge
+ * Modifiers: .badge--primary, .badge--success, .badge--warning, .badge--error
+ *
+ * Usage:
+ * <span class="badge badge--success">Active</span>
+ */
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: $font-xs;
+  font-weight: $font-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  // Default Badge
+  background-color: #e0e0e0;
+  color: #333;
+
+  // Primary Modifier
+  &--primary {
+    background-color: $primary;
+    color: $white;
+  }
+
+  // Secondary Modifier
+  &--secondary {
+    background-color: $secondary;
+    color: $white;
+  }
+
+  // Success Modifier
+  &--success {
+    background-color: #4caf50;
+    color: $white;
+  }
+
+  // Warning Modifier
+  &--warning {
+    background-color: #ff9800;
+    color: $white;
+  }
+
+  // Error Modifier
+  &--error {
+    background-color: #f44336;
+    color: $white;
+  }
+
+  // Info Modifier
+  &--info {
+    background-color: #2196f3;
+    color: $white;
+  }
+
+  // Outline Modifier
+  &--outline {
+    background-color: transparent;
+    border: 1px solid currentColor;
+    padding: 0.2rem 0.7rem;
+  }
+
+  // Large Modifier
+  &--lg {
+    padding: 0.5rem 1rem;
+    font-size: $font-sm;
+  }
+}

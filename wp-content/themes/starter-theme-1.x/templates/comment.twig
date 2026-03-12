@@ -1,21 +1,19 @@
-<div class="blog-comment {{comment.comment_type}}" id="blog-comment-{{comment.ID}}">
-	<h5 class="comment-author">{{comment.author.name}} says</h5>
-	<div class="comment-content">{{comment.comment_content|wpautop}}</div>
+<li class="blog-comment blog-comment--{{ comment.comment_type }}" id="comment-{{ comment.ID }}">
+	<article class="comment-content">
+		<header class="comment-header">
+			<h5 class="comment-author">
+				{{ comment.author.name }} 
+				<span class="comment-date">{{ _e('says:') }} <time datetime="{{ comment.comment_date|date('Y-m-d H:i:s') }}">{{ comment.comment_date }}</time></span>
+			</h5>
+		</header>
+		<div class="comment-text">{{ comment.comment_content|wpautop }}</div>
+	</article>
 
-	<section class="comment-box">
-		
-		<!-- comment form -->
-		{% include "comment-form.twig" %}
-
-		<!-- child comments -->
-		{% if post.comments %}
-			<h4> replies </h4>
-			<div class="comments">
-				{% for cmt in comment.children %}
-					{% include "comment.twig" with {comment:cmt} %}
-				{% endfor %}
-			</div>
-		{% endif %}
-
-	</section>
-</div>
+	{% if comment.children %}
+		<ul class="comment-children">
+			{% for cmt in comment.children %}
+				{% include "comment.twig" with {comment: cmt} %}
+			{% endfor %}
+		</ul>
+	{% endif %}
+</li>

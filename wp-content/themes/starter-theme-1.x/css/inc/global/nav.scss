@@ -1,16 +1,146 @@
-.header{
-  padding: 20px;
-  background: red;
-  .nav-main{
-    ul{
+/**
+ * Navigation Component - BEM Methodology
+ *
+ * Block: .nav-main
+ * Elements: .nav-main__list, .nav-main__item, .nav-main__link, .nav-main__submenu
+ * Modifiers: .nav-main--active
+ *
+ * Usage:
+ * <nav class="nav-main">
+ *     <ul class="nav-main__list">
+ *         <li class="nav-main__item"><a href="#" class="nav-main__link">Link</a></li>
+ *     </ul>
+ * </nav>
+ */
+
+.header {
+  background-color: $white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .nav-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+
+    // Navigation List Element
+    &__list {
+      margin: 0;
       list-style: none;
       display: flex;
-      justify-content: flex-end;
-      height: 100%;
+      gap: 2rem;
       align-items: center;
-      li{
-        margin-left: 10px;
+    }
+
+    // Navigation Item Element
+    &__item {
+      position: relative;
+
+      &:hover > .nav-main__submenu {
+        display: block;
+        animation: slideDown 0.3s ease;
       }
     }
+
+    // Navigation Link Element
+    &__link {
+      display: block;
+      padding: 0.5rem 0;
+      color: $secondary;
+      text-decoration: none;
+      font-weight: $font-semibold;
+      transition: color 0.3s ease;
+      position: relative;
+      border-radius: 2px;
+
+      &:hover,
+      &--active,
+      &[aria-current="page"] {
+        color: $primary;
+
+        &::after {
+          width: 100%;
+        }
+      }
+
+      &:focus {
+        outline: 3px solid #4a90e2;
+        outline-offset: 4px;
+      }
+
+      &:focus:not(:focus-visible) {
+        outline: none;
+      }
+
+      &:focus-visible {
+        outline: 3px solid #4a90e2;
+        outline-offset: 4px;
+      }
+
+      // Underline effect
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: $primary;
+        transition: width 0.3s ease;
+      }
+    }
+
+    // Submenu Element
+    &__submenu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: $white;
+      min-width: 200px;
+      border-radius: 0.375rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      list-style: none;
+      margin: 0.5rem 0 0 0;
+      padding: 0;
+      z-index: 1000;
+
+      .nav-main__item {
+        display: block;
+
+        &:hover > .nav-main__submenu {
+          display: block;
+          left: 100%;
+          top: 0;
+        }
+      }
+
+      .nav-main__link {
+        display: block;
+        padding: 0.75rem 1.5rem;
+        color: $secondary;
+
+        &::after {
+          display: none;
+        }
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+      }
+    }
+  }
+}
+
+// Animation for submenu
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
