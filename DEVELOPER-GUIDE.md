@@ -1,6 +1,6 @@
 # Developer Guide
 
-**Sarter Theme** – Complete Developer Documentation
+**Starter Theme** – Complete Developer Documentation
 
 Welcome! This guide covers everything you need to know to develop, maintain, and extend this WordPress theme built with Timber, ACF, and modern PHP practices.
 
@@ -46,8 +46,8 @@ This developer guide is organized into several specialized documents:
 
 **Theme Name:** Starter Theme  
 **Client:** N/A  
-**Built With:** WordPress + Timber + ACF Pro + Bootstrap 5  
-**PHP Version:** 7.4+ (uses typed properties and union types)  
+**Built With:** WordPress + Timber + ACF Pro + Bootstrap 5.3  
+**PHP Version:** 7.4+ (uses typed properties; PHP 8.0+ features optional)  
 **Last Updated:** March 2026
 
 ### Key Features
@@ -83,7 +83,9 @@ This developer guide is organized into several specialized documents:
 
 **Optional:**
 
-- WooCommerce plugin (for e-commerce functionality)
+- WooCommerce plugin (for e-commerce functionality; auto-detected if active)
+- Contact Form 7 (for advanced form handling)
+- CF7 Database Addon (for form submission storage)
 
 ### Installation Steps
 
@@ -91,13 +93,13 @@ This developer guide is organized into several specialized documents:
 
    ```bash
    cd wp-content/themes/
-   # Copy the starter-theme-1.x folder
+   # Copy the starter-theme folder
    ```
 
 2. **Install dependencies**
 
    ```bash
-   cd starter-theme-1.x
+   cd starter-theme
    npm install
    ```
 
@@ -154,28 +156,32 @@ npm run sass
 | **Timber**    | 2.x     | PHP-to-Twig bridge        |
 | **Twig**      | 2.x     | Template engine           |
 | **ACF Pro**   | Latest  | Advanced field management |
-| **Bootstrap** | 5.3.7   | CSS framework             |
+| **Bootstrap** | 5.3+    | CSS framework             |
 | **Sass/SCSS** | Latest  | CSS preprocessing         |
 | **PHP**       | 7.4+    | Backend language          |
 
-### Key Plugins
+### Required Plugins
 
-```php
-// Automatically loaded in functions.php
-- Timber Library         // Template engine
-- ACF Pro              // Field management
-- Contact Form 7       // Form handling
-- CF7 Database Addon   // Form submission storage
-```
+- **Timber Library** - Template engine (PHP-to-Twig bridge)
+- **ACF Pro** - Advanced custom field management
+
+### Optional Plugins
+
+- **WooCommerce** - E-commerce functionality (auto-detected if active)
+- **Contact Form 7** - Form handling
+- **CF7 Database Addon** - Form submission storage
 
 ### NPM Scripts
 
 ```json
 {
-  "sass": "sass css/sass:css --no-source-map",
-  "watch": "sass --watch css/sass:css --no-source-map"
+  "sass": "sass scss:css --no-source-map",
+  "watch": "sass --watch scss:css --no-source-map"
 }
 ```
+
+**Source:** `scss/` directory  
+**Output:** `style.css` in theme root
 
 ### File Organization Pattern
 
@@ -193,7 +199,7 @@ src/page-templates-registry.php (auto-load page templates)
 src/timber-acf-wp-blocks.php (auto-load blocks)
     ↓
 templates/ (Twig rendering)
-css/ (styling)
+scss/ (styling)
 ```
 
 ---
@@ -203,7 +209,7 @@ css/ (styling)
 ### Root Theme Folder
 
 ```
-starter-theme-1.x/
+starter-theme/
 │
 ├── functions.php           # Theme initialization & hooks
 ├── style.scss              # Main SCSS import file
@@ -216,6 +222,7 @@ starter-theme-1.x/
 │   ├── taxonomies-registry.php   # Taxonomy auto-discovery
 │   ├── page-templates-registry.php # Page template auto-discovery
 │   ├── timber-acf-wp-blocks.php  # Block auto-discovery
+│   ├── woocommerce-integration.php # WooCommerce optional support
 │   ├── post-types/         # Individual post type configs
 │   │   ├── post.php        # Blog post configuration
 │   │   ├── service.php     # Services post type
@@ -224,23 +231,23 @@ starter-theme-1.x/
 │   │   ├── service-category.php
 │   │   ├── service-tag.php
 │   │   └── testimonial-category.php
-│   ├── page-templates/     # Individual page template configs
-│   │   └── example-full-width.php
-│   └── blocks/             # Custom block definitions
+│   └── page-templates/     # Individual page template configs
+│       └── example-full-width.php
 │
 ├── templates/              # Twig template files
 │   ├── base.twig           # Master layout template
 │   ├── index.twig          # Homepage/blog listing
+│   ├── blocks/             # Gutenberg block templates
+│   │   └── my-block.twig
 │   ├── components/         # Reusable components
 │   │   ├── button.twig
 │   │   ├── post-card.twig
 │   │   ├── testimonial-card.twig
 │   │   ├── heading.twig
 │   │   └── alert.twig
-│   ├── macros.twig         # Twig macros (functions)
-│   └── views/              # Additional templates
+│   └── macros.twig         # Twig macros/utilities
 │
-├── css/                    # SCSS & CSS files
+├── scss/                   # SCSS files
 │   ├── inc/
 │   │   ├── base/           # Foundation styles
 │   │   │   ├── vars.scss   # Variables & functions
@@ -264,7 +271,7 @@ starter-theme-1.x/
 │   │   └── utilities/      # Helper classes
 │   │       └── helpers.scss
 │   │
-│   └── sass/               # Legacy sass folder (for watch tasks)
+│   └── style.scss          # Main SCSS import file
 │
 ├── static/                 # Static assets
 │   ├── js/                 # JavaScript files
@@ -300,13 +307,12 @@ starter-theme-1.x/
 - **config.php** - Single source of truth for all theme settings (post types, menus, image sizes, ACF, etc.)
 - **theme-config.php** - Static helper class providing typed access to configuration
 - **post-types-registry.php** - Auto-discovers and registers post type files in `src/post-types/`
-- **timber-acf-wp-blocks.php** - Auto-discovers and registers Gutenberg blocks in `views/blocks/`
+- **timber-acf-wp-blocks.php** - Auto-discovers and registers Gutenberg blocks in `templates/blocks/`
 - **post-types/** - Each post type in its own file with configuration array
-- **blocks/** - Custom block type definitions
 
 #### `templates/` - Twig Templates
 
-**Purpose:** Template rendering using Timber + Twig engine
+**Purpose:** Template rendering using the Timber + Twig engine
 
 - **base.twig** - Master layout template (header, footer, sidebar wrapper)
 - **index.twig** - Homepage and blog listing template
@@ -314,15 +320,16 @@ starter-theme-1.x/
 - **macros.twig** - Twig macros (inline functions) for common patterns
 - **views/** - Other page-specific templates
 
-#### `css/` - Stylesheet Organization
+#### `scss/` - Stylesheet Organization
 
 **Purpose:** SCSS files organized by SMACSS + BEM layers
 
-- **base/** - Variables, resets, and foundational styles
-- **components/** - Reusable component styles (BEM blocks)
-- **global/** - Large layout sections (nav, footer)
-- **blocks/** - Gutenberg block-specific styling
-- **utilities/** - Single-purpose helper classes
+- **inc/base/** - Variables, resets, and foundational styles
+- **inc/components/** - Reusable component styles (BEM blocks)
+- **inc/global/** - Large layout sections (nav, footer)
+- **inc/blocks/** - Gutenberg block-specific styling
+- **inc/utilities/** - Single-purpose helper classes
+- **style.scss** - Main SCSS import file (compiles to style.css in theme root)
 
 #### `views/` - PHP Template Hierarchy
 
@@ -340,7 +347,7 @@ These files determine which Twig template to render based on WordPress context.
 
 ```bash
 # Navigate to theme directory
-cd wp-content/themes/starter-theme-1.x
+cd wp-content/themes/starter-theme
 
 # Watch SCSS for changes (in one terminal)
 npm run watch
@@ -368,7 +375,7 @@ code .
 
 **For Style Changes:**
 
-- Edit files in `css/inc/`
+- Edit files in `scss/inc/`
 - SCSS auto-compiles via `npm run watch`
 - Refresh browser (or use browser live reload)
 
@@ -376,7 +383,7 @@ code .
 
 - Edit `src/config.php`
 - Update Theme_Config getter methods if needed in `src/theme-config.php`
-- Clear any caches
+- Clear any caches (WordPress object cache, page caches)
 - Verify in WordPress admin
 
 #### 3. Testing Changes
@@ -401,7 +408,7 @@ npm run sass
 git status
 
 # Stage changes
-git add src/ templates/ css/ functions.php
+git add src/ templates/ scss/ functions.php
 
 # Commit with clear message
 git commit -m "Add testimonial carousel component"
@@ -468,14 +475,10 @@ git push origin feature-branch
 3. **Create component styles**
 
    ```bash
-   # File: css/inc/components/my-component.scss
+   # File: scss/inc/components/my-component.scss
    ```
 
-4. **Import in style.scss**
-
-   ```scss
-   @import "./css/inc/components/my-component";
-   ```
+4. **Imported automatically** via style.scss's component imports
 
 5. **Use in templates**
    ```twig
@@ -492,7 +495,7 @@ git push origin feature-branch
    # File: templates/blocks/my-block.twig
    ```
 
-2. **Add block metadata header**
+2. **Add block metadata in file header**
 
    ```twig
    {# Block: My Block
@@ -507,9 +510,15 @@ git push origin feature-branch
    </div>
    ```
 
-3. **Auto-registered** via `timber-acf-wp-blocks.php`
+3. **Add block-specific styles** (optional)
 
-4. **See:** CONFIG-GUIDE.md block section for details
+   ```bash
+   # File: scss/inc/blocks/my-block.scss
+   ```
+
+4. **Auto-registered** via `src/timber-acf-wp-blocks.php` on `acf/init` hook
+
+5. **See:** ARCHITECTURE.md for block registration details
 
 ---
 
@@ -577,8 +586,8 @@ $menu = Theme_Config::get( 'menus', 'primary' );
 
 **Files:**
 
-- `templates/blocks/` - Block Twig templates
-- `src/timber-acf-wp-blocks.php` - Auto-discovery logic
+- `templates/blocks/` - Auto-discovers Gutenberg block Twig templates
+- `src/timber-acf-wp-blocks.php` - Block registration logic
 
 ### 4. Taxonomy Registry System
 
@@ -658,28 +667,20 @@ $menu = Theme_Config::get( 'menus', 'primary' );
 
 ### 7. Type Hints & PHP Standards
 
-This theme uses **PHP 7.4+ features:**
+This theme uses **PHP 7.4+ typed properties:**
 
 ```php
-// Typed properties (PHP 7.4)
+// Typed properties (PHP 7.4 minimum)
 private string $name = '';
-public array<string, mixed> $config = [];
+public array $config = [];
 
-// Union types (PHP 8.0)
-public function get_value(): string|int|null { }
-
-// Named arguments
-Theme_Config::get( section: 'post_types', key: 'services' );
-
-// Match expressions (PHP 8.0)
-$size = match( $variant ) {
-    'lg' => 'large',
-    'sm' => 'small',
-    default => 'medium'
-};
+// Method type hints
+public function get_posts( int $count, string $type ): array {
+    // ...
+}
 ```
 
-**Why?** Better code reliability, IDE autocomplete, self-documenting code
+**Why?** Better code reliability, IDE autocomplete, self-documenting code. Optional PHP 8.0+ features (union types, match expressions) may be used if environment supports it.
 
 ---
 
@@ -692,8 +693,8 @@ $size = match( $variant ) {
 return [
     'theme' => [
         'name' => 'Starter Theme',
-        'text_domain' => 'Starter Theme ',
-        'description' => 'Starter Theme ',
+        'textdomain' => 'starter-theme',
+        'description' => 'A professional WordPress theme starter',
         'version' => '1.0.0',
     ],
     'post_types' => [
@@ -718,18 +719,12 @@ $services_config = Theme_Config::get_post_types()['services'];
 ```php
 // File: src/config.php in image_sizes section
 'image_sizes' => [
-    'thumbnail' => [
-        'width' => 200,
-        'height' => 200,
-        'crop' => true,
-    ],
     'hero' => [
         'width' => 1200,
         'height' => 400,
         'crop' => true,
     ],
-    // Add new size
-    'card-featured' => [
+    'card' => [
         'width' => 400,
         'height' => 300,
         'crop' => true,
@@ -738,8 +733,10 @@ $services_config = Theme_Config::get_post_types()['services'];
 
 // Registered automatically in functions.php
 // Usage in template
-{{ post.thumbnail( 'card-featured' ) }}
+{{ post.thumbnail( 'card' ) }}
 ```
+
+See [CONFIG-GUIDE.md](CONFIG-GUIDE.md) for all configuration options.
 
 ### Task 3: Register New Menu Location
 
@@ -751,10 +748,12 @@ $services_config = Theme_Config::get_post_types()['services'];
     'mobile' => 'Mobile Menu',  // Add new
 ],
 
-// Register automatically in functions.php
-// Usage in template
+// Registered automatically in functions.php
+// Usage in template (using Timber context)
 <nav class="main-nav">
-    {% include 'navigation.twig' with { menu: 'primary' } %}
+    {% for item in menu.get_items %}
+        <a href="{{ item.link }}">{{ item.title }}</a>
+    {% endfor %}
 </nav>
 ```
 
@@ -821,11 +820,7 @@ Then create the Twig template:
         <h1>{{ post.title }}</h1>
 
         <div class="testimonials-grid">
-            {% set testimonials = get_posts({
-                post_type: 'testimonials',
-                posts_per_page: -1
-            }) %}
-
+            {# testimonials are prepared in views/page.php context #}
             {% for testimonial in testimonials %}
                 {% include 'components/testimonial-card.twig' with { post: testimonial } %}
             {% endfor %}
@@ -833,6 +828,8 @@ Then create the Twig template:
     </section>
 {% endblock %}
 ```
+
+**Key:** Data fetching happens in `views/page.php`, not in the Twig template. See [ARCHITECTURE.md](ARCHITECTURE.md) for context building pattern.
 
 **Result:** Automatically registered on `init` hook (priority 11)
 
@@ -875,7 +872,7 @@ Then create the Twig template:
 ### Task 7: Add Utility Classes
 
 ```scss
-// File: css/inc/utilities/helpers.scss
+// File: scss/inc/utilities/helpers.scss
 // Add to spacing section
 
 .gap-2 {
@@ -1054,6 +1051,7 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
 ```twig
 {# File: templates/index.twig #}
 {% extends "base.twig" %}
+{% import "macros.twig" as macros %}
 
 {% block content %}
     <main class="main-content">
@@ -1062,9 +1060,9 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
         {% include "components/hero.twig" with {
             title: "Welcome to " ~ site.name,
             subtitle: "Learn to drive with confidence",
-            image: site.featured_image.src,
+            image: site.home_hero.src,
             cta_text: "Book a Lesson",
-            cta_url: "/lessons"
+            cta_url: home_cta_url
         } %}
 
         {# Latest posts section #}
@@ -1076,9 +1074,10 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
             } %}
 
             <div class="posts-grid">
-                {% for post in posts %}
+                {# posts prepared in views/index.php context #}
+                {% for item in posts %}
                     {% include "components/post-card.twig" with {
-                        post: post,
+                        post: item,
                         show_excerpt: true,
                         show_meta: true
                     } %}
@@ -1095,7 +1094,8 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
             } %}
 
             <div class="testimonials-grid">
-                {% for testimonial in testimonials %}
+                {# testimonials prepared in views/index.php context #}
+                {% for testimonial in home_testimonials %}
                     {% include "components/testimonial-card.twig" with {
                         post: testimonial,
                         show_rating: true
@@ -1113,6 +1113,7 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
 ```twig
 {# File: templates/single.twig #}
 {% extends "base.twig" %}
+{% import "macros.twig" as macros %}
 
 {% block content %}
     <article class="post-single">
@@ -1120,7 +1121,7 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
         {# Featured image #}
         {% if post.thumbnail %}
             <figure class="post-single__featured">
-                <img src="{{ post.thumbnail( 'hero' ).src }}" alt="{{ post.title }}" />
+                <img src="{{ post.thumbnail( 'hero' ).src }}" alt="{{ post.title }}" loading="lazy" />
             </figure>
         {% endif %}
 
@@ -1130,12 +1131,11 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
 
             {# Post metadata #}
             <div class="post-single__meta">
-                {% include "macros.twig" as macros %}
-                {{ macros.meta_list([
-                    "By " ~ post.author.name,
-                    post.post_date|date( 'F j, Y' ),
-                    "Read time: " ~ macros.read_time( post.content, 200 )
-                ]) }}
+                {{ macros.meta(
+                    date: post.post_date,
+                    author: post.author.name,
+                    read_time: estimated_read_time
+                )}}
             </div>
         </header>
 
@@ -1144,29 +1144,15 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
             {{ post.content }}
         </div>
 
-        {# ACF fields (custom example) #}
-        {% if post.get_field( 'service_duration' ) %}
-            <aside class="post-single__sidebar">
-                <h3>Lesson Details</h3>
-                <p>
-                    <strong>Duration:</strong>
-                    {{ post.get_field( 'service_duration' ) }} minutes
-                </p>
-                <p>
-                    <strong>Price:</strong>
-                    {{ post.get_field( 'service_price' ) }}
-                </p>
-            </aside>
-        {% endif %}
-
         {# Related posts #}
         {% if related_posts %}
             <section class="post-single__related mt-6">
                 <h2>Related Posts</h2>
                 <div class="related-posts">
-                    {% for post in related_posts %}
+                    {# related_posts prepared in views/single.php context #}
+                    {% for item in related_posts %}
                         {% include "components/post-card.twig" with {
-                            post: post,
+                            post: item,
                             show_excerpt: false
                         } %}
                     {% endfor %}
@@ -1189,34 +1175,15 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
 
         <h1 class="archive__title">{{ title }}</h1>
 
-        {# Sidebar with filters #}
-        <aside class="archive__sidebar">
-            <h3>Filter Results</h3>
-
-            {# Category filter #}
-            <div class="filter-group">
-                <h4>Categories</h4>
-                <ul class="filter-list">
-                    {% for term in categories %}
-                        <li>
-                            <a href="{{ term.link }}"
-                               class="filter-list__link {% if term.current %}active{% endif %}">
-                                {{ term.name }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </aside>
-
         {# Main content #}
         <main class="archive__content">
 
             {% if posts %}
                 <div class="posts-list">
-                    {% for post in posts %}
+                    {# posts prepared in views/archive.php context #}
+                    {% for item in posts %}
                         {% include "components/post-card.twig" with {
-                            post: post,
+                            post: item,
                             show_excerpt: true,
                             show_meta: true
                         } %}
@@ -1226,9 +1193,7 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
                 {# Pagination #}
                 <nav class="pagination" role="navigation">
                     {% if pagination.prev.link %}
-                        <a href="{{ pagination.prev.link }}" class="btn btn--outline">
-                            ← Previous Page
-                        </a>
+                        <a href="{{ pagination.prev.link }}" class="btn btn--outline">← Previous</a>
                     {% endif %}
 
                     <span class="pagination__info">
@@ -1236,17 +1201,11 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
                     </span>
 
                     {% if pagination.next.link %}
-                        <a href="{{ pagination.next.link }}" class="btn btn--outline">
-                            Next Page →
-                        </a>
+                        <a href="{{ pagination.next.link }}" class="btn btn--outline">Next →</a>
                     {% endif %}
                 </nav>
             {% else %}
-                {% include "components/alert.twig" with {
-                    message: "No posts found.",
-                    type: "info",
-                    dismissible: false
-                } %}
+                <p class="text-center text-muted">No posts found.</p>
             {% endif %}
 
         </main>
@@ -1262,7 +1221,7 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
 ### Example 1: Creating a BEM Component
 
 ```scss
-// File: css/inc/components/service-card.scss
+// File: scss/inc/components/service-card.scss
 /**
  * Service Card Component - BEM Methodology
  *
@@ -1365,7 +1324,7 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
 ### Example 2: Responsive Grid Layout
 
 ```scss
-// File: css/inc/global/main.scss (if needed)
+// File: scss/inc/global/main.scss (if needed)
 
 .services-grid {
   display: grid;
@@ -1389,7 +1348,7 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
 ### Example 3: Custom Variables in SCSS
 
 ```scss
-// File: css/inc/base/vars.scss
+// File: scss/inc/base/vars.scss
 
 // Colors
 $primary: #0066cc;
@@ -1516,15 +1475,15 @@ add_action( 'init', [ 'Timber_Post_Types', 'register_post_types' ] );
 // ACF admin > Field Groups > Edit Group
 // Location rules should include post type
 
-// 3. Verify field key in template matches
-// Template: {{ post.get_field( 'field_key' ) }}
-// ACF: Field key shown in field details
+// 3. Verify field in template
+// Template: {{ post.get_field( 'field_name' ) }}
+// ACF: Field name shown in field settings
 
 // 4. Debug: Print all fields
 // Template: {{ dump( post.get_fields() ) }}
 
 // 5. Check file permissions
-chmod -R 755 wp-content/themes/starter-theme-1.x/
+chmod -R 755 wp-content/themes/starter-theme/
 ```
 
 ### Issue 4: Template Variables Not Available
@@ -1568,7 +1527,7 @@ Timber::render( 'template.twig', $context );
 
 # 2. Verify variable exists
 # Common: Using $var that's not defined in vars.scss
-# Solution: Add variable to css/inc/base/vars.scss
+# Solution: Add variable to scss/inc/base/vars.scss
 
 # 3. Check import path
 # Common: @import "./css/...missing-file.scss"
@@ -1603,12 +1562,8 @@ define( 'WP_DEBUG_DISPLAY', false );
 {# Print all context #}
 <pre>{{ dump() }}</pre>
 
-{# Conditional debug (only for admins) #}
-{% if current_user.can('manage_options') %}
-    <div style="background: yellow; padding: 1rem;">
-        DEBUG: {{ dump(post) }}
-    </div>
-{% endif %}
+{# Print specific variable with label #}
+<pre>{{ variable|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
 ```
 
 ---
@@ -1617,21 +1572,15 @@ define( 'WP_DEBUG_DISPLAY', false );
 
 ### 1. Image Optimization
 
-```php
-// Use appropriate image sizes
-{{ post.thumbnail( 'card' ).src }}  // Use defined sizes, not full image
+```twig
+{# Use appropriate image sizes #}
+<img src="{{ post.thumbnail('card').src }}" alt="{{ post.title }}" />
 
-// Lazy load images
+{# Lazy load images #}
 <img src="{{ image.src }}" loading="lazy" alt="{{ image.alt }}" />
-
-// Use responsive images
-<img
-    srcset="{{ image.src( 'small' ) }} 400w,
-            {{ image.src( 'medium' ) }} 800w,
-            {{ image.src( 'large' ) }} 1200w"
-    alt="{{ image.alt }}"
-/>
 ```
+
+See [BEM-GUIDE.md](BEM-GUIDE.md) for responsive image patterns with srcset.
 
 ### 2. Caching
 
@@ -1694,10 +1643,10 @@ echo esc_html( $post->title );
 echo esc_url( $link );
 echo esc_attr( $attribute );
 
-// In Twig (automatic)
-{{ post.title }}  {# Already escaped #}
-{{ post.content }}  {# Use raw only when necessary #}
-{{ post.content | raw }}  {# Explicitly not escaped #}
+// In Twig (context-aware)
+{{ post.title }}       {# Escaping depends on Twig context and configuration #}
+{{ post.content }}     {# Content filters handle WordPress escaping #}
+{{ post.content|raw }} {# Use raw only for trusted, pre-escaped content #}
 ```
 
 ### 3. Use Nonces for Forms
@@ -1721,8 +1670,8 @@ if ( current_user_can( 'edit_post', $post_id ) ) {
     // Show edit link
 }
 
-// In template
-{% if current_user.can( 'manage_options' ) %}
+// In template (if current_user is exposed to Twig context)
+{% if current_user and current_user.can( 'manage_options' ) %}
     {# Admin only content #}
 {% endif %}
 ```
@@ -1822,7 +1771,7 @@ git commit -m "fixed things"
 - **Twig Documentation:** https://twig.symfony.com/
 - **ACF Documentation:** https://www.advancedcustomfields.com/resources/
 - **WordPress Plugin Handbook:** https://developer.wordpress.org/plugins/
-- **Bootstrap 5:** https://getbootstrap.com/docs/5.0/
+- **Bootstrap 5:** https://getbootstrap.com/docs/5.3/
 - **BEM Methodology:** https://bem.info/
 
 ### Local Documentation Files
@@ -1865,21 +1814,64 @@ For questions about this theme:
 
 ---
 
+## Request Lifecycle
+
+Understanding how requests flow through the theme helps you know where to make changes:
+
+```
+WordPress Request
+    ↓
+views/*.php
+(WordPress template hierarchy entry point)
+    ↓
+Prepare data & Timber context
+(Theme functions build data arrays)
+    ↓
+Timber::render( 'template.twig', $context )
+    ↓
+templates/*.twig
+(Main page template)
+    ↓
+{% include 'components/*.twig' %}
+{% import 'macros.twig' as ... %}
+(Reusable components & utilities)
+    ↓
+HTML + CSS Classes
+(BEM-structured markup)
+    ↓
+scss/inc/*.scss
+(Compiles to style.css)
+    ↓
+Browser Renders Final Page
+```
+
+**Key Architectural Principles:**
+
+1. **Data Preparation in PHP** - All queries, loops, and heavy logic happen in `views/*.php`
+2. **Templates Display Only** - Twig templates render data, they don't fetch or process
+3. **Components are Composable** - Each component (`.twig` file) is reusable with consistent props
+4. **Styles Follow Structure** - SCSS organization mirrors component structure using BEM
+5. **Configuration is Centralized** - All settings accessed via `Theme_Config` class
+
+This separation means: To add features, build PHP first (in `views/`), prepare data in context, then render with Twig.
+
+---
+
 ## Quick Reference
 
 ### File Locations
 
-| Purpose              | Location                         |
-| -------------------- | -------------------------------- |
-| Theme configuration  | `src/config.php`                 |
-| Configuration access | `src/theme-config.php`           |
-| Post type setup      | `src/post-types/*.php`           |
-| Block setup          | `templates/blocks/*.twig`        |
-| Twig components      | `templates/components/*.twig`    |
-| SCSS components      | `css/inc/components/*.scss`      |
-| SCSS variables       | `css/inc/base/vars.scss`         |
-| Utilities            | `css/inc/utilities/helpers.scss` |
-| Main stylesheet      | `style.scss`                     |
+| Purpose              | Location                          |
+| -------------------- | --------------------------------- |
+| Theme configuration  | `src/config.php`                  |
+| Configuration access | `src/theme-config.php`            |
+| Post type setup      | `src/post-types/*.php`            |
+| Block setup          | `templates/blocks/*.twig`         |
+| Twig components      | `templates/components/*.twig`     |
+| SCSS components      | `scss/inc/components/*.scss`      |
+| SCSS variables       | `scss/inc/base/vars.scss`         |
+| Utilities            | `scss/inc/utilities/helpers.scss` |
+| Main stylesheet      | `style.scss`                      |
 
 ### Common Functions
 
@@ -1907,8 +1899,18 @@ wp_get_archives( $args );
 
 ---
 
-**Document Version:** 1.0  
+**Document Version:** 1.1  
 **Last Updated:** March 2026  
 **Theme Version:** 1.0.0  
-**PHP Version:** 7.4+  
+**PHP Version:** 7.4+ (typed properties) | 8.0+ (optional: union types, match expressions)  
 **WordPress Version:** 6.0+
+
+---
+
+**For more detail on specific topics, see:**
+
+- [ARCHITECTURE.md](ARCHITECTURE.md) - System design and layers
+- [CONFIG-GUIDE.md](CONFIG-GUIDE.md) - Configuration system
+- [COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md) - Twig components and macros
+- [BEM-GUIDE.md](BEM-GUIDE.md) - CSS architecture
+- [OPTIONAL-FEATURES.md](OPTIONAL-FEATURES.md) - Optional features like WooCommerce

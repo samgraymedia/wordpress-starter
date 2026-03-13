@@ -2,7 +2,7 @@
 
 ⚠️ **This guide applies only if the WooCommerce plugin is active.**
 
-Theme works perfectly without WooCommerce. This integration is completely optional.
+The theme works normally without WooCommerce. This integration is completely optional.
 
 **Complete guide to using WooCommerce with the Starter Theme**
 
@@ -10,7 +10,7 @@ This guide explains how WooCommerce is integrated into your theme following the 
 
 ---
 
-## 📋 Overview
+## Overview
 
 **When WooCommerce plugin is active**, it is fully integrated with:
 
@@ -21,21 +21,21 @@ This guide explains how WooCommerce is integrated into your theme following the 
 - **Twig filters** for product data
 - **ACF integration** support
 
-All WooCommerce pages are rendered using Timber/Twig, not default WooCommerce templates.
+All WooCommerce pages can be rendered using Timber/Twig instead of default WooCommerce PHP templates.
 
 **When WooCommerce plugin is not active**, all shop templates are ignored and there's zero overhead.
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 ### Auto-Detection
 
 The theme automatically detects WooCommerce:
 
-1. Check if `woocommerce/woocommerce.php` plugin is active
-2. If yes, load `src/woocommerce-integration.php`
-3. If no, skip WooCommerce integration entirely
+1. Check if `class_exists('WooCommerce')`
+2. If true, load `src/woocommerce-integration.php`
+3. If false, skip WooCommerce integration entirely
 
 **No configuration needed.** Install and activate WooCommerce plugin, that's it.
 
@@ -50,7 +50,7 @@ When WooCommerce is not active:
 
 ---
 
-## 🎨 Templates
+## Templates
 
 ### Shop Page
 
@@ -90,13 +90,13 @@ Displays a single product with:
 
 ```twig
 <h1>{{ product.get_title() }}</h1>
-<p>{{ product.get_short_description()|safe }}</p>
-<div>{{ product.get_price_html()|safe }}</div>
+<p>{{ product.get_short_description()|raw }}</p>
+<div>{{ product.get_price_html()|raw }}</div>
 ```
 
 ---
 
-## 🧩 Components
+## Components
 
 ### Product Card Component
 
@@ -125,7 +125,7 @@ Displays a product in grid/list view.
 - Short description
 - View product button
 
-**Styles:** `css/inc/components/product-card.scss` (BEM)
+**Styles:** `scss/inc/components/product-card.scss` (BEM)
 
 ### Cart Summary Component
 
@@ -146,11 +146,11 @@ Displays cart in header with count and total.
 - Link to cart page
 - Responsive design
 
-**Styles:** `css/inc/components/cart-summary.scss` (BEM)
+**Styles:** `scss/inc/components/cart-summary.scss` (BEM)
 
 ---
 
-## 🎨 Styling
+## Styling
 
 ### BEM Structure
 
@@ -166,7 +166,7 @@ All WooCommerce styles follow BEM naming:
 ### SCSS Files
 
 ```
-css/inc/
+scss/inc/
 ├── components/
 │   ├── product-card.scss    # Product card component
 │   └── cart-summary.scss    # Cart summary component
@@ -180,7 +180,7 @@ css/inc/
 Edit SCSS files directly. They use theme variables:
 
 ```scss
-// From css/inc/base/vars.scss
+// From scss/inc/base/vars.scss
 $primary: #0066cc;
 $white: #ffffff;
 $border-color: #e0e0e0;
@@ -195,7 +195,7 @@ npm run sass
 
 ---
 
-## 🔧 PHP Integration
+## PHP Integration
 
 ### WooCommerce Integration File
 
@@ -235,7 +235,7 @@ echo $context['woocommerce']['cart_count'];
 
 ---
 
-## 🔍 Twig Filters
+## Twig Filters
 
 Custom Twig filters for WooCommerce:
 
@@ -246,7 +246,7 @@ Formats a number as price with currency.
 **Usage:**
 
 ```twig
-{{ 99.99|price }}
+{{ 99.99|wc_price }}
 {# Output: <span class="woocommerce-Price-amount"><span class="woocommerce-Price-currencySymbol">$</span>99.99</span> #}
 ```
 
@@ -257,8 +257,8 @@ Gets product image by ID or product object.
 **Usage:**
 
 ```twig
-{{ product|product_image('woocommerce_thumbnail') }}
-{{ product_id|product_image }}
+{{ product|wc_product_image('woocommerce_thumbnail') }}
+{{ product_id|wc_product_image }}
 ```
 
 ### Is On Sale Filter
@@ -268,7 +268,7 @@ Checks if product is on sale.
 **Usage:**
 
 ```twig
-{% if product|is_on_sale %}
+{% if product|wc_is_on_sale %}
   <span class="sale-badge">On Sale!</span>
 {% endif %}
 ```
@@ -286,17 +286,17 @@ Access product data with methods:
 {{ product.get_id() }}
 
 {# Images #}
-{{ product.get_image('woocommerce_thumbnail')|safe }}
+{{ product.get_image('woocommerce_thumbnail')|raw }}
 {{ product.get_gallery_image_ids() }}
 
 {# Pricing #}
-{{ product.get_price_html()|safe }}
+{{ product.get_price_html()|raw }}
 {{ product.get_regular_price() }}
 {{ product.get_sale_price() }}
 
 {# Details #}
-{{ product.get_short_description()|safe }}
-{{ product.get_description()|safe }}
+{{ product.get_short_description()|raw }}
+{{ product.get_description()|raw }}
 {{ product.get_sku() }}
 {{ product.get_stock_status() }}
 {{ product.get_stock_quantity() }}
@@ -304,14 +304,14 @@ Access product data with methods:
 {# Ratings #}
 {{ product.get_average_rating() }}
 {{ product.get_rating_count() }}
-{{ product.get_rating_html()|safe }}
+{{ product.get_rating_html()|raw }}
 
 {# Categories & Tags #}
 {{ product.get_categories() }}
 {{ product.get_tags() }}
 
 {# Sale info #}
-{{ product|is_on_sale }}
+{{ product|wc_is_on_sale }}
 {{ product.get_date_on_sale_from() }}
 {{ product.get_date_on_sale_to() }}
 ```
@@ -372,11 +372,11 @@ WooCommerce handles this via hooks. Just use the action:
 
 ---
 
-## 🛒 Cart & Checkout
+## Cart & Checkout
 
 ### Cart Page
 
-WooCommerce provides default cart template. Customize by creating:
+WooCommerce provides default cart templates. You can create custom Twig templates and render WooCommerce hooks inside them if desired:
 
 ```
 templates/cart.twig
@@ -422,14 +422,14 @@ Example: Add rating stars:
 ```twig
 <div class="product-card__rating">
   {% if product.get_average_rating() > 0 %}
-    {{ product.get_rating_html()|safe }}
+    {{ product.get_rating_html()|raw }}
   {% endif %}
 </div>
 ```
 
 ---
 
-## 🐛 Debugging
+## Debugging
 
 ### Display Product Object
 
@@ -502,7 +502,7 @@ Use ACF filters in template:
 1. **Activate WooCommerce plugin** in WordPress admin
 2. **Create products** with images, prices, descriptions
 3. **Customize templates** in `templates/` directory
-4. **Update styles** in `css/inc/` files
+4. **Update styles** in `scss/inc/` files
 5. **Add ACF fields** to products for extra data
 6. **Test cart/checkout** flow
 7. **Compile SCSS** with `npm run sass`

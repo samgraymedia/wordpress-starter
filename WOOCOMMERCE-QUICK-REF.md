@@ -2,13 +2,13 @@
 
 ⚠️ **This guide applies only if the WooCommerce plugin is active.**
 
-Theme works perfectly without WooCommerce. These features are completely optional.
+The theme works normally without WooCommerce. These features are completely optional.
 
 **Fast lookup for WooCommerce tasks in your theme**
 
 ---
 
-## 📍 Key Files
+## Key Files
 
 | Task                 | File                                     | Purpose                       |
 | -------------------- | ---------------------------------------- | ----------------------------- |
@@ -18,14 +18,14 @@ Theme works perfectly without WooCommerce. These features are completely optiona
 | Single product       | `templates/single-product.twig`          | Single product page           |
 | Product card         | `templates/components/product-card.twig` | Product in grid               |
 | Cart summary         | `templates/components/cart-summary.twig` | Header cart                   |
-| Shop styles          | `css/inc/global/shop.scss`               | Shop page CSS                 |
-| Product styles       | `css/inc/global/product-single.scss`     | Single product CSS            |
-| Card styles          | `css/inc/components/product-card.scss`   | Card component CSS            |
+| Shop styles          | `scss/inc/global/shop.scss`              | Shop page CSS                 |
+| Product styles       | `scss/inc/global/product-single.scss`    | Single product CSS            |
+| Card styles          | `scss/inc/components/product-card.scss`  | Card component CSS            |
 | Full guide           | `WOOCOMMERCE-GUIDE.md`                   | Complete documentation        |
 
 ---
 
-## 🚀 Common Tasks
+## Common Tasks
 
 ### Display All Products in Custom Template
 
@@ -38,13 +38,13 @@ Theme works perfectly without WooCommerce. These features are completely optiona
 ### Show Product Price
 
 ```twig
-{{ product.get_price_html()|safe }}
+{{ product.get_price_html()|raw }}
 ```
 
 ### Check if On Sale
 
 ```twig
-{% if product|is_on_sale %}
+{% if product|wc_is_on_sale %}
   <span class="badge badge--sale">Sale!</span>
 {% endif %}
 ```
@@ -52,7 +52,7 @@ Theme works perfectly without WooCommerce. These features are completely optiona
 ### Get Product Image
 
 ```twig
-{{ product.get_image('woocommerce_thumbnail')|safe }}
+{{ product.get_image('woocommerce_thumbnail')|raw }}
 ```
 
 ### Display Cart Link & Count
@@ -64,7 +64,7 @@ Theme works perfectly without WooCommerce. These features are completely optiona
 ### Add Rating Stars
 
 ```twig
-{{ product.get_rating_html()|safe }}
+{{ product.get_rating_html()|raw }}
 ```
 
 ### Show SKU
@@ -76,10 +76,14 @@ Theme works perfectly without WooCommerce. These features are completely optiona
 ### List Categories
 
 ```twig
-{% for category in product.get_categories() %}
-  <a href="{{ category.get_permalink() }}">
-    {{ category.get_name() }}
-  </a>
+{{ product.get_categories()|raw }}
+```
+
+Or if using WooCommerce terms:
+
+```twig
+{% for term in product.get_terms('product_cat') %}
+  <a href="{{ term.link }}">{{ term.name }}</a>
 {% endfor %}
 ```
 
@@ -88,14 +92,14 @@ Theme works perfectly without WooCommerce. These features are completely optiona
 ```twig
 {% if product.get_gallery_image_ids() %}
   {% for image_id in product.get_gallery_image_ids() %}
-    {{ image_id|product_image }}
+    {{ image_id|wc_product_image }}
   {% endfor %}
 {% endif %}
 ```
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Enable WooCommerce
 
@@ -112,18 +116,18 @@ When WooCommerce is active, theme automatically:
 - Removes default WooCommerce styles (uses yours instead)
 - Disables cart fragment AJAX for better performance
 - Renders shop/product pages with Timber templates
-- Adds WooCommerce Twig filters (`is_on_sale`, `product_image`, `price`)
+- Adds WooCommerce Twig filters (`wc_is_on_sale`, `wc_product_image`, `wc_price`)
 
 When WooCommerce is not active:
 
 - Theme functions normally without e-commerce
 - Shop templates exist but won't be used
 - Configuration in `src/config.php` is ignored
-- Zero overhead or errors
+- No runtime overhead when WooCommerce is inactive
 
 ---
 
-## 📊 Product Data Methods
+## Product Data Methods
 
 ```twig
 {# Info #}
@@ -132,16 +136,16 @@ When WooCommerce is not active:
 {{ product.get_permalink() }}
 
 {# Pricing #}
-{{ product.get_price_html()|safe }}
+{{ product.get_price_html()|raw }}
 {{ product.get_regular_price() }}
 {{ product.get_sale_price() }}
 
 {# Description #}
-{{ product.get_short_description()|safe }}
-{{ product.get_description()|safe }}
+{{ product.get_short_description()|raw }}
+{{ product.get_description()|raw }}
 
 {# Images #}
-{{ product.get_image('size') }}
+{{ product.get_image('woocommerce_thumbnail')|raw }}
 {{ product.get_gallery_image_ids() }}
 
 {# Details #}
@@ -150,20 +154,20 @@ When WooCommerce is not active:
 {{ product.get_stock_quantity() }}
 
 {# Ratings #}
-{{ product.get_rating_html()|safe }}
+{{ product.get_rating_html()|raw }}
 {{ product.get_average_rating() }}
 
 {# Taxonomy #}
-{{ product.get_categories() }}
+{{ product.get_categories()|raw }}
 {{ product.get_tags() }}
 
 {# Sale #}
-{{ product|is_on_sale }}
+{{ product|wc_is_on_sale }}
 ```
 
 ---
 
-## 🎨 BEM Classes for Styling
+## BEM Classes for Styling
 
 ```
 .shop               # Shop page wrapper
@@ -190,7 +194,7 @@ When WooCommerce is not active:
 
 ---
 
-## 🔗 Context Variables
+## Context Variables
 
 Available in all templates:
 
@@ -205,17 +209,17 @@ Available in all templates:
 
 ---
 
-## 🎯 Display Variations
+## Display Variations
 
 ### Product Card - Compact
 
 ```twig
 <div class="product-card--compact">
   <a href="{{ product.get_permalink() }}">
-    {{ product.get_image('woocommerce_thumbnail')|safe }}
+    {{ product.get_image('woocommerce_thumbnail')|raw }}
   </a>
   <h4>{{ product.get_title() }}</h4>
-  <p class="price">{{ product.get_price_html()|safe }}</p>
+  <p class="price">{{ product.get_price_html()|raw }}</p>
 </div>
 ```
 
@@ -237,12 +241,12 @@ Available in all templates:
 
 ---
 
-## ⚡ Performance Tips
+## Performance Tips
 
 1. **Use image sizes** - Always specify WooCommerce image sizes:
 
    ```twig
-   {{ product.get_image('woocommerce_thumbnail')|safe }}
+   {{ product.get_image('woocommerce_thumbnail')|raw }}
    ```
 
 2. **Cache queries** - Use WordPress transients for complex queries
@@ -255,13 +259,13 @@ Available in all templates:
 
 ---
 
-## 🐛 Common Issues
+## Common Issues
 
 **Products not showing:**
 
 - Check WooCommerce is activated
 - Verify products are published
-- Clear cache (MAMP cache)
+- Clear browser cache or caching plugin
 
 **Styles not applying:**
 
@@ -277,6 +281,6 @@ Available in all templates:
 
 ---
 
-## 📚 Full Documentation
+## Full Documentation
 
 See [WOOCOMMERCE-GUIDE.md](./WOOCOMMERCE-GUIDE.md) for complete details.

@@ -6,11 +6,15 @@ This theme uses a centralized configuration system to manage all theme settings 
 
 ```
 src/
-├── config.php          - Main configuration array with all theme settings
-├── theme-config.php    - Theme_Config helper class for accessing settings
+├── config.php                    - Main configuration array with all theme settings
+├── theme-config.php              - Theme_Config helper class for accessing settings
 ├── post-types-registry.php
+├── taxonomies-registry.php
+├── page-templates-registry.php
 ├── timber-acf-wp-blocks.php
-└── blocks/
+├── post-types/                   - Custom post type definitions (auto-discovered)
+├── taxonomies/                   - Custom taxonomy definitions (auto-discovered)
+└── page-templates/               - Custom page template definitions (auto-discovered)
 ```
 
 ## Using Theme Configuration
@@ -28,11 +32,22 @@ $post_types = Theme_Config::get( 'post_types' );
 $text_domain = Theme_Config::get_text_domain();
 ```
 
+**Quick Start Example:**
+
+```php
+// Access common settings
+$theme_name = Theme_Config::get_text_domain();  // 'starter-theme'
+$menus = Theme_Config::get_menus();             // All menu locations
+$sizes = Theme_Config::get_image_sizes();       // All image size configs
+```
+
+Configuration is loaded once and cached in memory by the `Theme_Config` class for efficiency.
+
 ### Available Helper Methods
 
 ```php
 // Theme metadata
-Theme_Config::get_theme_meta();      // Returns: ['name', 'textdomain', 'description', 'version']
+Theme_Config::get_theme_meta();      // Returns: ['name' => '...', 'textdomain' => '...', 'description' => '...', 'version' => '...']
 
 // Post types
 Theme_Config::get_post_types();      // Returns all post types config
@@ -63,6 +78,8 @@ Theme_Config::get_assets();          // Returns JS/CSS handles
 Theme_Config::has( 'menus' );        // Returns boolean
 ```
 
+**Best Practice:** Always use `Theme_Config` helper methods instead of accessing the raw config array directly. This maintains type safety and allows the class to handle caching and fallbacks.
+
 ## Adding to Configuration
 
 ### Add a New Menu Location
@@ -71,9 +88,9 @@ Edit `src/config.php`:
 
 ```php
 'menus' => array(
-    'main'   => __( 'Main Navigation', 'starter-theme-1.x' ),
-    'footer' => __( 'Footer Navigation', 'starter-theme-1.x' ),
-    'mobile' => __( 'Mobile Menu', 'starter-theme-1.x' ),  // New
+    'main'   => __( 'Main Navigation', 'starter-theme' ),
+    'footer' => __( 'Footer Navigation', 'starter-theme' ),
+    'mobile' => __( 'Mobile Menu', 'starter-theme' ),  // New
 ),
 ```
 
@@ -82,11 +99,18 @@ Edit `src/config.php`:
 Edit `src/config.php`:
 
 ```php
-'image_sizes' => array(
-    'thumbnail' => array( 150, 150, true ),
-    'hero'      => array( 1200, 300, true ),
-    'card'      => array( 400, 300, true ),  // New
-),
+'image_sizes' => [
+    'hero' => [
+        'width'  => 1200,
+        'height' => 300,
+        'crop'   => true
+    ],
+    'card' => [
+        'width'  => 400,
+        'height' => 300,
+        'crop'   => true
+    ],
+],
 ```
 
 ### Add a New Sidebar
@@ -97,8 +121,8 @@ Edit `src/config.php`:
 'sidebars' => array(
     'primary'  => array( /* ... */ ),
     'footer'   => array(                    // New
-        'name'          => __( 'Footer Widgets', 'starter-theme-1.x' ),
-        'description'   => __( 'Widgets in footer', 'starter-theme-1.x' ),
+        'name'          => __( 'Footer Widgets', 'starter-theme' ),
+        'description'   => __( 'Widgets in footer', 'starter-theme' ),
         // ... rest of args
     ),
 ),
@@ -115,7 +139,7 @@ Edit `src/config.php`:
 
 ### Post Types
 
-Define custom post type slugs and metadata
+Defines custom post type configuration used by the post type registry
 
 ### Taxonomies
 
@@ -157,9 +181,9 @@ Allowed file types for media library
 
 Development/debugging settings
 
-## Registries System
+## Registry System
 
-Beyond the main config file, this theme uses **auto-discovery registries** for scalability:
+Beyond the main config file, this theme uses **auto-discovery registries** for scalability. See [ARCHITECTURE.md](ARCHITECTURE.md) for a full explanation of the registry pattern used by the theme.
 
 ### Post Types Registry
 

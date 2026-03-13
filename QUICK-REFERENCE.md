@@ -10,22 +10,22 @@ This is a condensed reference guide. For detailed information, see [DEVELOPER-GU
 
 ## 📍 File Locations
 
-| Task             | File                             |
-| ---------------- | -------------------------------- |
-| Theme settings   | `src/config.php`                 |
-| Access config    | `src/theme-config.php`           |
-| Post types       | `src/post-types/*.php`           |
-| Blocks           | `templates/blocks/*.twig`        |
-| Components       | `templates/components/*.twig`    |
-| Macros           | `templates/macros.twig`          |
-| SCSS variables   | `css/inc/base/vars.scss`         |
-| Button styles    | `css/inc/base/btns.scss`         |
-| Component styles | `css/inc/components/*.scss`      |
-| Utilities        | `css/inc/utilities/helpers.scss` |
-| Main styles      | `style.scss`                     |
-| Hooks/Setup      | `functions.php`                  |
-| Homepage         | `templates/index.twig`           |
-| Base layout      | `templates/base.twig`            |
+| Task             | File                              |
+| ---------------- | --------------------------------- |
+| Theme settings   | `src/config.php`                  |
+| Access config    | `src/theme-config.php`            |
+| Post types       | `src/post-types/*.php`            |
+| Blocks           | `templates/blocks/*.twig`         |
+| Components       | `templates/components/*.twig`     |
+| Macros           | `templates/macros.twig`           |
+| SCSS variables   | `scss/inc/base/vars.scss`         |
+| Button styles    | `scss/inc/base/btns.scss`         |
+| Component styles | `scss/inc/components/*.scss`      |
+| Utilities        | `scss/inc/utilities/helpers.scss` |
+| Main styles      | `style.scss`                      |
+| Hooks/Setup      | `functions.php`                   |
+| Homepage         | `templates/index.twig`            |
+| Base layout      | `templates/base.twig`             |
 
 ---
 
@@ -33,7 +33,7 @@ This is a condensed reference guide. For detailed information, see [DEVELOPER-GU
 
 ```bash
 # Start development
-cd wp-content/themes/starter-theme-1.x
+cd wp-content/themes/starter-theme
 npm run watch
 
 # Compile SCSS once
@@ -177,7 +177,7 @@ $value = Theme_Config::get( 'custom_setting' );
 
 ### Create Component
 
-**File:** `css/inc/components/my-component.scss`
+**File:** `scss/inc/components/my-component.scss`
 
 ```scss
 .my-component {
@@ -196,22 +196,22 @@ $value = Theme_Config::get( 'custom_setting' );
 **Update imports in `style.scss`:**
 
 ```scss
-@import "./css/inc/components/my-component";
+@import "inc/components/my-component";
 ```
 
 ### Common Utilities
 
 ```html
-<!-- Spacing -->
+<!-- Spacing (Bootstrap) -->
 <div class="mt-4 mb-2 p-4">Content</div>
 
-<!-- Typography -->
-<p class="text-center font-bold text-primary">Text</p>
+<!-- Typography (Bootstrap) -->
+<p class="text-center fw-bold text-primary">Text</p>
 
-<!-- Display -->
-<div class="d-flex justify-center align-center">Centered</div>
+<!-- Display (Bootstrap) -->
+<div class="d-flex justify-content-center align-items-center">Centered</div>
 
-<!-- Background -->
+<!-- Background (Bootstrap) -->
 <div class="bg-primary text-white rounded">Card</div>
 ```
 
@@ -279,7 +279,7 @@ if ( current_user_can( 'edit_post', $post_id ) ) {
 ```
 
 ```twig
-{% if current_user.can( 'manage_options' ) %}
+{% if current_user and current_user.can( 'manage_options' ) %}
     {# Admin content #}
 {% endif %}
 ```
@@ -303,7 +303,7 @@ $value = get_field( 'field_key', $post_id );
 ### Output HTML Safely
 
 ```twig
-{{ post.content }}  {# Already escaped #}
+{{ post.content }}  {# Output depends on Twig context and WordPress content filters #}
 ```
 
 ---
@@ -392,7 +392,7 @@ current_user_can( 'edit_post', $post_id );
 {% include "components/button.twig" with {
     text: "Click",
     url: "#",
-    type: "primary",
+    classes: "btn-primary",
     icon: "arrow-right"
 } %}
 ```
@@ -478,9 +478,10 @@ current_user_can( 'edit_post', $post_id );
 ### Breadcrumbs
 
 ```twig
+{% import "macros.twig" as m %}
 {{ m.breadcrumbs([
-    {label: "Home", url: home_url},
-    {label: "Blog", url: blog_url},
+    {label: "Home", url: site.url},
+    {label: "Blog", url: "/blog"},
     {label: "Post Title"}
 ]) }}
 ```
@@ -555,13 +556,56 @@ npm install   # Reinstall dependencies
 
 ---
 
-## 🔗 Useful Links
+## Registry System
+
+The theme auto-registers content definitions and templates from dedicated folders:
+
+| Item           | File Location              | Auto-registered |
+| -------------- | -------------------------- | --------------- |
+| Post types     | `src/post-types/*.php`     | Yes             |
+| Taxonomies     | `src/taxonomies/*.php`     | Yes             |
+| Page templates | `src/page-templates/*.php` | Yes             |
+| Image sizes    | `src/config.php`           | Yes             |
+
+**To add a new item:** Create file in folder → Auto-registered on next page load. No hooks needed.
+
+---
+
+## 🔍 Advanced Debug Tips
+
+### Dump ACF Field Data
+
+```twig
+{# See all ACF fields on post #}
+{{ dump(post.get_fields()) }}
+```
+
+### Dump Post Meta
+
+```twig
+{# See all custom post meta #}
+{{ dump(post.meta()) }}
+```
+
+### Check Template Variables
+
+```twig
+{# Print WordPress global #}
+{{ dump(wp) }}
+
+{# Print specific post property #}
+{{ dump(post.thumbnail) }}
+```
+
+---
+
+## Useful Links
 
 - [Timber Docs](https://timber.github.io/docs/)
 - [Twig Docs](https://twig.symfony.com/)
 - [ACF Docs](https://www.advancedcustomfields.com/resources/)
 - [WordPress Docs](https://developer.wordpress.org/)
-- [Bootstrap Docs](https://getbootstrap.com/docs/5.0/)
+- [Bootstrap Docs](https://getbootstrap.com/docs/5.3/)
 - [BEM Docs](https://bem.info/)
 
 ---
@@ -588,16 +632,17 @@ Use IDE search: `Cmd+F` or `Ctrl+F`
 
 ### Find SCSS variable
 
-Open `css/inc/base/vars.scss` for all variables
+Open `scss/inc/base/vars.scss` for all variables
 
 ### Test responsive
 
 Right-click → Inspect → Toggle device toolbar
 
-### Clear cache
+### Clear Cache
 
-WordPress: Settings → Discussion → Saved comments
-Browser: Hard refresh (Cmd+Shift+R)
+Flush permalinks: Settings → Permalinks → Save (any change then save)
+Browser: Hard refresh (Cmd+Shift+R or Ctrl+Shift+R)
+Cache plugin: Deactivate temporarily if needed
 
 ---
 

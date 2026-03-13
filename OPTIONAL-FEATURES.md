@@ -6,8 +6,8 @@ This theme supports optional plugins and features. The theme automatically detec
 
 ### Status
 
-- **Active**: Theme auto-detects with zero configuration needed
-- **Inactive**: Theme works perfectly without any errors or performance impact
+- **Active**: Theme automatically detects WooCommerce and enables integration
+- **Inactive**: Theme works perfectly without any errors, with negligible performance impact
 - **Default**: Not required (theme focuses on content sites by default)
 
 ### How It Works
@@ -59,16 +59,18 @@ When WooCommerce is active:
 **Templates:**
 
 - `templates/shop.twig` - Shop listing with products grid
-- `templates/single-product.twig` - Individual product page (inherits from index.php routing)
+- `templates/single-product.twig` - Individual product page (rendered by views/single-product.php when WooCommerce posts route here)
 - `templates/components/product-card.twig` - Reusable product card
 
 **Twig Filters:**
 
 ```twig
-{{ product|is_on_sale }}           {# Check if product is on sale #}
-{{ product|product_image('size') }} {# Get product image #}
-{{ price|price }}                  {# Format price with currency #}
+{{ product|wc_is_on_sale }}        {# Check if product is on sale #}
+{{ product|wc_product_image('size') }} {# Get product image #}
+{{ price|wc_price }}               {# Format price with currency #}
 ```
+
+Note: Filters use `wc_` prefix to avoid naming conflicts in larger projects.
 
 **Styling:**
 
@@ -79,10 +81,10 @@ When WooCommerce is active:
 **Configuration:**
 
 ```php
-// src/config.php - only used when WooCommerce is active
+// src/config.php - WooCommerce settings only used when plugin is active
 'woocommerce' => array(
-    'remove_defaults'  => true, // Remove WooCommerce default styles
-    'disable_cart_fragments' => true, // Disable AJAX cart for performance
+    'remove_defaults'  => true,        // Remove WooCommerce default styles
+    'disable_cart_fragments' => true,  // Disable AJAX cart for performance
 ),
 ```
 
@@ -103,31 +105,26 @@ starter-theme/
 │   ├── shop.scss                    {# Compiled regardless; styles only load when active #}
 │   └── product-single.scss          {# Compiled regardless; styles only load when active #}
 │
-└── Documentation/
-    ├── WOOCOMMERCE-GUIDE.md         {# Complete WooCommerce integration guide #}
-    └── WOOCOMMERCE-QUICK-REF.md     {# Quick lookup for WooCommerce tasks #}
+├── WOOCOMMERCE-GUIDE.md             {# Complete WooCommerce integration guide #}
+└── WOOCOMMERCE-QUICK-REF.md         {# Quick lookup for WooCommerce tasks #}
 ```
 
 ### Detection Method
 
-The theme uses this detection logic:
+The theme uses this simple detection method:
 
 ```php
 private function is_woocommerce_active(): bool {
-    // Check if WooCommerce is in active plugins list
-    return in_array(
-        'woocommerce/woocommerce.php',
-        get_option( 'active_plugins', array() ),
-        true
-    ) || (
-        // Also check for multisite active plugins
-        is_multisite() && array_key_exists(
-            'woocommerce/woocommerce.php',
-            get_site_option( 'active_sitewide_plugins', array() )
-        )
-    );
+    return class_exists( 'WooCommerce' );
 }
 ```
+
+This approach is preferred over checking active_plugins option because:
+
+- **Simpler code** – WordPress provides the class when the plugin is active
+- **No database lookups** – Avoids option queries
+- **Works with multisite** – Handles site-wide and per-site activations automatically
+- **Standard pattern** – Most WordPress themes use this method
 
 ### Development
 
@@ -177,13 +174,46 @@ add_action( 'wp', 'theme_custom_woocommerce_feature' );
 - Run `npm run sass` to compile
 - Clear browser cache
 
-## Future Optional Features
+## Optional Integration Pattern
 
-The theme is designed to support additional optional plugins following this same pattern:
+The theme architecture supports adding new optional integrations following this pattern:
 
-- Advanced Custom Fields Pro (currently required, could be optional)
-- Custom e-commerce systems
-- Booking/appointment plugins
-- Membership plugins
+**Steps to add optional plugin support:**
 
-All follow the same auto-detection pattern with zero overhead when not active.
+1. **Detect plugin availability**
+
+   ```php
+   if ( class_exists( 'Plugin_Class' ) ) {
+       // Plugin is active
+   }
+   ```
+
+2. **Load integration file conditionally**
+
+   ```php
+   // In functions.php or setup hook
+   if ( class_exists( 'Plugin_Class' ) ) {
+       require_once 'src/plugin-integration.php';
+   }
+   ```
+
+3. **Register hooks only inside integration file**
+   Wrap all plugin-specific functionality in the conditional file. This ensures zero runtime overhead when the plugin is inactive.
+
+4. **Provide templates and styles**
+
+   - Twig templates in `templates/plugin-name/`
+   - Styles in `scss/inc/integrations/`
+   - Components in `templates/components/plugin-name/`
+
+5. **Document integration**
+   Create `PLUGIN-NAME-GUIDE.md` following your existing documentation pattern
+
+**Example integrations using this pattern:**
+
+- WooCommerce (e-commerce)
+- Advanced Custom Fields (custom field management)
+- Booking System (appointment scheduling)
+- Membership Plugin (user management)
+
+Each integration loads only when its plugin is active, maintaining theme performance and simplicity.

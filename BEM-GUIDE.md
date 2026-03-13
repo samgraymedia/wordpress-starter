@@ -8,9 +8,10 @@ This guide documents the Block-Element-Modifier (BEM) methodology implemented in
 2. [Import Order & Organization](#import-order--organization)
 3. [Component Categories](#component-categories)
 4. [BEM Naming Conventions](#bem-naming-conventions)
-5. [Utilities Reference](#utilities-reference)
-6. [Examples](#examples)
-7. [Best Practices](#best-practices)
+5. [BEM and Twig Components](#bem-and-twig-components)
+6. [Utilities Reference](#utilities-reference)
+7. [Examples](#examples)
+8. [Best Practices](#best-practices)
 
 ---
 
@@ -53,28 +54,28 @@ The SCSS is organized in layers following SMACSS principles:
 @import "./node_modules/bootstrap/scss/bootstrap";
 
 // 2. Base (Variables, functions, resets)
-@import "./css/inc/base/vars";
-@import "./css/inc/base/reset";
-@import "./css/inc/base/layout";
-@import "./css/inc/base/font";
+@import "inc/base/vars";
+@import "inc/base/reset";
+@import "inc/base/layout";
+@import "inc/base/font";
 
 // 3. Base components
-@import "./css/inc/base/btns";
+@import "inc/base/btns";
 
 // 4. BEM Components
-@import "./css/inc/components/card";
-@import "./css/inc/components/alert";
-@import "./css/inc/components/badge";
+@import "inc/components/card";
+@import "inc/components/alert";
+@import "inc/components/badge";
 
 // 5. Global sections
-@import "./css/inc/global/nav";
-@import "./css/inc/global/footer";
+@import "inc/global/nav";
+@import "inc/global/footer";
 
 // 6. Block-specific
-@import "./css/inc/blocks/text";
+@import "inc/blocks/text";
 
 // 7. Utilities
-@import "./css/inc/utilities/helpers";
+@import "inc/utilities/helpers";
 ```
 
 **Import Order Matters:**
@@ -88,12 +89,11 @@ The SCSS is organized in layers following SMACSS principles:
 
 ## Component Categories
 
-### 📦 Base Components (`css/inc/base/`)
+### Base Components (`scss/inc/base/`)
 
 **Purpose:** Core styling for fundamental HTML elements
 
 - `btns.scss` - Button component with multiple variants
-- Files here provide foundation-level styling
 
 **Example:**
 
@@ -114,7 +114,7 @@ The SCSS is organized in layers following SMACSS principles:
 }
 ```
 
-### 🎨 Reusable Components (`css/inc/components/`)
+### Reusable Components (`scss/inc/components/`)
 
 **Purpose:** Packaged UI components using BEM
 
@@ -146,7 +146,7 @@ The SCSS is organized in layers following SMACSS principles:
 }
 ```
 
-### 🌍 Global Sections (`css/inc/global/`)
+### Global Sections (`scss/inc/global/`)
 
 **Purpose:** Large layout sections (nav, footer, header)
 
@@ -155,17 +155,17 @@ The SCSS is organized in layers following SMACSS principles:
 
 These sections often contain or wrap multiple components.
 
-### 🎭 Block Styles (`css/inc/blocks/`)
+### Block Styles (`scss/inc/blocks/`)
 
-**Purpose:** Styles specific to Gutenberg blocks
+**Purpose:** Styles specific to custom Gutenberg blocks registered by the theme
 
 - `text.scss` - Custom text block styling
 
-### 🔧 Utilities (`css/inc/utilities/`)
+### Utilities (`scss/inc/utilities/`)
 
 **Purpose:** Single-purpose helper classes
 
-- `helpers.scss` - Spacing, typography, display utilities
+- `helpers.scss` - Bootstrap utilities + custom extensions for spacing, typography, display
 
 ---
 
@@ -280,6 +280,7 @@ Modifiers describe a variant:
 
 ## Utilities Reference
 
+**Bootstrap Foundation:** This theme uses Bootstrap 5 utility classes where available. The examples below show Bootstrap utilities. Custom utilities extend Bootstrap for additional helpers.
 Utilities are low-level helper classes for single CSS properties.
 
 ### Spacing Utilities
@@ -365,21 +366,120 @@ Utilities are low-level helper classes for single CSS properties.
 <!-- Screen reader only (hide visually, keep for accessibility) -->
 <span class="sr-only">Skipped by visual users</span>
 
-<!-- Focus indicator -->
-<button class="focus-visible">Keyboard navigation indicator</button>
+<!-- Visually hidden (alternative name) -->
+<span class="visually-hidden">Screen reader text</span>
 ```
 
 ### Responsive Utilities
 
+Bootstrap uses responsive breakpoint suffixes:
+
 ```html
-<!-- Hide on small screens, show on medium+ -->
-<div class="sm:d-none md:d-block">
+<!-- Hide on mobile, show on tablet+ -->
+<div class="d-none d-md-block">
   Visible only on medium screens and larger
 </div>
 
-<!-- Center text on small, left-align on large -->
-<p class="text-center lg:text-left">Responsive alignment</p>
+<!-- Center text on mobile, left-align on desktop -->
+<p class="text-center text-lg-start">Responsive alignment</p>
 ```
+
+**Breakpoints:**
+
+- `xs` - Extra small (default, no prefix needed)
+- `sm` - Small (≥576px)
+- `md` - Medium (≥768px)
+- `lg` - Large (≥992px)
+- `xl` - Extra large (≥1200px)
+- `xxl` - Extra extra large (≥1400px)
+
+---
+
+## BEM and Twig Components
+
+**Key Relationship:** Each Twig component in this theme maps directly to a BEM block.
+
+### How It Works
+
+The connection between template architecture and CSS architecture:
+
+```
+templates/components/card.twig    →    scss/inc/components/card.scss
+
+Block: .card
+├── Elements: .card__image, .card__content, .card__title
+└── Modifiers: .card--featured, .card--minimal
+```
+
+### Example: Card Component Architecture
+
+**1. Twig Template** (`templates/components/card.twig`)
+
+```twig
+{# Component variables: card, featured #}
+<div class="card {% if featured %}card--featured{% endif %}">
+    <img class="card__image" src="{{ card.image }}" />
+    <div class="card__content">
+        <h3 class="card__title">{{ card.title }}</h3>
+        <p class="card__text">{{ card.description }}</p>
+    </div>
+</div>
+```
+
+**2. SCSS Component** (`scss/inc/components/card.scss`)
+
+```scss
+.card {
+  // Matches Twig structure
+  &__image {
+  } // <img class="card__image">
+  &__content {
+  } // <div class="card__content">
+  &__title {
+  } // <h3 class="card__title">
+  &__text {
+  } // <p class="card__text">
+
+  &--featured {
+  } // {% if featured %}card--featured{% endif %}
+}
+```
+
+**3. Usage in Templates**
+
+```twig
+{% include 'components/card.twig' with {
+    card: post,
+    featured: true
+} %}
+```
+
+Output:
+
+```html
+<div class="card card--featured">
+  <img class="card__image" ... />
+  <div class="card__content">
+    <h3 class="card__title">...</h3>
+    <p class="card__text">...</p>
+  </div>
+</div>
+```
+
+### Design Pattern
+
+1. **Template files** define HTML structure and classes
+2. **SCSS files** follow the exact same BEM block/element structure
+3. **Variables** control modifiers (✓ Featured, ✓ Large, etc.)
+4. **Consistency** makes CSS changes when updating components
+
+### Benefits
+
+✅ **Single Responsibility** - Component logic in Twig, styling in SCSS  
+✅ **Easy to Find Code** - Need to update card styling? Look in `card.scss`  
+✅ **Reusable** - Use same component with different modifiers  
+✅ **Maintainable** - Changes are isolated to one component  
+✅ **Scalable** - Add components without affecting others
 
 ---
 
@@ -402,7 +502,7 @@ Utilities are low-level helper classes for single CSS properties.
 </div>
 ```
 
-**SCSS (`css/inc/components/card.scss`):**
+**SCSS (`scss/inc/components/card.scss`):**
 
 ```scss
 .card {
@@ -461,7 +561,7 @@ Utilities are low-level helper classes for single CSS properties.
 </a>
 ```
 
-**SCSS (`css/inc/base/btns.scss`):**
+**SCSS (`scss/inc/base/btns.scss`):**
 
 ```scss
 .btn {
@@ -531,7 +631,7 @@ Utilities are low-level helper classes for single CSS properties.
 </div>
 ```
 
-**SCSS (`css/inc/components/alert.scss`):**
+**SCSS (`scss/inc/components/alert.scss`):**
 
 ```scss
 .alert {
@@ -742,7 +842,7 @@ Utilities are low-level helper classes for single CSS properties.
 
 ```
 wp-content/themes/starter-theme-1.x/
-├── css/inc/
+├── scss/inc/
 │   ├── base/              # Foundation styles
 │   │   ├── vars.scss      # Variables, fonts, breakpoints
 │   │   ├── reset.scss     # HTML element resets
@@ -763,7 +863,7 @@ wp-content/themes/starter-theme-1.x/
 │   │   └── text.scss      # Text block
 │   │
 │   └── utilities/         # Helper utilities
-│       └── helpers.scss   # Spacing, typography, display
+│       └── helpers.scss   # Bootstrap utilities + custom extensions
 │
 └── style.scss             # Main import file (organized in layers)
 ```
@@ -774,7 +874,7 @@ wp-content/themes/starter-theme-1.x/
 
 When creating a new component, follow this template:
 
-**File:** `css/inc/components/my-component.scss`
+**File:** `scss/inc/components/my-component.scss`
 
 ```scss
 /**
@@ -821,7 +921,7 @@ When creating a new component, follow this template:
 Then add the import to `style.scss`:
 
 ```scss
-@import "./css/inc/components/my-component";
+@import "inc/components/my-component";
 ```
 
 ---

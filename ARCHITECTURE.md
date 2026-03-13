@@ -26,14 +26,15 @@ This theme follows a **layered architecture** pattern with clear separation of c
 ```
 ┌─────────────────────────────────────────────────┐
 │            Presentation Layer                   │
-│          (Twig Templates & HTML)                │
-│  base.twig, index.twig, components/, macros    │
+│      (Twig Templates, HTML, Styling)            │
+│  base.twig, index.twig, components/, macros,    │
+│  SCSS/BEM components, utilities                 │
 └─────────────────────────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────┐
 │            Application Layer                    │
 │      (Business Logic & Controllers)             │
-│  functions.php, views/*.php, WordPress hooks   │
+│  views/*.php, functions.php, WordPress hooks   │
 └─────────────────────────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────┐
@@ -44,15 +45,9 @@ This theme follows a **layered architecture** pattern with clear separation of c
 └─────────────────────────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────┐
-│            Data Layer                           │
-│         (WordPress Core & Plugins)              │
-│  WordPress, Timber, ACF, Bootstrap              │
-└─────────────────────────────────────────────────┘
-                      ↓
-┌─────────────────────────────────────────────────┐
-│            Styling Layer                        │
-│         (SCSS/CSS & Components)                 │
-│  style.scss, BEM components, utilities         │
+│            Platform/Data Layer                  │
+│    (WordPress Core, Database, APIs)             │
+│  WordPress, Timber, ACF, MySQL                  │
 └─────────────────────────────────────────────────┘
 ```
 
@@ -71,26 +66,28 @@ This theme follows a **layered architecture** pattern with clear separation of c
 
 ### 1. Presentation Layer (UI)
 
-**Location:** `templates/` and `css/`
+**Location:** `templates/`, `views/*.php`, and `scss/`
 
-**Responsibility:** Render user interface
+**Responsibility:** Render user interface and apply visual styling
 
 **Components:**
 
 - **Twig Templates** - Markup and template logic
 - **Components** - Reusable UI pieces
 - **Macros** - Reusable template functions
-- **SCSS/CSS** - Styling organized by BEM
+- **SCSS/CSS** - Styling organized by BEM methodology
 
 **Key Files:**
 
 - `templates/base.twig` - Master layout
-- `templates/index.twig` - Page templates
+- `templates/index.twig` - Content templates
 - `templates/components/` - UI components
 - `templates/macros.twig` - Template functions
-- `css/` - SCSS organized by functionality
+- `scss/` - SCSS organized by BEM (base, components, global, utilities)
 
 **Technology:** Timber + Twig 2.x + Bootstrap 5 + SCSS
+
+**Note:** The `views/*.php` files act as WordPress entry points that prepare context, while `templates/*.twig` files handle the actual markup rendering.
 
 **Example:**
 
@@ -106,20 +103,20 @@ This theme follows a **layered architecture** pattern with clear separation of c
 
 **Location:** `views/` and `functions.php`
 
-**Responsibility:** Handle WordPress template hierarchy and business logic
+**Responsibility:** Map URLs to templates and handle request logic
 
 **Components:**
 
-- **Template Hierarchy Files** - Map URLs to templates (`index.php`, `single.php`, `page.php`, etc.)
+- **Template Hierarchy Files** - Map URLs to templates (`views/index.php`, `views/single.php`, `views/page.php`, etc.)
 - **WordPress Hooks** - Modify behavior at key points
 - **Context Building** - Prepare data for templates
 
 **Key Files:**
 
-- `views/index.php` - Blog listing
-- `views/single.php` - Single post
-- `views/page.php` - Static pages
-- `functions.php` - Initialization and hooks
+- `views/index.php` - Blog listing entry point
+- `views/single.php` - Single post entry point
+- `views/page.php` - Static pages entry point
+- `functions.php` - Theme initialization and hooks
 
 **Technology:** PHP + WordPress hooks + Timber context
 
@@ -163,7 +160,7 @@ $menus = Theme_Config::get_menus();
 $post_types = Theme_Config::get_post_types();
 ```
 
-### 4. Data Layer (Persistence)
+### 4. Platform/Data Layer (Persistence)
 
 **Location:** WordPress core + plugins
 
@@ -171,12 +168,12 @@ $post_types = Theme_Config::get_post_types();
 
 **Components:**
 
-- **WordPress Database** - Posts, users, meta data
+- **WordPress Database** - Posts, users, meta data (MySQL)
 - **Timber** - PHP-to-Twig data bridge
-- **ACF** - Field values storage
-- **Plugins** - Additional data sources
+- **ACF** - Field values storage and access
+- **Plugins** - Additional data sources (e.g., WooCommerce when active)
 
-**Technology:** MySQL + WordPress API + Timber ORM-like interface
+**Technology:** MySQL + WordPress API + Timber data layer
 
 **Example:**
 
@@ -186,39 +183,9 @@ $post = Timber::get_post( $post_id );
 $field_value = get_field( 'field_key', $post_id );
 ```
 
-### 5. Styling Layer (Presentation)
+---
 
-**Location:** `css/` SCSS files
-
-**Responsibility:** Visual presentation and styling
-
-**Components:**
-
-- **Variables** - Reusable color, font, spacing values
-- **BEM Components** - Modular styled components
-- **Layout Systems** - Grid and flex utilities
-- **Utilities** - Single-purpose helper classes
-
-**Key Files:**
-
-- `css/inc/base/vars.scss` - Variables and functions
-- `css/inc/base/btns.scss` - Button component
-- `css/inc/components/` - BEM components
-- `css/inc/utilities/helpers.scss` - Utility classes
-
-**Technology:** Sass/SCSS + BEM methodology
-
-**Example:**
-
-```scss
-// Styling layer: BEM component
-.card {
-  &__title {
-  }
-  &--featured {
-  }
-}
-```
+**Note on Architecture:** Bootstrap is used at the presentation layer for styling utility classes. The theme provides BEM component styling that extends and complements Bootstrap's utility approach.
 
 ---
 
@@ -582,24 +549,29 @@ Page Renders
 
 ## File Organization Philosophy
 
-### Principle 1: Functional Organization
+### Principle 1: Responsibility Boundaries
 
-Files organized by **function**, not by file type.
+Files organized by **responsibility and layer**, not just by file type:
 
 ```
-❌ Bad (by type)
-├── templates/
-├── components/
-├── css/
-├── js/
-└── images/
-
-✅ Good (by function)
-├── src/              # Core application
-├── templates/        # Template files
-├── css/              # Styling
-└── static/           # Static assets
+Core application logic
+├── src/              ← Configuration, registries, business rules
+├── views/            ← WordPress entry points (routing)
+├── functions.php     ← Theme initialization
+│
+Presentation layer
+├── templates/        ← Twig templates (final markup)
+├── scss/             ← Styling (BEM organization)
+│
+Static assets
+└── static/           ← Images, fonts, JavaScript
 ```
+
+This structure ensures:
+
+- Application logic stays in `src/` and `views/`
+- Presentation stays in `templates/` and `scss/`
+- Clear separation prevents tangled dependencies
 
 ### Principle 2: Module Boundaries
 
@@ -618,7 +590,7 @@ templates/            ← Presentation
   ├── components/     ← Components
   └── macros.twig     ← Functions
 
-css/                  ← Styling
+scss/                 ← Styling
   ├── inc/            ← Organized by layer
   │   ├── base/       ← Foundation
   │   ├── components/ ← Components
@@ -641,13 +613,14 @@ return [
 ];
 ```
 
-### Principle 4: Auto-Discovery
+### Principle 3: Automatic Discovery
 
-Minimize boilerplate via auto-discovery:
+Minimize boilerplate via auto-discovery patterns:
 
 ```
 Create file    →    Auto-discovered    →    Auto-registered
 src/post-types/my-type.php  →  Registry scans  →  WordPress registers
+src/taxonomies/my-tax.php   →  Registry scans  →  WordPress registers
 templates/blocks/my-block.twig  →  Scans  →  ACF registers
 ```
 
@@ -659,21 +632,22 @@ templates/blocks/my-block.twig  →  Scans  →  ACF registers
 
 ```
 WordPress Core
-    ├── Timber Plugin
-    │   └── Twig 2.x
-    ├── ACF Pro
-    └── Contact Form 7
-        └── CF7 DB Addon
+├── Timber Plugin (data bridge)
+├── ACF Pro (field management)
+├── WooCommerce (optional)
+└── Other plugins
 
 Theme Code
-    ├── functions.php
-    │   ├── src/config.php
-    │   ├── src/theme-config.php
-    │   ├── src/post-types-registry.php
-    │   └── src/timber-acf-wp-blocks.php
-    ├── views/*.php
-    ├── templates/*.twig
-    └── css/*.scss
+├── src/
+│   ├── config.php
+│   ├── theme-config.php
+│   ├── post-types-registry.php
+│   └── timber-acf-wp-blocks.php
+├── views/            (routing)
+├── functions.php     (initialization)
+├── templates/        (Twig markup)
+├── scss/             (styling)
+└── static/           (assets)
 ```
 
 ### External Dependencies
@@ -852,7 +826,7 @@ wp_enqueue_script(
 // Lazy load non-critical CSS
 wp_enqueue_style(
     'my-style',
-    get_stylesheet_directory_uri() . '/css/style.css',
+    get_stylesheet_directory_uri() . '/style.css',
     [],
     '1.0.0',
     'all'  // Media type
@@ -862,17 +836,17 @@ wp_enqueue_style(
 ### 3. Database Query Optimization
 
 ```php
-// Only fetch necessary post data
+// Use focused query parameters
 $posts = Timber::get_posts( [
     'post_type' => 'post',
     'posts_per_page' => 10,
-    // Timber automatically optimizes queries
+    'orderby' => 'date',
 ] );
 ```
 
 ### 4. Image Optimization
 
-Define multiple image sizes and use appropriately:
+Define multiple image sizes in configuration and use appropriately in templates:
 
 ```php
 // src/config.php
@@ -882,20 +856,17 @@ Define multiple image sizes and use appropriately:
     'large' => ['width' => 800, 'height' => 600],
     'hero' => ['width' => 1200, 'height' => 400],
 ];
-
-// In template, use appropriate size
-{{ post.thumbnail( 'card' ).src }}  // Not full-size
 ```
 
-### 5. Code Splitting
+### 5. SCSS Organization
 
-SCSS organized for easy tree-shaking:
+Organized by layer to support selective includes:
 
 ```scss
-// style.scss - Import only what's needed
-@import "./css/inc/base/vars"; // Always needed
-@import "./css/inc/base/btns"; // Always needed
-@import "./css/inc/components/card"; // Only if used
+// style.scss - import strategically
+@import "scss/inc/base/vars"; // Always needed
+@import "scss/inc/base/btns"; // Always needed
+@import "scss/inc/components/card"; // Only if card is used
 ```
 
 ---
@@ -905,15 +876,10 @@ SCSS organized for easy tree-shaking:
 ### 1. Input Validation
 
 ```php
-// Always validate and sanitize
+// Always validate and sanitize user input
 $input = sanitize_text_field( $_POST['input'] );
 $email = sanitize_email( $_POST['email'] );
 $url = esc_url_raw( $_POST['url'] );
-
-// Validate
-if ( ! is_email( $email ) ) {
-    wp_die( 'Invalid email' );
-}
 ```
 
 ### 2. Output Escaping
@@ -923,19 +889,16 @@ if ( ! is_email( $email ) ) {
 echo esc_html( $post->title );
 echo esc_url( $link );
 
-// Twig (automatic)
-{{ post.title }}  {# Already escaped #}
+// Twig
+{{ post.title }}  {# Escaping rules apply based on context and configuration #}
 ```
 
 ### 3. Nonce Verification
 
 ```php
-// Generate
-wp_nonce_field( 'form_action', 'form_nonce' );
-
-// Verify
-if ( ! isset( $_POST['form_nonce'] ) ||
-     ! wp_verify_nonce( $_POST['form_nonce'], 'form_action' ) ) {
+// Verify requests with nonces
+if ( ! isset( $_POST['nonce'] ) ||
+     ! wp_verify_nonce( $_POST['nonce'], 'action_name' ) ) {
     wp_die( 'Security check failed' );
 }
 ```
@@ -943,26 +906,19 @@ if ( ! isset( $_POST['form_nonce'] ) ||
 ### 4. Capability Checking
 
 ```php
-// Always check capabilities
+// Always check user capabilities
 if ( current_user_can( 'edit_post', $post_id ) ) {
     // Allow edit
 }
-
-// In templates
-{% if current_user.can( 'manage_options' ) %}
-    {# Admin only #}
-{% endif %}
 ```
 
-### 5. Database Security
-
-WordPress handles query security:
+### 5. Secure Database Access
 
 ```php
-// WordPress automatically escapes
+// Use WordPress prepared statements
 $wpdb->query(
     $wpdb->prepare(
-        "SELECT * FROM $wpdb->posts WHERE ID = %d",
+        "SELECT * FROM {$wpdb->posts} WHERE ID = %d",
         $post_id
     )
 );
@@ -988,18 +944,24 @@ $wpdb->query(
 
 ### For Growing Functionality
 
-1. **Create Child Theme** - Don't modify parent theme
-2. **Use Must-Use Plugins** - For critical customizations
-3. **Separate Concerns** - Keep logic out of templates
-4. **Use Version Control** - Git for tracking changes
+1. **Use Registry Patterns** - Add new post types, taxonomies via auto-discovery
+2. **Keep Presentation Layer Clean** - Templates shouldn't contain business logic
+3. **Move Domain Logic to Plugins** - If customization becomes client-specific
+4. **Reuse Components** - Build new pages from existing components
 
 ### For Performance at Scale
 
-1. **Enable Caching** - Timber and WordPress caching
-2. **Optimize Images** - Use appropriate sizes
-3. **Minify Assets** - CSS and JavaScript
-4. **Use CDN** - For static assets
-5. **Database Optimization** - Indexes and cleanup
+1. **Enable Caching** - Timber supports result caching
+2. **Optimize Image Sizes** - Use appropriate sizes via configuration
+3. **Query Efficiently** - Use focused post queries with appropriate arguments
+4. **Code Split SCSS** - Import only needed components
+
+### For Team Scaling
+
+1. **Follow Registry Pattern** - Consistent on-boarding for new developers
+2. **Document Architecture** - Team understands how pieces fit together
+3. **Type Safety** - PHP type hints provide IDE support
+4. **Separation of Concerns** - Developers can work on layers independently
 
 ---
 
