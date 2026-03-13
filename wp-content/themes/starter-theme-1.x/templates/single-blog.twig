@@ -1,0 +1,66 @@
+{#
+ Single Blog Post Template
+ 
+ Displays a single blog post with full content
+ #}
+
+{% extends "base.twig" %}
+
+{% block content %}
+	<article class="post-type-blog" id="post-{{ post.ID }}">
+		<section class="article-header">
+			{% if post.thumbnail %}
+				<figure class="article-thumbnail">
+					{{ post.thumbnail.src|image({alt: post.title, class: "article-image"}) }}
+				</figure>
+			{% endif %}
+
+			<div class="article-meta">
+				<h1 class="article-title">{{ post.title }}</h1>
+				<div class="article-byline">
+					<span class="article-author">
+						{{ _e("By") }}
+						<strong>{{ post.author.name }}</strong>
+					</span>
+					<span class="article-date">
+						<time datetime="{{ post.post_date }}">{{ post.post_date|date("F j, Y") }}</time>
+					</span>
+				</div>
+			</div>
+		</section>
+
+		<section class="article-content">
+			<div class="article-body">
+				{{ post.content }}
+			</div>
+		</section>
+
+		{% if post.terms("category")|length > 0 %}
+			<section class="article-footer">
+				<div class="article-categories">
+					<strong>{{ _e("Categories") }}:</strong>
+					{% for term in post.terms("category") %}
+						<a href="{{ term.link }}" class="article-category">{{ term.name }}</a>
+					{% endfor %}
+				</div>
+			</section>
+		{% endif %}
+	</article>
+
+	{% if posts|length > 1 %}
+		<nav class="post-navigation">
+			{% if post.prev %}
+				<a href="{{ post.prev.link }}" class="prev-post">
+					{{ _e("← Previous Post") }}:
+					{{ post.prev.title }}
+				</a>
+			{% endif %}
+			{% if post.next %}
+				<a href="{{ post.next.link }}" class="next-post">
+					{{ _e("Next Post →") }}:
+					{{ post.next.title }}
+				</a>
+			{% endif %}
+		</nav>
+	{% endif %}
+{% endblock %}

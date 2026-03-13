@@ -1,29 +1,37 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! class_exists( 'acf_field_google_map' ) ) :
-
 	class acf_field_google_map extends acf_field {
 
 
-		/*
-		*  __construct
-		*
-		*  This function will setup the field type data
-		*
-		*  @type    function
-		*  @date    5/03/2014
-		*  @since   5.0.0
-		*
-		*  @param   n/a
-		*  @return  n/a
-		*/
-
+		/**
+		 * This function will setup the field type data
+		 *
+		 * @type    function
+		 * @date    5/03/2014
+		 * @since   5.0.0
+		 *
+		 * @param   n/a
+		 * @return  n/a
+		 */
 		function initialize() {
 
 			// vars
 			$this->name           = 'google_map';
 			$this->label          = __( 'Google Map', 'acf' );
-			$this->category       = 'jquery';
+			$this->category       = 'advanced';
+			$this->description    = __( 'An interactive UI for selecting a location using Google Maps. Requires a Google Maps API key and additional configuration to display correctly.', 'acf' );
+			$this->preview_image  = acf_get_url() . '/assets/images/field-type-previews/field-preview-google-map.png';
+			$this->doc_url        = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/google-map/', 'docs', 'field-type-selection' );
 			$this->defaults       = array(
 				'height'     => '',
 				'center_lat' => '',
@@ -39,19 +47,16 @@ if ( ! class_exists( 'acf_field_google_map' ) ) :
 		}
 
 
-		 /*
-		*  input_admin_enqueue_scripts
-		*
-		*  description
-		*
-		*  @type    function
-		*  @date    16/12/2015
-		*  @since   5.3.2
-		*
-		*  @param   $post_id (int)
-		*  @return  $post_id (int)
-		*/
-
+		/**
+		 * description
+		 *
+		 * @type    function
+		 * @date    16/12/2015
+		 * @since   5.3.2
+		 *
+		 * @param   $post_id (int)
+		 * @return  $post_id (int)
+		 */
 		function input_admin_enqueue_scripts() {
 
 			// localize
@@ -72,7 +77,7 @@ if ( ! class_exists( 'acf_field_google_map' ) ) :
 				'client'    => acf_get_setting( 'google_api_client' ),
 				'libraries' => 'places',
 				'ver'       => 3,
-				'callback'  => '',
+				'callback'  => 'Function.prototype',
 				'language'  => acf_get_locale(),
 			);
 
@@ -99,18 +104,15 @@ if ( ! class_exists( 'acf_field_google_map' ) ) :
 		}
 
 
-		/*
-		*  render_field()
-		*
-		*  Create the HTML interface for your field
-		*
-		*  @param   $field - an array holding all the field's data
-		*
-		*  @type    action
-		*  @since   3.6
-		*  @date    23/01/13
-		*/
-
+		/**
+		 * Create the HTML interface for your field
+		 *
+		 * @param   $field - an array holding all the field's data
+		 *
+		 * @type    action
+		 * @since   3.6
+		 * @date    23/01/13
+		 */
 		function render_field( $field ) {
 
 			// Apply defaults.
@@ -139,7 +141,7 @@ if ( ! class_exists( 'acf_field_google_map' ) ) :
 
 			?>
 <div <?php echo acf_esc_attrs( $attrs ); ?>>
-	
+
 			<?php
 			acf_hidden_input(
 				array(
@@ -148,53 +150,50 @@ if ( ! class_exists( 'acf_field_google_map' ) ) :
 				)
 			);
 			?>
-	
+
 	<div class="title">
-		
+
+		<input class="search" type="text" placeholder="<?php esc_attr_e( 'Search for address...', 'acf' ); ?>" value="<?php echo esc_attr( $search ); ?>" />
+
 		<div class="acf-actions -hover">
-			<a href="#" data-name="search" class="acf-icon -search grey" title="<?php _e( 'Search', 'acf' ); ?>"></a>
-			<a href="#" data-name="clear" class="acf-icon -cancel grey" title="<?php _e( 'Clear location', 'acf' ); ?>"></a>
-			<a href="#" data-name="locate" class="acf-icon -location grey" title="<?php _e( 'Find current location', 'acf' ); ?>"></a>
+			<button type="button" data-name="search" class="acf-icon -search grey" aria-label="<?php esc_attr_e( 'Search', 'acf' ); ?>"></button>
+			<button type="button" data-name="clear" class="acf-icon -cancel grey" aria-label="<?php esc_attr_e( 'Clear location', 'acf' ); ?>"></button>
+			<button type="button" data-name="locate" class="acf-icon -location grey" aria-label="<?php esc_attr_e( 'Find current location', 'acf' ); ?>"></button>
 		</div>
-		
-		<input class="search" type="text" placeholder="<?php _e( 'Search for address...', 'acf' ); ?>" value="<?php echo esc_attr( $search ); ?>" />
+
 		<i class="acf-loading"></i>
-				
+
 	</div>
-	
+
 	<div class="canvas" style="<?php echo esc_attr( 'height: ' . $field['height'] . 'px' ); ?>"></div>
-	
+
 </div>
 			<?php
-
 		}
 
 
-		/*
-		*  render_field_settings()
-		*
-		*  Create extra options for your field. This is rendered when editing a field.
-		*  The value of $field['name'] can be used (like bellow) to save extra data to the $field
-		*
-		*  @type    action
-		*  @since   3.6
-		*  @date    23/01/13
-		*
-		*  @param   $field  - an array holding all the field's data
-		*/
-
+		/**
+		 * Create extra options for your field. This is rendered when editing a field.
+		 * The value of $field['name'] can be used (like bellow) to save extra data to the $field
+		 *
+		 * @type    action
+		 * @since   3.6
+		 * @date    23/01/13
+		 *
+		 * @param   $field  - an array holding all the field's data
+		 */
 		function render_field_settings( $field ) {
 
 			// center_lat
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Center', 'acf' ),
-					'hint' => __( 'Center the initial map', 'acf' ),
-					'type'         => 'text',
-					'name'         => 'center_lat',
-					'prepend'      => 'lat',
-					'placeholder'  => $this->default_values['center_lat'],
+					'label'       => __( 'Center', 'acf' ),
+					'hint'        => __( 'Center the initial map', 'acf' ),
+					'type'        => 'text',
+					'name'        => 'center_lat',
+					'prepend'     => 'lat',
+					'placeholder' => $this->default_values['center_lat'],
 				)
 			);
 
@@ -202,13 +201,13 @@ if ( ! class_exists( 'acf_field_google_map' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Center', 'acf' ),
-					'hint' => __( 'Center the initial map', 'acf' ),
-					'type'         => 'text',
-					'name'         => 'center_lng',
-					'prepend'      => 'lng',
-					'placeholder'  => $this->default_values['center_lng'],
-					'_append'      => 'center_lat',
+					'label'       => __( 'Center', 'acf' ),
+					'hint'        => __( 'Center the initial map', 'acf' ),
+					'type'        => 'text',
+					'name'        => 'center_lng',
+					'prepend'     => 'lng',
+					'placeholder' => $this->default_values['center_lng'],
+					'_append'     => 'center_lat',
 				)
 			);
 
@@ -236,7 +235,6 @@ if ( ! class_exists( 'acf_field_google_map' ) ) :
 					'placeholder'  => $this->default_values['height'],
 				)
 			);
-
 		}
 
 		/**
@@ -247,9 +245,9 @@ if ( ! class_exists( 'acf_field_google_map' ) ) :
 		 * @date    16/10/19
 		 * @since   5.8.1
 		 *
-		 * @param   mixed $value The value loaded from the database.
+		 * @param   mixed $value   The value loaded from the database.
 		 * @param   mixed $post_id The post ID where the value is saved.
-		 * @param   array $field The field settings array.
+		 * @param   array $field   The field settings array.
 		 * @return  (array|false)
 		 */
 		function load_value( $value, $post_id, $field ) {
@@ -271,21 +269,19 @@ if ( ! class_exists( 'acf_field_google_map' ) ) :
 		}
 
 
-		/*
-		*  update_value()
-		*
-		*  This filter is appied to the $value before it is updated in the db
-		*
-		*  @type    filter
-		*  @since   3.6
-		*  @date    23/01/13
-		*
-		*  @param   $value - the value which will be saved in the database
-		*  @param   $post_id - the $post_id of which the value will be saved
-		*  @param   $field - the field array holding all the field options
-		*
-		*  @return  $value - the modified value
-		*/
+		/**
+		 * This filter is appied to the $value before it is updated in the db
+		 *
+		 * @type    filter
+		 * @since   3.6
+		 * @date    23/01/13
+		 *
+		 * @param   $value - the value which will be saved in the database
+		 * @param   $post_id - the post_id of which the value will be saved
+		 * @param   $field - the field array holding all the field options
+		 *
+		 * @return  $value - the modified value
+		 */
 		function update_value( $value, $post_id, $field ) {
 
 			// decode JSON string.
@@ -365,9 +361,9 @@ if ( ! class_exists( 'acf_field_google_map' ) ) :
 		/**
 		 * Apply basic formatting to prepare the value for default REST output.
 		 *
-		 * @param mixed      $value
-		 * @param string|int $post_id
-		 * @param array      $field
+		 * @param mixed          $value
+		 * @param string|integer $post_id
+		 * @param array          $field
 		 * @return mixed
 		 */
 		public function format_value_for_rest( $value, $post_id, array $field ) {
@@ -382,7 +378,6 @@ if ( ! class_exists( 'acf_field_google_map' ) ) :
 
 	// initialize
 	acf_register_field_type( 'acf_field_google_map' );
-
 endif; // class_exists check
 
 ?>

@@ -1,35 +1,11 @@
 <?php
 /**
- * Post Type: Post
- * PostType: post
- * Name: Post
- * FieldsKey: group_featured_post
+ * Post Type: Post (DISABLED)
+ * 
+ * The default "post" post type has been replaced with a custom "blog" post type.
+ * See blog.php for the Blog post type configuration.
  */
 
-return array(
-	'args'   => array(),
-	'fields' => array(
-		'key'      => 'group_featured_post',
-		'title'    => 'Featured Post',
-		'fields'   => array(
-			array(
-				'key'             => 'field_is_featured',
-				'label'           => 'Featured Post',
-				'name'            => 'is_featured',
-				'type'            => 'true_false',
-				'instructions'    => 'Tick to make this the featured post. Only one can be featured at a time.',
-				'default_value'   => 0,
-				'ui'              => 1,
-			),
-		),
-		'location' => array(
-			array(
-				array(
-					'param'    => 'post_type',
-					'operator' => '==',
-					'value'    => 'post',
-				),
-			),
-		),
-	),
-);
+// This post type is disabled - use blog.php instead
+return array();
+

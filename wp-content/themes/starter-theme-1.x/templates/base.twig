@@ -10,14 +10,16 @@
 			<nav id="nav-main" class="nav-main" aria-label="{{ _e('Main Navigation') }}">
 				{% include "menu.twig" with {'items': menu.get_items} %}
 			</nav>
-			<div class="header__utilities">
-				<div class="header__search">
-					{% include "components/search-form.twig" %}
+			{% if function('class_exists', 'WooCommerce') %}
+				<div class="header__utilities">
+					<div class="header__search">
+						{% include "components/search-form.twig" %}
+					</div>
+					<div class="header__account">
+						{% include "components/user-account.twig" %}
+					</div>
 				</div>
-				<div class="header__account">
-					{% include "components/user-account.twig" %}
-				</div>
-			</div>
+			{% endif %}
 		</div>
 	{% endblock %}
 </header>

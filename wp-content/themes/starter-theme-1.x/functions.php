@@ -69,6 +69,9 @@ class StarterSite extends Timber\Site {
 	public function __construct() {
 		add_action( 'after_setup_theme', array( $this, 'theme_supports' ) );
 		add_action( 'after_setup_theme', array( $this, 'create_login_register_pages' ), 20 );
+		add_action( 'after_setup_theme', array( $this, 'create_home_page' ), 21 );
+		add_action( 'after_setup_theme', array( $this, 'create_blog_archive_page' ), 22 );
+		add_action( 'after_setup_theme', array( $this, 'delete_default_posts' ), 23 );
 		add_filter( 'timber/context', array( $this, 'add_to_context' ) );
 		add_filter( 'timber/twig', array( $this, 'add_to_twig' ) );
 		add_action( 'init', array( $this, 'register_post_types' ) );
@@ -144,8 +147,14 @@ class StarterSite extends Timber\Site {
 	/**
 	 * Create login and register pages if they don't exist
 	 * Called during theme initialization
+	 * Only creates pages if WooCommerce is active
 	 */
 	public function create_login_register_pages() {
+		// Only create pages if WooCommerce is active
+		if ( ! class_exists( 'WooCommerce' ) && ! ( function_exists( 'is_plugin_active' ) && is_plugin_active( 'woocommerce/woocommerce.php' ) ) ) {
+			return; // Skip if WooCommerce not active
+		}
+
 		// Create login page if it doesn't exist
 		$login_page = get_page_by_path( 'login' );
 		if ( ! $login_page ) {
@@ -168,6 +177,88 @@ class StarterSite extends Timber\Site {
 				'post_status' => 'publish',
 				'post_content' => '',
 			) );
+		}
+	}
+
+	/**
+	 * Create home page and set it as the static homepage
+	 * Called during theme initialization
+	 */
+	public function create_home_page() {
+		// Check if home page already exists
+		$home_page = get_page_by_path( 'home' );
+		
+		if ( ! $home_page ) {
+			// Create home page
+			$home_page_id = wp_insert_post( array(
+				'post_type'   => 'page',
+				'post_title'  => 'Home',
+				'post_name'   => 'home',
+				'post_status' => 'publish',
+				'post_content' => '',
+			) );
+			
+			if ( $home_page_id && ! is_wp_error( $home_page_id ) ) {
+				// Set the home page as the static homepage
+				update_option( 'show_on_front', 'page' );
+				update_option( 'page_on_front', $home_page_id );
+			}
+		} else {
+			// Ensure home page is set as the front page if it wasn't already
+			$current_front_page = get_option( 'page_on_front' );
+			if ( ! $current_front_page || $current_front_page !== $home_page->ID ) {
+				update_option( 'show_on_front', 'page' );
+				update_option( 'page_on_front', $home_page->ID );
+			}
+		}
+	}
+
+	/**
+	 * Create blog archive page
+	 * Called during theme initialization
+	 */
+	public function create_blog_archive_page() {
+		// Check if blog archive page already exists
+		$blog_page = get_page_by_path( 'blog' );
+		
+		if ( ! $blog_page ) {
+			// Create blog archive page
+			$blog_page_id = wp_insert_post( array(
+				'post_type'   => 'page',
+				'post_title'  => 'Blog',
+				'post_name'   => 'blog',
+				'post_status' => 'publish',
+				'post_content' => '',
+			) );
+			
+			if ( $blog_page_id && ! is_wp_error( $blog_page_id ) ) {
+				// Set this page as the blog archive page
+				update_option( 'page_for_posts', $blog_page_id );
+			}
+		} else {
+			// Ensure blog page is set correctly if it wasn't already
+			$current_posts_page = get_option( 'page_for_posts' );
+			if ( ! $current_posts_page || $current_posts_page !== $blog_page->ID ) {
+				update_option( 'page_for_posts', $blog_page->ID );
+			}
+		}
+	}
+
+	/**
+	 * Delete default WordPress posts
+	 * Removes all existing "post" type posts when blog post type is set up
+	 */
+	public function delete_default_posts() {
+		// Get all existing posts of type 'post'
+		$posts = get_posts( array(
+			'post_type'   => 'post',
+			'numberposts' => -1,
+			'post_status' => 'any',
+		) );
+
+		// Delete each post permanently
+		foreach ( $posts as $post ) {
+			wp_delete_post( $post->ID, true ); // true = force delete (don't trash)
 		}
 	}
 
@@ -428,5 +519,71 @@ function theme_script_loader_tag( $tag, $handle ) {
 	return $tag;
 }
 add_filter( 'script_loader_tag', 'theme_script_loader_tag', 10, 2 );
+
+/**
+ * Filter menu items - hide Login/Register if WooCommerce not active
+ * Removes Login and Create Account menu items when WooCommerce is disabled
+ */
+function theme_filter_menu_items( $items ) {
+	// Only filter if WooCommerce is not active
+	if ( class_exists( 'WooCommerce' ) || function_exists( 'is_plugin_active' ) && is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+		return $items; // Keep all items if WooCommerce is active
+	}
+
+	// Filter out Login and Create Account items
+	$filtered_items = array_filter( $items, function( $item ) {
+		$title = isset( $item->title ) ? $item->title : '';
+		return ! in_array( strtolower( $title ), array( 'login', 'create account', 'register' ), true );
+	});
+
+	return $filtered_items;
+}
+add_filter( 'wp_nav_menu_objects', 'theme_filter_menu_items' );
+
+/**
+ * Unregister the default "post" post type
+ * Since we're using a custom "blog" post type instead
+ */
+function theme_unregister_default_post_type() {
+	// Unregister the default post type
+	unregister_post_type( 'post' );
+}
+add_action( 'init', 'theme_unregister_default_post_type', 5 ); // Priority 5 - runs before post type registration
+
+/**
+ * Remove default "Posts" from admin menu
+ * Users should only use the "Blog" custom post type
+ */
+function theme_remove_default_posts_menu() {
+	remove_menu_page( 'edit.php' );
+}
+add_action( 'admin_menu', 'theme_remove_default_posts_menu' );
+
+/**
+ * Delete login/register pages when WooCommerce is deactivated
+ * Keeps them clean if WooCommerce is turned off
+ */
+function theme_cleanup_login_register_pages() {
+	// Only delete if WooCommerce is NOT active
+	if ( class_exists( 'WooCommerce' ) || ( function_exists( 'is_plugin_active' ) && is_plugin_active( 'woocommerce/woocommerce.php' ) ) ) {
+		return; // Don't delete if WooCommerce is still active
+	}
+
+	// Delete login page
+	$login_page = get_page_by_path( 'login' );
+	if ( $login_page ) {
+		wp_delete_post( $login_page->ID, true );
+	}
+
+	// Delete register page
+	$register_page = get_page_by_path( 'register' );
+	if ( $register_page ) {
+		wp_delete_post( $register_page->ID, true );
+	}
+}
+// Run cleanup on plugin activation/deactivation
+add_action( 'deactivated_plugin', function() {
+	theme_cleanup_login_register_pages();
+});
 
 new StarterSite();

@@ -3,18 +3,13 @@
 {% block content %}
 	<div class="content-wrapper">
 		<article class="post-type-{{ post.post_type }}" id="post-{{ post.ID }}">
-			<img 
-				src="{{ post.thumbnail.src|resize(1200, 300) }}"
-				alt="{{ post.title }}"
-				loading="lazy"
-				decoding="async"
-				width="1200"
-				height="300"
-			>
+			<img src="{{ post.thumbnail.src|resize(1200, 300) }}" alt="{{ post.title }}" loading="lazy" decoding="async" width="1200" height="300">
 			<section class="article-content">
 				<h1>{{ post.title }}</h1>
 				<p class="blog-author">
-					<span>{{ _e('By') }}</span><a href="{{post.author.path}}">{{ post.author.name }}</a><span>&bull;</span> 
+					<span>{{ _e('By') }}</span>
+					<a href="{{post.author.path}}">{{ post.author.name }}</a>
+					<span>&bull;</span>
 					<time datetime="{{ post.date|date('Y-m-d H:i:s') }}">{{ post.date|date(_x('F j, Y', 'Date format')) }}</time>
 				</p>
 				<a href="{{ post.link }}?edit" class="btn btn-secondary">{{ _e('Edit Post') }}</a>
@@ -24,24 +19,25 @@
 			</section>
 
 			<!-- Comments Section -->
-			<section class="comment-box" aria-label="{{ _e('Comments') }}">
+			<section
+				class="comment-box" aria-label="{{ _e('Comments') }}">
 				<!-- Comments Display -->
 				<div class="comments">
-				    {% if post.comments %}
-					<h2>{{ _ngettext('Comment', 'Comments', post.comments|length) }}</h2>
-					<ul class="comments-list">
-					{% for cmt in post.comments %}
-					    {% include "comment.twig" with {comment: cmt} %}
-					{% endfor %}
-					</ul>
-				    {% endif %}
+					{% if post.comments %}
+						<h2>{{ _ngettext('Comment', 'Comments', post.comments|length) }}</h2>
+						<ul class="comments-list">
+							{% for cmt in post.comments %}
+								{% include "comment.twig" with {comment: cmt} %}
+							{% endfor %}
+						</ul>
+					{% endif %}
 				</div>
 
 				{% if post.comment_status == "closed" %}
 					<p class="comments-closed">{{ _e('Comments are closed for this post.') }}</p>
 				{% else %}
-				    <!-- Comment Form -->
-				    {% include "comment-form.twig" %}
+					<!-- Comment Form -->
+					{% include "comment-form.twig" %}
 				{% endif %}
 			</section>
 		</article>
