@@ -1,0 +1,169 @@
+{#
+Title: Share Buttons
+Description: Display social sharing buttons for the current page
+Category: widgets
+Icon: <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+Keywords: share social buttons twitter facebook linkedin
+Mode: auto
+PostTypes: page post
+SupportsMode: true
+SupportsMultiple: true
+#}
+
+{%- set title = block.data.title ?? 'Share this post' -%}
+{%- set alignment = block.data.alignment ?? 'center' -%}
+{%- set platforms = block.data.platforms ?? ['facebook', 'twitter', 'linkedin', 'email'] -%}
+{%- set style = block.data.style ?? 'icons' -%}
+{%- set size = block.data.size ?? 'medium' -%}
+{%- set page_url = post.link -%}
+{%- set page_title = post.title -%}
+
+<div class="share-buttons share-buttons--{{ alignment }} share-buttons--{{ size }} share-buttons--{{ style }}">
+  {%- if title %}
+    <div class="share-buttons__title">{{ title }}</div>
+  {%- endif %}
+  
+  <div class="share-buttons__buttons">
+    {%- if 'facebook' in platforms %}
+      <a 
+        href="https://www.facebook.com/sharer/sharer.php?u={{ page_url|url_encode }}"
+        class="share-buttons__button share-buttons__button--facebook"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Share on Facebook"
+        data-platform="facebook"
+      >
+        <span class="share-buttons__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </span>
+        {%- if style == 'labels' %}<span class="share-buttons__label">Facebook</span>{%- endif %}
+      </a>
+    {%- endif %}
+
+    {%- if 'twitter' in platforms %}
+      <a 
+        href="https://twitter.com/intent/tweet?url={{ page_url|url_encode }}&text={{ page_title|url_encode }}"
+        class="share-buttons__button share-buttons__button--twitter"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Share on Twitter"
+        data-platform="twitter"
+      >
+        <span class="share-buttons__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23.953 4.57a10 10 0 002.856-3.54 9.86 9.86 0 01-2.857 1.1 4.93 4.93 0 002.165-2.723c-.95.564-2.005.974-3.127 1.195a4.924 4.924 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+          </svg>
+        </span>
+        {%- if style == 'labels' %}<span class="share-buttons__label">Twitter</span>{%- endif %}
+      </a>
+    {%- endif %}
+
+    {%- if 'linkedin' in platforms %}
+      <a 
+        href="https://www.linkedin.com/sharing/share-offsite/?url={{ page_url|url_encode }}"
+        class="share-buttons__button share-buttons__button--linkedin"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Share on LinkedIn"
+        data-platform="linkedin"
+      >
+        <span class="share-buttons__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/>
+          </svg>
+        </span>
+        {%- if style == 'labels' %}<span class="share-buttons__label">LinkedIn</span>{%- endif %}
+      </a>
+    {%- endif %}
+
+    {%- if 'pinterest' in platforms %}
+      <a 
+        href="https://pinterest.com/pin/create/button/?url={{ page_url|url_encode }}&description={{ page_title|url_encode }}"
+        class="share-buttons__button share-buttons__button--pinterest"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Share on Pinterest"
+        data-platform="pinterest"
+      >
+        <span class="share-buttons__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.223-.937 1.58-6.685 1.58-6.685s-.4-.8-.4-1.983c0-1.86 1.08-3.253 2.423-3.253 1.146 0 1.699.859 1.699 1.886 0 1.148-.732 2.869-1.104 4.461-.313 1.323.627 2.401 1.863 2.401 2.236 0 3.957-2.357 3.957-5.751 0-3.012-2.165-5.117-5.251-5.117-3.585 0-5.699 2.686-5.699 5.453 0 1.08.399 2.237.902 2.866.1.123.112.23.085.353-.094.394-.305 1.247-.334 1.422-.036.155-.115.188-.268.114-1.498-.698-2.436-2.889-2.436-4.649 0-3.952 2.869-7.59 8.282-7.59 4.348 0 7.727 3.096 7.727 7.241 0 4.769-3.001 8.577-7.171 8.577-1.4 0-2.716-.723-3.165-1.58 0 0-.692 2.63-.861 3.281-.254.952-.842 1.904-1.253 2.55 1.052.325 2.166.502 3.329.502 6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
+          </svg>
+        </span>
+        {%- if style == 'labels' %}<span class="share-buttons__label">Pinterest</span>{%- endif %}
+      </a>
+    {%- endif %}
+
+    {%- if 'email' in platforms %}
+      <a 
+        href="mailto:?subject={{ page_title|url_encode }}&body={{ page_url|url_encode }}"
+        class="share-buttons__button share-buttons__button--email"
+        title="Share via Email"
+        data-platform="email"
+      >
+        <span class="share-buttons__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+        </span>
+        {%- if style == 'labels' %}<span class="share-buttons__label">Email</span>{%- endif %}
+      </a>
+    {%- endif %}
+
+    {%- if 'whatsapp' in platforms %}
+      <a 
+        href="https://wa.me/?text={{ page_title|url_encode }}%20{{ page_url|url_encode }}"
+        class="share-buttons__button share-buttons__button--whatsapp"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Share on WhatsApp"
+        data-platform="whatsapp"
+      >
+        <span class="share-buttons__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-1.536.946-2.504 2.404-2.504 4.081 0 2.979 2.869 5.439 6.322 5.439 1.687 0 3.279-.556 4.582-1.586l.009-.004a9.908 9.908 0 002.511-4.038c.171-1.345.171-1.345.171-1.447 0-1.672-.97-3.13-2.504-4.081-1.536-.946-3.496-1.342-5.031-1.342m0-2.356c5.028 0 9.129 3.633 9.129 8.1 0 1.922-.596 3.754-1.725 5.277-1.134 1.529-2.745 2.682-4.57 3.25l.228.91c.2.8-.537 1.21-1.126.789l-1.402-1.087c-.47.029-.943.043-1.425.043-5.029 0-9.129-3.633-9.129-8.1 0-4.466 4.1-8.1 9.129-8.1"/>
+          </svg>
+        </span>
+        {%- if style == 'labels' %}<span class="share-buttons__label">WhatsApp</span>{%- endif %}
+      </a>
+    {%- endif %}
+
+    {%- if 'reddit' in platforms %}
+      <a 
+        href="https://reddit.com/submit?url={{ page_url|url_encode }}&title={{ page_title|url_encode }}"
+        class="share-buttons__button share-buttons__button--reddit"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Share on Reddit"
+        data-platform="reddit"
+      >
+        <span class="share-buttons__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.385 4.859-7.181 4.859-3.796 0-7.182-2.165-7.182-4.859a3.5 3.5 0 0 1 .476-1.67c-.29-.159-.579-.481-.579-.926a1.75 1.75 0 0 1 1.75-1.75c.356 0 .676.132.922.346 1.183-.871 2.847-1.12 4.158-1.066l.57-2.679c.09-.495.worldquake.5 1.094.405zm2.47 6.009a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0zm-7.001 4.362c.924 0 1.674.857 1.674 1.91 0 1.052-.75 1.91-1.674 1.91-.922 0-1.674-.858-1.674-1.91 0-1.053.752-1.91 1.674-1.91z"/>
+          </svg>
+        </span>
+        {%- if style == 'labels' %}<span class="share-buttons__label">Reddit</span>{%- endif %}
+      </a>
+    {%- endif %}
+
+    {%- if 'telegram' in platforms %}
+      <a 
+        href="https://t.me/share/url?url={{ page_url|url_encode }}&text={{ page_title|url_encode }}"
+        class="share-buttons__button share-buttons__button--telegram"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Share on Telegram"
+        data-platform="telegram"
+      >
+        <span class="share-buttons__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a11.955 11.955 0 0 0-.064 0zm4.962 7.224c.1-.002.321.023.465.14a1.67 1.67 0 0 1 .97.856c.05.035.1.085.141.135.1.086.19.243.266.403.081.165.126.296.126.424v.026c-.004.718-.382 1.554-.982 2.402-.599.847-1.447 1.694-2.405 2.402l-.537.364c.159.159.297.373.416.64.12.27.206.501.206.656 0 .113-.035.231-.1.346-.066.115-.165.227-.289.327-.124.1-.263.19-.415.266-.151.075-.314.14-.478.19-.163.05-.330.082-.497.107-.166.024-.332.033-.497.033a1.47 1.47 0 0 1-.24-.02c-.2-.03-.405-.084-.6-.16-.196-.077-.386-.18-.568-.308-.182-.128-.354-.278-.512-.448a5.92 5.92 0 0 1-.638-1.032 4.94 4.94 0 0 1-.457-1.29c-.058-.256-.09-.515-.1-.776 0-.194.015-.38.05-.562.033-.18.084-.359.16-.534.077-.175.178-.346.307-.51.13-.165.278-.32.442-.46a2.9 2.9 0 0 1 .625-.36c.224-.068.456-.108.69-.126.227-.018.45-.01.662.032.213.041.418.115.612.22.195.107.375.25.536.426.16.176.29.38.385.609.094.23.15.477.165.738.015.258.007.52-.032.778-.038.257-.107.508-.207.748-.1.24-.226.467-.378.682a3.84 3.84 0 0 1-.673.608 5.19 5.19 0 0 1-.947.46l-.506.223c.145.144.32.313.52.506.202.193.427.41.674.65.248.24.516.491.806.751a2.3 2.3 0 0 1 .27.256c.074.09.15.182.223.277.073.095.142.193.205.292.064.1.122.203.174.308.052.106.098.214.138.323.04.11.071.223.094.338.023.116.038.232.044.35.006.119.003.239-.008.358a1.23 1.23 0 0 1-.067.34 1.015 1.015 0 0 1-.254.399 1.16 1.16 0 0 1-.475.287 1.39 1.39 0 0 1-.693.08"/>
+          </svg>
+        </span>
+        {%- if style == 'labels' %}<span class="share-buttons__label">Telegram</span>{%- endif %}
+      </a>
+    {%- endif %}
+  </div>
+</div>

@@ -1,0 +1,27 @@
+{#
+Title: Banner / Promo
+Description: A promotional banner with title, subtitle, and background image
+Category: common
+Icon: <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-flag"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="4" x2="4" y2="21"></line></svg>
+Keywords: Banner, Promo, Promotion
+Mode: auto
+Align: full
+PostTypes: page post
+SupportsAlign: full
+SupportsMode: true
+SupportsMultiple: true
+#}
+<section id="banner-{{block.id}}" class="banner {{block.classes}}{% if fields.background_image %} banner--has-image{% endif %}" {% if fields.background_image %} style="background-image: url('{{ fields.background_image.url }}'); background-size: cover; background-position: center;" {% endif %}>
+	 {% if fields.background_image %}<div class="banner__overlay"></div>{% endif %}
+	<div class="banner__content wrapper">
+		<div class="banner__text">
+			{% if fields.title %}
+				<h2 class="banner__title">{{ fields.title }}</h2>
+			{% endif %}
+
+			{% if fields.subtitle %}
+				<p class="banner__subtitle">{{ fields.subtitle }}</p>
+			{% endif %}
+		</div>
+	</div>
+</section>

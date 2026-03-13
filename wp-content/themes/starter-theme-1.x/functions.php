@@ -12,6 +12,7 @@
  * Load theme configuration and helper classes
  */
 require_once 'src/theme-config.php';
+require_once 'src/theme-options.php';
 
 /**
  * If you are installing Timber as a Composer dependency in your theme, you'll need this block
@@ -68,6 +69,7 @@ class StarterSite extends Timber\Site {
 	/** Add timber support. */
 	public function __construct() {
 		add_action( 'after_setup_theme', array( $this, 'theme_supports' ) );
+		add_action( 'after_setup_theme', array( $this, 'create_default_menus' ), 15 );
 		add_action( 'after_setup_theme', array( $this, 'create_login_register_pages' ), 20 );
 		add_action( 'after_setup_theme', array( $this, 'create_home_page' ), 21 );
 		add_action( 'after_setup_theme', array( $this, 'create_blog_archive_page' ), 22 );
@@ -259,6 +261,85 @@ class StarterSite extends Timber\Site {
 		// Delete each post permanently
 		foreach ( $posts as $post ) {
 			wp_delete_post( $post->ID, true ); // true = force delete (don't trash)
+		}
+	}
+
+	/**
+	 * Create default navigation menus
+	 * Automatically creates Header and Footer menus on theme setup
+	 */
+	public function create_default_menus() {
+		// Get all menus
+		$menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
+		$menu_names = array();
+		foreach ( $menus as $menu ) {
+			$menu_names[] = $menu->name;
+		}
+
+		// Create Header Navigation menu if it doesn't exist
+		if ( ! in_array( 'Header Navigation', $menu_names, true ) ) {
+			$header_menu_id = wp_create_nav_menu( 'Header Navigation' );
+			
+			if ( ! is_wp_error( $header_menu_id ) ) {
+				// Add Home item
+				wp_update_nav_menu_item( $header_menu_id, 0, array(
+					'menu-item-title'  => __( 'Home', 'starter-theme-1.x' ),
+					'menu-item-url'    => home_url(),
+					'menu-item-status' => 'publish',
+				) );
+
+				// Add Blog item
+				wp_update_nav_menu_item( $header_menu_id, 0, array(
+					'menu-item-title'  => __( 'Blog', 'starter-theme-1.x' ),
+					'menu-item-url'    => home_url( '/blog' ),
+					'menu-item-status' => 'publish',
+				) );
+
+				// Assign to header location
+				$locations = get_theme_mod( 'nav_menu_locations' );
+				$locations['header'] = $header_menu_id;
+				set_theme_mod( 'nav_menu_locations', $locations );
+			}
+		}
+
+		// Create Footer Navigation menu if it doesn't exist
+		if ( ! in_array( 'Footer Navigation', $menu_names, true ) ) {
+			$footer_menu_id = wp_create_nav_menu( 'Footer Navigation' );
+			
+			if ( ! is_wp_error( $footer_menu_id ) ) {
+				// Add Home item
+				wp_update_nav_menu_item( $footer_menu_id, 0, array(
+					'menu-item-title'  => __( 'Home', 'starter-theme-1.x' ),
+					'menu-item-url'    => home_url(),
+					'menu-item-status' => 'publish',
+				) );
+
+				// Add Blog item
+				wp_update_nav_menu_item( $footer_menu_id, 0, array(
+					'menu-item-title'  => __( 'Blog', 'starter-theme-1.x' ),
+					'menu-item-url'    => home_url( '/blog' ),
+					'menu-item-status' => 'publish',
+				) );
+
+				// Add Contact item
+				wp_update_nav_menu_item( $footer_menu_id, 0, array(
+					'menu-item-title'  => __( 'Contact', 'starter-theme-1.x' ),
+					'menu-item-url'    => home_url( '/contact' ),
+					'menu-item-status' => 'publish',
+				) );
+
+				// Add Privacy Policy item
+				wp_update_nav_menu_item( $footer_menu_id, 0, array(
+					'menu-item-title'  => __( 'Privacy Policy', 'starter-theme-1.x' ),
+					'menu-item-url'    => home_url( '/privacy-policy' ),
+					'menu-item-status' => 'publish',
+				) );
+
+				// Assign to footer location
+				$locations = get_theme_mod( 'nav_menu_locations' );
+				$locations['footer'] = $footer_menu_id;
+				set_theme_mod( 'nav_menu_locations', $locations );
+			}
 		}
 	}
 
@@ -505,6 +586,78 @@ function theme_enqueue_assets(): void {
 			'currentUser'  => get_current_user_id(),
 		)
 	);
+
+	// Enqueue gallery JavaScript for lightbox functionality
+	wp_enqueue_script(
+		'gallery-lightbox-js',
+		$theme_uri . '/scripts/gallery.js',
+		array(), // No dependencies
+		$theme_version,
+		true // Load in footer
+	);
+
+	// Enqueue slider JavaScript for carousel functionality
+	wp_enqueue_script(
+		'slider-js',
+		$theme_uri . '/scripts/slider.js',
+		array(), // No dependencies
+		$theme_version,
+		true // Load in footer
+	);
+
+	// Enqueue video JavaScript for player functionality
+	wp_enqueue_script(
+		'video-js',
+		$theme_uri . '/scripts/video.js',
+		array(), // No dependencies
+		$theme_version,
+		true // Load in footer
+	);
+
+	// Enqueue accordion JavaScript for expand/collapse functionality
+	wp_enqueue_script(
+		'accordion-js',
+		$theme_uri . '/scripts/accordion.js',
+		array(), // No dependencies
+		$theme_version,
+		true // Load in footer
+	);
+
+	// Enqueue announcement JavaScript for dismiss functionality
+	wp_enqueue_script(
+		'announcement-js',
+		$theme_uri . '/scripts/announcement.js',
+		array(), // No dependencies
+		$theme_version,
+		true // Load in footer
+	);
+
+	// Enqueue share buttons JavaScript for social sharing functionality
+	wp_enqueue_script(
+		'share-buttons-js',
+		$theme_uri . '/scripts/share-buttons.js',
+		array(), // No dependencies
+		$theme_version,
+		true // Load in footer
+	);
+
+	// Enqueue tabs JavaScript for tab navigation and keyboard support
+	wp_enqueue_script(
+		'tabs-js',
+		$theme_uri . '/scripts/tabs.js',
+		array(), // No dependencies
+		$theme_version,
+		true // Load in footer
+	);
+
+	// Enqueue hamburger menu JavaScript for mobile navigation toggle
+	wp_enqueue_script(
+		'hamburger-js',
+		$theme_uri . '/scripts/hamburger.js',
+		array(), // No dependencies
+		$theme_version,
+		true // Load in footer
+	);
 }
 add_action( 'wp_enqueue_scripts', 'theme_enqueue_assets' );
 
@@ -551,13 +704,28 @@ function theme_unregister_default_post_type() {
 add_action( 'init', 'theme_unregister_default_post_type', 5 ); // Priority 5 - runs before post type registration
 
 /**
- * Remove default "Posts" from admin menu
- * Users should only use the "Blog" custom post type
+ * Remove default WordPress blocks and only allow custom blocks
+ * Automatically discovers all registered ACF blocks
+ * Restricts editor to theme-specific ACF blocks only
  */
-function theme_remove_default_posts_menu() {
-	remove_menu_page( 'edit.php' );
+function theme_allowed_block_types( $allowed_blocks, $editor_context ) {
+	// Get all registered block types
+	$registry = WP_Block_Type_Registry::get_instance();
+	$all_blocks = $registry->get_all_registered();
+	
+	// Filter to only ACF blocks (acf/*)
+	$custom_blocks = array();
+	foreach ( $all_blocks as $block ) {
+		if ( 0 === strpos( $block->name, 'acf/' ) ) {
+			$custom_blocks[] = $block->name;
+		}
+	}
+	
+	return $custom_blocks;
 }
-add_action( 'admin_menu', 'theme_remove_default_posts_menu' );
+// Run at priority 20 (after acf/init at 10 so blocks are registered)
+add_filter( 'allowed_block_types_all', 'theme_allowed_block_types', 20, 2 );
+
 
 /**
  * Delete login/register pages when WooCommerce is deactivated

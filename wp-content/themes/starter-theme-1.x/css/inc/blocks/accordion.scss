@@ -1,0 +1,188 @@
+// Accordion Block Styling
+
+.accordion {
+  padding: $block-padding 0;
+
+  &__section-title {
+    font-size: $font-2xl;
+    font-weight: $font-bold;
+    margin-bottom: $block-padding;
+    color: $text-color;
+    text-align: center;
+
+    @media (max-width: $breakpoint-md) {
+      font-size: $font-xl;
+      margin-bottom: $spacing-4;
+    }
+  }
+
+  &__items {
+    max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    overflow: hidden;
+  }
+
+  &__item {
+    border-bottom: 1px solid $border-color;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &.is-open &__trigger {
+      background-color: $gray-100;
+    }
+
+    &.is-open &__icon {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-3 + 0.25rem $spacing-4;
+    background-color: $white;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    transition: all $transition-normal;
+    font-family: inherit;
+    font-size: $font-base;
+
+    &:hover {
+      background-color: $gray-100;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: inset 0 0 0 2px $primary;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-3 $spacing-3 + 0.25rem;
+      font-size: $font-sm;
+    }
+  }
+
+  &__title {
+    font-weight: $font-semibold;
+    color: $text-color;
+    margin: 0;
+    display: block;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    margin-left: $spacing-3;
+    color: $text-muted;
+    transition: transform $transition-normal;
+    stroke-width: 2;
+
+    @media (max-width: $breakpoint-md) {
+      width: 20px;
+      height: 20px;
+      margin-left: $spacing-2 + 0.25rem;
+    }
+  }
+
+  &__panel {
+    transition: max-height $transition-normal, opacity $transition-normal;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+
+    &[aria-hidden="false"] {
+      max-height: 2000px; // Large enough for most content
+      opacity: 1;
+    }
+  }
+
+  &__content {
+    padding: $spacing-4;
+    background-color: $white;
+    color: $text-color;
+    line-height: 1.8;
+    font-size: $font-base;
+
+    // Ensure nested elements have proper spacing
+    p {
+      margin: 0 0 $spacing-3 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    ul,
+    ol {
+      margin: 0 0 $spacing-3 $spacing-4;
+      padding: 0;
+
+      li {
+        margin-bottom: $spacing-2;
+      }
+    }
+
+    strong {
+      color: $text-color;
+      font-weight: $font-semibold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    a {
+      color: $primary;
+      text-decoration: none;
+      transition: color $transition-fast;
+
+      &:hover {
+        text-decoration: underline;
+        color: darken($primary, 15%);
+      }
+    }
+
+    @media (max-width: 768px) {
+      padding: 1.25rem;
+      font-size: 0.95rem;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .accordion {
+    padding: 1.5rem 0;
+
+    &__items {
+      border-radius: 2px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .accordion {
+    padding: 1rem 0;
+
+    &__section-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    &__trigger {
+      padding: 1rem;
+    }
+
+    &__content {
+      padding: 1rem;
+    }
+  }
+}

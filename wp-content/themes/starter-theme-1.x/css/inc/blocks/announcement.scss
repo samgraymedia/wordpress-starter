@@ -1,0 +1,217 @@
+// Announcement Bar Block Styling
+
+.announcement {
+  width: 100%;
+  padding: $spacing-3;
+  background-color: $primary;
+  color: $white;
+  animation: slideDown $transition-normal;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-3 - 0.125rem;
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-4;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    @media (max-width: $breakpoint-md) {
+      gap: $spacing-3;
+    }
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2 + 0.25rem;
+    flex: 1;
+    min-width: 0;
+
+    @media (max-width: $breakpoint-sm) {
+      gap: $spacing-2;
+    }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: $icon-size-md;
+    height: $icon-size-md;
+    stroke-width: 2;
+    color: inherit;
+
+    @media (max-width: $breakpoint-sm) {
+      width: $icon-size-sm;
+      height: $icon-size-sm;
+    }
+  }
+
+  &__text {
+    font-size: $font-sm;
+    line-height: $line-height-base;
+    color: inherit;
+
+    // Support for basic formatting
+    p {
+      margin: 0;
+      color: inherit;
+    }
+
+    strong {
+      font-weight: $font-semibold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+      font-weight: $font-semibold;
+      transition: opacity $transition-fast;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    @media (max-width: $breakpoint-md) {
+      font-size: $font-xs;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: calc($font-xs - 0.05rem);
+    }
+  }
+
+  &__button {
+    flex-shrink: 0;
+    padding: $spacing-2 $spacing-3 + 0.25rem;
+    background-color: rgba($white, 0.2);
+    color: inherit;
+    border: 1px solid rgba($white, 0.4);
+    border-radius: $border-radius;
+    font-size: $font-xs;
+    font-weight: $font-semibold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all $transition-normal;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: rgba($white, 0.3);
+      border-color: rgba($white, 0.6);
+    }
+
+    &:focus {
+      outline: 2px solid rgba($white, 0.6);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-2 $spacing-3;
+      font-size: calc($font-xs - 0.05rem);
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      padding: $spacing-2 - 0.1rem $spacing-3 - 0.125rem;
+      font-size: calc($font-xs - 0.1rem);
+    }
+  }
+
+  &__close {
+    flex-shrink: 0;
+    width: $icon-size-xl;
+    height: $icon-size-xl;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity $transition-fast;
+
+    svg {
+      width: $icon-size-md;
+      height: $icon-size-md;
+      stroke-width: 2;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &:focus {
+      outline: 2px solid rgba($white, 0.6);
+      outline-offset: 2px;
+      border-radius: $border-radius;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      width: 28px;
+      height: 28px;
+
+      svg {
+        width: $icon-size-sm;
+        height: $icon-size-sm;
+      }
+    }
+  }
+
+  // Hidden state
+  &.is-hidden {
+    display: none;
+  }
+}
+
+// Animation
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive breakpoints
+@media (max-width: $breakpoint-md) {
+  .announcement {
+    &__inner {
+      flex-wrap: wrap;
+    }
+
+    &__button {
+      order: 3;
+      width: 100%;
+      text-align: center;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .announcement {
+    padding: $spacing-2 + 0.25rem;
+
+    &__inner {
+      gap: $spacing-2 + 0.25rem;
+    }
+
+    &__content {
+      gap: $spacing-2;
+      order: 1;
+    }
+
+    &__close {
+      order: 2;
+    }
+  }
+}

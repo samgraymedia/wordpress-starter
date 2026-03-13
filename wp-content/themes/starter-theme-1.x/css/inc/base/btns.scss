@@ -13,3 +13,110 @@
  */
 
 // Button Block
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: $gray-200;
+  color: $text-color;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all $transition-normal;
+  white-space: nowrap;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  &:disabled,
+  &.is-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  // Elements
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.1em;
+  }
+
+  &__text {
+    display: inline;
+  }
+
+  // Modifiers - Color Variants
+  &--primary {
+    background-color: $primary;
+    color: white;
+    border-color: $primary;
+
+    &:hover {
+      background-color: darken($primary, 10%);
+      border-color: darken($primary, 10%);
+    }
+  }
+
+  &--secondary {
+    background-color: white;
+    color: $primary;
+    border-color: $primary;
+
+    &:hover {
+      background-color: lighten($primary, 45%);
+    }
+  }
+
+  &--success {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+
+    &:hover {
+      background-color: darken(#28a745, 10%);
+      border-color: darken(#28a745, 10%);
+    }
+  }
+
+  &--danger {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
+
+    &:hover {
+      background-color: darken(#dc3545, 10%);
+      border-color: darken(#dc3545, 10%);
+    }
+  }
+
+  // Modifiers - Size Variants
+  &--sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  &--lg {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+  }
+
+  &--block {
+    width: 100%;
+  }
+}

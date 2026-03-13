@@ -1,0 +1,34 @@
+{#
+Title: Newsletter Signup
+Description: Newsletter signup form using Contact Form 7
+Category: common
+Icon: <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+Keywords: Newsletter, Email, Signup, Form
+Mode: auto
+Align: wide
+PostTypes: page post
+SupportsAlign: wide full
+SupportsMode: true
+SupportsMultiple: true
+#}
+<section class="newsletter {{block.classes}}">
+	<div class="wrapper">
+		<div class="newsletter__inner">
+			{% if fields.title %}
+				<h2 class="newsletter__title">{{ fields.title }}</h2>
+			{% endif %}
+
+			{% if fields.description %}
+				<p class="newsletter__description">{{ fields.description }}</p>
+			{% endif %}
+
+			{% if fields.form_id %}
+				<div class="newsletter__form">
+					{{ fn('do_shortcode', '[contact-form-7 id="' ~ fields.form_id ~ '"]')|raw }}
+				</div>
+			{% else %}
+				<p class="newsletter__error">Please configure a Contact Form 7 form for this block.</p>
+			{% endif %}
+		</div>
+	</div>
+</section>

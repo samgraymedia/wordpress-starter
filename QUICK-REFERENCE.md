@@ -10,28 +10,30 @@ This is a condensed reference guide. For detailed information, see [DEVELOPER-GU
 
 ## 📍 File Locations
 
-| Task              | File                                   |
-| ----------------- | -------------------------------------- |
-| Theme settings    | `src/config.php`                       |
-| Access config     | `src/theme-config.php`                 |
-| Post types        | `src/post-types/*.php`                 |
-| Blocks            | `templates/blocks/*.twig`              |
-| Components        | `templates/components/*.twig`          |
-| Macros            | `templates/macros.twig`                |
-| **JavaScript**    | **`scripts/index.js`**                 |
-| **JS Utils**      | **`scripts/utils/*.js`**               |
-| **JS Components** | **`scripts/components/*.js`**          |
-| **JS Modules**    | **`scripts/modules/*.js`**             |
-| SCSS variables    | `css/inc/base/vars.scss`               |
-| Button styles     | `css/inc/base/btns.scss`               |
-| Component styles  | `css/inc/components/*.scss`            |
-| Utilities         | `css/inc/utilities/helpers.scss`       |
-| Main styles       | `style.scss`                           |
-| **Build config**  | **`vite.config.js`**                   |
-| **Lint config**   | **`.eslintrc.json`**                   |
-| Asset enqueue     | `functions.php` (theme_enqueue_assets) |
-| Homepage          | `templates/index.twig`                 |
-| Base layout       | `templates/base.twig`                  |
+| Task              | File                                                            |
+| ----------------- | --------------------------------------------------------------- |
+| Theme settings    | `src/config.php`                                                |
+| Access config     | `src/theme-config.php`                                          |
+| Post types        | `src/post-types/*.php`                                          |
+| Blocks            | `src/blocks/*.php` (fields) + `views/blocks/*.twig` (templates) |
+| Components        | `templates/components/*.twig`                                   |
+| Macros            | `templates/macros.twig`                                         |
+| **JavaScript**    | **`scripts/index.js`**                                          |
+| **JS Utils**      | **`scripts/utils/*.js`**                                        |
+| **JS Modules**    | **`scripts/modules/*.js`** (features)                           |
+| **JS Hamburger**  | **`scripts/hamburger.js`** (mobile nav)                         |
+| SCSS variables    | `css/inc/base/vars.scss`                                        |
+| Button styles     | `css/inc/base/btns.scss`                                        |
+| Navigation styles | `css/inc/global/nav.scss`                                       |
+| Block styles      | `css/inc/blocks/*.scss`                                         |
+| Component styles  | `css/inc/components/*.scss`                                     |
+| Utilities         | `css/inc/utilities/helpers.scss`                                |
+| Main styles       | `style.scss`                                                    |
+| **Build config**  | **`vite.config.js`**                                            |
+| **Lint config**   | **`.eslintrc.json`**                                            |
+| Asset enqueue     | `functions.php` (theme_enqueue_assets)                          |
+| Homepage          | `templates/index.twig`                                          |
+| Base layout       | `templates/base.twig`                                           |
 
 ---
 

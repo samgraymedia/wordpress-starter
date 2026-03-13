@@ -7,8 +7,17 @@
 <header class="header" role="banner">
 	{% block header %}
 		<div class="wrapper">
+			{% set header_menu = function('wp_get_nav_menu_items', function('get_nav_menu_locations')['header'] ?? 0) %}
 			<nav id="nav-main" class="nav-main" aria-label="{{ _e('Main Navigation') }}">
-				{% include "menu.twig" with {'items': menu.get_items} %}
+				{% if header_menu %}
+					<ul class="nav-menu">
+						{% for item in header_menu %}
+							<li class="nav-menu__item">
+								<a href="{{ item.url }}" class="nav-menu__link">{{ item.title }}</a>
+							</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
 			</nav>
 			{% if function('class_exists', 'WooCommerce') %}
 				<div class="header__utilities">

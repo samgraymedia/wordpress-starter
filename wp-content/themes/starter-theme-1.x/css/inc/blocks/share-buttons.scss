@@ -1,0 +1,299 @@
+// Share Buttons Block Styling
+
+// Social media brand colors
+$color-facebook: #1877f2;
+$color-twitter: #1da1f2;
+$color-linkedin: #0a66c2;
+$color-pinterest: #e60023;
+$color-whatsapp: #25d366;
+$color-reddit: #ff4500;
+$color-telegram: #0088cc;
+
+.share-buttons {
+  &__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-color;
+    margin-bottom: 1rem;
+    text-align: center;
+
+    @media (max-width: $breakpoint-md) {
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  // Alignment variations
+  &--left &__buttons {
+    justify-content: flex-start;
+  }
+
+  &--center &__buttons {
+    justify-content: center;
+  }
+
+  &--right &__buttons {
+    justify-content: flex-end;
+  }
+
+  // Button base styles
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background-color: $gray-100;
+    color: $text-color;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all $transition-normal;
+    font-size: 0.95rem;
+    font-weight: 500;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border-color: currentColor;
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      padding: 0.65rem;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+      display: block;
+      width: 1em;
+      height: 1em;
+    }
+  }
+
+  &__label {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  // Icons only style
+  &--icons {
+    &.share-buttons {
+      .share-buttons__button {
+        width: auto;
+        padding: 0.75rem;
+
+        @media (max-width: $breakpoint-sm) {
+          padding: 0.65rem;
+        }
+      }
+
+      .share-buttons__label {
+        display: none;
+      }
+    }
+  }
+
+  // Icons + Labels style
+  &--labels {
+    &.share-buttons {
+      .share-buttons__button {
+        padding: 0.65rem 1rem;
+
+        @media (max-width: $breakpoint-md) {
+          padding: 0.6rem 0.9rem;
+        }
+
+        @media (max-width: $breakpoint-sm) {
+          padding: 0.55rem 0.8rem;
+          gap: 0.3rem;
+        }
+      }
+
+      .share-buttons__icon {
+        font-size: 1.1em;
+      }
+    }
+  }
+
+  // Size variations
+  &--small {
+    &.share-buttons {
+      .share-buttons__button {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+
+        @media (max-width: $breakpoint-sm) {
+          padding: 0.45rem;
+          font-size: 0.75rem;
+        }
+      }
+
+      .share-buttons__icon {
+        font-size: 0.9em;
+      }
+
+      &.share-buttons--labels .share-buttons__button {
+        padding: 0.5rem 0.75rem;
+        gap: 0.35rem;
+
+        @media (max-width: $breakpoint-sm) {
+          padding: 0.45rem 0.7rem;
+        }
+      }
+    }
+  }
+
+  &--medium {
+    &.share-buttons {
+      .share-buttons__button {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+      }
+
+      .share-buttons__icon {
+        font-size: 1em;
+      }
+
+      &.share-buttons--labels .share-buttons__button {
+        padding: 0.65rem 1rem;
+      }
+    }
+  }
+
+  &--large {
+    &.share-buttons {
+      .share-buttons__button {
+        padding: 1rem;
+        font-size: 1rem;
+
+        @media (max-width: $breakpoint-md) {
+          padding: 0.85rem;
+        }
+
+        @media (max-width: $breakpoint-sm) {
+          padding: 0.75rem;
+          font-size: 0.9rem;
+        }
+      }
+
+      .share-buttons__icon {
+        font-size: 1.2em;
+      }
+
+      &.share-buttons--labels .share-buttons__button {
+        padding: 0.85rem 1.25rem;
+
+        @media (max-width: $breakpoint-md) {
+          padding: 0.75rem 1.1rem;
+        }
+
+        @media (max-width: $breakpoint-sm) {
+          padding: 0.65rem 1rem;
+          gap: 0.4rem;
+        }
+      }
+    }
+  }
+
+  // Social platform specific colors (brand colors on hover)
+  &__button--facebook {
+    &:hover {
+      background-color: $color-facebook;
+      color: $white;
+      border-color: $color-facebook;
+    }
+  }
+
+  &__button--twitter {
+    &:hover {
+      background-color: $color-twitter;
+      color: $white;
+      border-color: $color-twitter;
+    }
+  }
+
+  &__button--linkedin {
+    &:hover {
+      background-color: $color-linkedin;
+      color: $white;
+      border-color: $color-linkedin;
+    }
+  }
+
+  &__button--pinterest {
+    &:hover {
+      background-color: $color-pinterest;
+      color: $white;
+      border-color: $color-pinterest;
+    }
+  }
+
+  &__button--email {
+    &:hover {
+      background-color: $primary;
+      color: $white;
+      border-color: $primary;
+    }
+  }
+
+  &__button--whatsapp {
+    &:hover {
+      background-color: $color-whatsapp;
+      color: $white;
+      border-color: $color-whatsapp;
+    }
+  }
+
+  &__button--reddit {
+    &:hover {
+      background-color: $color-reddit;
+      color: $white;
+      border-color: $color-reddit;
+    }
+  }
+
+  &__button--telegram {
+    &:hover {
+      background-color: $color-telegram;
+      color: $white;
+      border-color: $color-telegram;
+    }
+  }
+}
+
+// Responsive adjustments for small screens
+@media (max-width: $breakpoint-sm) {
+  .share-buttons {
+    &__buttons {
+      gap: 0.5rem;
+    }
+
+    &--left &__buttons {
+      justify-content: center;
+    }
+
+    &--right &__buttons {
+      justify-content: center;
+    }
+  }
+}

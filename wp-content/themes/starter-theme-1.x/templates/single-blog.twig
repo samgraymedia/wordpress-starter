@@ -7,13 +7,14 @@
 {% extends "base.twig" %}
 
 {% block content %}
-	<article class="post-type-blog" id="post-{{ post.ID }}">
-		<section class="article-header">
-			{% if post.thumbnail %}
+{% if post.thumbnail %}
 				<figure class="article-thumbnail">
-					{{ post.thumbnail.src|image({alt: post.title, class: "article-image"}) }}
+					<img src="{{ post.thumbnail.src }}" alt="{{ post.title }}" class="article-image" loading="lazy" decoding="async">
 				</figure>
 			{% endif %}
+	<article class="post-type-blog wrapper wrapper--narrow" id="post-{{ post.ID }}">
+		<section class="article-header">
+			
 
 			<div class="article-meta">
 				<h1 class="article-title">{{ post.title }}</h1>
@@ -31,7 +32,13 @@
 
 		<section class="article-content">
 			<div class="article-body">
-				{{ post.content }}
+				{# Display ACF WYSIWYG field if available #}
+				{% set blog_wysiwyg = post.meta('blog_wysiwyg') %}
+				{% if blog_wysiwyg %}
+					{{ blog_wysiwyg|raw }}
+				{% else %}
+					{{ post.content }}
+				{% endif %}
 			</div>
 		</section>
 
@@ -45,6 +52,76 @@
 				</div>
 			</section>
 		{% endif %}
+
+		{# Share Buttons #}
+		<section class="article-share">
+			<div class="share-buttons share-buttons--center share-buttons--medium">
+				<div class="share-buttons__title">{{ _e("Share this post") }}</div>
+				<div class="share-buttons__buttons">
+					{# Facebook #}
+					<a 
+						href="https://www.facebook.com/sharer/sharer.php?u={{ post.link|url_encode }}"
+						class="share-buttons__button share-buttons__button--facebook"
+						target="_blank"
+						rel="noopener noreferrer"
+						title="Share on Facebook"
+						data-platform="facebook"
+					>
+						<span class="share-buttons__icon">
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+								<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+							</svg>
+						</span>
+					</a>
+
+					{# Twitter #}
+					<a 
+						href="https://twitter.com/intent/tweet?url={{ post.link|url_encode }}&text={{ post.title|url_encode }}"
+						class="share-buttons__button share-buttons__button--twitter"
+						target="_blank"
+						rel="noopener noreferrer"
+						title="Share on Twitter"
+						data-platform="twitter"
+					>
+						<span class="share-buttons__icon">
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+								<path d="M23.953 4.57a10 10 0 002.856-3.54 9.86 9.86 0 01-2.857 1.1 4.93 4.93 0 002.165-2.723c-.95.564-2.005.974-3.127 1.195a4.924 4.924 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417a9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+							</svg>
+						</span>
+					</a>
+
+					{# LinkedIn #}
+					<a 
+						href="https://www.linkedin.com/sharing/share-offsite/?url={{ post.link|url_encode }}"
+						class="share-buttons__button share-buttons__button--linkedin"
+						target="_blank"
+						rel="noopener noreferrer"
+						title="Share on LinkedIn"
+						data-platform="linkedin"
+					>
+						<span class="share-buttons__icon">
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+								<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/>
+							</svg>
+						</span>
+					</a>
+
+					{# Email #}
+					<a 
+						href="mailto:?subject={{ post.title|url_encode }}&body={{ post.link|url_encode }}"
+						class="share-buttons__button share-buttons__button--email"
+						title="Share via Email"
+						data-platform="email"
+					>
+						<span class="share-buttons__icon">
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+								<path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+							</svg>
+						</span>
+					</a>
+				</div>
+			</div>
+		</section>
 	</article>
 
 	{% if posts|length > 1 %}
@@ -63,4 +140,6 @@
 			{% endif %}
 		</nav>
 	{% endif %}
+
+	
 {% endblock %}

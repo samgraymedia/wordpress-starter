@@ -8,6 +8,17 @@ $warning: #ffc107;
 $danger: #dc3545;
 $info: #17a2b8;
 
+// Validation States
+$error-color: #dc3545;
+$error-bg: #f8d7da;
+$error-border: #f5c6cb;
+$success-color: #155724;
+$success-bg: #d4edda;
+$success-border: #c3e6cb;
+$warning-color: #856404;
+$warning-bg: #fff3cd;
+$warning-border: #ffeaa7;
+
 // Grays
 $gray-900: #212529;
 $gray-800: #343a40;
@@ -26,6 +37,7 @@ $text-muted: $gray-600;
 $border-color: $gray-300;
 $bg-light: $gray-50;
 
+// Typography
 $font-xs: 0.875rem; // 14px - Body Small
 $font-sm: 0.875rem; // 14px - Body Small
 $font-base: 1rem; // 16px - Body Regular
@@ -36,7 +48,7 @@ $font-2xl: 1.875rem; // 30px
 $font-3xl: 2.25rem; // 36px - Heading 2
 $font-4xl: 3rem; // 48px
 $font-5xl: 3.75rem; // 60px - Heading 1
-$font-6xl: 4.5rem; // 72px -
+$font-6xl: 4.5rem; // 72px
 
 // Font Weights
 $font-thin: 100; // Thin
@@ -56,16 +68,22 @@ $spacing-4: 1.5rem; // 24px
 $spacing-5: 2rem; // 32px
 $spacing-6: 3rem; // 48px
 
-$breakpoint-xs: 320px; // Extra small devices (phones)
+// Icon Sizes
+$icon-size-sm: 16px;
+$icon-size-md: 20px;
+$icon-size-lg: 24px;
+$icon-size-xl: 32px;
 
 // Breakpoints
-$breakpoint-sm: 576px; // Small devices (large phones)
+$breakpoint-xs: 320px; // Extra small devices (phones)
+$breakpoint-sm: 480px; // Small devices (phones)
 $breakpoint-md: 768px; // Medium devices (tablets)
 $breakpoint-lg: 992px; // Large devices (desktops)
 $breakpoint-xl: 1200px; // Extra large devices (large desktops)
 $breakpoint-2xl: 1400px; // 2X Extra large devices (larger desktops)
 
 // layout
+$site-max-width: 1700px;
 $block-padding: 2rem;
 $grid-gap: 2rem;
 

@@ -12,13 +12,15 @@ Designed for structured, component-based theme development with modern build too
 
 Features:
 
-- Auto-discovery registries (post types, taxonomies, page templates)
+- 15 pre-built custom Gutenberg blocks (Hero, Banner, Tabs, Blog Posts, Share Buttons, and more)
+- Responsive mobile navigation with hamburger menu
+- Auto-discovery registries (post types, taxonomies, page templates, blocks)
 - Centralized configuration system with type-safe access
 - Reusable Twig components and template macros
 - BEM CSS for scalable stylesheets with Bootstrap 5.3
 - ES6 JavaScript modules with Vite bundler
 - Bootstrap 5.3 components (modals, dropdowns, tooltips, etc.)
-- ACF Pro integration with blocks
+- ACF Pro integration with block field configuration
 - Optional WooCommerce support (works with or without the plugin)
 - Comprehensive documentation for developers
 
@@ -88,7 +90,8 @@ Complete documentation:
 
 - [QUICK-REFERENCE.md](QUICK-REFERENCE.md) - Fast lookup
 - [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md) - Complete development reference
-- [JAVASCRIPT-GUIDE.md](JAVASCRIPT-GUIDE.md) - JavaScript module system and Vite
+- [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md) - All 15 custom Gutenberg blocks reference
+- [JAVASCRIPT-GUIDE.md](JAVASCRIPT-GUIDE.md) - JavaScript module system and Vite (includes hamburger menu)
 - [ARCHITECTURE.md](ARCHITECTURE.md) - System design
 - [CONFIG-GUIDE.md](CONFIG-GUIDE.md) - Configuration system
 - [COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md) - Twig components

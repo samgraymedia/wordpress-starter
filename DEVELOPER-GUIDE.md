@@ -341,8 +341,8 @@ starter-theme/
 
 - **config.php** - Single source of truth for all theme settings (post types, menus, image sizes, ACF, etc.)
 - **theme-config.php** - Static helper class providing typed access to configuration
+- **timber-acf-wp-blocks.php** - Auto-discovers and registers ACF blocks from `views/blocks/` in the Gutenberg editor
 - **post-types-registry.php** - Auto-discovers and registers post type files in `src/post-types/`
-- **timber-acf-wp-blocks.php** - Auto-discovers and registers Gutenberg blocks in `templates/blocks/`
 - **post-types/** - Each post type in its own file with configuration array
 
 #### `templates/` - Twig Templates
@@ -527,7 +527,7 @@ git push origin feature-branch
 1. **Create block template**
 
    ```bash
-   # File: templates/blocks/my-block.twig
+   # File: views/blocks/my-block.twig
    ```
 
 2. **Add block metadata in file header**
@@ -545,15 +545,28 @@ git push origin feature-branch
    </div>
    ```
 
-3. **Add block-specific styles** (optional)
+3. **Add block fields** (optional)
+
+   ```bash
+   # File: src/blocks/my-block.php
+   # Use ACF field group registration scoped to 'acf/my-block'
+   ```
+
+4. **Add block-specific styles** (optional)
 
    ```bash
    # File: scss/inc/blocks/my-block.scss
    ```
 
-4. **Auto-registered** via `src/timber-acf-wp-blocks.php` on `acf/init` hook
+5. **Automatic registration** via `src/timber-acf-wp-blocks.php` on `acf/init` hook
 
-5. **See:** ARCHITECTURE.md for block registration details
+6. **Automatic allowlisting** - Block automatically appears in editor allowlist via `theme_allowed_block_types()` in `wp-content/themes/starter-theme-1.x/functions.php`
+
+   - Filter queries `WP_Block_Type_Registry` for all blocks starting with `acf/`
+   - No manual configuration needed
+   - Block name derived from filename: `my-block.twig` → `acf/my-block`
+
+7. **See:** ARCHITECTURE.md for block registration details
 
 ---
 
@@ -602,27 +615,42 @@ $menu = Theme_Config::get( 'menus', 'primary' );
 - `src/post-types/` - Individual post type configs
 - `src/post-types-registry.php` - Auto-discovery logic
 
-### 3. Block Registration System
+### 3. Block Registration & Allowlisting System
 
-**Problem:** Blocks scattered across codebase  
-**Solution:** Auto-discovery system with file headers
+**Problem:** Blocks scattered across codebase; manual allowlist maintenance  
+**Solution:** Auto-discovery system with file headers + automatic allowlisting
+
+**Registration (timber-acf-wp-blocks.php):**
 
 ```php
-// src/timber-acf-wp-blocks.php
 // Automatically:
 // 1. Scans templates/blocks/ for .twig files
 // 2. Reads block metadata from file headers
-// 3. Registers with ACF
-// 4. Renders with Timber
+// 3. Registers with ACF via acf_register_block_type()
+// 4. Runs on acf/init hook (priority 10)
 
 // Usage: Just create templates/blocks/my-block.twig
-// Automatically registered on acf/init hook
+// Automatically registered - then available in editor
+```
+
+**Allowlisting (theme_allowed_block_types in functions.php):**
+
+```php
+// Automatically:
+// 1. Queries WP_Block_Type_Registry for all registered blocks
+// 2. Filters to only blocks starting with 'acf/'
+// 3. Returns filtered list to WordPress editor
+// 4. Runs on allowed_block_types_all hook (priority 20)
+
+// Result: Only your custom ACF blocks show in editor
+// Default WordPress blocks are hidden (not in allowlist)
 ```
 
 **Files:**
 
-- `templates/blocks/` - Auto-discovers Gutenberg block Twig templates
+- `templates/blocks/` - Auto-discovered Gutenberg block Twig templates
 - `src/timber-acf-wp-blocks.php` - Block registration logic
+- `wp-content/themes/starter-theme-1.x/functions.php` - Block allowlist filter
 
 ### 4. Taxonomy Registry System
 

@@ -1,12 +1,12 @@
 .wrapper {
   width: 100%;
-  max-width: 1700px;
+  max-width: $site-max-width;
   margin: 0 auto;
   padding: 0 clamp(1rem, 5vw, 2rem);
   transition: padding 0.3s ease-in-out;
 
   &--narrow {
-    max-width: 1200px;
+    max-width: calc($site-max-width/2);
   }
 
   // Responsive breakpoints

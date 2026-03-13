@@ -1,0 +1,126 @@
+// Video Block Styling
+
+.video {
+  padding: 2rem 0;
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: $text-color;
+
+    @media (max-width: $breakpoint-md) {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  &__container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 2rem;
+    background: $black;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  &__player {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; // 16:9 aspect ratio
+    background: $black;
+    overflow: hidden;
+
+    &--file {
+      padding-top: 56.25%; // 16:9 aspect ratio
+
+      &.video__player--active {
+        padding-top: 56.25%;
+      }
+    }
+
+    &--youtube {
+      padding-top: 56.25%; // 16:9 aspect ratio
+    }
+  }
+
+  &__element,
+  &__iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+  }
+
+  &__element {
+    object-fit: contain;
+    background: $black;
+  }
+
+  &__iframe {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__description {
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: $text-muted;
+
+    // Basic formatting support
+    p {
+      margin: 0 0 0.75rem 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    strong {
+      color: $text-color;
+      font-weight: 600;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    a {
+      color: $primary;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    @media (max-width: 768px) {
+      font-size: 0.95rem;
+    }
+  }
+}
+
+// Responsive improvements
+@media (max-width: 1024px) {
+  .video {
+    padding: 1.5rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .video {
+    &__title {
+      font-size: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    &__description {
+      font-size: 0.9rem;
+    }
+  }
+}

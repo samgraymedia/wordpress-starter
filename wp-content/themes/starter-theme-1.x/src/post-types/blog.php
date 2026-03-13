@@ -41,6 +41,18 @@ return array(
 		'title'    => 'Featured Blog Post',
 		'fields'   => array(
 			array(
+				'key'             => 'field_blog_wysiwyg',
+				'label'           => 'Content',
+				'name'            => 'blog_wysiwyg',
+				'type'            => 'wysiwyg',
+				'instructions'    => 'Main article content with full editor features',
+				'required'        => 0,
+				'tabs'            => 'all',
+				'toolbar'         => 'full',
+				'media_upload'    => 1,
+				'delay'           => 0,
+			),
+			array(
 				'key'             => 'field_is_featured_blog',
 				'label'           => 'Featured Post',
 				'name'            => 'is_featured',

@@ -48,7 +48,7 @@ return array(
 	 * Menu Locations
 	 */
 	'menus'      => array(
-		'main'   => __( 'Main Navigation', 'starter-theme-1.x' ),
+		'header' => __( 'Header Navigation', 'starter-theme-1.x' ),
 		'footer' => __( 'Footer Navigation', 'starter-theme-1.x' ),
 	),
 

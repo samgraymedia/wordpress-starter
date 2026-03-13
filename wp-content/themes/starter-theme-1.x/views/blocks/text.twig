@@ -11,8 +11,9 @@ SupportsAlign: left right center wide full
 SupportsMode: true
 SupportsMultiple: true
 #}
-<div id="text-{{block.id}}" class="text {{block.classes}}">
-  <div class="wrapper">
-       {{ fields.text }}
-  </div>
+<div id="text-{{block.id}}" class="block {{block.classes}}">
+	<div class="wrapper {% if fields.width == 'half' %}wrapper--narrow{% endif %}">
+		{{ fields.content }}
+
+	</div>
 </div>

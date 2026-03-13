@@ -28,6 +28,7 @@ This index helps you find the right documentation quickly. All guides are in one
 
 **Reference documents for specific topics:**
 
+- **[BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)** – All 15 custom Gutenberg blocks with fields and usage
 - **[CONFIG-GUIDE.md](CONFIG-GUIDE.md)** – Theme configuration system and centralized settings
 - **[COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md)** – Reusable Twig components and macros
 - **[BEM-GUIDE.md](BEM-GUIDE.md)** – CSS/SCSS architecture and utility classes
@@ -46,6 +47,8 @@ Looking for help with a specific workflow? Use this table:
 | Development overview        | [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md)                                       |
 | Understand the architecture | [ARCHITECTURE.md](ARCHITECTURE.md)                                             |
 | Add a post type             | [CONFIG-GUIDE.md](CONFIG-GUIDE.md) or [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md) |
+| Create a custom block       | [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)                                             |
+| Reference all blocks        | [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)                                             |
 | Create a component          | [COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md)                                     |
 | Style a page/component      | [BEM-GUIDE.md](BEM-GUIDE.md)                                                   |
 | Use WooCommerce             | [OPTIONAL-FEATURES.md](OPTIONAL-FEATURES.md)                                   |
