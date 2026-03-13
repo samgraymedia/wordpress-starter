@@ -89,7 +89,7 @@ The SCSS is organized in layers following SMACSS principles:
 
 ## Component Categories
 
-### Base Components (`scss/inc/base/`)
+### Base Components (`css/inc/base/`)
 
 **Purpose:** Core styling for fundamental HTML elements
 
@@ -114,7 +114,7 @@ The SCSS is organized in layers following SMACSS principles:
 }
 ```
 
-### Reusable Components (`scss/inc/components/`)
+### Reusable Components (`css/inc/components/`)
 
 **Purpose:** Packaged UI components using BEM
 
@@ -146,7 +146,7 @@ The SCSS is organized in layers following SMACSS principles:
 }
 ```
 
-### Global Sections (`scss/inc/global/`)
+### Global Sections (`css/inc/global/`)
 
 **Purpose:** Large layout sections (nav, footer, header)
 
@@ -155,13 +155,13 @@ The SCSS is organized in layers following SMACSS principles:
 
 These sections often contain or wrap multiple components.
 
-### Block Styles (`scss/inc/blocks/`)
+### Block Styles (`css/inc/blocks/`)
 
 **Purpose:** Styles specific to custom Gutenberg blocks registered by the theme
 
 - `text.scss` - Custom text block styling
 
-### Utilities (`scss/inc/utilities/`)
+### Utilities (`css/inc/utilities/`)
 
 **Purpose:** Single-purpose helper classes
 

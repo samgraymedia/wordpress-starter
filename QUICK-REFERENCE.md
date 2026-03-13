@@ -69,47 +69,16 @@ git push
 
 ## 🔧 Configuration
 
-### Add Menu Location
+All theme configuration in `src/config.php`. For detailed examples and explanations, see [CONFIG-GUIDE.md](CONFIG-GUIDE.md).
 
-**File:** `src/config.php`
+**Common tasks:**
 
-```php
-'menus' => [
-    'primary' => 'Main Menu',
-    'footer' => 'Footer Links',
-    'my-menu' => 'My New Menu',  // Add here
-],
-```
-
-### Add Image Size
-
-**File:** `src/config.php`
-
-```php
-'image_sizes' => [
-    'my-size' => ['width' => 400, 'height' => 300, 'crop' => true],
-],
-```
-
-**Use in Template:**
-
-```twig
-{{ post.thumbnail( 'my-size' ).src }}
-```
-
-### Add Setting
-
-**File:** `src/config.php`
-
-```php
-'custom_setting' => 'value',
-```
-
-**Access in Code:**
-
-```php
-$value = Theme_Config::get( 'custom_setting' );
-```
+| Task           | File             | Key/Property          |
+| -------------- | ---------------- | --------------------- |
+| Add menu       | `src/config.php` | `menus`               |
+| Add image size | `src/config.php` | `image_sizes`         |
+| Add setting    | `src/config.php` | Custom key            |
+| Access config  | Code             | `Theme_Config::get()` |
 
 ---
 

@@ -55,17 +55,29 @@ This theme includes **15 pre-built custom Gutenberg blocks** organized by purpos
 
 ## Architecture
 
-### How Blocks Are Registered
+### How Blocks Are Auto-Registered
 
-Blocks are **auto-discovered** and **auto-registered** by the theme:
+Blocks are **automatically discovered and registered** by the theme without requiring manual registration in `functions.php`:
 
-**Location:** `views/blocks/*.twig`  
-**Registration:** `src/timber-acf-wp-blocks.php` (auto-discovery)  
-**Fields:** `src/blocks/*.php` (ACF field configuration)
+**Flow:**
+
+1. `src/timber-acf-wp-blocks.php` - Auto-discovery system that scans `views/blocks/` for block templates
+2. Block template files in `views/blocks/*.twig` with metadata headers (Title, Category, etc.)
+3. Block field definitions in `src/blocks/*.php` (auto-loaded via glob pattern in `functions.php`)
+4. When a `.twig` template with proper headers is found, it's automatically registered as a Gutenberg block
+5. ACF field groups in `src/blocks/*.php` automatically attach to the corresponding block via the `acf/my-block` location
+
+**No manual registration needed!** Just create the files following the naming convention.
+
+**File Locations:**
+
+- **Block templates:** `views/blocks/*.twig`
+- **Block fields:** `src/blocks/*.php`
+- **Block styles:** `css/inc/blocks/*.scss`
 
 ### Block Metadata Format
 
-Each block uses header comments to define its configuration:
+Each block template uses Twig comment headers to define its configuration. These headers are scanned by the auto-discovery system:
 
 ```twig
 {#
@@ -80,6 +92,21 @@ SupportsMode: true
 SupportsMultiple: true
 #}
 ```
+
+**Required Headers:**
+
+- `Title` - Block name in the editor
+- `Category` - Block category (common, design, widgets, media, etc.)
+
+**Optional Headers:**
+
+- `Description` - Block description in editor
+- `Icon` - SVG or dashicon name
+- `Keywords` - Space-separated keywords for searching
+- `Mode` - "auto", "preview", or "edit"
+- `PostTypes` - Limit block to specific post types (space-separated)
+- `SupportsMode` - Allow switching between edit/preview modes
+- `SupportsMultiple` - Allow multiple instances of the block
 
 ### File System
 
@@ -617,13 +644,19 @@ Create a new file in `css/inc/blocks/my-block.scss`:
 }
 ```
 
-### Step 4: Register Fields in functions.php
+### Step 4: That's It!
 
-Add to `functions.php`:
+The theme **auto-discovers and auto-registers** everything:
 
-```php
-require_once 'src/blocks/my-block.php';
-```
+1. **Block template** - `views/blocks/my-block.twig` is auto-discovered by `src/timber-acf-wp-blocks.php`
+2. **Block fields** - `src/blocks/my-block.php` is auto-loaded via the glob pattern in `functions.php`:
+   ```php
+   foreach ( glob( __DIR__ . '/src/blocks/*.php' ) as $block_file ) {
+       require_once $block_file;
+   }
+   ```
+
+No manual registration needed! Just create the files and they work.
 
 ---
 
@@ -649,82 +682,21 @@ require_once 'src/blocks/my-block.php';
 
 ## Styling Blocks
 
-### SCSS File Organization
+### Block Style Files
+
+Create a new SCSS file for each block in `css/inc/blocks/`:
 
 ```
-css/inc/blocks/
-├── hero.scss
-├── banner.scss
-├── tabs.scss
-├── blog-posts.scss
-└── ... (one file per block)
+css/inc/blocks/my-block.scss
 ```
 
-### Block SCSS Template
+**Import this file in `style.scss`** to include it in the compiled stylesheet.
 
-```scss
-@import "../base/vars";
+### BEM Methodology & SCSS Variables
 
-// Block: .my-block
-.my-block {
-  padding: $spacing-3;
-  background-color: $white;
-  border: 1px solid $border-color;
+This theme uses **BEM (Block-Element-Modifier)** naming for CSS and centralized **SCSS variables** for colors, spacing, breakpoints, and transitions.
 
-  // Elements
-  &__title {
-    font-size: $font-size-lg;
-    font-weight: $font-weight-bold;
-    margin-bottom: $spacing-2;
-  }
-
-  &__content {
-    color: $text-color;
-    line-height: $line-height-relaxed;
-  }
-
-  // Modifiers
-  &--primary {
-    background-color: $primary;
-    color: $white;
-  }
-
-  &--featured {
-    box-shadow: $shadow-lg;
-    transform: scale(1.02);
-  }
-}
-```
-
-### Using SCSS Variables
-
-All blocks use centralized SCSS variables defined in `css/inc/base/vars.scss`:
-
-**Colors:**
-
-- `$primary` - Primary brand color (#0066cc)
-- `$text-color` - Main text color
-- `$text-muted` - Secondary text color
-- `$white`, `$black` - Base colors
-- `$gray-100` through `$gray-900` - Grayscale
-
-**Spacing:**
-
-- `$spacing-1` through `$spacing-6` - Consistent padding/margins
-- `$spacing-3` = 1rem
-- `$spacing-4` = 1.5rem
-
-**Breakpoints:**
-
-- `$breakpoint-md` = 768px
-- `$breakpoint-lg` = 992px
-- `$breakpoint-xl` = 1200px
-
-**Transitions:**
-
-- `$transition-fast` = 0.2s ease-in-out
-- `$transition-normal` = 0.3s ease-in-out
-- `$transition-slow` = 0.5s ease-in-out
+For detailed styling patterns, variable reference, and best practices, see **[BEM-GUIDE.md](BEM-GUIDE.md)**.
 
 ---
 
@@ -779,63 +751,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 ---
 
-## Best Practices
-
-### 1. Use SCSS Variables
-
-✅ **Good:**
-
-```scss
-padding: $spacing-3;
-color: $primary;
-border: 1px solid $border-color;
-```
-
-❌ **Bad:**
-
-```scss
-padding: 1rem;
-color: #0066cc;
-border: 1px solid #e0e0e0;
-```
-
-### 2. Follow BEM Naming
-
-✅ **Good:**
-
-```scss
-.tabs-block {
-}
-.tabs-block__button {
-}
-.tabs-block__button--active {
-}
-```
-
-❌ **Bad:**
-
-```scss
-.tabs {
-}
-.tab-btn {
-}
-.tab-btn-active {
-}
-```
-
-### 3. Responsive Design
-
-Always use breakpoints for responsive behavior:
-
-```scss
-@media (max-width: $breakpoint-md) {
-  .my-block {
-    padding: $spacing-2;
-    font-size: $font-size-sm;
-  }
-}
-```
-
 ### 4. Accessibility
 
 - Use semantic HTML (`<section>`, `<article>`, etc.)
@@ -867,10 +782,10 @@ Always provide sensible defaults in your Twig template:
 
 ### Block Not Appearing in Editor
 
-1. Check that `views/blocks/my-block.twig` exists and has Title + Category headers
-2. Verify ACF field group exists in `src/blocks/my-block.php`
-3. Clear WordPress cache
-4. Refresh WordPress admin page
+1. Check that `views/blocks/my-block.twig` exists and has **Title** and **Category** headers in the metadata section
+2. Verify ACF field group exists in `src/blocks/my-block.php` with proper location matching `acf/my-block`
+3. Verify the block field file `src/blocks/my-block.php` exists (it's auto-loaded)
+4. Clear WordPress cache and refresh the WordPress admin page
 5. Check browser console for JavaScript errors
 
 ### Fields Not Showing
@@ -890,11 +805,11 @@ Always provide sensible defaults in your Twig template:
 
 ### JavaScript Not Working
 
-1. Verify script file exists in `scripts/modules/`
-2. Check that script is imported in `scripts/index.js`
-3. Run `npm run build` to bundle changes
-4. Check browser console for JavaScript errors
-5. Verify WordPress enqueues the script in `functions.php`
+1. Verify the script file exists in `scripts/` (e.g., `scripts/my-block.js`)
+2. Check that the script is enqueued in `functions.php` using `wp_enqueue_script()`
+3. Run `npm run build` to compile JavaScript changes
+4. Check browser console (F12) for JavaScript errors
+5. Verify the script selector targets the correct elements (`.my-block` class)
 
 ---
 

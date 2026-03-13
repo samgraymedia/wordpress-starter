@@ -364,52 +364,14 @@ templates/macros.twig
 {{ m.rating(4, 5) }}
 ```
 
-### Pattern 5: BEM Naming Pattern (CSS Organization)
+### Pattern 5: CSS Architecture (BEM)
 
 **Problem:** CSS specificity wars, hard to maintain  
 **Solution:** BEM (Block-Element-Modifier) methodology
 
-**Implementation:**
+**Quick Summary:** BEM provides predictable naming (`.block`, `.block__element`, `.block--modifier`) with low CSS specificity and easy refactoring.
 
-```scss
-// Block: Independent component
-.button {
-}
-
-// Element: Part of block (__)
-.button__text {
-}
-.button__icon {
-}
-
-// Modifier: Variation (--)
-.button--primary {
-}
-.button--large {
-}
-```
-
-**How It Works:**
-
-1. Each component is a "Block" (`.button`)
-2. Parts are "Elements" (`.button__text`)
-3. Variations are "Modifiers" (`.button--primary`)
-4. No nesting beyond elements (keeps specificity low)
-
-**Benefits:**
-
-- ✅ Predictable naming
-- ✅ Low CSS specificity
-- ✅ Easy to refactor
-- ✅ Scales well
-
-**Usage:**
-
-```html
-<button class="button button--primary">
-  <span class="button__text">Click me</span>
-</button>
-```
+**For complete styling guide, patterns, and examples:** See [BEM-GUIDE.md](BEM-GUIDE.md)
 
 ### Pattern 6: Hook Pattern (WordPress Extension)
 
