@@ -7,28 +7,67 @@
 {% extends "index.twig" %}
 
 {% block content %}
-	{% include "components/heading.twig" with {
-		level: 1,
-		text: _e("Blog"),
-		accent: true,
-		id: "blog-heading"
-	} %}
-
-	<div class="posts-grid" aria-labelledby="blog-heading">
-		{% for post in posts %}
-			{% include "components/post-card.twig" with {
-				post: post,
-				show_excerpt: true,
-				show_meta: true
-			} %}
-		{% endfor %}
+	<div class="archive-header">
+		{% include "components/heading.twig" with {
+			level: 1,
+			text: _e("Blog"),
+			accent: true,
+			id: "blog-heading"
+		} %}
+		<p>{{ _e("Discover insights and latest updates from our blog") }}</p>
 	</div>
 
-	{% if posts|length == 0 %}
+	{% if posts|length > 0 %}
+	<div class="wrapper">
+		<div class="posts-grid" aria-labelledby="blog-heading">
+			{% for post in posts %}
+				<article class="post-card">
+					{% if post.thumbnail %}
+						<a href="{{ post.link }}" class="post-card-image">
+							<img src="{{ post.thumbnail.src }}" alt="{{ post.title }}" loading="lazy" />
+						</a>
+					{% endif %}
+
+					<div class="post-card-content">
+						<h2 class="post-card-title">
+							<a href="{{ post.link }}">{{ post.title }}</a>
+						</h2>
+
+						{% if post.post_excerpt %}
+							<p class="post-card-excerpt">{{ post.post_excerpt|truncate(150) }}</p>
+						{% endif %}
+
+						<div class="post-card-meta">
+							{% if post.author %}
+								<span class="post-card-author">
+									<i class="fa-solid fa-user"></i>
+									{{ post.author.name }}
+								</span>
+							{% endif %}
+							<span class="post-card-date">
+								<i class="fa-solid fa-calendar"></i>
+								<time datetime="{{ post.post_date }}">{{ post.post_date|date("M d, Y") }}</time>
+							</span>
+							{% set categories = post.terms("category") %}
+							{% if categories|length > 0 %}
+								<span class="post-card-category">
+									<i class="fa-solid fa-tag"></i>
+									<a href="{{ categories[0].link }}">{{ categories[0].name }}</a>
+								</span>
+							{% endif %}
+						</div>
+
+						<a href="{{ post.link }}" class="post-card-read-more">{{ _e("Read more") }}</a>
+					</div>
+				</article>
+			{% endfor %}
+		</div>
+
+		{% include 'partial/pagination.twig' with { pagination: posts.pagination({show_all: false, mid_size: 3, end_size: 2}) } %}
+	{% else %}
 		<div class="no-posts-message">
 			<p>{{ _e("No blog posts found.") }}</p>
 		</div>
 	{% endif %}
-
-	{% include 'partial/pagination.twig' with { pagination: posts.pagination({show_all: false, mid_size: 3, end_size: 2}) } %}
+	</div>
 {% endblock %}

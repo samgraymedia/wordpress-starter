@@ -218,7 +218,7 @@ A generic repeatable card layout for services, features, categories, or linked p
 
 ## 8. Icon List / Features List
 
-**Status:** Not started  
+**Status:** ✅ Complete  
 **Priority:** Medium  
 **Complexity:** Low
 
@@ -229,14 +229,37 @@ For short benefit-led content with icons. Cleaner than WYSIWYG for structured li
 - WYSIWYG block is too loose for structured feature lists
 - Editors often need clean feature lists with icons/icons styling
 
-**Typical fields:**
+**Implemented Features:**
 
-- Title
-- Items repeater
-  - Icon
-  - Label
-  - Description
-- Layout style (vertical, horizontal, columns)
+- Section title and description
+- Items repeater (1-12 items max) with:
+  - Icon (SVG paste or Font Awesome class)
+  - Label (required)
+  - Description (optional)
+- Three layout options:
+  - **Vertical** (stacked, full-width)
+  - **Horizontal** (side-by-side with flex wrap)
+  - **Grid** (2, 3, or 4 column layout)
+- Icon sizing options: Small (40px), Medium (56px), Large (72px)
+- Icon color options: Primary, Secondary, Success, Warning, Info, Danger
+- Text alignment: Left or Center
+- Responsive design (mobile: single column, tablet: 2 columns)
+- Hover animations (icon lift effect)
+- Background color for icon containers (using opacity + color)
+
+**Files Created:**
+
+- `src/blocks/icon-list.php` (129 lines) - ACF field configuration
+- `views/blocks/icon-list.twig` (75 lines) - Block template with layout variants
+- `css/inc/blocks/icon-list.scss` (290 lines) - BEM styling with responsive design
+
+**Features:**
+
+- Supports both SVG inline code and Font Awesome icon classes
+- Color backgrounds automatically scale with color selection
+- All layouts collapse to single column on mobile
+- Semantic HTML with proper heading hierarchy
+- Accessibility: ARIA labels, semantic structure
 
 ---
 
