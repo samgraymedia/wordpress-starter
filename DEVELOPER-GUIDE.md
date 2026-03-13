@@ -15,6 +15,7 @@ This developer guide is organized into several specialized documents:
 | **CONFIG-GUIDE.md**     | Theme configuration system and settings         |
 | **COMPONENTS-GUIDE.md** | Twig components and macro usage                 |
 | **BEM-GUIDE.md**        | CSS architecture and utilities                  |
+| **JAVASCRIPT-GUIDE.md** | JavaScript development & module system          |
 | **ARCHITECTURE.md**     | System design and code organization             |
 
 **Start here:** New to the project? Begin with [Project Overview](#project-overview) below.
@@ -115,14 +116,22 @@ This developer guide is organized into several specialized documents:
    - Go to Appearance > Themes
    - Activate "Starter Theme" theme
 
-5. **Compile SCSS**
+5. **Start development server**
 
    ```bash
-   npm run sass    # One-time compilation
-   npm run watch   # Watch for changes
+   npm run watch      # Watch SASS + Vite dev server
+   # Or individually:
+   npm run dev        # Start Vite development server
+   npm run watch:css  # Watch SASS changes
    ```
 
-6. **Start developing!**
+6. **Build for production**
+
+   ```bash
+   npm run build      # Compile JS and CSS for production
+   ```
+
+7. **Start developing!**
    ```bash
    # In your IDE/editor, open the theme folder
    # Available at: http://localhost:8888/wordpress-starter/
@@ -136,8 +145,11 @@ To confirm everything is working:
 # Check PHP version
 php -v  # Should be 7.4 or higher
 
-# Test SCSS compilation
-npm run sass
+# Check Node version
+node -v  # Should be 16 or higher
+
+# Test build
+npm run build
 # Should generate style.css without errors
 
 # Check theme activation
@@ -150,15 +162,25 @@ npm run sass
 
 ### Core Framework
 
-| Technology    | Version | Purpose                   |
-| ------------- | ------- | ------------------------- |
-| **WordPress** | 6.0+    | CMS Foundation            |
-| **Timber**    | 2.x     | PHP-to-Twig bridge        |
-| **Twig**      | 2.x     | Template engine           |
-| **ACF Pro**   | Latest  | Advanced field management |
-| **Bootstrap** | 5.3+    | CSS framework             |
-| **Sass/SCSS** | Latest  | CSS preprocessing         |
-| **PHP**       | 7.4+    | Backend language          |
+| Technology     | Version | Purpose                   |
+| -------------- | ------- | ------------------------- |
+| **WordPress**  | 6.0+    | CMS Foundation            |
+| **Timber**     | 2.x     | PHP-to-Twig bridge        |
+| **Twig**       | 2.x     | Template engine           |
+| **ACF Pro**    | Latest  | Advanced field management |
+| **Bootstrap**  | 5.3+    | CSS + JS framework        |
+| **Sass/SCSS**  | Latest  | CSS preprocessing         |
+| **PHP**        | 7.4+    | Backend language          |
+| **JavaScript** | ES6+    | Client-side logic         |
+
+### Frontend Build Tools
+
+| Tool          | Use                                  |
+| ------------- | ------------------------------------ |
+| **Vite**      | Modern JavaScript bundler & dev tool |
+| **ESLint**    | JavaScript linting & formatting      |
+| **Sass**      | CSS preprocessing                    |
+| **Bootstrap** | UI components (CSS + JS)             |
 
 ### Required Plugins
 
@@ -173,30 +195,43 @@ npm run sass
 
 ### NPM Scripts
 
-```json
-{
-  "sass": "sass scss:css --no-source-map",
-  "watch": "sass --watch scss:css --no-source-map"
-}
+```bash
+# Development
+npm run dev          # Start Vite dev server (hot reload)
+npm run watch:css    # Watch SASS for changes
+npm run watch        # Run dev + watch:css simultaneously
+
+# Production
+npm run build        # Build JS and CSS for production
+
+# Code Quality
+npm run lint         # Check JavaScript for issues
+npm run lint:fix     # Auto-fix JavaScript issues
+
+# Legacy (CSS only)
+npm run sass         # One-time SCSS compilation
 ```
 
-**Source:** `scss/` directory  
-**Output:** `style.css` in theme root
+**Source:** `scripts/` (JavaScript), `css/` (SCSS)  
+**Output:** `dist/site.js` (JavaScript), `style.css` (CSS)
 
 ### File Organization Pattern
 
 ```
 Filesystem
     ↓
-functions.php (initialization)
+functions.php (initialization + asset enqueuing)
     ↓
-src/config.php (settings)
-src/theme-config.php (typed access)
+src/config.php (configuration)
+src/theme-config.php (configuration access)
     ↓
-src/post-types-registry.php (auto-load post types)
-src/taxonomies-registry.php (auto-load taxonomies)
-src/page-templates-registry.php (auto-load page templates)
-src/timber-acf-wp-blocks.php (auto-load blocks)
+scripts/ (JavaScript modules)
+    ├── index.js (entry point)
+    ├── utils/ (utilities)
+    ├── components/ (reusable components)
+    └── modules/ (feature modules)
+    ↓
+css/ (stylesheets)src/timber-acf-wp-blocks.php (auto-load blocks)
     ↓
 templates/ (Twig rendering)
 scss/ (styling)

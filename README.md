@@ -1,10 +1,11 @@
 # Starter Theme
 
-A WordPress starter theme using Timber, Twig, ACF Pro, and BEM CSS.
-Designed for structured, component-based theme development.
+A WordPress starter theme using Timber, Twig, ACF Pro, Bootstrap, and BEM CSS.
+Designed for structured, component-based theme development with modern build tools.
 
 [![WordPress 6.0+](https://img.shields.io/badge/WordPress-6.0%2B-green)](https://wordpress.org/)
 [![PHP 7.4+](https://img.shields.io/badge/PHP-7.4%2B-blue)](https://www.php.net/)
+[![JavaScript ES6+](https://img.shields.io/badge/JavaScript-ES6%2B-yellow)](https://www.javascript.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
@@ -14,7 +15,9 @@ Features:
 - Auto-discovery registries (post types, taxonomies, page templates)
 - Centralized configuration system with type-safe access
 - Reusable Twig components and template macros
-- BEM CSS for scalable stylesheets
+- BEM CSS for scalable stylesheets with Bootstrap 5.3
+- ES6 JavaScript modules with Vite bundler
+- Bootstrap 5.3 components (modals, dropdowns, tooltips, etc.)
 - ACF Pro integration with blocks
 - Optional WooCommerce support (works with or without the plugin)
 - Comprehensive documentation for developers
@@ -27,8 +30,8 @@ This theme exists to solve that:
 
 - **Scalability** — Auto-discovery registries eliminate boilerplate. Add a file and it is registered automatically.
 - **Maintainability** — Centralized configuration keeps settings in one place. Type-safe helpers prevent errors.
-- **Developer Experience** — Comprehensive documentation and examples get teams productive fast.
-- **Best Practices** — Type hints (PHP 7.4+), BEM CSS, component-based templates, and proper architecture.
+- **Developer Experience** — Comprehensive documentation and modern build tools (Vite, ESLint) get teams productive fast.
+- **Best Practices** — Type hints (PHP 7.4+), BEM CSS, component-based templates, ES6 modules, and proper architecture.
 - **Professional Foundation** — Not a buzzword-heavy showcase theme, but an internal engineering starter kit.
 
 Use this if you're building custom WordPress sites that need to scale beyond a single developer or project.
@@ -43,7 +46,7 @@ Use this if you're building custom WordPress sites that need to scale beyond a s
 - PHP 7.4+
 - Timber Plugin 2.x
 - Advanced Custom Fields Pro
-- Node.js 16+ (for SCSS compilation)
+- Node.js 16+ (for build tools)
 
 **Optional:**
 
@@ -72,19 +75,20 @@ npm install
 # 6. Activate theme
 # Go to Appearance > Themes, activate "Starter Theme"
 
-# 7. Compile SCSS
-npm run sass
-
-# 8. Start developing
+# 7. Start development (builds both JS and CSS)
 npm run watch
+
+# 8. For production
+npm run build
 ```
 
 ## Documentation
 
-Complete documentation in `/Documentation`:
+Complete documentation:
 
 - [QUICK-REFERENCE.md](QUICK-REFERENCE.md) - Fast lookup
 - [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md) - Complete development reference
+- [JAVASCRIPT-GUIDE.md](JAVASCRIPT-GUIDE.md) - JavaScript module system and Vite
 - [ARCHITECTURE.md](ARCHITECTURE.md) - System design
 - [CONFIG-GUIDE.md](CONFIG-GUIDE.md) - Configuration system
 - [COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md) - Twig components
