@@ -30,7 +30,7 @@ For service pages, landing pages, and product-style sites. Builds trust and cred
 
 ## 2. Logo Grid / Clients
 
-**Status:** Not started  
+**Status:** ✅ Complete  
 **Priority:** High  
 **Complexity:** Low
 
@@ -41,13 +41,30 @@ A clean way to show partners, brands, accreditations, or press mentions.
 - Very common section on homepages and landing pages
 - Avoids forcing users to fake it with Gallery block
 
-**Typical fields:**
+**Implemented Features:**
 
-- Section title
-- Logos repeater
-- Optional logo link
-- Greyscale toggle
-- Columns
+- Section title and description
+- Logos repeater with alt text and optional links
+- 2-6 column layout with responsive breakpoints
+- Logo alignment options (center, left, right)
+- Greyscale style with color hover effect
+- Spacing control (tight, normal, loose)
+- Hover animation (lift effect)
+- Mobile-responsive grid collapse
+- Accessibility: Focus states, semantic HTML, alt text
+
+**Files Created:**
+
+- `src/blocks/logo-grid.php` - ACF field configuration
+- `views/blocks/logo-grid.twig` - Block template
+- `css/inc/blocks/logo-grid.scss` - BEM styling with breakpoints
+
+**Notes:**
+
+- Block auto-discovered by glob pattern
+- Supports wide and full alignment
+- Logos use `object-fit: contain` for proper scaling
+- Greyscale variant uses CSS filter for smooth transitions
 
 ---
 
