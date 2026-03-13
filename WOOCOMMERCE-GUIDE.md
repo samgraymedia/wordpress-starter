@@ -125,7 +125,7 @@ Displays a product in grid/list view.
 - Short description
 - View product button
 
-**Styles:** `scss/inc/components/product-card.scss` (BEM)
+**Styles:** `css/inc/components/product-card.scss` (BEM)
 
 ### Cart Summary Component
 
@@ -146,7 +146,7 @@ Displays cart in header with count and total.
 - Link to cart page
 - Responsive design
 
-**Styles:** `scss/inc/components/cart-summary.scss` (BEM)
+**Styles:** `css/inc/components/cart-summary.scss` (BEM)
 
 ---
 
@@ -166,7 +166,7 @@ All WooCommerce styles follow BEM naming:
 ### SCSS Files
 
 ```
-scss/inc/
+css/inc/
 ├── components/
 │   ├── product-card.scss    # Product card component
 │   └── cart-summary.scss    # Cart summary component
@@ -180,7 +180,7 @@ scss/inc/
 Edit SCSS files directly. They use theme variables:
 
 ```scss
-// From scss/inc/base/vars.scss
+// From css/inc/base/vars.scss
 $primary: #0066cc;
 $white: #ffffff;
 $border-color: #e0e0e0;
@@ -502,7 +502,7 @@ Use ACF filters in template:
 1. **Activate WooCommerce plugin** in WordPress admin
 2. **Create products** with images, prices, descriptions
 3. **Customize templates** in `templates/` directory
-4. **Update styles** in `scss/inc/` files
+4. **Update styles** in `css/inc/` files
 5. **Add ACF fields** to products for extra data
 6. **Test cart/checkout** flow
 7. **Compile SCSS** with `npm run sass`

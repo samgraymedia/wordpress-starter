@@ -78,7 +78,7 @@ The theme architecture supports adding new optional integrations following this 
 4. **Provide templates and styles**
 
    - Twig templates in `templates/plugin-name/`
-   - Styles in `scss/inc/integrations/`
+   - Styles in `css/inc/integrations/`
    - Components in `templates/components/plugin-name/`
 
 5. **Document integration**

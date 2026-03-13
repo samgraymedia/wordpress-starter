@@ -404,7 +404,7 @@ Bootstrap uses responsive breakpoint suffixes:
 The connection between template architecture and CSS architecture:
 
 ```
-templates/components/card.twig    →    scss/inc/components/card.scss
+templates/components/card.twig    →    css/inc/components/card.scss
 
 Block: .card
 ├── Elements: .card__image, .card__content, .card__title
@@ -426,7 +426,7 @@ Block: .card
 </div>
 ```
 
-**2. SCSS Component** (`scss/inc/components/card.scss`)
+**2. SCSS Component** (`css/inc/components/card.scss`)
 
 ```scss
 .card {
@@ -502,7 +502,7 @@ Output:
 </div>
 ```
 
-**SCSS (`scss/inc/components/card.scss`):**
+**SCSS (`css/inc/components/card.scss`):**
 
 ```scss
 .card {
@@ -561,7 +561,7 @@ Output:
 </a>
 ```
 
-**SCSS (`scss/inc/base/btns.scss`):**
+**SCSS (`css/inc/base/btns.scss`):**
 
 ```scss
 .btn {
@@ -631,7 +631,7 @@ Output:
 </div>
 ```
 
-**SCSS (`scss/inc/components/alert.scss`):**
+**SCSS (`css/inc/components/alert.scss`):**
 
 ```scss
 .alert {
@@ -842,7 +842,7 @@ Output:
 
 ```
 wp-content/themes/starter-theme-1.x/
-├── scss/inc/
+├── css/inc/
 │   ├── base/              # Foundation styles
 │   │   ├── vars.scss      # Variables, fonts, breakpoints
 │   │   ├── reset.scss     # HTML element resets
@@ -874,7 +874,7 @@ wp-content/themes/starter-theme-1.x/
 
 When creating a new component, follow this template:
 
-**File:** `scss/inc/components/my-component.scss`
+**File:** `css/inc/components/my-component.scss`
 
 ```scss
 /**

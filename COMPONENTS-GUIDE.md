@@ -263,7 +263,7 @@ Each Twig component maps directly to a single BEM block in your SCSS. This keeps
 **File relationship:**
 
 - Template: `templates/components/post-card.twig`
-- Stylesheet: `scss/inc/components/post-card.scss`
+- Stylesheet: `css/inc/components/post-card.scss`
 
 **BEM structure:**
 
@@ -319,7 +319,7 @@ Create a new file in `templates/components/my-component.twig`:
 
 ### Step 2: Create CSS for your component
 
-Create `scss/inc/components/my-component.scss` with the BEM block structure:
+Create `css/inc/components/my-component.scss` with the BEM block structure:
 
 ```scss
 // my-component.scss

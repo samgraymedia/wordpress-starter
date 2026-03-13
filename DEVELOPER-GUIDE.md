@@ -410,7 +410,7 @@ code .
 
 **For Style Changes:**
 
-- Edit files in `scss/inc/`
+- Edit files in `css/inc/`
 - SCSS auto-compiles via `npm run watch`
 - Refresh browser (or use browser live reload)
 
@@ -510,7 +510,7 @@ git push origin feature-branch
 3. **Create component styles**
 
    ```bash
-   # File: scss/inc/components/my-component.scss
+   # File: css/inc/components/my-component.scss
    ```
 
 4. **Imported automatically** via style.scss's component imports
@@ -555,7 +555,7 @@ git push origin feature-branch
 4. **Add block-specific styles** (optional)
 
    ```bash
-   # File: scss/inc/blocks/my-block.scss
+   # File: css/inc/blocks/my-block.scss
    ```
 
 5. **Automatic registration** via `src/timber-acf-wp-blocks.php` on `acf/init` hook
@@ -935,7 +935,7 @@ Then create the Twig template:
 ### Task 7: Add Utility Classes
 
 ```scss
-// File: scss/inc/utilities/helpers.scss
+// File: css/inc/utilities/helpers.scss
 // Add to spacing section
 
 .gap-2 {
@@ -1284,7 +1284,7 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
 ### Example 1: Creating a BEM Component
 
 ```scss
-// File: scss/inc/components/service-card.scss
+// File: css/inc/components/service-card.scss
 /**
  * Service Card Component - BEM Methodology
  *
@@ -1387,7 +1387,7 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
 ### Example 2: Responsive Grid Layout
 
 ```scss
-// File: scss/inc/global/main.scss (if needed)
+// File: css/inc/global/main.scss (if needed)
 
 .services-grid {
   display: grid;
@@ -1411,7 +1411,7 @@ function get_featured_image( $post, $size = 'medium', $force_src = false ) {
 ### Example 3: Custom Variables in SCSS
 
 ```scss
-// File: scss/inc/base/vars.scss
+// File: css/inc/base/vars.scss
 
 // Colors
 $primary: #0066cc;
@@ -1590,7 +1590,7 @@ Timber::render( 'template.twig', $context );
 
 # 2. Verify variable exists
 # Common: Using $var that's not defined in vars.scss
-# Solution: Add variable to scss/inc/base/vars.scss
+# Solution: Add variable to css/inc/base/vars.scss
 
 # 3. Check import path
 # Common: @import "./css/...missing-file.scss"
@@ -1902,7 +1902,7 @@ templates/*.twig
 HTML + CSS Classes
 (BEM-structured markup)
     ↓
-scss/inc/*.scss
+css/inc/*.scss
 (Compiles to style.css)
     ↓
 Browser Renders Final Page
@@ -1924,17 +1924,17 @@ This separation means: To add features, build PHP first (in `views/`), prepare d
 
 ### File Locations
 
-| Purpose              | Location                          |
-| -------------------- | --------------------------------- |
-| Theme configuration  | `src/config.php`                  |
-| Configuration access | `src/theme-config.php`            |
-| Post type setup      | `src/post-types/*.php`            |
-| Block setup          | `templates/blocks/*.twig`         |
-| Twig components      | `templates/components/*.twig`     |
-| SCSS components      | `scss/inc/components/*.scss`      |
-| SCSS variables       | `scss/inc/base/vars.scss`         |
-| Utilities            | `scss/inc/utilities/helpers.scss` |
-| Main stylesheet      | `style.scss`                      |
+| Purpose              | Location                         |
+| -------------------- | -------------------------------- |
+| Theme configuration  | `src/config.php`                 |
+| Configuration access | `src/theme-config.php`           |
+| Post type setup      | `src/post-types/*.php`           |
+| Block setup          | `views/blocks/*.twig`            |
+| Twig components      | `templates/components/*.twig`    |
+| SCSS components      | `css/inc/components/*.scss`      |
+| SCSS variables       | `css/inc/base/vars.scss`         |
+| Utilities            | `css/inc/utilities/helpers.scss` |
+| Main stylesheet      | `style.scss`                     |
 
 ### Common Functions
 

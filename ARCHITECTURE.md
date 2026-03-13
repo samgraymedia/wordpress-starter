@@ -826,9 +826,9 @@ Organized by layer to support selective includes:
 
 ```scss
 // style.scss - import strategically
-@import "scss/inc/base/vars"; // Always needed
-@import "scss/inc/base/btns"; // Always needed
-@import "scss/inc/components/card"; // Only if card is used
+@import "css/inc/base/vars"; // Always needed
+@import "css/inc/base/btns"; // Always needed
+@import "css/inc/components/card"; // Only if card is used
 ```
 
 ---

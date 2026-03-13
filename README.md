@@ -317,7 +317,7 @@ Then create `templates/page-my-template.twig` with your custom layout.
 ### Create BEM Component
 
 ```scss
-// File: scss/inc/components/my-component.scss
+// File: css/inc/components/my-component.scss
 .my-component {
   &__element {
   }

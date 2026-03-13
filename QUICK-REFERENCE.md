@@ -162,7 +162,7 @@ All theme configuration in `src/config.php`. For detailed examples and explanati
 
 ### Create Component
 
-**File:** `scss/inc/components/my-component.scss`
+**File:** `css/inc/components/my-component.scss`
 
 ```scss
 .my-component {
@@ -617,7 +617,7 @@ Use IDE search: `Cmd+F` or `Ctrl+F`
 
 ### Find SCSS variable
 
-Open `scss/inc/base/vars.scss` for all variables
+Open `css/inc/base/vars.scss` for all variables
 
 ### Test responsive
 
