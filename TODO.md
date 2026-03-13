@@ -6,7 +6,7 @@ Strategic list of high-value Gutenberg blocks to build next. Prioritized by use 
 
 ## 1. Testimonial / Reviews
 
-**Status:** Not started  
+**Status:** ✅ Complete  
 **Priority:** High  
 **Complexity:** Medium
 
@@ -17,14 +17,37 @@ For service pages, landing pages, and product-style sites. Builds trust and cred
 - You have CTA, Hero, and Banner blocks, but nothing that builds trust
 - Essential for service/SaaS sites
 
-**Typical fields:**
+**Implemented Features:**
 
-- Quote
-- Name
-- Role / company
-- Image
-- Rating
-- Layout style (single, carousel, grid)
+- ACF field to select testimonial post types (multi-select)
+- Section title and description fields
+- Three layout options:
+  - **Grid Layout** (2-3 columns, responsive):
+    - Card design with quote, rating, and author (image, name, role, company)
+    - Hover effects with lift and shadow
+    - Responsive: 3 cols (desktop) → 2 cols (tablet) → 1 col (mobile)
+  - **Carousel Layout** (rotating testimonials):
+    - Auto-play toggle with next/prev controls
+    - Navigation arrows for manual control
+    - Full-width single testimonial display
+  - **List Layout** (full-width items):
+    - Horizontal layout with flex direction
+    - Author image on left, quote in middle, meta (rating/role) on right
+    - Mobile: stacks vertically
+- Toggle options:
+  - Show star ratings (always 5-star)
+  - Show author info (name, role, company)
+  - Show author image
+- Responsive styling with mobile-first approach
+- Semantic HTML with blockquote elements
+- Quote styling with left-offset quote mark
+- Author metadata extraction from post meta
+
+**Files Created:**
+
+- `src/blocks/testimonial.php` (179 lines) - ACF block registration and field config
+- `views/blocks/testimonial.twig` (180 lines) - Twig template with 3 layout variants
+- `css/inc/blocks/testimonial.scss` (304 lines) - BEM styling with animations
 
 ---
 
@@ -316,7 +339,7 @@ A structured locations block rather than hiding map output inside Contact.
 
 ## 13. Downloads / Resources
 
-**Status:** Not started  
+**Status:** ✅ Complete  
 **Priority:** Medium  
 **Complexity:** Low
 
@@ -327,15 +350,32 @@ For brochures, PDFs, guides, policies, menus, reports.
 - Very common client request
 - Should not rely on raw WYSIWYG links
 
-**Typical fields:**
+**Implemented Features:**
 
-- Title
-- Files repeater
-  - File (attachment)
-  - Label
-  - Description
+- Section title and description
+- Files repeater with file upload, label, description, and category
+- Two layout options: List and Grid (2/3/4 columns)
 - File size display toggle
-- Icon style
+- Category badges with custom colors (Guide, Brochure, Form, Policy, Report, Menu, Whitepaper, Case Study, Template, Other)
+- File extension icons with color gradient
+- Hover effects (card lift in grid, border highlight in list)
+- Semantic download links with proper accessibility
+- Responsive design (grid collapses on mobile)
+- Category display toggle
+
+**Files Created:**
+
+- `src/blocks/downloads.php` - ACF field configuration with conditional logic
+- `views/blocks/downloads.twig` - Block template with list/grid layouts
+- `css/inc/blocks/downloads.scss` - BEM styling with layout variants
+
+**Features:**
+
+- Category-specific color schemes for visual organization
+- Download icons with file extension abbreviations
+- Works with any file type (PDF, DOC, ZIP, etc.)
+- Accessibility: Proper ARIA labels, keyboard focus states, semantic HTML
+- Mobile-responsive layout switching
 
 ---
 

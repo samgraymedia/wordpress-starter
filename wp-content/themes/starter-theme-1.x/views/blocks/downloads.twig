@@ -1,0 +1,93 @@
+{#
+Title: Downloads / Resources
+Description: Display downloadable files, documents, PDFs, and resources
+Category: common
+Icon: <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+Keywords: Download, Resources, Files, PDFs, Documents
+Mode: auto
+Align: wide
+PostTypes: page post
+SupportsAlign: wide full
+SupportsMode: true
+SupportsMultiple: true
+#}
+
+<section id="downloads-{{block.id}}" class="downloads {{block.classes}} downloads--{{fields.layout|default('list')}}">
+	<div class="wrapper">
+		{% if fields.title %}
+			<div class="downloads__header">
+				<h2 class="downloads__title">{{ fields.title }}</h2>
+				{% if fields.description %}
+					<p class="downloads__description">{{ fields.description }}</p>
+				{% endif %}
+			</div>
+		{% endif %}
+
+		{% if fields.files %}
+			{% if fields.layout == 'grid' %}
+				<div class="downloads__grid downloads__grid--{{fields.columns|default(3)}}cols">
+					{% for file in fields.files %}
+						{# Extract file extension #}
+						{% set fileExt = file.file|split('.')|last|upper %}
+						<div class="downloads__item">
+							<div class="downloads__card">
+								<div class="downloads__icon">
+									<span class="downloads__ext">{{ fileExt|slice(0, 3) }}</span>
+								</div>
+								<div class="downloads__content">
+									<h3 class="downloads__label">{{ file.label }}</h3>
+									{% if file.description %}
+										<p class="downloads__item-description">{{ file.description }}</p>
+									{% endif %}
+									<div class="downloads__meta">
+										{% if fields.show_category and file.category %}
+											<span class="downloads__category downloads__category--{{ file.category }}">{{ file.category|replace({'-': ' '})|title }}</span>
+										{% endif %}
+										{% if fields.show_filesize %}
+											<span class="downloads__filesize">{{ fileExt }}</span>
+										{% endif %}
+									</div>
+								</div>
+								<a href="{{ file.file }}" download class="downloads__link downloads__link--card" aria-label="Download {{ file.label }}">
+									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+								</a>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			{% else %}
+				<div class="downloads__list">
+					{% for file in fields.files %}
+						{# Extract file extension #}
+						{% set fileExt = file.file|split('.')|last|upper %}
+						<div class="downloads__item downloads__item--list">
+							<div class="downloads__item-main">
+								<div class="downloads__icon downloads__icon--list">
+									<span class="downloads__ext">{{ fileExt|slice(0, 3) }}</span>
+								</div>
+								<div class="downloads__content">
+									<h3 class="downloads__label">{{ file.label }}</h3>
+									{% if file.description %}
+										<p class="downloads__item-description">{{ file.description }}</p>
+									{% endif %}
+								</div>
+							</div>
+							<div class="downloads__item-actions">
+								{% if fields.show_category and file.category %}
+									<span class="downloads__category downloads__category--{{ file.category }}">{{ file.category|replace({'-': ' '})|title }}</span>
+								{% endif %}
+								{% if fields.show_filesize %}
+									<span class="downloads__filesize">{{ fileExt }}</span>
+								{% endif %}
+								<a href="{{ file.file }}" download class="downloads__link downloads__link--list btn btn--secondary btn--sm" aria-label="Download {{ file.label }}">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+									Download
+								</a>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+		{% endif %}
+	</div>
+</section>
