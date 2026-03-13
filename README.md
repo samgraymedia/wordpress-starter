@@ -96,7 +96,9 @@ Complete documentation:
 - [CONFIG-GUIDE.md](CONFIG-GUIDE.md) - Configuration system
 - [COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md) - Twig components
 - [BEM-GUIDE.md](BEM-GUIDE.md) - CSS architecture
+- [STYLE-SHEET.md](STYLE-SHEET.md) - Design system variables, colors, typography, spacing
 - [OPTIONAL-FEATURES.md](OPTIONAL-FEATURES.md) - Optional plugins (WooCommerce, etc.)
+- [TODO.md](TODO.md) Our To Do list
 
 Start with [QUICK-REFERENCE.md](QUICK-REFERENCE.md) for a quick overview.
 

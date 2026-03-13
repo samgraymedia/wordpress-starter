@@ -941,5 +941,6 @@ For questions about this CSS architecture, refer to:
 
 1. Component comments in individual `.scss` files
 2. HTML examples in the Twig template files
-3. CONFIG-GUIDE.md for theme configuration
-4. COMPONENTS-GUIDE.md for Twig component usage
+3. [STYLE-SHEET.md](./STYLE-SHEET.md) for design system variables, colors, typography, and spacing
+4. [CONFIG-GUIDE.md](./CONFIG-GUIDE.md) for theme configuration
+5. [COMPONENTS-GUIDE.md](./COMPONENTS-GUIDE.md) for Twig component usage
