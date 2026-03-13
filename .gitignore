@@ -1,0 +1,49 @@
+# WordPress Configuration (contains database credentials & secret keys)
+wp-config.php
+
+# WordPress Core (version controlled separately, not needed in repo)
+/wp-admin/
+/wp-includes/
+/index.php
+/wp-*.php
+/xmlrpc.php
+
+# WordPress Content
+/wp-content/plugins/
+/wp-content/themes/*/node_modules/
+/wp-content/themes/*/dist/
+/wp-content/uploads/
+/wp-content/upgrade/
+/wp-content/languages/
+
+# Database files
+*.sql
+*.sqlc
+db_backup/
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment and Logs
+.env
+.env.local
+.env.*.local
+wp-content/debug.log
+*.log
+
+# Dependencies
+/node_modules/
+vendor/
+composer.lock
+
+# MAMP specific
+/nbproject/
+.project
+.buildpath
+.settings/
