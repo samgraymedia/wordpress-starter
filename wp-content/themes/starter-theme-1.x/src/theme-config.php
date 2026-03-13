@@ -28,9 +28,9 @@ class Theme_Config {
 	 * Get entire config array or specific section
 	 *
 	 * @param string|null $section Optional section key.
-	 * @return array<string, mixed>|mixed
+	 * @return array<string, mixed>
 	 */
-	public static function get( ?string $section = null ): mixed {
+	public static function get( ?string $section = null ) {
 		self::initialize();
 
 		if ( null === $section ) {

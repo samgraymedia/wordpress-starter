@@ -1,8 +1,8 @@
 === Prevent Browser Caching ===
 Tags: browser cache, clear, assets, frontend, development
 Requires at least: 4.0
-Tested up to: 6.1
-Stable tag: 2.3.4
+Tested up to: 6.5
+Stable tag: 2.3.5
 Donate link: https://tutori.org/donate/
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -50,6 +50,9 @@ Just insert this code in functions.php file of your theme and change the value o
 3. Activate Prevent Browser Caching on your Plugins page.
 
 == Changelog ==
+
+= 2.3.5 =
+* Tested the plugin in WordPress 6.5.
 
 = 2.3.4 =
 * Tested the plugin in WordPress 6.1.

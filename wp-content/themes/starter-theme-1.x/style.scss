@@ -1,5 +1,5 @@
 /*
-Theme Name: Abbie
+Theme Name: Starter Theme
 */
 // ============================================================================
 // SCSS Import Order (following SMACSS + BEM methodology)
@@ -21,10 +21,15 @@ Theme Name: Abbie
 @import "./css/inc/components/card";
 @import "./css/inc/components/alert";
 @import "./css/inc/components/badge";
+@import "./css/inc/components/product-card";
+@import "./css/inc/components/cart-summary";
 
 // 5. Global layout sections
 @import "./css/inc/global/nav";
+@import "./css/inc/global/forms";
 @import "./css/inc/global/footer";
+@import "./css/inc/global/shop";
+@import "./css/inc/global/product-single";
 
 // 6. Block-specific styles
 @import "./css/inc/blocks/text";

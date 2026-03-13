@@ -1,0 +1,20 @@
+{#
+  Shopping Cart Component
+  Displays shopping cart summary in header
+#}
+
+<div class="cart-summary">
+	<a href="{{ woocommerce.cart_url }}" class="cart-summary__link">
+		<span class="cart-summary__icon">🛒</span>
+		<span class="cart-summary__label">{{ _e('Cart', 'starter-theme-1.x') }}</span>
+		{% if woocommerce.cart_count > 0 %}
+			<span class="cart-summary__count">{{ woocommerce.cart_count }}</span>
+		{% endif %}
+	</a>
+
+	{% if woocommerce.cart_count > 0 %}
+		<div class="cart-summary__total">
+			{{ woocommerce.cart_total|safe }}
+		</div>
+	{% endif %}
+</div>

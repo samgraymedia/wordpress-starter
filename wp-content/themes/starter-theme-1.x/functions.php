@@ -68,10 +68,17 @@ class StarterSite extends Timber\Site {
 	/** Add timber support. */
 	public function __construct() {
 		add_action( 'after_setup_theme', array( $this, 'theme_supports' ) );
+		add_action( 'after_setup_theme', array( $this, 'create_login_register_pages' ), 20 );
 		add_filter( 'timber/context', array( $this, 'add_to_context' ) );
 		add_filter( 'timber/twig', array( $this, 'add_to_twig' ) );
 		add_action( 'init', array( $this, 'register_post_types' ) );
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
+		// Handle custom login and register pages at wp_loaded with high priority
+		add_action( 'wp_loaded', array( $this, 'handle_custom_login_register' ), 1 );
+		// Force Timber templates for WooCommerce pages (only if WooCommerce is active)
+		if ( $this->is_woocommerce_active() ) {
+			add_filter( 'template_include', array( $this, 'force_woocommerce_timber_templates' ), 999 );
+		}
 		parent::__construct();
 	}
 	/** This is where you can register custom post types. */
@@ -93,7 +100,75 @@ class StarterSite extends Timber\Site {
 		$context['notes'] = 'These values are available everytime you call Timber::context();';
 		$context['menu']  = new Timber\Menu();
 		$context['site']  = $this;
+		
+		// Add user context
+		$context['user'] = wp_get_current_user();
+		$context['user_id'] = get_current_user_id();
+		$context['is_user_logged_in'] = is_user_logged_in();
+		
 		return $context;
+	}
+
+	/**
+	 * Handle custom login and register pages
+	 * Load custom templates instead of WordPress defaults
+	 */
+	public function handle_custom_login_register( $wp ) {
+		// Check the current request URI
+		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+			$request_uri = $_SERVER['REQUEST_URI'];
+			$home_path    = wp_parse_url( home_url(), PHP_URL_PATH );
+			$request_path = str_replace( $home_path, '', $request_uri );
+			$request_path = trim( $request_path, '/' );
+			
+			// Handle /login request
+			if ( $request_path === 'login' || $request_path === 'login/' ) {
+				$login_file = get_stylesheet_directory() . '/login.php';
+				if ( file_exists( $login_file ) ) {
+					include( $login_file );
+					exit;
+				}
+			}
+			
+			// Handle /register request
+			if ( $request_path === 'register' || $request_path === 'register/' ) {
+				$register_file = get_stylesheet_directory() . '/register.php';
+				if ( file_exists( $register_file ) ) {
+					include( $register_file );
+					exit;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Create login and register pages if they don't exist
+	 * Called during theme initialization
+	 */
+	public function create_login_register_pages() {
+		// Create login page if it doesn't exist
+		$login_page = get_page_by_path( 'login' );
+		if ( ! $login_page ) {
+			wp_insert_post( array(
+				'post_type'   => 'page',
+				'post_title'  => 'Login',
+				'post_name'   => 'login',
+				'post_status' => 'publish',
+				'post_content' => '',
+			) );
+		}
+		
+		// Create register page if it doesn't exist
+		$register_page = get_page_by_path( 'register' );
+		if ( ! $register_page ) {
+			wp_insert_post( array(
+				'post_type'   => 'page',
+				'post_title'  => 'Create Account',
+				'post_name'   => 'register',
+				'post_status' => 'publish',
+				'post_content' => '',
+			) );
+		}
 	}
 
 	public function theme_supports(): void {
@@ -126,6 +201,53 @@ class StarterSite extends Timber\Site {
 		return $text;
 	}
 
+	/**
+	 * Check if WooCommerce is active
+	 * 
+	 * @return bool True if WooCommerce plugin is active.
+	 */
+	private function is_woocommerce_active(): bool {
+		return in_array(
+			'woocommerce/woocommerce.php',
+			get_option( 'active_plugins', array() ),
+			true
+		) || ( is_multisite() && array_key_exists( 'woocommerce/woocommerce.php', get_site_option( 'active_sitewide_plugins', array() ) ) );
+	}
+
+	/**
+	 * Force Timber templates for WooCommerce pages and custom pages
+	 * Override the default templates to use our Timber templates
+	 * Only runs if WooCommerce is active
+	 */
+	public function force_woocommerce_timber_templates( $template ) {
+		global $wp_query;
+		
+		// Get the current request to check for login/register pages
+		if ( isset( $wp_query->query_vars['pagename'] ) ) {
+			$page = $wp_query->query_vars['pagename'];
+			
+			if ( $page === 'login' ) {
+				$custom_template = get_stylesheet_directory() . '/login.php';
+				if ( file_exists( $custom_template ) ) {
+					return $custom_template;
+				}
+			}
+			
+			if ( $page === 'register' ) {
+				$custom_template = get_stylesheet_directory() . '/register.php';
+				if ( file_exists( $custom_template ) ) {
+					return $custom_template;
+				}
+			}
+		}
+		
+		if ( function_exists( 'is_shop' ) && ( is_shop() || is_product() || is_product_taxonomy() ) ) {
+			// Force use of our index.php which has Timber template routing
+			return get_stylesheet_directory() . '/index.php';
+		}
+		return $template;
+	}
+
 	/** This is where you can add your own functions to twig.
 	 *
 	 * @param string $twig get extension.
@@ -133,12 +255,41 @@ class StarterSite extends Timber\Site {
 	public function add_to_twig( $twig ) {
 		$twig->addExtension( new Twig\Extension\StringLoaderExtension() );
 		$twig->addFilter( new Twig\TwigFilter( 'myfoo', array( $this, 'myfoo' ) ) );
+		
+		// Add WordPress functions to Twig
+		$twig->addFunction( new Twig\TwigFunction( 'wp_title', 'wp_title' ) );
+		$twig->addFunction( new Twig\TwigFunction( 'bloginfo', 'bloginfo' ) );
+		$twig->addFunction( new Twig\TwigFunction( '_e', '_e' ) );
+		$twig->addFunction( new Twig\TwigFunction( '__', '__' ) );
+		$twig->addFunction( new Twig\TwigFunction( 'esc_attr', 'esc_attr' ) );
+		$twig->addFunction( new Twig\TwigFunction( 'wp_footer', 'wp_footer' ) );
+		$twig->addFunction( new Twig\TwigFunction( 'action', 'do_action' ) );
+		$twig->addFunction( new Twig\TwigFunction( 'get_search_query', 'get_search_query' ) );
+		$twig->addFunction( new Twig\TwigFunction( 'wp_logout_url', 'wp_logout_url' ) );
+		$twig->addFunction( new Twig\TwigFunction( 'wp_login_url', 'wp_login_url' ) );
+		$twig->addFunction( new Twig\TwigFunction( 'wp_registration_url', 'wp_registration_url' ) );
+		$twig->addFunction( new Twig\TwigFunction( 'get_option', 'get_option' ) );
+		$twig->addFunction( new Twig\TwigFunction( 'wp_nonce_field', 'wp_nonce_field' ) );
+		
+		// Add safe filter for HTML output
+		$twig->addFilter( new Twig\TwigFilter( 'safe', function( $string ) {
+			return $string;
+		}, array( 'is_safe' => array( 'html' ) ) ) );
+		
 		return $twig;
 	}
 
 }
 require_once( 'src/timber-acf-wp-blocks.php' );
 require_once( 'src/post-types-registry.php' );
+require_once( 'src/taxonomies-registry.php' );
+require_once( 'src/page-templates-registry.php' );
+
+// Only load WooCommerce integration if WooCommerce plugin is active
+if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', array() ), true ) 
+	|| ( is_multisite() && array_key_exists( 'woocommerce/woocommerce.php', get_site_option( 'active_sitewide_plugins', array() ) ) ) ) {
+	require_once( 'src/woocommerce-integration.php' );
+}
 
 // Auto-load blocks
 foreach ( glob( __DIR__ . '/src/blocks/*.php' ) as $block_file ) {

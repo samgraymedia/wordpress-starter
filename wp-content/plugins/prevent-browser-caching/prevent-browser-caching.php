@@ -2,9 +2,9 @@
 /**
  * Plugin Name: Prevent Browser Caching
  * Description: Updates the assets version of all CSS and JS files. Shows the latest changes on the site without asking the client to clear browser cache.
- * Version: 2.3.4
- * Author: Kostya Tereshchuk, ISRAEL IT
- * Author URI: https://tutori.org/israelit/
+ * Version: 2.3.5
+ * Author: Kostya Tereshchuk
+ * Author URI: https://tutori.org/kostya/
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: prevent-browser-caching

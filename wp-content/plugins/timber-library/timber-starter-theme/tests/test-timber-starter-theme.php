@@ -1,55 +1,64 @@
 <?php
 
-	class TestTimberStarterTheme extends WP_UnitTestCase {
+use Timber\Timber;
+use WorDBless\BaseTestCase;
 
-		function setUp() {
-			self::_setupStarterTheme();
-			switch_theme( basename( dirname( dirname( __FILE__ ) ) ) );
-			require_once(__DIR__.'/../functions.php');
-		}
+class TestTimberStarterTheme extends BaseTestCase
+{
 
-		function tearDown() {
-			switch_theme('twentythirteen');
-		}
+	public function set_up()
+	{
+		switch_theme(basename(dirname(__DIR__)) . '/theme');
 
-		function testTimberExists() {
-			$context = Timber::context();
-			$this->assertTrue(is_array($context));
-		}
+		require dirname(__DIR__) . '/functions.php';
 
-		function testFunctionsPHP() {
-			$context = Timber::context();
-			$this->assertEquals('StarterSite', get_class($context['site']));
-			$this->assertTrue(current_theme_supports('post-thumbnails'));
-			$this->assertEquals('bar', $context['foo']);
-		}
+		Timber::$dirname = array_merge((array) Timber::$dirname, ['../views']);
+		Timber::$dirname = array_unique(Timber::$dirname);
 
-		function testLoading() {
-			$str = Timber::compile('tease.twig');
-			$this->assertStringStartsWith('<article class="tease tease-" id="tease-">', $str);
-			$this->assertStringEndsWith('</article>', $str);
-		}
+		// WorDBless includes wp-settings.php
+		do_action('after_setup_theme');
 
-		/**
-		 * Helper test to output current twig version
-		 */
-		function testTwigVersion() {
-			$str = Timber::compile_string("{{ constant('Twig_Environment::VERSION') }}");
-			//error_log('Twig version = '.$str);
-		}
-
-		function testTwigFilter() {
-			$str = Timber::compile_string('{{ "foo" | myfoo }}');
-			$this->assertEquals('foo bar!', $str);
-		}
-
-		static function _setupStarterTheme(){
-			$dest = WP_CONTENT_DIR . '/themes/' . basename( dirname( dirname( __FILE__ ) ) );
-			$src  = realpath( __DIR__ . '/../../' . basename( dirname( dirname( __FILE__ ) ) ) );
-			if ( is_dir($src) && !file_exists($dest) ) {
-				symlink($src, $dest);
-			}
-		}
-
-
+		parent::set_up();
 	}
+
+	function tear_down()
+	{
+		parent::tear_down();
+		switch_theme('twentytwenty');
+	}
+
+	function testTimberExists()
+	{
+		$context = Timber::context();
+		$this->assertTrue(is_array($context));
+	}
+
+	function testFunctionsPHP()
+	{
+		$context = Timber::context();
+		$this->assertEquals('App\StarterSite', get_class($context['site']));
+		$this->assertTrue(current_theme_supports('post-thumbnails'));
+		$this->assertEquals('bar', $context['foo']);
+	}
+
+	function testLoading()
+	{
+		$str = Timber::compile('partials/tease.twig');
+		$this->assertStringStartsWith('<article class="tease tease-" id="tease-">', $str);
+		$this->assertStringEndsWith('</article>', $str);
+	}
+
+	/**
+	 * Helper test to output current twig version
+	 */
+	function testTwigVersion()
+	{
+		$version = Timber::compile_string("{{ version }}", ['version' => Twig\Environment::VERSION]);
+		$this->assertEquals(Twig\Environment::VERSION, $version);
+	}
+
+	// function testTwigFilter() {
+	// 	$str = Timber::compile_string('{{ "foo"|myfoo }}');
+	// 	$this->assertEquals('foo bar!', $str);
+	// }
+}

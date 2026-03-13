@@ -8,21 +8,36 @@
 {% extends "base.twig" %}
 
 {% block content %}
-  <div class="content-wrapper">
-    <h1>{{ _e('Search Results') }}: "{{ get_search_query() }}"</h1>
-    
-    {% if posts %}
-      <div class="search-results" role="region" aria-label="{{ _e('Search results') }}">
-        {% for post in posts %}
-          {% include ['tease-'~post.post_type~'.twig', 'tease.twig'] %}
-        {% endfor %}
-      </div>
+	<div class="search-results-wrapper">
+		<div class="container">
+			<h1 class="search-results__title">{{ _e('Search Results') }}: "{{ get_search_query() }}"</h1>
 
-      {% include 'partial/pagination.twig' with { pagination: posts.pagination({show_all: false, mid_size: 3, end_size: 2}) } %}
-    {% else %}
-      <div class="search-no-results" role="status" aria-live="polite">
-        <p>{{ _e('No results found for your search.') }}</p>
-      </div>
-    {% endif %}
-  </div>
+			{% if posts %}
+				{# Check if searching for products #}
+				{% if posts[0].post_type == 'product' %}
+					{# Display products in a grid #}
+					<div class="search-results__products">
+						{% for post in posts %}
+							{% include "components/product-card.twig" with { product: post } %}
+						{% endfor %}
+					</div>
+				{% else %}
+					{# Display other post types with teasers #}
+					<div class="search-results" role="region" aria-label="{{ _e('Search results') }}">
+						{% for post in posts %}
+							{% include ['tease-'~post.post_type~'.twig', 'tease.twig'] %}
+						{% endfor %}
+					</div>
+				{% endif %}
+
+				{% include 'partial/pagination.twig' with { pagination: posts.pagination({show_all: false, mid_size: 3, end_size: 2}) } %}
+			{% else %}
+				<div class="search-no-results" role="status" aria-live="polite">
+					<p>{{ _e('No results found for:') }}
+						"{{ get_search_query() }}"</p>
+					<p>{{ _e('Try different keywords or browse our shop.') }}</p>
+				</div>
+			{% endif %}
+		</div>
+	</div>
 {% endblock %}

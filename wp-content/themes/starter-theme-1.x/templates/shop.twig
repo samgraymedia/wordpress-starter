@@ -1,0 +1,68 @@
+{#
+  WooCommerce Shop Page Template
+  Displays all products with pagination
+#}
+
+{% extends "base.twig" %}
+
+{% block content %}
+	<div class="shop">
+		<div
+			class="container">
+
+			{# Shop header #}
+			<div class="shop__header">
+				<h1 class="shop__title">{{ shop_title }}</h1>
+				{% if shop_description %}
+					<div class="shop__description">
+						{{ shop_description }}
+					</div>
+				{% endif %}
+			</div>
+
+			<div
+				class="shop__wrapper">
+
+				{# Sidebar with filters #}
+				{% if sidebar %}
+					<aside class="shop__sidebar">
+						{% include "sidebar.twig" %}
+					</aside>
+				{% endif %}
+
+				{# Main shop content #}
+				<main
+					class="shop__main">
+
+					{# Shop toolbar (sorting, view options) #}
+					<div class="shop__toolbar">
+						{% do action('woocommerce_before_shop_loop') %}
+					</div>
+
+					{# Products grid #}
+					{% if posts %}
+						<div class="shop__products">
+							{% for product in posts %}
+								{% include "components/product-card.twig" with {
+                  product: product
+                } %}
+							{% endfor %}
+						</div>
+					{% else %}
+						<div class="shop__empty">
+							<p>{{ _e('No products found', 'starter-theme-1.x') }}</p>
+						</div>
+					{% endif %}
+
+					{# Pagination #}
+					<nav class="shop__pagination">
+						{{ posts_pagination }}
+					</nav>
+
+				</main>
+
+			</div>
+
+		</div>
+	</div>
+{% endblock %}

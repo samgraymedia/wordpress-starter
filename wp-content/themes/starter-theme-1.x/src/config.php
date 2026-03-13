@@ -11,7 +11,7 @@ return array(
 	 * Theme Metadata
 	 */
 	'theme'      => array(
-		'name'        => 'Eleanor\'s Driving School',
+		'name'        => 'Starter Theme',
 		'textdomain'  => 'starter-theme-1.x',
 		'description' => 'A modern, modular WordPress theme built with Timber and ACF',
 		'version'     => '1.0.0',
@@ -63,6 +63,9 @@ return array(
 		'large'          => array( 1024, 0, false ),
 		'hero'           => array( 1200, 300, true ),
 		'post_thumbnail' => array( 300, 200, true ),
+		// WooCommerce image sizes (only registered if WooCommerce is active)
+		'woocommerce_thumbnail' => array( 300, 300, true ),
+		'woocommerce_single'    => array( 600, 600, true ),
 	),
 
 	/**
@@ -88,6 +91,7 @@ return array(
 			'audio',
 		),
 		'menus'                => true,
+		// 'woocommerce'          => true, // Optional - plugin support enabled if WooCommerce is active
 	),
 
 	/**
@@ -139,6 +143,14 @@ return array(
 		'allowed_types' => array(
 			'svg' => 'image/svg+xml',
 		),
+	),
+
+	/**
+	 * WooCommerce Settings (Optional - only uses if WooCommerce plugin is active)
+	 */
+	'woocommerce' => array(
+		'remove_defaults'  => true, // Remove default WooCommerce styles when active
+		'disable_cart_fragments' => true, // Disable cart fragments AJAX when active
 	),
 
 	/**

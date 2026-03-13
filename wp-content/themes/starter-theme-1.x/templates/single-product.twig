@@ -1,0 +1,119 @@
+{#
+  WooCommerce Single Product Page Template
+  Displays a single product with images, price, description, and add to cart
+#}
+
+{% extends "base.twig" %}
+
+{% block content %}
+	<div class="product-single">
+		<div class="container">
+
+			<div
+				class="product-single__wrapper">
+
+				{# Product images #}
+				<div class="product-single__images">
+					{% if product.get_image('woocommerce_single') %}
+						<div class="product-single__main-image">
+							{{ product.get_image('woocommerce_single')|safe }}
+						</div>
+					{% endif %}
+
+					{# Product gallery #}
+					{% if product.get_gallery_image_ids() %}
+						<div class="product-single__gallery">
+							{% for image_id in product.get_gallery_image_ids() %}
+								<div class="product-single__gallery-item">
+									{{ image_id|product_image }}
+								</div>
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+
+			{# Product details #}
+			<div class="product-single__details">
+
+				{# Breadcrumbs #}
+				{# WooCommerce breadcrumbs are handled by the theme #}
+					<div class="product-single__breadcrumbs"> {# Breadcrumbs would go here #}
+
+					{# Title and rating #}<h1 class="product-single__title"> {{ product.get_title() }}</h1>
+
+					<div class="product-single__rating">
+						{% do action('woocommerce_single_product_summary') %}
+					</div>
+
+					{# Price #}
+					<div class="product-single__price">
+						{{ product.get_price_html()|safe }}
+					</div>
+
+					{# Sale badge #}
+					{% if product|is_on_sale %}
+						<span class="badge badge--sale">{{ _e('Sale!', 'starter-theme-1.x') }}</span>
+					{% endif %}
+
+					{# Short description #}
+					{% if product.get_short_description() %}
+						<div class="product-single__excerpt">
+							{{ product.get_short_description()|safe }}
+						</div>
+					{% endif %}
+
+					{# Add to cart form #}
+					<div class="product-single__cart">
+						{% do action('woocommerce_after_single_product_summary', 20) %}
+					</div>
+
+					{# Product meta #}
+					<div class="product-single__meta">
+						{% if product.get_sku() %}
+							<p class="product-single__sku">
+								<strong>{{ _e('SKU:', 'starter-theme-1.x') }}</strong>
+								{{ product.get_sku() }}
+							</p>
+						{% endif %}
+
+						{% if product.get_categories() %}
+							<p class="product-single__categories">
+								<strong>{{ _e('Categories:', 'starter-theme-1.x') }}</strong>
+								{% for category in product.get_categories() %}
+									<a href="{{ category.get_permalink() }}">{{ category.get_name() }}</a>
+									{% if not loop.last %},
+									{% endif %}
+								{% endfor %}
+							</p>
+						{% endif %}
+
+						{% if product.get_tags() %}
+							<p class="product-single__tags">
+								<strong>{{ _e('Tags:', 'starter-theme-1.x') }}</strong>
+								{% for tag in product.get_tags() %}
+									<a href="{{ tag.get_permalink() }}">{{ tag.get_name() }}</a>
+									{% if not loop.last %},
+									{% endif %}
+								{% endfor %}
+							</p>
+						{% endif %}
+					</div>
+
+				</div>
+
+			</div>
+
+			{# Product description tabs #}
+			<div class="product-single__tabs">
+				{% do action('woocommerce_after_single_product_summary', 10) %}
+			</div>
+
+			{# Related products #}
+			<div class="product-single__related">
+				{% do action('woocommerce_after_single_product_summary', 20) %}
+			</div>
+
+		</div>
+	</div>
+{% endblock %}

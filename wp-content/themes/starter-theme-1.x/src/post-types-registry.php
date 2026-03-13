@@ -81,7 +81,7 @@ if ( ! class_exists( 'Timber_Post_Types' ) ) {
 		 * @param string $file File path to parse.
 		 * @return array<string, mixed>|false Post type configuration or false if invalid
 		 */
-		private function parse_post_type_file( string $file ): array | false {
+		private function parse_post_type_file( string $file ) {
 			$headers = get_file_data(
 				$file,
 				array(

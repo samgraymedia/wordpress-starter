@@ -1,0 +1,33 @@
+{% extends "base.twig" %}
+
+{#
+  Full Width Page Template
+  
+  Renders a page without sidebars, spanning the full content width.
+  Used when a page is assigned the "Full Width Page" template.
+#}
+
+{% block content %}
+	<div class="content-wrapper full-width">
+		<article class="post-type-{{ post.post_type }}" id="post-{{ post.ID }}">
+			{% if post.thumbnail %}
+				<figure class="page-hero">
+					<img src="{{ post.thumbnail.src|resize(1200, 400) }}" alt="{{ post.title }}" class="page-hero-image" width="1200" height="400"/>
+					{% if post.title %}
+						<figcaption class="sr-only">{{ post.title }}</figcaption>
+					{% endif %}
+				</figure>
+			{% endif %}
+
+			<section class="page-content full-width-content">
+				<div class="container-fluid">
+					<h1 class="page-title">{{ post.title }}</h1>
+
+					<div class="page-body">
+						{{ post.content }}
+					</div>
+				</div>
+			</section>
+		</article>
+	</div>
+{% endblock %}

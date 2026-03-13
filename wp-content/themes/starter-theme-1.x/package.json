@@ -1,7 +1,7 @@
 {
-  "name": "eleanor-driving-school",
+  "name": "starter-theme",
   "version": "1.0.0",
-  "description": "Eleanor's Driving School WordPress Theme",
+  "description": "Starter Theme WordPress Theme",
   "scripts": {
     "sass": "sass style.scss:style.css --style=compressed --no-source-map",
     "watch": "sass style.scss:style.css --watch --style=compressed --no-source-map"

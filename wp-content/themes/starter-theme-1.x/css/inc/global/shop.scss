@@ -1,0 +1,14 @@
+/**
+ * Shop Page Styles - BEM Methodology
+ * Block: .shop
+ * Elements: .shop__header, .shop__title, .shop__products, .shop__sidebar, .shop__main, .shop__toolbar, .shop__pagination
+ * Modifiers: .shop--wide, .shop--sidebar
+ *
+ * Main shop page layout with product grid, filters, and pagination
+ */
+
+@import "../base/vars";
+
+// ============================================
+// Shop Container
+// ============================================

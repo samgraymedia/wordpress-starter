@@ -1,0 +1,53 @@
+{#
+  Product Card Component
+  Displays a single product in grid view
+  
+  Variables:
+    - product: WooCommerce product object
+#}
+
+<div class="product-card">
+
+	<div class="product-card__image">
+		{% if product.get_image('woocommerce_thumbnail') %}
+			<a href="{{ product.get_permalink() }}" class="product-card__image-link">
+				{{ product.get_image('woocommerce_thumbnail')|safe }}
+			</a>
+		{% endif %}
+
+		{% if product|is_on_sale %}
+			<span class="badge badge--sale">{{ _e('Sale!', 'starter-theme-1.x') }}</span>
+		{% endif %}
+	</div>
+
+	<div class="product-card__body">
+
+		<h3 class="product-card__title">
+			<a href="{{ product.get_permalink() }}">{{ product.get_title() }}</a>
+		</h3>
+
+		{% if product.get_average_rating() > 0 %}
+			<div class="product-card__rating">
+				{{ product.get_rating_html()|safe }}
+			</div>
+		{% endif %}
+
+		<div class="product-card__price">
+			{{ product.get_price_html()|safe }}
+		</div>
+
+		{% if product.get_short_description() %}
+			<div class="product-card__excerpt">
+				{{ product.get_short_description()|safe }}
+			</div>
+		{% endif %}
+
+	</div>
+
+	<div class="product-card__footer">
+		<a href="{{ product.get_permalink() }}" class="btn btn--primary btn--sm">
+			{{ _e('View Product', 'starter-theme-1.x') }}
+		</a>
+	</div>
+
+</div>

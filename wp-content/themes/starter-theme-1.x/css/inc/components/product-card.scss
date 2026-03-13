@@ -1,0 +1,14 @@
+/**
+ * Product Card Component - BEM Methodology
+ * Block: .product-card
+ * Elements: .product-card__image, .product-card__body, .product-card__title, .product-card__price, .product-card__rating, .product-card__footer
+ * Modifiers: .product-card--featured, .product-card--compact
+ *
+ * Stunning product display with hover effects, ratings, pricing, and add to cart functionality
+ */
+
+@import "../base/vars";
+
+// ============================================
+// Product Card Container
+// ============================================
