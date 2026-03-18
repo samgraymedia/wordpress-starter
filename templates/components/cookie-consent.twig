@@ -1,0 +1,137 @@
+{#
+Cookie Consent Banner & Preferences Modal
+GDPR compliant cookie consent UI with customizable preferences
+#}
+
+{# Cookie Consent Banner #}
+<div id="cookie-consent-banner" class="cookie-consent-banner" style="display: none;">
+    <div class="cookie-consent-banner__container">
+        <div class="cookie-consent-banner__content">
+            <h3 class="cookie-consent-banner__title">We use cookies</h3>
+            <p class="cookie-consent-banner__description">
+                We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic.
+                By clicking "Accept All", you consent to our use of cookies.
+                <a href="/privacy-policy" class="cookie-consent-banner__link" target="_blank" rel="noopener">Privacy Policy</a>
+            </p>
+        </div>
+
+        <div class="cookie-consent-banner__actions">
+            <button type="button" class="cookie-consent-banner__btn cookie-consent-banner__btn--secondary" data-reject-all>
+                Reject All
+            </button>
+            <button type="button" class="cookie-consent-banner__btn cookie-consent-banner__btn--secondary" data-customize-consent>
+                Customize
+            </button>
+            <button type="button" class="cookie-consent-banner__btn cookie-consent-banner__btn--primary" data-accept-all>
+                Accept All
+            </button>
+        </div>
+    </div>
+</div>
+
+{# Cookie Preferences Modal #}
+<div id="cookie-preferences-modal" class="cookie-preferences-modal">
+    <div class="cookie-preferences-modal__overlay" data-close-preferences></div>
+    
+    <div class="cookie-preferences-modal__dialog">
+        <div class="cookie-preferences-modal__header">
+            <h2 class="cookie-preferences-modal__title">Cookie Preferences</h2>
+            <button type="button" class="cookie-preferences-modal__close" data-close-preferences aria-label="Close preferences">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="cookie-preferences-modal__content">
+            <p class="cookie-preferences-modal__intro">
+                We use different types of cookies to improve your experience. Choose which cookies you allow us to use:
+            </p>
+
+            {# Necessary Cookies #}
+            <div class="cookie-preferences-modal__section">
+                <div class="cookie-preferences-modal__item">
+                    <div class="cookie-preferences-modal__header-row">
+                        <label class="cookie-preferences-modal__label" for="consent-necessary">
+                            <strong>Necessary Cookies</strong>
+                            <span class="cookie-preferences-modal__badge">Always On</span>
+                        </label>
+                    </div>
+                    <p class="cookie-preferences-modal__description">
+                        Required for core site functionality (security, session management). These cannot be turned off.
+                    </p>
+                </div>
+            </div>
+
+            {# Analytics Cookies #}
+            <div class="cookie-preferences-modal__section">
+                <div class="cookie-preferences-modal__item">
+                    <div class="cookie-preferences-modal__header-row">
+                        <label class="cookie-preferences-modal__label" for="consent-analytics">
+                            <input 
+                                type="checkbox" 
+                                id="consent-analytics" 
+                                data-pref-analytics 
+                                class="cookie-preferences-modal__checkbox"
+                                aria-label="Allow analytics cookies"
+                            />
+                            <strong>Analytics Cookies</strong>
+                        </label>
+                    </div>
+                    <p class="cookie-preferences-modal__description">
+                        Help us understand how you use our site. We use this data to improve your experience and site performance.
+                    </p>
+                </div>
+            </div>
+
+            {# Marketing Cookies #}
+            <div class="cookie-preferences-modal__section">
+                <div class="cookie-preferences-modal__item">
+                    <div class="cookie-preferences-modal__header-row">
+                        <label class="cookie-preferences-modal__label" for="consent-marketing">
+                            <input 
+                                type="checkbox" 
+                                id="consent-marketing" 
+                                data-pref-marketing 
+                                class="cookie-preferences-modal__checkbox"
+                                aria-label="Allow marketing cookies"
+                            />
+                            <strong>Marketing Cookies</strong>
+                        </label>
+                    </div>
+                    <p class="cookie-preferences-modal__description">
+                        Used for advertising purposes to show you relevant ads based on your interests across websites.
+                    </p>
+                </div>
+            </div>
+
+            {# Preferences Cookies #}
+            <div class="cookie-preferences-modal__section">
+                <div class="cookie-preferences-modal__item">
+                    <div class="cookie-preferences-modal__header-row">
+                        <label class="cookie-preferences-modal__label" for="consent-preferences">
+                            <input 
+                                type="checkbox" 
+                                id="consent-preferences" 
+                                data-pref-preferences 
+                                class="cookie-preferences-modal__checkbox"
+                                aria-label="Allow preference cookies"
+                            />
+                            <strong>Preference Cookies</strong>
+                        </label>
+                    </div>
+                    <p class="cookie-preferences-modal__description">
+                        Remember your choices and preferences to personalize your experience on our site.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cookie-preferences-modal__footer">
+            <button type="button" class="cookie-preferences-modal__btn cookie-preferences-modal__btn--secondary" data-close-preferences>
+                Cancel
+            </button>
+            <button type="button" class="cookie-preferences-modal__btn cookie-preferences-modal__btn--primary" data-save-preferences>
+                Save Preferences
+            </button>
+        </div>
+    </div>
+</div>

@@ -93,7 +93,7 @@ A clean way to show partners, brands, accreditations, or press mentions.
 
 ## 3. Stats / Metrics
 
-**Status:** Not started  
+**Status:** ✅ Complete  
 **Priority:** High  
 **Complexity:** Low
 
@@ -103,15 +103,43 @@ For "10,000 customers served", "25 years experience", "99.9% uptime".
 
 - Good for business, SaaS, charity, council, and service sites
 - Fills gap between CTA and content
+- Highly reusable, works on any site type
 
-**Typical fields:**
+**Implemented Features:**
 
-- Number
-- Prefix / suffix
-- Label
-- Optional description
-- Columns
-- Background style
+- Section title and description
+- Statistics repeater with:
+  - Number/value (any format: 10000, 99%, \$2.5M, etc.)
+  - Label (what the stat represents)
+  - Description (optional detail)
+  - Icon (Font Awesome class, optional)
+  - Color (Primary, Secondary, Success, Warning, Info, Danger)
+- Two layout styles:
+  - **Card Layout** (backgrounds with hover lift effect)
+  - **Minimal Layout** (clean, numbers-focused)
+- Column layout options: 2, 3, or 4 columns
+- Background options: White, Light Gray, or Gradient
+- Responsive design: 4 cols → 3 → 2 → 1 on mobile
+- Icon styling with color backgrounds
+- Card hover effects (elevation + scale animation)
+- Mobile-first responsive design
+- BEM semantic HTML structure
+
+**Files Created:**
+
+- `src/blocks/stats.php` (154 lines) - ACF field configuration
+- `views/blocks/stats.twig` (55 lines) - Block template with card and minimal layouts
+- `css/inc/blocks/stats.scss` (351 lines) - BEM styling with responsive design
+
+**Features:**
+
+- Font Awesome icon support
+- Color-coded icons with background containers
+- Flexible number format support (handles percentages, currency, large numbers)
+- Smooth transitions and hover animations
+- Gradient background support for visual impact
+- Accessibility: semantic HTML, proper heading hierarchy
+- Mobile-responsive from 4 columns down to 1
 
 ---
 
@@ -723,7 +751,106 @@ Centralized error handling and logging for JavaScript errors and console debuggi
 
 ---
 
-## 8. Deployment Guide & CI/CD Documentation
+## 8. GDPR Cookie Consent System
+
+**Status:** ✅ Complete  
+**Priority:** High  
+**Complexity:** Medium  
+**Est. Effort:** 8-12 hours
+
+GDPR-compliant cookie consent banner with preferences modal and analytics integration.
+
+**Why add it:**
+
+- Required for GDPR and privacy compliance
+- Major liability if missing from EU-accessible sites
+- Consent management essential for tracking tools
+
+**Implemented Features:**
+
+- Cookie consent banner (fixed bottom, auto-hides if preference saved)
+- Preferences modal with granular controls
+- Four cookie categories:
+  - **Necessary** (always on, non-negotiable)
+  - **Analytics** (Google Analytics, traffic tracking)
+  - **Marketing** (ads, retargeting, pixels)
+  - **Preferences** (user-specific personalization)
+- User actions:
+  - Accept All → All categories enabled
+  - Reject All → Only necessary enabled
+  - Customize → Opens modal for granular choice
+- Preference persistence (localStorage, 365 days)
+- Google Analytics 4 (gtag) integration ready
+- Custom event system for 3rd-party script integration
+- Event tracking with consent gating (`trackEvent()` function)
+- Accessible UI (WCAG 2.1 AA compliant)
+- Mobile-responsive design
+- Zero dependencies (pure JavaScript)
+
+**Files Created:**
+
+- `scripts/utils/cookies.js` (107 lines)
+  - Cookie management: read, write, delete
+  - Preference storage and retrieval
+  - Consent checks by category
+- `scripts/modules/cookie-consent.js` (153 lines)
+  - Main orchestration module
+  - Banner and modal UI control
+  - User preference saving
+  - Optional script loading
+  - Event tracking integration
+- `templates/components/cookie-consent.twig` (129 lines)
+  - Banner HTML structure
+  - Preferences modal dialog
+  - Form controls and buttons
+- `css/inc/components/cookie-consent.scss` (380 lines)
+  - BEM component styling
+  - Animations (slideUp/slideDown)
+  - Modal dialog pattern
+  - Responsive layout
+  - Focus states and accessibility
+
+**Files Updated:**
+
+- `style.scss` - Added component stylesheet import
+- `scripts/index.js` - Added module initialization
+- `templates/base.twig` - Added component include
+
+**Key Functions:**
+
+```javascript
+import { hasConsent, getConsentPreferences } from "./utils/cookies.js";
+import { trackEvent } from "./modules/cookie-consent.js";
+
+// Check if user consented to analytics
+if (hasConsent("analytics")) {
+  // Load Google Analytics
+}
+
+// Track event with consent check
+trackEvent("page_view", { page: "home" });
+
+// Get all preferences
+const prefs = getConsentPreferences();
+```
+
+**Documentation:**
+
+- Complete guide: [GDPR-GUIDE.md](./GDPR-GUIDE.md)
+- Covers configuration, integration, compliance, testing, troubleshooting
+- Privacy policy template examples included
+
+**Build Results:**
+
+- 0 errors
+- Module count: 9 → 11
+- JS bundle: +1.89 kB (gzip +0.55 kB)
+- Overall JS: 10.32 kB (gzip: 3.34 kB)
+- Build time: 176ms
+
+---
+
+## 9. Deployment Guide & CI/CD Documentation
 
 **Status:** Not started  
 **Priority:** Medium  
@@ -751,7 +878,7 @@ Comprehensive deployment procedures and automated testing pipeline documentation
 
 ---
 
-## 9. Dark Mode Support (CSS Variables & Toggle Component)
+## 10. Dark Mode Support (CSS Variables & Toggle Component)
 
 **Status:** Not started  
 **Priority:** Medium  
@@ -783,7 +910,7 @@ Convert colors to CSS variables, add dark mode variant, and create theme toggle 
 
 ---
 
-## 10. Load Performance Monitoring & Optimization Guide
+## 11. Load Performance Monitoring & Optimization Guide
 
 **Status:** Not started  
 **Priority:** Medium  
@@ -811,7 +938,7 @@ Web Vitals tracking, performance budgets, and optimization best practices guide.
 
 ---
 
-## 11. Advanced Form Features (Gravity Forms Integration Block)
+## 12. Advanced Form Features (Gravity Forms Integration Block)
 
 **Status:** Not started  
 **Priority:** Medium  

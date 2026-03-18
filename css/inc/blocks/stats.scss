@@ -1,0 +1,290 @@
+/**
+ * Stats / Metrics Block - BEM Methodology
+ *
+ * Block: .stats
+ * Elements: .stats__header, .stats__title, .stats__description, .stats__grid, .stats__item,
+ *           .stats__card, .stats__minimal, .stats__icon, .stats__number, .stats__label
+ * Modifiers: .stats--card, .stats--minimal
+ *           .stats__icon--primary, .stats__icon--secondary, .stats__icon--success, etc.
+ *
+ * Usage:
+ * <section class="stats stats--card">
+ *     <div class="stats__grid stats__grid--4cols">
+ *         <div class="stats__item">
+ *             <div class="stats__card">
+ *                 <div class="stats__icon stats__icon--primary">
+ *                     <i class="fa-solid fa-users"></i>
+ *                 </div>
+ *                 <div class="stats__content">
+ *                     <div class="stats__number">10,000</div>
+ *                     <h3 class="stats__label">Customers Served</h3>
+ *                 </div>
+ *             </div>
+ *         </div>
+ *     </div>
+ * </section>
+ */
+
+.stats {
+  padding: $spacing-6 0;
+  background-color: $white;
+}
+
+// Header Section
+.stats__header {
+  text-align: center;
+  margin-bottom: $spacing-6;
+
+  @media (max-width: $breakpoint-md) {
+    margin-bottom: $spacing-5;
+  }
+}
+
+.stats__title {
+  font-size: $font-3xl;
+  font-weight: $font-bold;
+  margin-bottom: $spacing-2;
+  color: $text-color;
+
+  @media (max-width: $breakpoint-md) {
+    font-size: $font-2xl;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    font-size: $font-xl;
+  }
+}
+
+.stats__description {
+  font-size: $font-base;
+  color: $text-muted;
+  line-height: $line-height-base;
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media (max-width: $breakpoint-md) {
+    font-size: $font-sm;
+  }
+}
+
+// Grid Layout
+.stats__grid {
+  display: grid;
+  gap: $grid-gap;
+
+  // Column variants
+  &--2cols {
+    grid-template-columns: repeat(2, 1fr);
+
+    @media (max-width: $breakpoint-lg) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--3cols {
+    grid-template-columns: repeat(3, 1fr);
+
+    @media (max-width: $breakpoint-lg) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--4cols {
+    grid-template-columns: repeat(4, 1fr);
+
+    @media (max-width: $breakpoint-lg) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// Individual Item
+.stats__item {
+  display: flex;
+  flex-direction: column;
+}
+
+// Card Layout Style
+.stats__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: $spacing-3;
+  padding: $spacing-5;
+  background-color: $white;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  transition: all $transition-normal;
+
+  @media (max-width: $breakpoint-sm) {
+    padding: $spacing-4;
+  }
+
+  &:hover {
+    border-color: $primary;
+    box-shadow: $shadow-md;
+    transform: translateY(-4px);
+  }
+
+  // Dark backgrounds need light cards
+  .stats--bg-gradient & {
+    background-color: rgba($white, 0.1);
+    border-color: rgba($white, 0.2);
+
+    &:hover {
+      background-color: rgba($white, 0.2);
+      border-color: rgba($white, 0.4);
+    }
+  }
+}
+
+// Minimal Layout Style
+.stats__minimal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: $spacing-2;
+  padding: $spacing-4 0;
+  transition: all $transition-fast;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-3 0;
+  }
+}
+
+// Icon Element
+.stats__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: $border-radius-lg;
+  font-size: $font-2xl;
+  transition: all $transition-normal;
+
+  @media (max-width: $breakpoint-md) {
+    width: 56px;
+    height: 56px;
+    font-size: $font-xl;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    width: 48px;
+    height: 48px;
+    font-size: $font-lg;
+  }
+
+  // Color variants for icons with backgrounds
+  &--primary {
+    background-color: rgba($primary, 0.1);
+    color: $primary;
+  }
+
+  &--secondary {
+    background-color: rgba($secondary, 0.1);
+    color: $secondary;
+  }
+
+  &--success {
+    background-color: rgba($success, 0.1);
+    color: $success;
+  }
+
+  &--warning {
+    background-color: rgba($warning, 0.1);
+    color: $warning;
+  }
+
+  &--info {
+    background-color: rgba($info, 0.1);
+    color: $info;
+  }
+
+  &--danger {
+    background-color: rgba($danger, 0.1);
+    color: $danger;
+  }
+
+  // Icon hover effect (lift)
+  .stats__card:hover & {
+    transform: scale(1.15);
+  }
+
+  .stats__minimal:hover & {
+    transform: scale(1.1);
+  }
+}
+
+// Content Wrapper
+.stats__content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+// Large Prominent Number
+.stats__number {
+  font-size: $font-5xl;
+  font-weight: $font-bold;
+  color: $primary;
+  line-height: 1;
+  margin: 0;
+
+  @media (max-width: $breakpoint-lg) {
+    font-size: $font-4xl;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    font-size: $font-3xl;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    font-size: $font-2xl;
+  }
+}
+
+// Stat Label
+.stats__label {
+  font-size: $font-lg;
+  font-weight: $font-semibold;
+  color: $text-color;
+  margin: 0;
+  line-height: $line-height-base;
+
+  @media (max-width: $breakpoint-md) {
+    font-size: $font-base;
+  }
+}
+
+// Optional Description
+.stats__item-description {
+  font-size: $font-sm;
+  color: $text-muted;
+  line-height: $line-height-base;
+  margin: $spacing-2 0 0;
+
+  @media (max-width: $breakpoint-sm) {
+    font-size: $font-xs;
+  }
+}

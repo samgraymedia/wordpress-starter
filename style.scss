@@ -1,0 +1,61 @@
+/*
+Theme Name: Starter Theme
+*/
+// ============================================================================
+// SCSS Import Order (following SMACSS + BEM methodology)
+// ============================================================================
+
+// 1. Bootstrap framework
+@import "./node_modules/bootstrap/scss/bootstrap";
+
+// 2. Base styles (variables, functions, mixins, resets)
+@import "./css/inc/base/vars";
+@import "./css/inc/base/reset";
+@import "./css/inc/base/layout";
+@import "./css/inc/base/font";
+
+// 3. Base components (buttons and other elemental components)
+@import "./css/inc/base/btns";
+
+// 4. Reusable components (BEM components)
+@import "./css/inc/components/card";
+@import "./css/inc/components/alert";
+@import "./css/inc/components/badge";
+@import "./css/inc/components/product-card";
+@import "./css/inc/components/cart-summary";
+@import "./css/inc/components/cookie-consent";
+
+// 5. Global layout sections
+@import "./css/inc/global/nav";
+@import "./css/inc/global/forms";
+@import "./css/inc/global/footer";
+@import "./css/inc/global/shop";
+@import "./css/inc/global/product-single";
+
+// 6. Block-specific styles
+@import "./css/inc/blocks/text";
+@import "./css/inc/blocks/hero";
+@import "./css/inc/blocks/banner";
+@import "./css/inc/blocks/image-text";
+@import "./css/inc/blocks/cta";
+@import "./css/inc/blocks/gallery";
+@import "./css/inc/blocks/gallery-lightbox";
+@import "./css/inc/blocks/slider";
+@import "./css/inc/blocks/video";
+@import "./css/inc/blocks/newsletter";
+@import "./css/inc/blocks/accordion";
+@import "./css/inc/blocks/contact";
+@import "./css/inc/blocks/announcement";
+@import "./css/inc/blocks/share-buttons";
+@import "./css/inc/blocks/tabs";
+@import "./css/inc/blocks/blog-posts";
+@import "./css/inc/blocks/logo-grid";
+@import "./css/inc/blocks/downloads";
+@import "./css/inc/blocks/testimonial";
+@import "./css/inc/blocks/icon-list";
+@import "./css/inc/blocks/stats";
+// 7. Page/Post Type specific styles
+@import "./css/inc/pages/blog.scss";
+
+// 8. Utilities and helper classes
+@import "./css/inc/utilities/helpers";

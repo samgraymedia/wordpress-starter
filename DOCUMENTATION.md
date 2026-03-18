@@ -32,6 +32,7 @@ This index helps you find the right documentation quickly. All guides are in one
 - **[CONFIG-GUIDE.md](CONFIG-GUIDE.md)** – Theme configuration system and centralized settings
 - **[COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md)** – Reusable Twig components and macros
 - **[BEM-GUIDE.md](BEM-GUIDE.md)** – CSS/SCSS architecture and utility classes
+- **[GDPR-GUIDE.md](GDPR-GUIDE.md)** – Cookie consent system, GDPR compliance, and privacy implementation
 - **[OPTIONAL-FEATURES.md](OPTIONAL-FEATURES.md)** – Optional plugins like WooCommerce with auto-detection support
 
 ---
@@ -51,6 +52,9 @@ Looking for help with a specific workflow? Use this table:
 | Reference all blocks        | [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)                                             |
 | Create a component          | [COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md)                                     |
 | Style a page/component      | [BEM-GUIDE.md](BEM-GUIDE.md)                                                   |
+| Implement GDPR/cookies      | [GDPR-GUIDE.md](GDPR-GUIDE.md)                                                 |
+| Add analytics tracking      | [GDPR-GUIDE.md](GDPR-GUIDE.md#integration-with-analytics)                      |
+| Check user consent          | [GDPR-GUIDE.md](GDPR-GUIDE.md#usage-in-javascript)                             |
 | Use WooCommerce             | [OPTIONAL-FEATURES.md](OPTIONAL-FEATURES.md)                                   |
 | Debug an issue              | [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md)                                       |
 

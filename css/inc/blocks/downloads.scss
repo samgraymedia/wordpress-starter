@@ -1,0 +1,394 @@
+/**
+ * Downloads / Resources Block - BEM Methodology
+ *
+ * Block: .downloads
+ * Elements: .downloads__header, .downloads__title, .downloads__description, .downloads__grid, .downloads__card, .downloads__item--list
+ * Modifiers: .downloads--grid, .downloads--list
+ *
+ * Usage:
+ * <div class="downloads downloads--grid">
+ *     <div class="downloads__header">
+ *         <h2 class="downloads__title">Title</h2>
+ *         <p class="downloads__description">Description</p>
+ *     </div>
+ * </div>
+ */
+
+.downloads {
+  padding: $spacing-6 0;
+  background-color: $white;
+
+  &__header {
+    text-align: center;
+    margin-bottom: $spacing-6;
+  }
+
+  &__title {
+    font-size: $font-3xl;
+    font-weight: $font-bold;
+    margin-bottom: $spacing-2;
+    color: $text-color;
+
+    @media (max-width: $breakpoint-md) {
+      font-size: $font-2xl;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-xl;
+    }
+  }
+
+  &__description {
+    font-size: $font-base;
+    color: $text-muted;
+    line-height: $line-height-base;
+    margin: 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+
+    @media (max-width: $breakpoint-md) {
+      font-size: $font-sm;
+    }
+  }
+
+  // Grid Layout
+  &--grid &__grid {
+    display: grid;
+    gap: $grid-gap;
+    grid-template-columns: repeat(3, 1fr);
+
+    @media (max-width: $breakpoint-lg) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--grid &__grid--2cols {
+    grid-template-columns: repeat(2, 1fr);
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--grid &__grid--4cols {
+    grid-template-columns: repeat(4, 1fr);
+
+    @media (max-width: $breakpoint-lg) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // List Layout
+  &--list &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-4;
+  }
+
+  // Grid Item (Card)
+  &__card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-3;
+    padding: $spacing-4;
+    background-color: $gray-50;
+    border-radius: $border-radius-lg;
+    border: 1px solid $border-color;
+    transition: all $transition-normal;
+    position: relative;
+
+    &:hover {
+      background-color: $white;
+      border-color: $primary;
+      box-shadow: $shadow-md;
+
+      .downloads__link--card {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  // List Item
+  &__item--list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-4;
+    padding: $spacing-4;
+    background-color: $gray-50;
+    border-radius: $border-radius-lg;
+    border: 1px solid $border-color;
+    transition: all $transition-normal;
+
+    @media (max-width: $breakpoint-sm) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-3;
+    }
+
+    &:hover {
+      background-color: $white;
+      border-color: $primary;
+      box-shadow: $shadow-md;
+    }
+  }
+
+  &__item-main {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-4;
+    flex: 1;
+  }
+
+  &__item-actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+
+    @media (max-width: $breakpoint-sm) {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  // Icon styling
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, $primary, darken($primary, 10%));
+    border-radius: $border-radius;
+    font-size: $font-sm;
+    font-weight: $font-bold;
+    color: $white;
+    flex-shrink: 0;
+    text-align: center;
+    line-height: 1.2;
+    padding: $spacing-1;
+  }
+
+  &__icon--list {
+    min-height: 50px;
+    height: 50px;
+    width: 50px;
+    font-size: 0.75rem;
+  }
+
+  &__ext {
+    display: block;
+    word-break: break-word;
+  }
+
+  // Content
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__label {
+    font-size: $font-md;
+    font-weight: $font-semibold;
+    color: $text-color;
+    margin: 0;
+    line-height: 1.4;
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-base;
+    }
+  }
+
+  &__item-description {
+    font-size: $font-sm;
+    color: $text-muted;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  // Meta information (category, filesize)
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+
+  &__category {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: $font-semibold;
+    padding: 0.35rem 0.75rem;
+    border-radius: $border-radius-sm;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background-color: $gray-100;
+    color: $gray-600;
+    border-left: 3px solid $gray-400;
+
+    // Category variants - subtle with left border accent
+    &--guide {
+      border-left-color: $primary;
+      color: darken($primary, 20%);
+    }
+
+    &--brochure {
+      border-left-color: $secondary;
+      color: darken($secondary, 20%);
+    }
+
+    &--form {
+      border-left-color: $info;
+      color: darken($info, 20%);
+    }
+
+    &--policy {
+      border-left-color: $warning;
+      color: darken($warning, 20%);
+    }
+
+    &--report {
+      border-left-color: $success;
+      color: darken($success, 20%);
+    }
+
+    &--menu {
+      border-left-color: $primary;
+      color: darken($primary, 15%);
+    }
+
+    &--whitepaper {
+      border-left-color: $gray-500;
+      color: $gray-700;
+    }
+
+    &--case-study {
+      border-left-color: $secondary;
+      color: darken($secondary, 15%);
+    }
+
+    &--template {
+      border-left-color: $warning;
+      color: darken($warning, 15%);
+    }
+
+    &--other {
+      border-left-color: $gray-400;
+      color: $gray-600;
+    }
+  }
+
+  &__filesize {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: $text-muted;
+    font-weight: $font-medium;
+  }
+
+  // Download links
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $primary;
+    text-decoration: none;
+    font-weight: $font-semibold;
+    transition: all $transition-normal;
+
+    &:hover {
+      color: darken($primary, 10%);
+      text-decoration: underline;
+    }
+
+    &:focus {
+      outline: 2px solid $primary;
+      outline-offset: 2px;
+      border-radius: $border-radius-sm;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__link--card {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.75rem;
+    border-radius: $border-radius;
+    background-color: $primary;
+    color: $white;
+    opacity: 0;
+    transform: scale(1);
+    border: none;
+    cursor: pointer;
+    font-size: 0;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      background-color: darken($primary, 10%);
+      text-decoration: none;
+    }
+
+    &:focus {
+      outline: 2px solid darken($primary, 20%);
+      outline-offset: 2px;
+    }
+  }
+
+  &__link--list {
+    white-space: nowrap;
+  }
+
+  // Responsive adjustments
+  @media (max-width: $breakpoint-md) {
+    padding: 2rem 0;
+
+    &__header {
+      margin-bottom: 2rem;
+    }
+
+    &__card {
+      padding: $spacing-3;
+    }
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    padding: 1.5rem 0;
+
+    &__item-main {
+      flex-direction: column;
+    }
+
+    &__icon {
+      align-self: center;
+    }
+  }
+}
