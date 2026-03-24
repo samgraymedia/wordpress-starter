@@ -1,0 +1,141 @@
+{#
+ # Archive Template for Services
+ # Displays all services with filtering and search
+ #}
+
+{% extends "base.twig" %}
+
+{% block content %}
+<div class="container services-archive">
+	<div class="row">
+		<div class="col-lg-8">
+			{# Archive Header #}
+			<div class="archive-header mb-5">
+				<h1 class="archive-title">Our Services</h1>
+				{% if page %}
+					<p class="archive-description">{{ page.excerpt }}</p>
+				{% endif %}
+			</div>
+
+			{# Filters #}
+			<div class="services-filters mb-4">
+				<form class="filter-form" method="get" action="{{ site.url }}/services/">
+					{# Category Filter #}
+					{% set categories = Timber.get_terms({
+						'taxonomy': 'service-category',
+						'hide_empty': true,
+					}) %}
+					{% if categories %}
+						<div class="filter-group">
+							<label for="category-filter" class="filter-label">Filter by Category:</label>
+							<select id="category-filter" name="category" class="form-select">
+								<option value="">All Categories</option>
+								{% for cat in categories %}
+									<option value="{{ cat.slug }}" {% if cat.slug == category_filter %}selected{% endif %}>
+										{{ cat.name }}
+									</option>
+								{% endfor %}
+							</select>
+						</div>
+					{% endif %}
+
+					{# Search #}
+					<div class="filter-group ms-3">
+						<label for="search-filter" class="filter-label">Search:</label>
+						<input type="text" 
+							   id="search-filter" 
+							   name="s" 
+							   class="form-control" 
+							   placeholder="Search services..."
+							   value="{{ search_query }}" />
+					</div>
+
+					<button type="submit" class="btn btn-sm btn-outline-primary ms-3">
+						Search
+					</button>
+				</form>
+			</div>
+
+			{# Services Grid #}
+			{% set services = posts %}
+			{% if services %}
+				<div class="services-list">
+					{% for service in services %}
+						<div class="service-list-item mb-4 p-4 border rounded">
+							<div class="row">
+								{# Image #}
+								{% if service.thumbnail %}
+									<div class="col-md-3 mb-3 mb-md-0">
+										<img src="{{ service.thumbnail.src('medium') }}" 
+											 alt="{{ service.title }}" 
+											 class="img-fluid rounded" />
+									</div>
+									<div class="col-md-9">
+								{% else %}
+									<div class="col-12">
+								{% endif %}
+
+									{# Title #}
+									<h3 class="service-title">
+										<a href="{{ service.link }}">{{ service.title }}</a>
+									</h3>
+
+									{# Price & Duration #}
+									<div class="service-meta mb-3">
+										{% set price = service.get_field('service_price') %}
+										{% set duration = service.get_field('service_duration') %}
+										{% if price %}
+											<span class="badge bg-primary">${{ price|number_format(2) }}</span>
+										{% endif %}
+										{% if duration %}
+											<span class="badge bg-secondary">{{ duration }}</span>
+										{% endif %}
+									</div>
+
+									{# Excerpt #}
+									<p class="service-excerpt">{{ service.excerpt }}</p>
+
+									{# Features Preview #}
+									{% set features = service.get_field('service_features') %}
+									{% if features %}
+										<div class="service-features-preview mb-3">
+											<strong>Key Features:</strong>
+											<ul class="list-inline">
+												{% for feature in features|slice(0, 3) %}
+													<li class="list-inline-item">
+														<span class="badge bg-light text-dark">{{ feature.feature_title }}</span>
+													</li>
+												{% endfor %}
+											</ul>
+										</div>
+									{% endif %}
+
+									{# CTA #}
+									{% set cta_text = service.get_field('service_cta_text')|default('Learn More') %}
+									{% set cta_link = service.get_field('service_cta_link')|default(service.link) %}
+									<a href="{{ cta_link }}" class="btn btn-primary btn-sm">{{ cta_text }}</a>
+									<a href="{{ service.link }}" class="btn btn-outline-secondary btn-sm">View Details</a>
+
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+
+				{# Pagination #}
+				{{ posts.pagination }}
+
+			{% else %}
+				<div class="alert alert-info">
+					No services found. Please check your filters or try a different search.
+				</div>
+			{% endif %}
+		</div>
+
+		{# Sidebar #}
+		<div class="col-lg-4">
+			{% include "sidebar.twig" %}
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,135 @@
+{#
+Title: Team / People
+Description: Display team members, staff profiles, leadership bios with photos and social links
+Category: common
+Icon: <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+Keywords: Team People Staff Leadership Bio Profile
+Mode: auto
+Align: wide full
+PostTypes: page post
+SupportsAlign: wide full
+SupportsMode: true
+SupportsMultiple: true
+#}
+
+<section id="team-{{ block.id }}" class="team {{ block.classes }} team--{{ fields.layout|default('grid') }}">
+	<div class="wrapper">
+		{% if fields.title %}
+			<div class="team__header">
+				<h2 class="team__title">{{ fields.title }}</h2>
+				{% if fields.description %}
+					<p class="team__description">{{ fields.description }}</p>
+				{% endif %}
+			</div>
+		{% endif %}
+
+		{% if fields.members %}
+			{% if fields.layout == 'list' %}
+				<div class="team__list">
+					{% for member in fields.members %}
+						<div class="team__item team__item--list">
+							<div class="team__item-inner">
+								{% if member.photo %}
+									<div class="team__image">
+										<img src="{{ member.photo.url }}" alt="{{ member.name }}" class="team__photo" />
+									</div>
+								{% endif %}
+
+								<div class="team__content">
+									<h3 class="team__name">{{ member.name }}</h3>
+									{% if member.role %}
+										<p class="team__role">{{ member.role }}</p>
+									{% endif %}
+									{% if fields.show_bio and member.bio %}
+										<p class="team__bio">{{ member.bio }}</p>
+									{% endif %}
+
+									<div class="team__meta">
+										{% if fields.show_email and member.email %}
+											<a href="mailto:{{ member.email }}" class="team__email" title="Email {{ member.name }}">
+												<i class="fa-solid fa-envelope"></i>
+												<span>{{ member.email }}</span>
+											</a>
+										{% endif %}
+
+										{% if fields.show_social and member.social_links %}
+											<div class="team__social">
+												{% for social in member.social_links %}
+													{% set icon_map = {
+														'linkedin': 'fa-linkedin',
+														'twitter': 'fa-x-twitter',
+														'facebook': 'fa-facebook',
+														'instagram': 'fa-instagram',
+														'github': 'fa-github',
+														'dribbble': 'fa-dribbble',
+														'behance': 'fa-behance',
+														'website': 'fa-link',
+													} %}
+													<a href="{{ social.url }}" target="_blank" rel="noopener noreferrer" class="team__social-link team__social-link--{{ social.platform }}" title="Visit {{ social.platform|capitalize }}">
+														<i class="fa-brands {{ icon_map[social.platform] }}"></i>
+													</a>
+												{% endfor %}
+											</div>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+
+			{% else %}
+				{# Grid Layout #}
+				<div class="team__grid team__grid--{{ fields.columns|default(3) }}cols">
+					{% for member in fields.members %}
+						<div class="team__item">
+							<div class="team__card">
+								{% if member.photo %}
+									<div class="team__image">
+										<img src="{{ member.photo.url }}" alt="{{ member.name }}" class="team__photo" />
+									</div>
+								{% endif %}
+
+								<div class="team__card-content">
+									<h3 class="team__name">{{ member.name }}</h3>
+									{% if member.role %}
+										<p class="team__role">{{ member.role }}</p>
+									{% endif %}
+									{% if fields.show_bio and member.bio %}
+										<p class="team__bio">{{ member.bio }}</p>
+									{% endif %}
+
+									{% if fields.show_social and member.social_links %}
+										<div class="team__social">
+											{% for social in member.social_links %}
+												{% set icon_map = {
+													'linkedin': 'fa-linkedin',
+													'twitter': 'fa-x-twitter',
+													'facebook': 'fa-facebook',
+													'instagram': 'fa-instagram',
+													'github': 'fa-github',
+													'dribbble': 'fa-dribbble',
+													'behance': 'fa-behance',
+													'website': 'fa-link',
+												} %}
+												<a href="{{ social.url }}" target="_blank" rel="noopener noreferrer" class="team__social-link team__social-link--{{ social.platform }}" title="Visit {{ social.platform|capitalize }}">
+													<i class="fa-brands {{ icon_map[social.platform] }}"></i>
+												</a>
+											{% endfor %}
+										</div>
+									{% endif %}
+
+									{% if fields.show_email and member.email %}
+										<a href="mailto:{{ member.email }}" class="team__email-link">
+											Contact
+										</a>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+		{% endif %}
+	</div>
+</section>

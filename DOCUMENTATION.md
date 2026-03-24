@@ -12,6 +12,7 @@ This index helps you find the right documentation quickly. All guides are in one
 
 - **[README.md](README.md)** – Installation, quick start, and project overview
 - **[QUICK-REFERENCE.md](QUICK-REFERENCE.md)** – Cheat sheet with common commands and code snippets
+- **[DEVELOPER-CHECKLIST.md](DEVELOPER-CHECKLIST.md)** – Onboarding checklist and best practices for developers
 
 ---
 
@@ -28,7 +29,8 @@ This index helps you find the right documentation quickly. All guides are in one
 
 **Reference documents for specific topics:**
 
-- **[BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)** – All 15 custom Gutenberg blocks with fields and usage
+- **[BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)** – All 18 custom Gutenberg blocks with fields and usage
+- **[COMPONENT-LIBRARY.md](COMPONENT-LIBRARY.md)** ⭐ **NEW** – Visual reference and quick-finder for all blocks and components
 - **[CONFIG-GUIDE.md](CONFIG-GUIDE.md)** – Theme configuration system and centralized settings
 - **[COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md)** – Reusable Twig components and macros
 - **[BEM-GUIDE.md](BEM-GUIDE.md)** – CSS/SCSS architecture and utility classes
@@ -41,22 +43,25 @@ This index helps you find the right documentation quickly. All guides are in one
 
 Looking for help with a specific workflow? Use this table:
 
-| Task                        | Document                                                                       |
-| --------------------------- | ------------------------------------------------------------------------------ |
-| Install & get started       | [README.md](README.md)                                                         |
-| Quick lookup                | [QUICK-REFERENCE.md](QUICK-REFERENCE.md)                                       |
-| Development overview        | [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md)                                       |
-| Understand the architecture | [ARCHITECTURE.md](ARCHITECTURE.md)                                             |
-| Add a post type             | [CONFIG-GUIDE.md](CONFIG-GUIDE.md) or [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md) |
-| Create a custom block       | [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)                                             |
-| Reference all blocks        | [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)                                             |
-| Create a component          | [COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md)                                     |
-| Style a page/component      | [BEM-GUIDE.md](BEM-GUIDE.md)                                                   |
-| Implement GDPR/cookies      | [GDPR-GUIDE.md](GDPR-GUIDE.md)                                                 |
-| Add analytics tracking      | [GDPR-GUIDE.md](GDPR-GUIDE.md#integration-with-analytics)                      |
-| Check user consent          | [GDPR-GUIDE.md](GDPR-GUIDE.md#usage-in-javascript)                             |
-| Use WooCommerce             | [OPTIONAL-FEATURES.md](OPTIONAL-FEATURES.md)                                   |
-| Debug an issue              | [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md)                                       |
+| Task                        | Document                                                                                                                |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| I'm new! Where do I start?  | [DEVELOPER-CHECKLIST.md](DEVELOPER-CHECKLIST.md)                                                                        |
+| Install & get started       | [README.md](README.md)                                                                                                  |
+| Quick lookup                | [QUICK-REFERENCE.md](QUICK-REFERENCE.md)                                                                                |
+| Find a block or component   | [COMPONENT-LIBRARY.md](COMPONENT-LIBRARY.md)                                                                            |
+| Development overview        | [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md)                                                                                |
+| Understand the architecture | [ARCHITECTURE.md](ARCHITECTURE.md)                                                                                      |
+| Add a post type             | [CONFIG-GUIDE.md](CONFIG-GUIDE.md) or [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md)                                          |
+| Build a new page            | [DEVELOPER-CHECKLIST.md](DEVELOPER-CHECKLIST.md#creating-a-new-page)                                                    |
+| Create a custom block       | [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md) or [DEVELOPER-CHECKLIST.md](DEVELOPER-CHECKLIST.md#building-a-new-block)             |
+| Reference all blocks        | [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)                                                                                      |
+| Create a component          | [COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md) or [DEVELOPER-CHECKLIST.md](DEVELOPER-CHECKLIST.md#building-a-new-component) |
+| Style a page/component      | [BEM-GUIDE.md](BEM-GUIDE.md)                                                                                            |
+| Implement GDPR/cookies      | [GDPR-GUIDE.md](GDPR-GUIDE.md)                                                                                          |
+| Add analytics tracking      | [GDPR-GUIDE.md](GDPR-GUIDE.md#integration-with-analytics)                                                               |
+| Check user consent          | [GDPR-GUIDE.md](GDPR-GUIDE.md#usage-in-javascript)                                                                      |
+| Use WooCommerce             | [OPTIONAL-FEATURES.md](OPTIONAL-FEATURES.md)                                                                            |
+| Debug an issue              | [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md#debugging--troubleshooting)                                                     |
 
 ---
 
@@ -64,18 +69,31 @@ Looking for help with a specific workflow? Use this table:
 
 ### Quick Start (30 minutes)
 
-1. [README.md](README.md)
-2. [QUICK-REFERENCE.md](QUICK-REFERENCE.md)
-3. [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md#common-tasks) – Common Tasks section
+1. [DEVELOPER-CHECKLIST.md](DEVELOPER-CHECKLIST.md#before-you-start)
+2. [README.md](README.md)
+3. [QUICK-REFERENCE.md](QUICK-REFERENCE.md)
+
+### Building Your First Page (1 hour)
+
+1. [DEVELOPER-CHECKLIST.md](DEVELOPER-CHECKLIST.md#creating-a-new-page)
+2. [COMPONENT-LIBRARY.md](COMPONENT-LIBRARY.md)
+3. [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)
 
 ### Deep Dive (3 hours)
 
-1. [README.md](README.md)
+1. [DEVELOPER-CHECKLIST.md](DEVELOPER-CHECKLIST.md)
 2. [ARCHITECTURE.md](ARCHITECTURE.md)
 3. [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md)
 4. [CONFIG-GUIDE.md](CONFIG-GUIDE.md)
 5. [COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md)
 6. [BEM-GUIDE.md](BEM-GUIDE.md)
+
+### Building Custom Blocks (2 hours)
+
+1. [DEVELOPER-CHECKLIST.md](DEVELOPER-CHECKLIST.md#building-a-new-block)
+2. [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)
+3. [BEM-GUIDE.md](BEM-GUIDE.md)
+4. [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md#adding-new-features)
 
 ### Task-Focused (1-2 hours)
 

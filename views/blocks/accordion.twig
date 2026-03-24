@@ -50,3 +50,25 @@ SupportsMultiple: true
 		</div>
 	</div>
 </section>
+
+{# FAQ Schema Markup - SEO Enhancement #}
+{% if fields.items %}
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "FAQPage",
+	"mainEntity": [
+		{% for item in fields.items %}
+		{
+			"@type": "Question",
+			"name": "{{ item.title|striptags }}",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": "{{ item.content|striptags|slice(0, 360) }}"
+			}
+		}{{ not loop.last ? ',' : '' }}
+		{% endfor %}
+	]
+}
+</script>
+{% endif %}

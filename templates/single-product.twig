@@ -116,4 +116,32 @@
 
 		</div>
 	</div>
+
+	{# Product Schema Markup - SEO Enhancement #}
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "Product",
+		"name": "{{ product.get_title() }}",
+		"description": "{{ product.get_short_description()|striptags|slice(0, 360) }}",
+		"brand": {
+			"@type": "Brand",
+			"name": "{{ site.name }}"
+		},
+		"offers": {
+			"@type": "Offer",
+			"url": "{{ product.get_permalink() }}",
+			"priceCurrency": "{{ function('get_woocommerce_currency') }}",
+			"price": "{{ product.get_price() }}",
+			"availability": "{{ product.is_in_stock() ? 'InStock' : 'OutOfStock' }}"
+		}
+		{% if product.get_average_rating() > 0 %},
+		"aggregateRating": {
+			"@type": "AggregateRating",
+			"ratingValue": "{{ product.get_average_rating() }}",
+			"reviewCount": "{{ product.get_review_count() }}"
+		}
+		{% endif %}
+	}
+	</script>
 {% endblock %}

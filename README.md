@@ -12,7 +12,7 @@ Designed for structured, component-based theme development with modern build too
 
 Features:
 
-- 15 pre-built custom Gutenberg blocks (Hero, Banner, Tabs, Blog Posts, Share Buttons, and more)
+- 18 pre-built custom Gutenberg blocks (Hero, Banner, Pricing, Cards Grid, FAQ Search, and more)
 - Responsive mobile navigation with hamburger menu
 - Auto-discovery registries (post types, taxonomies, page templates, blocks)
 - Centralized configuration system with type-safe access

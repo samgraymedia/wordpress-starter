@@ -128,6 +128,35 @@
 		</section>
 	</article>
 
+	{# Article Schema Markup - SEO Enhancement #}
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "BlogPosting",
+		"headline": "{{ post.title }}",
+		"description": "{{ post.excerpt|striptags|slice(0, 160) }}",
+		"image": "{% if post.thumbnail %}{{ post.thumbnail.src }}{% endif %}",
+		"datePublished": "{{ post.post_date|date('Y-m-d\\TH:i:sO') }}",
+		"dateModified": "{{ post.post_modified|date('Y-m-d\\TH:i:sO') }}",
+		"author": {
+			"@type": "Person",
+			"name": "{{ post.author.name }}"
+		},
+		"publisher": {
+			"@type": "Organization",
+			"name": "{{ site.name }}",
+			"logo": {
+				"@type": "ImageObject",
+				"url": "{{ function('get_theme_mod', 'custom_logo_url') ?? site.theme.link ~ '/images/logo.png' }}"
+			}
+		},
+		"mainEntityOfPage": {
+			"@type": "WebPage",
+			"@id": "{{ post.link }}"
+		}
+	}
+	</script>
+
 	{% if posts|length > 1 %}
 		<nav class="post-navigation">
 			{% if post.prev %}

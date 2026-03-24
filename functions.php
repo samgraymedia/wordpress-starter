@@ -13,6 +13,7 @@
  */
 require_once 'src/theme-config.php';
 require_once 'src/theme-options.php';
+require_once 'src/schema-organization.php';
 
 /**
  * If you are installing Timber as a Composer dependency in your theme, you'll need this block

@@ -3,7 +3,44 @@
 <head>
     <meta charset="{{ site.charset }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="{{ site.description }}" />
+    <meta name="description" content="{% if post and post.excerpt %}{{ post.excerpt|striptags|slice(0, 160) }}{% else %}{{ site.description|slice(0, 160) }}{% endif %}" />
+    
+    {# Canonical Tag #}
+    {% if post %}
+        <link rel="canonical" href="{{ post.link }}" />
+    {% else %}
+        <link rel="canonical" href="{{ site.url }}" />
+    {% endif %}
+    
+    {# Open Graph - Social Sharing #}
+    {% if post %}
+        <meta property="og:type" content="{% if post.post_type == 'product' %}product{% elseif post.post_type == 'blog' %}article{% else %}website{% endif %}" />
+        <meta property="og:title" content="{{ post.post_title }}" />
+        <meta property="og:description" content="{{ post.excerpt|striptags|slice(0, 160) }}" />
+        <meta property="og:url" content="{{ post.link }}" />
+        {% if post.thumbnail %}
+            <meta property="og:image" content="{{ post.thumbnail.src }}" />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
+        {% endif %}
+    {% else %}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="{{ site.name }}" />
+        <meta property="og:description" content="{{ site.description|slice(0, 160) }}" />
+        <meta property="og:url" content="{{ site.url }}" />
+    {% endif %}
+    <meta property="og:site_name" content="{{ site.name }}" />
+    <meta property="og:locale" content="en_US" />
+    
+    {# Twitter Card #}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{% if post %}{{ post.post_title }}{% else %}{{ site.name }}{% endif %}" />
+    <meta name="twitter:description" content="{% if post %}{{ post.excerpt|striptags|slice(0, 160) }}{% else %}{{ site.description|slice(0, 160) }}{% endif %}" />
+    {% if post and post.thumbnail %}
+        <meta name="twitter:image" content="{{ post.thumbnail.src }}" />
+    {% endif %}
+    {# <meta name="twitter:creator" content="@yourhandle" /> #}
+    
     <link rel="stylesheet" href="{{ site.theme.link }}/style.css" />
     <link rel="pingback" href="{{ site.pingback_url }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3H5f/MCFIrkl6MSg03qyXuwA0/w8ZuB5eYc/WS/0qUPt8gIhP2n0qL9KQ/hQg3dPg/YxmI9JdKKA==" crossorigin="anonymous" referrerpolicy="no-referrer" />

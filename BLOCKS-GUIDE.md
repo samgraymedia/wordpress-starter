@@ -1,6 +1,6 @@
 # Custom Gutenberg Blocks Guide
 
-**Complete reference for all 15 custom Gutenberg blocks in the theme**
+**Complete reference for all 18 custom Gutenberg blocks in the theme**
 
 This guide documents all available blocks, their fields, usage, and styling.
 
@@ -19,7 +19,7 @@ This guide documents all available blocks, their fields, usage, and styling.
 
 ## Block Overview
 
-This theme includes **15 pre-built custom Gutenberg blocks** organized by purpose:
+This theme includes **18 pre-built custom Gutenberg blocks** organized by purpose:
 
 ### Layout Blocks (5)
 
@@ -29,17 +29,23 @@ This theme includes **15 pre-built custom Gutenberg blocks** organized by purpos
 - **Gallery** - Responsive image grid with lightbox
 - **Video** - Video player with keyboard shortcuts
 
-### Content Blocks (4)
+### Content Blocks (6)
 
 - **Text** - Basic rich text block with formatting
 - **Tabs** - Tabbed content with keyboard navigation
 - **Accordion** - Expandable content sections
 - **Blog Posts** - Display selected blog posts in grid
+- **Cards Grid** - Flexible reusable card grid (3 styles: standard, overlay, horizontal)
+- **FAQ Filtered** - Advanced FAQ with search and category filtering
 
 ### Call-to-Action Blocks (2)
 
 - **CTA** - Call-to-action with configurable buttons
 - **Hero** - Large hero banner (also used for CTAs)
+
+### Commerce/Pricing Blocks (1)
+
+- **Pricing/Plans** - Subscription tiers display (2 layouts: horizontal cards, comparison table)
 
 ### Interactive Blocks (3)
 
@@ -559,6 +565,151 @@ css/inc/blocks/             # Block-specific styles
 - `.announcement--success`
 - `.announcement--warning`
 - `.announcement--error`
+
+---
+
+### 15. Pricing / Plans Block
+
+**Purpose:** Display subscription tiers and pricing plans with feature comparison and CTA buttons
+
+**Category:** Common / Commerce  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field               | Type     | Required | Description                              |
+| ------------------- | -------- | -------- | ---------------------------------------- |
+| Title               | Text     | No       | Section headline                         |
+| Description         | Textarea | No       | Section intro text                       |
+| Currency            | Select   | No       | USD, EUR, GBP, JPY, INR, CAD, AUD        |
+| Layout Mode         | Select   | No       | horizontal (cards) or comparison (table) |
+| Column Count        | Select   | No       | 2, 3, or 4 columns per row               |
+| Plans (Repeater)    | Repeater | Yes      | Individual pricing tier                  |
+| Plan Name           | Text     | Yes      | Tier name (e.g., "Starter")              |
+| Price               | Number   | Yes      | Monthly/annual price                     |
+| Billing Period      | Text     | Yes      | Billing text (e.g., "/month")            |
+| Description         | Textarea | No       | Plan description                         |
+| Features (Repeater) | Repeater | No       | List of features included                |
+| Feature Name        | Text     | Yes      | Feature label                            |
+| Include Feature     | Toggle   | No       | Include in this plan                     |
+| CTA Link            | Link     | No       | Call-to-action button                    |
+| Featured Plan       | Toggle   | No       | Highlight as recommended tier            |
+
+**Layouts:**
+
+- **Horizontal Cards** - Side-by-side pricing cards with featured tier elevated
+- **Comparison Table** - Tabular view of all plans and features with checkmarks
+
+**Features:**
+
+- Currency selector (auto-formats prices)
+- Featured plan visual distinction
+- Feature inclusion toggles per tier
+- Dynamic column layout
+- Mobile-responsive stacking
+- Runs JSON pricing schema for SEO
+
+**CSS Class:** `.pricing-block` with modifiers:
+
+- `.pricing-block--horizontal` (card layout)
+- `.pricing-block--comparison` (table layout)
+- `.pricing-plan--featured` (highlighted tier)
+
+---
+
+### 16. Cards Grid Block
+
+**Purpose:** Flexible, reusable grid for displaying cards (services, features, portfolio items, etc.)
+
+**Category:** Design / Layout  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field            | Type     | Required | Description                        |
+| ---------------- | -------- | -------- | ---------------------------------- |
+| Cards (Repeater) | Repeater | Yes      | Individual card items              |
+| Card Image       | Image    | Yes      | Featured image (alt text required) |
+| Card Title       | Text     | Yes      | Card heading                       |
+| Card Description | Textarea | Yes      | Card content                       |
+| Card Link        | Link     | No       | Optional destination URL           |
+| Highlight Card   | Toggle   | No       | Visual emphasis (border/shadow)    |
+| Card Style       | Select   | No       | standard, overlay, or horizontal   |
+| Image Height     | Select   | No       | 200px, 250px, or 300px             |
+| Column Count     | Select   | No       | 2, 3, or 4 columns per row         |
+
+**Layouts:**
+
+- **Standard** - Image on top, text below in card
+- **Overlay** - Full-height image with hovering text overlay
+- **Horizontal** - Image left (40%), text right (60%), responsive stack
+
+**Features:**
+
+- Three distinct visual styles
+- Highlight toggle for featured cards
+- Lazy-loaded images with alt text
+- Link support with arrow icon
+- Responsive column collapsing
+- Custom image height control via CSS variables
+
+**CSS Class:** `.cards-grid` with modifiers:
+
+- `.cards-grid--standard`
+- `.cards-grid--overlay`
+- `.cards-grid--horizontal`
+- `.cards-grid__card--highlight` (individual card)
+
+---
+
+### 17. FAQ / Search Block
+
+**Purpose:** Advanced FAQ section with real-time search filtering and category selection
+
+**Category:** Common / Interactive  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field                  | Type     | Required | Description                          |
+| ---------------------- | -------- | -------- | ------------------------------------ |
+| Title                  | Text     | No       | Section headline                     |
+| Description            | Textarea | No       | Section intro text                   |
+| Enable Search          | Toggle   | No       | Show keyword search input            |
+| Enable Category Filter | Toggle   | No       | Show category dropdown               |
+| Expand First Item      | Toggle   | No       | Open first FAQ by default            |
+| FAQ Items (Repeater)   | Repeater | Yes      | Individual Q&A pairs                 |
+| Question               | Text     | Yes      | FAQ question (searchable)            |
+| Answer                 | WYSIWYG  | Yes      | Answer with rich text support        |
+| Category               | Select   | No       | Category for filtering               |
+| Categories List        | Text     | No       | Comma-separated available categories |
+| Schema Markup Enabled  | Toggle   | No       | Output FAQPage for Google            |
+
+**Features:**
+
+- Real-time search by keyword (question-based)
+- Category filtering dropdown
+- Accordion UI with smooth animations
+- First item expand option
+- No-results message display
+- FAQPage JSON-LD schema for search results
+- Full keyboard navigation support
+- Semantic HTML with ARIA labels
+
+**Interactions:**
+
+- Search updates instantly as user types
+- Category filter updates visible FAQs
+- Combined search + filter coordination
+- Click question to expand/collapse answer
+- Keyboard: Enter/Space to toggle, Tab to navigate
+
+**CSS Class:** `.faq-search` with elements:
+
+- `.faq-search__trigger` (question button)
+- `.faq-search__panel` (answer container)
+- `.faq-search__search-input`
+- `.faq-search__filter-select`
 
 ---
 
