@@ -1,0 +1,47 @@
+{#
+  Form Embed Block Template
+  
+  Displays Contact Form 7 with optional title, intro text, and success message
+  Supports multiple layout styles and alignment options
+#}
+
+{% set alignment_map = {
+  'left': 'form-embed__content--left',
+  'center': 'form-embed__content--center',
+  'right': 'form-embed__content--right',
+} %}
+
+{% set width_map = {
+  'full': 'form-embed__content--width-full',
+  'lg': 'form-embed__content--width-lg',
+  'md': 'form-embed__content--width-md',
+  'sm': 'form-embed__content--width-sm',
+} %}
+
+<div class="form-embed form-embed--{{ fields.layout }}" {% if anchor %}id="{{ anchor }}"{% endif %}>
+  <div class="form-embed__content {{ alignment_map[fields.alignment] }} {{ width_map[fields.max_width] }}">
+    
+    {% if fields.title %}
+      <h2 class="form-embed__title">{{ fields.title }}</h2>
+    {% endif %}
+    
+    {% if fields.intro_text %}
+      <div class="form-embed__intro">
+        {{ fields.intro_text }}
+      </div>
+    {% endif %}
+    
+    {% if fields.form_shortcode %}
+      <div class="form-embed__form">
+        {{ fields.form_shortcode|raw }}
+      </div>
+    {% endif %}
+    
+    {% if fields.success_message %}
+      <div class="form-embed__success" style="display: none;">
+        {{ fields.success_message }}
+      </div>
+    {% endif %}
+    
+  </div>
+</div>

@@ -29,11 +29,12 @@ This index helps you find the right documentation quickly. All guides are in one
 
 **Reference documents for specific topics:**
 
-- **[BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)** – All 18 custom Gutenberg blocks with fields and usage
+- **[BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)** – All 19 custom Gutenberg blocks with fields and usage
 - **[COMPONENT-LIBRARY.md](COMPONENT-LIBRARY.md)** ⭐ **NEW** – Visual reference and quick-finder for all blocks and components
 - **[CONFIG-GUIDE.md](CONFIG-GUIDE.md)** – Theme configuration system and centralized settings
 - **[COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md)** – Reusable Twig components and macros
 - **[BEM-GUIDE.md](BEM-GUIDE.md)** – CSS/SCSS architecture and utility classes
+- **[DARK-MODE-GUIDE.md](DARK-MODE-GUIDE.md)** ⭐ **NEW** – Dark mode support, theme toggle, CSS variables system
 - **[GDPR-GUIDE.md](GDPR-GUIDE.md)** – Cookie consent system, GDPR compliance, and privacy implementation
 - **[OPTIONAL-FEATURES.md](OPTIONAL-FEATURES.md)** – Optional plugins like WooCommerce with auto-detection support
 
@@ -57,6 +58,7 @@ Looking for help with a specific workflow? Use this table:
 | Reference all blocks        | [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md)                                                                                      |
 | Create a component          | [COMPONENTS-GUIDE.md](COMPONENTS-GUIDE.md) or [DEVELOPER-CHECKLIST.md](DEVELOPER-CHECKLIST.md#building-a-new-component) |
 | Style a page/component      | [BEM-GUIDE.md](BEM-GUIDE.md)                                                                                            |
+| Implement dark mode         | [DARK-MODE-GUIDE.md](DARK-MODE-GUIDE.md)                                                                                |
 | Implement GDPR/cookies      | [GDPR-GUIDE.md](GDPR-GUIDE.md)                                                                                          |
 | Add analytics tracking      | [GDPR-GUIDE.md](GDPR-GUIDE.md#integration-with-analytics)                                                               |
 | Check user consent          | [GDPR-GUIDE.md](GDPR-GUIDE.md#usage-in-javascript)                                                                      |

@@ -1,0 +1,138 @@
+// Spacer / Divider Block Styling
+
+// CSS variables for height presets
+:root {
+  --spacer-height-sm: 0.5rem;
+  --spacer-height-md: 1.5rem;
+  --spacer-height-lg: 3rem;
+  --spacer-height-xl: 4.5rem;
+}
+
+.spacer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--spacer-height);
+
+  // Height presets
+  &[data-spacer-id] {
+    &:has(+ *) {
+      margin-bottom: 0; // Prevent double spacing
+    }
+  }
+
+  &__divider {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 $spacing-4;
+
+    // Full width variant
+    &--full {
+      padding: 0;
+      width: 100%;
+
+      .spacer__divider-line {
+        width: 100%;
+      }
+    }
+
+    // Alignment variants
+    &--left .spacer__divider-line {
+      margin-left: 0;
+      margin-right: auto;
+      width: 33%;
+    }
+
+    &--center .spacer__divider-line {
+      width: 60%;
+      margin: 0 auto;
+    }
+
+    &--right .spacer__divider-line {
+      margin-right: 0;
+      margin-left: auto;
+      width: 33%;
+    }
+
+    .spacer__divider-line {
+      height: 1px;
+      background-color: $gray-400;
+      transition: background-color $transition-fast;
+    }
+
+    // Line style variants
+    &--solid .spacer__divider-line {
+      border-top: 1px solid;
+      background-color: transparent;
+    }
+
+    &--dashed .spacer__divider-line {
+      border-top: 1px dashed;
+      background-color: transparent;
+    }
+
+    &--dotted .spacer__divider-line {
+      border-top: 1px dotted;
+      background-color: transparent;
+    }
+
+    // Color variants
+    &--gray .spacer__divider-line {
+      border-color: $gray-300;
+      background-color: $gray-300;
+    }
+
+    &--primary .spacer__divider-line {
+      border-color: $primary;
+      background-color: $primary;
+    }
+
+    &--secondary .spacer__divider-line {
+      border-color: $secondary;
+      background-color: $secondary;
+    }
+
+    &--light .spacer__divider-line {
+      border-color: $gray-200;
+      background-color: $gray-200;
+    }
+
+    &--dark .spacer__divider-line {
+      border-color: $gray-700;
+      background-color: $gray-700;
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: $breakpoint-md) {
+    // Tighten padding on smaller screens
+    &__divider {
+      padding: 0 $spacing-2;
+
+      &--left .spacer__divider-line,
+      &--right .spacer__divider-line {
+        width: 25%;
+      }
+
+      &--center .spacer__divider-line {
+        width: 50%;
+      }
+    }
+  }
+
+  // Print styling
+  @media print {
+    height: auto;
+    padding: 0;
+    margin: $spacing-3 0;
+
+    &__divider-line {
+      border-color: #000 !important;
+      background-color: #000 !important;
+    }
+  }
+}

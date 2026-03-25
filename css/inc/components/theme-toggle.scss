@@ -1,0 +1,271 @@
+/**
+ * Theme Toggle Component Styles
+ * BEM structure: .theme-toggle (block)
+ */
+
+.theme-toggle {
+  // Positioning defaults (can be modified via data attributes)
+  $positions: (
+    "fixed": fixed,
+    "sticky": sticky,
+    "static": static,
+  );
+
+  @each $pos, $value in $positions {
+    &[data-position="#{$pos}"] {
+      position: $value;
+
+      // Fixed position placements
+      @if $value == fixed {
+        z-index: $z-fixed;
+
+        &[data-placement="top-right"] {
+          top: $spacing-4;
+          right: $spacing-4;
+        }
+
+        &[data-placement="top-left"] {
+          top: $spacing-4;
+          left: $spacing-4;
+        }
+
+        &[data-placement="bottom-right"] {
+          bottom: $spacing-4;
+          right: $spacing-4;
+        }
+
+        &[data-placement="bottom-left"] {
+          bottom: $spacing-4;
+          left: $spacing-4;
+        }
+
+        // Responsive: Move to bottom-right on mobile
+        @media (max-width: $breakpoint-md) {
+          top: auto;
+          left: auto;
+          bottom: $spacing-4;
+          right: $spacing-4;
+        }
+      }
+    }
+  }
+
+  // Button styling
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: $spacing-2;
+    background-color: var(--color-bg-light);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: $border-radius-lg;
+    cursor: pointer;
+    font-size: 0;
+    transition: background-color $transition-normal,
+      border-color $transition-normal, color $transition-normal,
+      transform $transition-fast, box-shadow $transition-normal;
+    box-shadow: $shadow-md;
+
+    &:hover {
+      background-color: var(--color-bg-hover);
+      border-color: var(--color-primary);
+      box-shadow: $shadow-lg;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--color-primary), $shadow-lg;
+    }
+
+    &:focus:not(:focus-visible) {
+      box-shadow: $shadow-lg;
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 3px var(--color-primary), $shadow-lg;
+    }
+
+    // Reduce motion
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+
+      &:active {
+        transform: none;
+      }
+    }
+  }
+
+  // Icon styling
+  &__icon {
+    width: 20px;
+    height: 20px;
+    transition: opacity $transition-normal, transform $transition-normal;
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+
+    &--light {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+
+    &--dark {
+      opacity: 0;
+      transform: rotate(-180deg) scale(0.8);
+    }
+
+    &--system {
+      opacity: 0;
+      transform: rotate(180deg) scale(0.8);
+    }
+  }
+
+  // Icon state changes based on current theme
+  [data-theme="dark"] &__button &__icon {
+    &--light {
+      opacity: 0;
+      transform: rotate(180deg) scale(0.8);
+    }
+
+    &--dark {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+
+    &--system {
+      opacity: 0;
+      transform: rotate(-180deg) scale(0.8);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-theme] &__button &__icon {
+      &--light {
+        opacity: 0;
+        transform: rotate(180deg) scale(0.8);
+      }
+
+      &--dark {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+      }
+
+      &--system {
+        opacity: 0;
+        transform: rotate(-180deg) scale(0.8);
+      }
+    }
+  }
+
+  // System theme mode
+  // (works when no data-theme attribute set, just system preference)
+  @media (prefers-color-scheme: dark) {
+    &:not([data-theme="light"]) &__button &__icon {
+      &--light {
+        opacity: 0;
+        transform: rotate(180deg) scale(0.8);
+      }
+
+      &--dark {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+      }
+
+      &--system {
+        opacity: 0;
+        transform: rotate(-180deg) scale(0.8);
+      }
+    }
+  }
+
+  // Optional: Show system icon when on system preference
+  &[data-current-theme="system"] &__button &__icon {
+    &--light {
+      opacity: 0;
+      transform: rotate(0deg) scale(0.8);
+    }
+
+    &--dark {
+      opacity: 0;
+      transform: rotate(-180deg) scale(0.8);
+    }
+
+    &--system {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+  }
+
+  // Labels (optional text)
+  &__labels {
+    position: absolute;
+    left: -9999px;
+    pointer-events: none;
+  }
+
+  &__label {
+    font-size: $font-xs;
+    color: var(--color-text-muted);
+    user-select: none;
+
+    &--light,
+    &--dark,
+    &--system {
+      display: none;
+    }
+  }
+
+  // Responsive: Show labels on larger screens (optional)
+  @media (min-width: $breakpoint-lg) {
+    &[data-show-labels="true"] &__labels {
+      position: static;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: $spacing-1;
+      margin-left: $spacing-2;
+
+      .theme-toggle__label--light,
+      .theme-toggle__label--dark,
+      .theme-toggle__label--system {
+        display: block;
+        font-size: $font-xs;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        opacity: 0.7;
+        transition: opacity $transition-normal;
+      }
+    }
+  }
+}
+
+/**
+ * Animation for theme transitions
+ * Optional: Smooth flash effect when theme changes
+ */
+@keyframes theme-change-flash {
+  0% {
+    background-color: var(--color-bg-default);
+  }
+
+  50% {
+    background-color: var(--color-primary);
+    opacity: 0.1;
+  }
+
+  100% {
+    background-color: var(--color-bg-default);
+  }
+}
+
+// Uncomment to enable flash animation on theme change
+// body.theme-changing {
+//   animation: theme-change-flash 0.6s ease-in-out;
+// }

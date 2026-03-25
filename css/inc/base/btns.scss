@@ -84,24 +84,24 @@
   }
 
   &--success {
-    background-color: #28a745;
+    background-color: $success;
     color: white;
-    border-color: #28a745;
+    border-color: $success;
 
     &:hover {
-      background-color: darken(#28a745, 10%);
-      border-color: darken(#28a745, 10%);
+      background-color: darken($success, 10%);
+      border-color: darken($success, 10%);
     }
   }
 
   &--danger {
-    background-color: #dc3545;
+    background-color: $danger;
     color: white;
-    border-color: #dc3545;
+    border-color: $danger;
 
     &:hover {
-      background-color: darken(#dc3545, 10%);
-      border-color: darken(#dc3545, 10%);
+      background-color: darken($danger, 10%);
+      border-color: darken($danger, 10%);
     }
   }
 

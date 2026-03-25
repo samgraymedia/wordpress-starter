@@ -1,6 +1,6 @@
 # Custom Gutenberg Blocks Guide
 
-**Complete reference for all 18 custom Gutenberg blocks in the theme**
+**Complete reference for all 19 custom Gutenberg blocks in the theme**
 
 This guide documents all available blocks, their fields, usage, and styling.
 
@@ -14,12 +14,13 @@ This guide documents all available blocks, their fields, usage, and styling.
 6. [Styling Blocks](#styling-blocks)
 7. [Block JavaScript](#block-javascript)
 8. [Best Practices](#best-practices)
+9. [Block Variations & Presets](#block-variations--presets)
 
 ---
 
 ## Block Overview
 
-This theme includes **18 pre-built custom Gutenberg blocks** organized by purpose:
+This theme includes **19 pre-built custom Gutenberg blocks** organized by purpose:
 
 ### Layout Blocks (5)
 
@@ -29,14 +30,15 @@ This theme includes **18 pre-built custom Gutenberg blocks** organized by purpos
 - **Gallery** - Responsive image grid with lightbox
 - **Video** - Video player with keyboard shortcuts
 
-### Content Blocks (6)
+### Content Blocks (7)
 
 - **Text** - Basic rich text block with formatting
 - **Tabs** - Tabbed content with keyboard navigation
 - **Accordion** - Expandable content sections
-- **Blog Posts** - Display selected blog posts in grid
+- **Blog Posts** - Display selected blog posts in grid (manual selection)
 - **Cards Grid** - Flexible reusable card grid (3 styles: standard, overlay, horizontal)
 - **FAQ Filtered** - Advanced FAQ with search and category filtering
+- **Related Content** - Query-based automatic content feed (latest posts, filtering)
 
 ### Call-to-Action Blocks (2)
 
@@ -713,6 +715,89 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
+### 18. Related Content / Latest Content Block
+
+**Purpose:** Query-based automatic content feed for displaying related or latest posts dynamically
+
+**Category:** Common / Content  
+**Post Types:** page, post, product
+
+**Available Fields:**
+
+| Field                       | Type     | Required | Description                                   |
+| --------------------------- | -------- | -------- | --------------------------------------------- |
+| Title                       | Text     | No       | Section headline                              |
+| Description                 | Textarea | No       | Section intro text                            |
+| Content Type                | Select   | Yes      | Post type to query (post, page, product)      |
+| Filter by Category/Taxonomy | Select   | No       | Taxonomy to filter by                         |
+| Filter by Specific Term     | Select   | No       | Specific category/tag/term                    |
+| Number of Items             | Number   | Yes      | 1-20 items to display                         |
+| Order By                    | Select   | Yes      | Latest, Oldest, Updated, Alphabetical, Random |
+| Columns                     | Select   | Yes      | 2, 3, or 4 columns                            |
+| Show Excerpt                | Toggle   | No       | Display post excerpt (150 chars)              |
+| Show Featured Image         | Toggle   | No       | Display featured image thumbnail              |
+| Show Publish Date           | Toggle   | No       | Display date and author info                  |
+| Exclude Current Post        | Toggle   | No       | Don't include current post in results         |
+| Link Behavior               | Select   | Yes      | Open in same window or new window             |
+
+**Layouts:**
+
+- **3-Column Grid** - Desktop: 3 cols → Tablet: 2 cols → Mobile: 1 col
+- **Card Layout** - Image on top (250px), content below, hover lift effect
+- **Tablet Variant** - Image left (40%), content right (60%), stacks on mobile
+- **Mobile Layout** - Stacked vertical cards with hover on focus
+
+**Features:**
+
+- Query-based (automatic) - not manual post selection
+- Dynamic post type support (works with any registered post type)
+- Taxonomy filtering (category, tag, custom taxonomies)
+- Flexible sorting: date (newest/oldest), title, random
+- Exclude current post option (prevent self-reference)
+- Configurable excerpt length (150 chars max)
+- Optional featured image display
+- Meta info: publish date + author name
+- Empty state message when no posts match filters
+- Responsive column collapsing (3 → 2 → 1)
+- Card hover: +4px lift, border color change, shadow
+- Image hover: 1.05x scale with overflow hidden
+- Read More link with animated arrow icon
+- Full keyboard navigation support
+- Semantic HTML with proper heading hierarchy
+
+**Example Use Cases:**
+
+- "Related Articles" section on blog posts
+- "Latest News" feed on homepage
+- "Recent Products" grid on product pages
+- "Latest from Category X" sidebar widget
+- "Trending" or "Random" content promoter
+
+**Differences from Blog Posts Block:**
+
+| Feature   | Blog Posts                  | Related Content                 |
+| --------- | --------------------------- | ------------------------------- |
+| Selection | Manual (editor picks posts) | Automatic (WP_Query)            |
+| Updates   | Static (fixed content)      | Dynamic (reflects latest posts) |
+| Filtering | None                        | By post type, taxonomy, term    |
+| Sorting   | By publish date             | Latest, oldest, random, title   |
+| Use Case  | Curated list                | Auto-updating feed              |
+
+**CSS Classes:**
+
+- `.related-content` (block wrapper)
+- `.related-content__items` (grid container)
+- `.related-content__item` (individual card)
+- `.related-content__image` (image container)
+- `.related-content__content` (text content area)
+- `.related-content__title-item` (post title)
+- `.related-content__meta` (date/author info)
+- `.related-content__excerpt` (post excerpt)
+- `.related-content__read-more` (CTA link)
+- `.related-content__empty` (no posts state)
+
+---
+
 ## Creating New Blocks
 
 ### Step 1: Create Block Template
@@ -925,6 +1010,324 @@ Always provide sensible defaults in your Twig template:
 {% set alignment = fields.alignment | default('center') %}
 {% set show_image = fields.show_image | default(true) %}
 {% set style = fields.style | default('default') %}
+```
+
+---
+
+## Block Variations & Presets
+
+Block variations and presets improve the editor experience by providing pre-configured block instances that editors can insert with one click, reducing setup time and ensuring consistency across the site.
+
+### What Are Block Variations?
+
+**Block variations** are pre-configured versions of a block with different field values, styles, or layouts. They appear as additional options when users insert a block in the WordPress editor.
+
+**Example:** A Hero block might have variations for:
+
+- "Dark Overlay" - Hero with dark background overlay
+- "Light Overlay" - Hero with light background overlay
+- "No Overlay" - Full image visibility
+- "Video Background" - Hero with video background
+
+Instead of creating one "Hero" block type, you create **one block with multiple variations**, each with different default field values.
+
+### Registering Block Variations with ACF
+
+Block variations are registered in the block's PHP configuration file using ACF filters.
+
+#### Basic Variation Registration
+
+**File:** `src/blocks/hero.php`
+
+```php
+<?php
+
+// Register the block
+acf_register_block_type( array(
+    'name'            => 'hero',
+    'title'           => 'Hero',
+    'description'     => 'Large hero section with image and text',
+    'render_template' => 'views/blocks/hero.twig',
+    'category'        => 'layout',
+    'icon'            => 'cover-image',
+    'keywords'        => array( 'hero', 'banner', 'header' ),
+    'supports'        => array(
+        'anchor'  => true,
+        'multiple' => true,
+    ),
+) );
+
+// Register variations for this block
+add_filter( 'register_block_type_args', function( $args, $name ) {
+    if ( $name !== 'acf/hero' ) {
+        return $args;
+    }
+
+    // Add variations
+    $args['variations'] = array(
+        array(
+            'name'       => 'dark-overlay',
+            'title'      => 'Dark Overlay',
+            'description' => 'Hero with dark background overlay',
+            'icon'       => 'cover-image',
+            'attributes' => array(
+                'data' => array(
+                    'overlay_style' => 'dark',
+                    'overlay_opacity' => 50,
+                ),
+            ),
+        ),
+        array(
+            'name'       => 'light-overlay',
+            'title'      => 'Light Overlay',
+            'description' => 'Hero with light background overlay',
+            'icon'       => 'cover-image',
+            'attributes' => array(
+                'data' => array(
+                    'overlay_style' => 'light',
+                    'overlay_opacity' => 30,
+                ),
+            ),
+        ),
+        array(
+            'name'       => 'no-overlay',
+            'title'      => 'No Overlay',
+            'description' => 'Full image visibility',
+            'icon'       => 'cover-image',
+            'attributes' => array(
+                'data' => array(
+                    'overlay_style' => 'none',
+                ),
+            ),
+        ),
+    );
+
+    return $args;
+}, 10, 2 );
+```
+
+### Using Default Values in Variations
+
+Since ACF blocks use custom field groups, you should set default field values in the block configuration:
+
+```php
+// In acf_add_local_field_group()
+acf_add_local_field_group( array(
+    'key'    => 'group_hero',
+    'title'  => 'Hero Block Fields',
+    'fields' => array(
+        array(
+            'key'           => 'field_hero_overlay_style',
+            'label'         => 'Overlay Style',
+            'name'          => 'overlay_style',
+            'type'          => 'button_group',
+            'choices'       => array(
+                'none'  => 'No Overlay',
+                'light' => 'Light Overlay',
+                'dark'  => 'Dark Overlay',
+            ),
+            'default_value' => 'dark',  // Default variation
+        ),
+        array(
+            'key'           => 'field_hero_overlay_opacity',
+            'label'         => 'Overlay Opacity',
+            'name'          => 'overlay_opacity',
+            'type'          => 'range',
+            'min'           => 0,
+            'max'           => 100,
+            'default_value' => 50,
+        ),
+    ),
+    'location' => array(
+        array(
+            array(
+                'param'    => 'block',
+                'operator' => '==',
+                'value'    => 'acf/hero',
+            ),
+        ),
+    ),
+) );
+```
+
+### Advanced: Variation-Specific Field Configuration
+
+For more control, conditionally modify field groups based on the selected variation:
+
+```php
+add_filter( 'acf/prepare_field', function( $field ) {
+    // Only apply to specific fields in hero block
+    if ( $field['name'] !== 'overlay_opacity' ) {
+        return $field;
+    }
+
+    // Get current block data
+    $block = get_field( 'overlay_style' );
+
+    // Hide opacity field if no overlay selected
+    if ( $block === 'none' ) {
+        $field['disabled'] = true;
+        $field['instructions'] = 'Not applicable when no overlay is used';
+    }
+
+    return $field;
+} );
+```
+
+### Practical Examples
+
+#### 1. Spacer Block Variations
+
+**Use case:** Different spacing presets for quick insertion
+
+```php
+$args['variations'] = array(
+    array(
+        'name'  => 'small-space',
+        'title' => 'Small Space',
+        'attributes' => array(
+            'data' => array(
+                'height_preset' => 'sm',
+                'height_custom'  => '',
+            ),
+        ),
+    ),
+    array(
+        'name'  => 'medium-space',
+        'title' => 'Medium Space',
+        'attributes' => array(
+            'data' => array(
+                'height_preset' => 'md',
+                'height_custom'  => '',
+            ),
+        ),
+    ),
+    array(
+        'name'  => 'large-space',
+        'title' => 'Large Space',
+        'attributes' => array(
+            'data' => array(
+                'height_preset' => 'lg',
+                'height_custom'  => '',
+            ),
+        ),
+    ),
+);
+```
+
+#### 2. Quote Block Variations
+
+**Use case:** Different quote styles pre-configured
+
+```php
+$args['variations'] = array(
+    array(
+        'name'  => 'simple-quote',
+        'title' => 'Simple Quote',
+        'attributes' => array(
+            'data' => array(
+                'style'     => 'simple',
+                'alignment' => 'left',
+            ),
+        ),
+    ),
+    array(
+        'name'  => 'highlighted-quote',
+        'title' => 'Highlighted Quote',
+        'attributes' => array(
+            'data' => array(
+                'style'     => 'highlighted',
+                'alignment' => 'center',
+            ),
+        ),
+    ),
+    array(
+        'name'  => 'card-quote',
+        'title' => 'Card Quote',
+        'attributes' => array(
+            'data' => array(
+                'style'     => 'card',
+                'alignment' => 'center',
+            ),
+        ),
+    ),
+);
+```
+
+#### 3. Form Embed Variations
+
+**Use case:** Different form layouts for Contact Form 7
+
+```php
+$args['variations'] = array(
+    array(
+        'name'  => 'wide-form',
+        'title' => 'Wide Form',
+        'attributes' => array(
+            'data' => array(
+                'layout'    => 'default',
+                'max_width' => 'full',
+            ),
+        ),
+    ),
+    array(
+        'name'  => 'narrow-form',
+        'title' => 'Narrow Form',
+        'attributes' => array(
+            'data' => array(
+                'layout'    => 'default',
+                'max_width' => 'sm',
+            ),
+        ),
+    ),
+    array(
+        'name'  => 'boxed-form',
+        'title' => 'Boxed Form',
+        'attributes' => array(
+            'data' => array(
+                'layout'    => 'boxed',
+                'max_width' => 'md',
+            ),
+        ),
+    ),
+);
+```
+
+### Using Variations in Templates
+
+No special template code needed—variations use the same template as the base block. The selected variation just pre-fills field values.
+
+```twig
+{# views/blocks/hero.twig #}
+<section class="hero hero--overlay-{{ fields.overlay_style }}" style="opacity: {{ fields.overlay_opacity / 100 }}">
+  {# Fields are already populated based on selected variation #}
+  <h1>{{ fields.title }}</h1>
+  <p>{{ fields.description }}</p>
+</section>
+```
+
+### Best Practices for Variations
+
+1. **Keep variations focused** — Each variation should represent a distinct use case
+2. **Name variations clearly** — Names should describe what editors will see ("Dark Overlay" not "hero-var-1")
+3. **Set sensible defaults** — Every variation should be immediately usable without editing
+4. **Limit to 3-5 per block** — Too many variations confuse editors
+5. **Document in BLOCKS-GUIDE.md** — List all variations for your custom blocks
+6. **Use descriptions** — Help editors understand when to use each variation
+7. **Keep variations DRY** — Use a loop to register similar variations:
+
+```php
+foreach ( array( 'sm', 'md', 'lg' ) as $size ) {
+    $args['variations'][] = array(
+        'name'  => "spacer-{$size}",
+        'title' => ucfirst( $size ) . ' Space',
+        'attributes' => array(
+            'data' => array(
+                'height_preset' => $size,
+            ),
+        ),
+    );
+}
 ```
 
 ---

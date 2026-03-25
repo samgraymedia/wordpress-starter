@@ -1,0 +1,23 @@
+{#
+Title: Spacer / Divider
+Description: Adjustable spacing with optional divider line
+Category: layout
+Icon: <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+Keywords: Spacer, Divider, Spacing, Layout, Separator
+Mode: auto
+PostTypes: page post
+SupportsMode: true
+SupportsMultiple: true
+#}
+<!-- Spacer / Divider -->
+<div 
+	class="spacer {{block.classes}}"
+	data-spacer-id="spacer-{{block.id}}"
+	style="{% if fields.height == 'custom' %}height: {{fields.height_custom}};{% else %}--spacer-height: var(--spacer-height-{{fields.height}});{% endif %}"
+>
+	{% if fields.divider_style != 'none' %}
+		<div class="spacer__divider spacer__divider--{{fields.divider_style}} spacer__divider--{{fields.alignment}} spacer__divider--{{fields.color}} {% if fields.width == 'full' %}spacer__divider--full{% endif %}">
+			<span class="spacer__divider-line"></span>
+		</div>
+	{% endif %}
+</div>

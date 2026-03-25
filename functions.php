@@ -13,6 +13,7 @@
  */
 require_once 'src/theme-config.php';
 require_once 'src/theme-options.php';
+require_once 'src/theme-toggle-options.php';
 require_once 'src/schema-organization.php';
 
 /**

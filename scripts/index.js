@@ -20,6 +20,7 @@ import { initCart } from "./modules/cart.js";
 import { initSearch } from "./modules/search.js";
 import { initForms } from "./modules/forms.js";
 import { initCookieConsent } from "./modules/cookie-consent.js";
+import themeToggle from "./modules/theme-toggle.js";
 
 /**
  * Initialize all theme components and modules
@@ -40,6 +41,12 @@ function initTheme() {
   initSearch();
   initForms();
   initCookieConsent();
+
+  // Initialize theme toggle (must run early for proper theme application)
+  themeToggle.init();
+
+  // Setup theme toggle button click handler
+  setupThemeToggle();
 
   // Add any global event listeners
   setupGlobalListeners();
@@ -116,6 +123,59 @@ function setupGlobalListeners() {
 
   // Handle window resize with throttle
   window.addEventListener("resize", throttle(handleWindowResize, 250));
+}
+
+/**
+ * Setup theme toggle button
+ */
+function setupThemeToggle() {
+  const toggleBtn = document.getElementById("theme-toggle-btn");
+  if (!toggleBtn) {
+    return;
+  }
+
+  // Click handler
+  toggleBtn.addEventListener("click", () => {
+    themeToggle.toggle();
+    updateThemeToggleUI();
+  });
+
+  // Listen for theme changes (from other tabs, external changes, etc.)
+  window.addEventListener("theme-change", () => {
+    updateThemeToggleUI();
+  });
+
+  // Initial UI update
+  updateThemeToggleUI();
+}
+
+/**
+ * Update theme toggle button UI based on current theme
+ */
+function updateThemeToggleUI() {
+  const toggleBtn = document.getElementById("theme-toggle-btn");
+  if (!toggleBtn) {
+    return;
+  }
+
+  const current = themeToggle.getCurrent();
+  const reflected = themeToggle.getReflected();
+
+  // Update aria-label based on next theme
+  const labels = {
+    light: "Switch to dark mode",
+    dark: "Switch to system preference",
+    system: "Switch to light mode",
+  };
+
+  toggleBtn.setAttribute("aria-label", labels[current] || labels.system);
+
+  // Update data attribute (for CSS to show correct icon)
+  if (current === "system") {
+    document.documentElement.removeAttribute("data-current-theme");
+  } else {
+    document.documentElement.setAttribute("data-current-theme", current);
+  }
 }
 
 /**

@@ -24,6 +24,7 @@ Theme Name: Starter Theme
 @import "./css/inc/components/product-card";
 @import "./css/inc/components/cart-summary";
 @import "./css/inc/components/cookie-consent";
+@import "./css/inc/components/theme-toggle";
 
 // 5. Global layout sections
 @import "./css/inc/global/nav";
@@ -31,6 +32,7 @@ Theme Name: Starter Theme
 @import "./css/inc/global/footer";
 @import "./css/inc/global/shop";
 @import "./css/inc/global/product-single";
+@import "./css/inc/global/dark-mode";
 
 // 6. Block-specific styles
 @import "./css/inc/blocks/text";
@@ -54,6 +56,10 @@ Theme Name: Starter Theme
 @import "./css/inc/blocks/testimonial";
 @import "./css/inc/blocks/icon-list";
 @import "./css/inc/blocks/stats";
+@import "./css/inc/blocks/spacer";
+@import "./css/inc/blocks/steps";
+@import "./css/inc/blocks/quote";
+@import "./css/inc/blocks/form-embed";
 // 7. Page/Post Type specific styles
 @import "./css/inc/pages/blog.scss";
 

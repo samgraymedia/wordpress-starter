@@ -1,0 +1,266 @@
+// ============================================================================
+// DARK MODE STYLES
+// ============================================================================
+// This file defines dark mode color variants using CSS custom properties.
+// Dark mode is activated by:
+// 1. [data-theme="dark"] attribute on <html> (manual toggle)
+// 2. prefers-color-scheme: dark media query (system preference)
+// ============================================================================
+
+/**
+ * Dark Mode Color Palette
+ * Inverted colors for dark theme with adjusted contrast for readability
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    // Colors - Dark Mode
+    --color-black: #ffffff;
+    --color-white: #1a1a1a;
+    --color-primary: #4da6ff;
+    --color-secondary: #a0a0a0;
+    --color-success: #4caf50;
+    --color-warning: #ffb74d;
+    --color-danger: #ff6b6b;
+    --color-info: #4fc3f7;
+
+    // Validation States - Dark Mode
+    --color-error: #ff6b6b;
+    --color-error-bg: #3d1f23;
+    --color-error-border: #8b3a42;
+    --color-success-text: #a8d5a8;
+    --color-success-bg: #1b4d2b;
+    --color-success-border: #4a8659;
+    --color-warning-text: #ffe0a0;
+    --color-warning-bg: #4d3a1a;
+    --color-warning-border: #996633;
+
+    // Grays - Dark Mode
+    --color-gray-900: #f0f0f0;
+    --color-gray-800: #e0e0e0;
+    --color-gray-700: #c0c0c0;
+    --color-gray-600: #a0a0a0;
+    --color-gray-500: #808080;
+    --color-gray-400: #606060;
+    --color-gray-300: #404040;
+    --color-gray-200: #2a2a2a;
+    --color-gray-100: #1f1f1f;
+    --color-gray-50: #1a1a1a;
+
+    // Semantic Colors - Dark Mode
+    --color-text: var(--color-gray-900);
+    --color-text-muted: var(--color-gray-600);
+    --color-text-inverted: var(--color-gray-50);
+    --color-border: var(--color-gray-300);
+    --color-bg-light: var(--color-gray-100);
+    --color-bg-default: var(--color-gray-50);
+    --color-bg-hover: var(--color-gray-200);
+
+    // Component State Colors - Dark Mode
+    --color-primary-dark: #2874cc;
+    --color-primary-light: #66b3ff;
+    --color-secondary-dark: #7a7a7a;
+    --color-secondary-light: #b3b3b3;
+    --color-success-dark: #3d8b44;
+    --color-danger-dark: #ff8a99;
+  }
+}
+
+/**
+ * Dark Mode Theme Toggle (via data-theme attribute)
+ * When user manually toggles dark mode, this selector applies dark colors
+ * regardless of system preference
+ */
+[data-theme="dark"] {
+  // Colors - Dark Mode
+  --color-black: #ffffff;
+  --color-white: #1a1a1a;
+  --color-primary: #4da6ff;
+  --color-secondary: #a0a0a0;
+  --color-success: #4caf50;
+  --color-warning: #ffb74d;
+  --color-danger: #ff6b6b;
+  --color-info: #4fc3f7;
+
+  // Validation States - Dark Mode
+  --color-error: #ff6b6b;
+  --color-error-bg: #3d1f23;
+  --color-error-border: #8b3a42;
+  --color-success-text: #a8d5a8;
+  --color-success-bg: #1b4d2b;
+  --color-success-border: #4a8659;
+  --color-warning-text: #ffe0a0;
+  --color-warning-bg: #4d3a1a;
+  --color-warning-border: #996633;
+
+  // Grays - Dark Mode
+  --color-gray-900: #f0f0f0;
+  --color-gray-800: #e0e0e0;
+  --color-gray-700: #c0c0c0;
+  --color-gray-600: #a0a0a0;
+  --color-gray-500: #808080;
+  --color-gray-400: #606060;
+  --color-gray-300: #404040;
+  --color-gray-200: #2a2a2a;
+  --color-gray-100: #1f1f1f;
+  --color-gray-50: #1a1a1a;
+
+  // Semantic Colors - Dark Mode
+  --color-text: var(--color-gray-900);
+  --color-text-muted: var(--color-gray-600);
+  --color-text-inverted: var(--color-gray-50);
+  --color-border: var(--color-gray-300);
+  --color-bg-light: var(--color-gray-100);
+  --color-bg-default: var(--color-gray-50);
+  --color-bg-hover: var(--color-gray-200);
+
+  // Component State Colors - Dark Mode
+  --color-primary-dark: #2874cc;
+  --color-primary-light: #66b3ff;
+  --color-secondary-dark: #7a7a7a;
+  --color-secondary-light: #b3b3b3;
+  --color-success-dark: #3d8b44;
+  --color-danger-dark: #ff8a99;
+}
+
+/**
+ * Force Light Mode (override system preference)
+ * When user manually selects light mode, this prevents dark mode even if
+ * system prefers dark
+ */
+@media (prefers-color-scheme: dark) {
+  [data-theme="light"] {
+    // Colors - Light Mode
+    --color-black: black;
+    --color-white: white;
+    --color-primary: #0066cc;
+    --color-secondary: #6c757d;
+    --color-success: #28a745;
+    --color-warning: #ffc107;
+    --color-danger: #dc3545;
+    --color-info: #17a2b8;
+
+    // Validation States - Light Mode
+    --color-error: #dc3545;
+    --color-error-bg: #f8d7da;
+    --color-error-border: #f5c6cb;
+    --color-success-text: #155724;
+    --color-success-bg: #d4edda;
+    --color-success-border: #c3e6cb;
+    --color-warning-text: #856404;
+    --color-warning-bg: #fff3cd;
+    --color-warning-border: #ffeaa7;
+
+    // Grays - Light Mode
+    --color-gray-900: #212529;
+    --color-gray-800: #343a40;
+    --color-gray-700: #495057;
+    --color-gray-600: #6c757d;
+    --color-gray-500: #adb5bd;
+    --color-gray-400: #ced4da;
+    --color-gray-300: #dee2e6;
+    --color-gray-200: #e9ecef;
+    --color-gray-100: #f8f9fa;
+    --color-gray-50: #f9fafb;
+
+    // Semantic Colors - Light Mode
+    --color-text: var(--color-gray-900);
+    --color-text-muted: var(--color-gray-600);
+    --color-text-inverted: var(--color-white);
+    --color-border: var(--color-gray-300);
+    --color-bg-light: var(--color-gray-50);
+    --color-bg-default: var(--color-white);
+    --color-bg-hover: var(--color-gray-100);
+  }
+}
+
+/**
+ * Smooth Transition for Theme Changes
+ * When user toggles theme, apply smooth color transitions
+ */
+body {
+  transition: color $transition-normal, background-color $transition-normal,
+    border-color $transition-normal;
+
+  // Prevent jarring background flash when switching themes
+  background-color: var(--color-bg-default);
+  color: var(--color-text);
+}
+
+/**
+ * Reduce Motion
+ * Respect user's preference for reduced motion
+ */
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
+}
+
+/**
+ * Print Media - Force Light Mode
+ * Always use light mode for printing to save ink and ensure readability
+ */
+@media print {
+  :root,
+  [data-theme="dark"],
+  [data-theme="light"] {
+    // Force light colors for print
+    --color-black: black;
+    --color-white: white;
+    --color-primary: #0066cc;
+    --color-secondary: #6c757d;
+    --color-success: #28a745;
+    --color-warning: #ffc107;
+    --color-danger: #dc3545;
+    --color-info: #17a2b8;
+
+    --color-error: #dc3545;
+    --color-error-bg: #f8d7da;
+    --color-error-border: #f5c6cb;
+    --color-success-text: #155724;
+    --color-success-bg: #d4edda;
+    --color-success-border: #c3e6cb;
+    --color-warning-text: #856404;
+    --color-warning-bg: #fff3cd;
+    --color-warning-border: #ffeaa7;
+
+    --color-gray-900: #212529;
+    --color-gray-800: #343a40;
+    --color-gray-700: #495057;
+    --color-gray-600: #6c757d;
+    --color-gray-500: #adb5bd;
+    --color-gray-400: #ced4da;
+    --color-gray-300: #dee2e6;
+    --color-gray-200: #e9ecef;
+    --color-gray-100: #f8f9fa;
+    --color-gray-50: #f9fafb;
+
+    --color-text: var(--color-gray-900);
+    --color-text-muted: var(--color-gray-600);
+    --color-text-inverted: var(--color-white);
+    --color-border: var(--color-gray-300);
+    --color-bg-light: var(--color-gray-50);
+    --color-bg-default: var(--color-white);
+    --color-bg-hover: var(--color-gray-100);
+  }
+
+  body {
+    transition: none;
+  }
+}
+
+/**
+ * Image/Media Dark Mode Adjustments
+ * Optional: Add subtle filter to images in dark mode (uncomment to enable)
+ */
+// [data-theme="dark"] img,
+// [data-theme="dark"] picture {
+//   opacity: 0.9;
+// }
+
+// @media (prefers-color-scheme: dark) {
+//   img,
+//   picture {
+//     opacity: 0.9;
+//   }
+// }

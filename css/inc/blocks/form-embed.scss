@@ -1,0 +1,313 @@
+/**
+ * Form Embed Block Styles
+ * 
+ * Styling for Contact Form 7 embeds with layout variants
+ */
+
+.form-embed {
+  padding: $spacing-4 0;
+
+  // Content container
+  .form-embed__content {
+    transition: all 0.3s ease-in-out;
+  }
+
+  // Title styling
+  .form-embed__title {
+    font-size: $font-2xl;
+    font-weight: $font-bold;
+    line-height: $line-height-heading;
+    margin-bottom: $spacing-2;
+    color: var(--color-text);
+  }
+
+  // Intro text styling
+  .form-embed__intro {
+    font-size: $font-base;
+    line-height: $line-height-base;
+    margin-bottom: $spacing-4;
+    color: var(--color-text-secondary);
+
+    p {
+      margin: 0 0 $spacing-2 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  // Form container
+  .form-embed__form {
+    margin-bottom: $spacing-3;
+
+    // Contact Form 7 default styles
+    .wpcf7-form {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-3;
+    }
+
+    // Form group (p tag wraps each field)
+    .wpcf7-form-control-wrap {
+      display: block;
+      width: 100%;
+
+      label {
+        display: block;
+        font-size: $font-sm;
+        font-weight: $font-medium;
+        margin-bottom: $spacing-1;
+        color: var(--color-text);
+      }
+    }
+
+    // Input fields
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="date"],
+    textarea,
+    select {
+      width: 100%;
+      padding: $spacing-2 $spacing-3;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      font-size: $font-base;
+      line-height: $line-height-base;
+      color: var(--color-text);
+      background-color: var(--color-bg);
+      transition: border-color 0.3s ease-in-out;
+
+      &:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+      }
+
+      &::placeholder {
+        color: var(--color-text-tertiary);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+      font-family: inherit;
+    }
+
+    // Submit button
+    input[type="submit"],
+    button {
+      display: inline-block;
+      padding: $spacing-2 $spacing-5;
+      background-color: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: $font-base;
+      font-weight: $font-semibold;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+
+      &:hover {
+        background-color: var(--color-primary-dark);
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+
+    // Error messages
+    .wpcf7-not-valid-tip {
+      display: block;
+      color: var(--color-error, #dc3545);
+      font-size: $font-xs;
+      margin-top: 4px;
+    }
+
+    .wpcf7-form-control.wpcf7-invalid {
+      border-color: var(--color-error, #dc3545) !important;
+    }
+
+    // Success message
+    .wpcf7-mail-sent-ok {
+      display: block;
+      padding: $spacing-3;
+      background-color: rgba(40, 167, 69, 0.1);
+      border-left: 4px solid rgb(40, 167, 69);
+      color: rgb(40, 167, 69);
+      border-radius: 2px;
+      margin-bottom: $spacing-3;
+    }
+  }
+
+  // Success message section
+  .form-embed__success {
+    padding: $spacing-3;
+    background-color: rgba(40, 167, 69, 0.1);
+    border-left: 4px solid rgb(40, 167, 69);
+    border-radius: 2px;
+    color: rgb(40, 167, 69);
+    font-size: $font-base;
+    line-height: $line-height-base;
+
+    p {
+      margin: 0;
+
+      &:not(:last-child) {
+        margin-bottom: $spacing-2;
+      }
+    }
+  }
+
+  // Alignment modifiers
+  .form-embed__content--left {
+    text-align: left;
+  }
+
+  .form-embed__content--center {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .form-embed__content--right {
+    text-align: right;
+    margin-left: auto;
+  }
+
+  // Width modifiers
+  .form-embed__content--width-full {
+    max-width: 100%;
+  }
+
+  .form-embed__content--width-lg {
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .form-embed__content--width-md {
+    max-width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .form-embed__content--width-sm {
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  // Layout variants
+  &.form-embed--minimal {
+    padding: $spacing-2 0;
+
+    .form-embed__title {
+      font-size: $font-lg;
+      margin-bottom: $spacing-1;
+    }
+
+    .form-embed__intro {
+      margin-bottom: $spacing-2;
+      font-size: $font-sm;
+    }
+  }
+
+  &.form-embed--boxed {
+    background-color: var(--color-bg-secondary);
+    padding: $spacing-5;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+
+    .form-embed__title {
+      margin-top: 0;
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .form-embed {
+    .form-embed__title {
+      color: var(--color-text-light);
+    }
+
+    .form-embed__intro {
+      color: var(--color-text-secondary-light);
+    }
+
+    .form-embed__form {
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="url"],
+      input[type="date"],
+      textarea,
+      select {
+        background-color: var(--color-bg-light);
+        color: var(--color-text-light);
+        border-color: var(--color-border-light);
+
+        &:focus {
+          box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.2);
+        }
+
+        &::placeholder {
+          color: var(--color-text-tertiary-light);
+        }
+      }
+    }
+
+    &.form-embed--boxed {
+      background-color: var(--color-bg-secondary-light);
+      border-color: var(--color-border-light);
+    }
+  }
+}
+
+// Mobile responsive
+@media (max-width: $breakpoint-sm) {
+  .form-embed {
+    padding: $spacing-3 0;
+
+    .form-embed__title {
+      font-size: $font-xl;
+    }
+
+    .form-embed__form {
+      .wpcf7-form {
+        gap: $spacing-2;
+      }
+    }
+
+    .form-embed__content--width-md,
+    .form-embed__content--width-sm {
+      max-width: 100% !important;
+    }
+
+    &.form-embed--boxed {
+      padding: $spacing-4;
+      border-radius: 4px;
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .form-embed {
+    .form-embed__form,
+    input[type="submit"],
+    button {
+      display: none;
+    }
+
+    .form-embed__title,
+    .form-embed__intro {
+      display: block;
+    }
+  }
+}
