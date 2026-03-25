@@ -1,6 +1,6 @@
 # Gutenberg Blocks & Theme Features
 
-**Status:** 5 of 7 blocks complete | Core features in progress
+**Status:** 5 of 7 blocks complete | 3 of 10 core features complete
 
 ---
 
@@ -23,11 +23,12 @@ Structured locations block for multi-location businesses, branches, stockists, o
 
 ## 📊 Status Summary
 
-| Category             | Count | Status                                               |
-| -------------------- | ----- | ---------------------------------------------------- |
-| **Blocks Built**     | 5     | ✅ Related Content, Spacer, Steps, Quote, Form Embed |
-| **Blocks Remaining** | 1     | Map                                                  |
-| **Core Features**    | 12    | In roadmap —see below                                |
+| Category               | Count | Status                                                                            |
+| ---------------------- | ----- | --------------------------------------------------------------------------------- |
+| **Blocks Built**       | 5     | ✅ Related Content, Spacer, Steps, Quote, Form Embed                              |
+| **Blocks Remaining**   | 1     | Map                                                                               |
+| **Features Built**     | 3     | Form Validation (JS), Input Sanitization (PHP), Block Variations                  |
+| **Features Remaining** | 7     | .env, JS Logger, Breadcrumb, Lazy-Loading, Accessibility, Deployment, Performance |
 
 **Build Results:**
 
@@ -66,7 +67,7 @@ Structured locations block for multi-location businesses, branches, stockists, o
 
 Utilities and infrastructure improvements to build alongside/after blocks.
 
-**Roadmap:** 11 features | Organized by priority
+**Roadmap:** 10 features | 3 complete, 7 remaining
 
 ## Priority & Effort Matrix
 
@@ -81,7 +82,7 @@ Utilities and infrastructure improvements to build alongside/after blocks.
 | 7   | JS Error Logging               | 🟡 Medium | Low        | 6-8h   | ⏳     |
 | 8   | Deployment Guide & CI/CD       | 🟡 Medium | Medium     | 10-15h | ⏳     |
 | 9   | Performance Monitoring         | 🟡 Medium | Low-Med    | 8-10h  | ⏳     |
-| 10  | Block Variations Doc           | 🟢 Low    | Low        | 5-7h   | ⏳     |
+| 10  | Block Variations Doc           | 🟢 Low    | Low        | 5-7h   | ✅     |
 
 ## Phase 1: Quick Wins (Total: ~20 hours)
 
@@ -184,13 +185,13 @@ Core functionality improvements
 
 Backend and DevOps improvements
 
-**Completed:**
+**Completed (1 of 3):**
 
-- ✅ **Input Sanitization & Validation (PHP)** — Security helpers library created with 2 files:
-  - `src/helpers/validation.php` (18 validators): email, URL, phone, required, string length, ACF field, file upload, CSRF token, post meta, data array
-  - `src/helpers/sanitization.php` (21 sanitizers): email, URL, phone, text with HTML, ACF field values, repeater rows, post meta, form data, filenames, MIME types, options, hex colors
+- ✅ Input Sanitization & Validation (PHP)
 
-\*\*Remaining:
+**Remaining (2 of 3):**
+
+### 9. Deployment Guide & CI/CD
 
 10-15h | Automated testing pipeline and procedures
 
