@@ -31,7 +31,7 @@ SupportsMultiple: true
 							<div class="team__item-inner">
 								{% if member.photo %}
 									<div class="team__image">
-										<img src="{{ member.photo.url }}" alt="{{ member.name }}" class="team__photo" />
+										<img data-src="{{ member.photo.url }}" alt="{{ member.name }}" class="team__photo" loading="lazy" decoding="async" />
 									</div>
 								{% endif %}
 
@@ -86,7 +86,7 @@ SupportsMultiple: true
 							<div class="team__card">
 								{% if member.photo %}
 									<div class="team__image">
-										<img src="{{ member.photo.url }}" alt="{{ member.name }}" class="team__photo" />
+										<img data-src="{{ member.photo.url }}" alt="{{ member.name }}" class="team__photo" loading="lazy" decoding="async" />
 									</div>
 								{% endif %}
 

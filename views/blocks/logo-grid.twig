@@ -29,12 +29,12 @@ SupportsMultiple: true
 						{% if logo.link %}
 							<a href="{{ logo.link }}" class="logo-grid__link" {% if logo.link_target %}target="_blank" rel="noopener noreferrer"{% endif %}>
 								<div class="logo-grid__image-wrapper logo-grid__image-wrapper--{{fields.align|default('center')}}">
-									<img src="{{ logo.image }}" alt="{{ logo.alt_text }}" class="logo-grid__image">
-								</div>
-							</a>
-						{% else %}
-							<div class="logo-grid__image-wrapper logo-grid__image-wrapper--{{fields.align|default('center')}}">
-								<img src="{{ logo.image }}" alt="{{ logo.alt_text }}" class="logo-grid__image">
+								<img data-src="{{ logo.image }}" alt="{{ logo.alt_text }}" class="logo-grid__image" loading="lazy" decoding="async">
+							</div>
+						</a>
+					{% else %}
+						<div class="logo-grid__image-wrapper logo-grid__image-wrapper--{{fields.align|default('center')}}">
+							<img data-src="{{ logo.image }}" alt="{{ logo.alt_text }}" class="logo-grid__image" loading="lazy" decoding="async">
 							</div>
 						{% endif %}
 					</div>

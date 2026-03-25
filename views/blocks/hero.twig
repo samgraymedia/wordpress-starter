@@ -11,7 +11,13 @@ SupportsAlign: full
 SupportsMode: true
 SupportsMultiple: true
 #}
-<section id="hero-{{block.id}}" class="hero {{block.classes}}" {% if fields.background_image %} style="background-image: url('{{ fields.background_image.url }}'); background-size: cover; background-position: center;" {% endif %}>
+<section 
+	id="hero-{{block.id}}" 
+	class="hero {{block.classes}}"
+	{% if fields.background_image %} 
+		data-bg-image="{{ fields.background_image.url }}"
+	{% endif %}
+>
 	<div class="hero__overlay"></div>
 	<div class="hero__content wrapper">
 		<div class="hero__text">

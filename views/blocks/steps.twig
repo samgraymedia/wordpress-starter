@@ -40,11 +40,12 @@ SupportsMultiple: true
 								<div class="steps__icon">
 									{% set icon_img = TimberImage(item.icon) %}
 									<img 
-										src="{{ icon_img.src }}" 
+										data-src="{{ icon_img.src }}" 
 										alt="{{ item.heading }}"
 										width="80"
 										height="80"
 										loading="lazy"
+										decoding="async"
 									>
 								</div>
 							{% endif %}

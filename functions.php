@@ -113,6 +113,13 @@ class StarterSite extends Timber\Site {
 		$context['user_id'] = get_current_user_id();
 		$context['is_user_logged_in'] = is_user_logged_in();
 		
+		// Add breadcrumb context
+		require_once 'src/helpers/breadcrumbs.php';
+		$trail = \StarterTheme\Helpers\Breadcrumb::get_trail();
+		$context['breadcrumb_trail'] = $trail;
+		$context['breadcrumb_mobile'] = \StarterTheme\Helpers\Breadcrumb::get_abbreviated_trail( $trail );
+		$context['breadcrumb_schema'] = \StarterTheme\Helpers\Breadcrumb::get_schema( $trail );
+		
 		return $context;
 	}
 

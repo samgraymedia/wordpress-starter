@@ -35,7 +35,7 @@ SupportsMultiple: true
 					{# Featured Image #}
 					{% if service.thumbnail %}
 						<div class="service-card__image">
-							<img src="{{ service.thumbnail.src('large') }}" alt="{{ service.title }}" loading="lazy" />
+							<img data-src="{{ service.thumbnail.src('large') }}" alt="{{ service.title }}" loading="lazy" decoding="async" />
 						</div>
 					{% endif %}
 

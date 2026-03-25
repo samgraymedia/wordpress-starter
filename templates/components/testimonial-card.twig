@@ -32,7 +32,7 @@
     <footer class="testimonial-card__footer">
         {% if post.thumbnail %}
             <div class="testimonial-card__image">
-                <img src="{{ post.thumbnail.src|resize(80, 80) }}" alt="{{ post.title }}">
+                <img data-src="{{ post.thumbnail.src|resize(80, 80) }}" alt="{{ post.title }}" loading="lazy" decoding="async">
             </div>
         {% endif %}
 

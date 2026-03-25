@@ -10,6 +10,7 @@
 // Import utilities
 import { querySelectorAll, addClass, removeClass } from "./utils/dom.js";
 import { throttle, debounce } from "./utils/events.js";
+import { initLazyLoading } from "./utils/lazy-loading.js";
 
 // Import components
 import { Modal } from "./components/Modal.js";
@@ -28,6 +29,12 @@ import themeToggle from "./modules/theme-toggle.js";
  */
 function initTheme() {
   console.log("[Theme] Initializing components...");
+
+  // Initialize lazy loading early
+  initLazyLoading({
+    rootMargin: "50px",
+    threshold: 0.01,
+  });
 
   // Initialize Bootstrap components that might be on the page
   initBootstrapComponents();

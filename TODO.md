@@ -1,104 +1,65 @@
 # Gutenberg Blocks & Theme Features
 
-**Status:** 5 of 7 blocks complete | 3 of 10 core features complete
-
----
-
-## 📦 Blocks To Build
-
-**Remaining:** 1 block (Map)
-
-### 1. Map / Locations
-
-**Priority:** Medium | **Complexity:** Medium | **Est. Time:** 2-4 hrs
-
-Structured locations block for multi-location businesses, branches, stockists, or offices.
-
-**Fields:**
-
-- Title
-- Locations repeater (Address, Phone, Hours, Map/Coords, Image, Link)
+**Status:** All blocks complete | 5 of 10 core features complete
 
 ---
 
 ## 📊 Status Summary
 
-| Category               | Count | Status                                                                            |
-| ---------------------- | ----- | --------------------------------------------------------------------------------- |
-| **Blocks Built**       | 5     | ✅ Related Content, Spacer, Steps, Quote, Form Embed                              |
-| **Blocks Remaining**   | 1     | Map                                                                               |
-| **Features Built**     | 3     | Form Validation (JS), Input Sanitization (PHP), Block Variations                  |
-| **Features Remaining** | 7     | .env, JS Logger, Breadcrumb, Lazy-Loading, Accessibility, Deployment, Performance |
+| Category               | Count | Status                                                  |
+| ---------------------- | ----- | ------------------------------------------------------- |
+| **Features Remaining** | 5     | .env, JS Logger, Accessibility, Deployment, Performance |
 
 **Build Results:**
 
-- Last build: 178ms
+- Last build: 192ms
 - No errors/warnings
-- JS bundle: 12.61 kB (gzip: 3.99 kB)
+- JS bundle: 15.78 kB (gzip: 4.71 kB)
 
 ---
 
-## 🚀 Implementation Guide
+## 🛠️ Core Features Remaining
 
-### Required Steps for New Blocks
-
-1. Create ACF field config: `src/blocks/block-name.php`
-2. Create Twig template: `views/blocks/block-name.twig`
-3. Create SCSS: `css/inc/blocks/block-name.scss`
-4. Add import to `style.scss`
-5. Run `npm run build` to compile
-6. Test on page/post
-7. Update TODO.md with completion details
-
-### Block Standards
-
-- Use BEM naming convention
-- Mobile-first responsive design
-- Include dark mode support (media query)
-- Print-friendly styling
-- Semantic HTML with ARIA labels
-- Conditional field logic where applicable
-
----
-
----
-
-# 🛠️ Core Features & Infrastructure
-
-Utilities and infrastructure improvements to build alongside/after blocks.
-
-**Roadmap:** 10 features | 3 complete, 7 remaining
+**Roadmap:** 5 features | ~50-60 hours total remaining effort
 
 ## Priority & Effort Matrix
 
-| #   | Feature                        | Priority  | Complexity | Effort | Status |
-| --- | ------------------------------ | --------- | ---------- | ------ | ------ |
-| 1   | Form Validation Utilities (JS) | 🔴 High   | Low        | 4-6h   | ✅     |
-| 2   | Input Sanitization (PHP)       | 🔴 High   | Medium     | 10-14h | ✅     |
-| 3   | Breadcrumb Navigation          | 🔴 High   | Medium     | 8-12h  | ⏳     |
-| 4   | Image Lazy-Loading             | 🔴 High   | Medium     | 10-15h | ⏳     |
-| 5   | Accessibility Audit Guide      | 🔴 High   | Medium     | 12-18h | ⏳     |
-| 6   | .env Configuration             | 🟡 Medium | Low        | 6-8h   | ⏳     |
-| 7   | JS Error Logging               | 🟡 Medium | Low        | 6-8h   | ⏳     |
-| 8   | Deployment Guide & CI/CD       | 🟡 Medium | Medium     | 10-15h | ⏳     |
-| 9   | Performance Monitoring         | 🟡 Medium | Low-Med    | 8-10h  | ⏳     |
-| 10  | Block Variations Doc           | 🟢 Low    | Low        | 5-7h   | ✅     |
+| #   | Feature                   | Priority  | Complexity | Effort | Status |
+| --- | ------------------------- | --------- | ---------- | ------ | ------ |
+| 4   | .env Configuration        | 🟡 Medium | Low        | 6-8h   | ⏳     |
+| 5   | JS Error Logging          | 🟡 Medium | Low        | 6-8h   | ⏳     |
+| 6   | Accessibility Audit Guide | 🔴 High   | Medium     | 12-18h | ⏳     |
+| 7   | Deployment Guide & CI/CD  | 🟡 Medium | Medium     | 10-15h | ⏳     |
+| 8   | Performance Monitoring    | 🟡 Medium | Low-Med    | 8-10h  | ⏳     |
 
-## Phase 1: Quick Wins (Total: ~20 hours)
+---
 
-Parallel tasks with immediate value
+## Recently Completed ✅
 
-**Completed (3 of 4):**
+### Breadcrumb Navigation Component
 
-- ✅ Form Validation Utilities Library (JavaScript)
-- ✅ Input Sanitization & Validation (PHP)
-- ✅ Block Variations Documentation
+**Status:** Complete - Feature #5 Done  
+**Build:** 192ms, 0 errors, 15.78 kB bundle
 
-**Remaining (1 of 4):**
+**Deliverables:**
 
-### 2. .env Configuration Support
+- ✅ PHP utility class (`src/helpers/breadcrumbs.php`)
+- ✅ Twig template (`templates/components/breadcrumb.twig`)
+- ✅ SCSS styling (`css/inc/components/breadcrumb.scss`)
+- ✅ Gutenberg block (`src/blocks/breadcrumb.php`)
+- ✅ Theme integration (functions.php, base.twig, style.scss)
+- ✅ Comprehensive guide (BREADCRUMB-GUIDE.md)
+- ✅ Schema.org BreadcrumbList JSON-LD markup
+- ✅ Mobile responsive with automated abbreviation
+- ✅ Full WCAG 2.1 AA accessibility
 
-6-8h | Environment-specific settings (dev/staging/prod)
+See [BREADCRUMB-GUIDE.md](BREADCRUMB-GUIDE.md) for complete documentation.
+
+---
+
+## Phase 1: Quick Wins (12-16h remaining)
+
+### .env Configuration Support
 
 **Why:** Separate config from code, enable feature flags
 
@@ -113,9 +74,7 @@ Parallel tasks with immediate value
 
 ---
 
-### 3. JavaScript Error Logging Utility
-
-6-8h | Centralized error handling and debug logging
+### JavaScript Error Logging Utility
 
 **Why:** Track production errors, aid debugging
 
@@ -129,45 +88,9 @@ Parallel tasks with immediate value
 
 ---
 
-## Phase 2: Performance & UX (Total: ~30 hours)
+## Phase 2: Performance & UX (12-18h remaining)
 
-Core functionality improvements
-
-### 5. Image Lazy-Loading
-
-10-15h | Performance improvement via IntersectionObserver
-
-**Why:** Reduce initial load, faster perceived performance
-
-**Implementation:**
-
-- IntersectionObserver utility module
-- Native `loading="lazy"` attributes
-- Blurred placeholders
-- Dynamic srcset/picture support
-
-**Coverage:** Heroes, galleries, blog posts, products
-
----
-
-### 6. Breadcrumb Navigation Component
-
-8-12h | Essential UX/SEO element missing from theme
-
-**Why:** Improve navigation, boost SEO, reduce confusion
-
-**Features:**
-
-- Auto-generation for archives/taxonomies
-- Gutenberg block for manual placement
-- Schema.org BreadcrumbList markup
-- Mobile-friendly collapse
-
----
-
-### 7. Comprehensive Accessibility Guide
-
-12-18h | WCAG 2.1 AA compliance testing framework
+### Comprehensive Accessibility Audit Guide
 
 **Why:** Ensure legal compliance, improve usability
 
@@ -181,19 +104,9 @@ Core functionality improvements
 
 ---
 
-## Phase 3: Infrastructure (Total: ~36 hours)
+## Phase 3: Infrastructure (18-25h remaining)
 
-Backend and DevOps improvements
-
-**Completed (1 of 3):**
-
-- ✅ Input Sanitization & Validation (PHP)
-
-**Remaining (2 of 3):**
-
-### 9. Deployment Guide & CI/CD
-
-10-15h | Automated testing pipeline and procedures
+### Deployment Guide & CI/CD
 
 **Why:** Reduce errors, streamline releases
 
@@ -206,9 +119,7 @@ Backend and DevOps improvements
 
 ---
 
-### 10. Performance Monitoring & Optimization
-
-8-10h | Web Vitals tracking and optimization guide
+### Performance Monitoring & Optimization
 
 **Why:** Measure improvements, establish baselines
 
@@ -223,9 +134,9 @@ Backend and DevOps improvements
 
 **Recommended Implementation Order:**
 
-1. Phase 1 (Quick Wins) — ~20h — Parallel execution
-2. Phase 2 (Performance) — ~30h — Sequential
-3. Phase 3 (Infrastructure) — ~36h — Sequential
+1. Phase 1 (Quick Wins) — .env Configuration → JS Error Logging
+2. Phase 2 (Performance) — Accessibility Audit Guide
+3. Phase 3 (Infrastructure) — Deployment Guide → Performance Monitoring
 
 ---
 

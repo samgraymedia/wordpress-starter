@@ -15,7 +15,7 @@ SupportsMultiple: true
 	<div class="wrapper">
 		<div class="image-text__image">
 			{% if fields.image %}
-				<img src="{{ fields.image.url }}" alt="{{ fields.image.alt }}" class="image-text__img">
+				<img data-src="{{ fields.image.url }}" alt="{{ fields.image.alt }}" class="image-text__img" loading="lazy" decoding="async">
 			{% endif %}
 		</div>
 

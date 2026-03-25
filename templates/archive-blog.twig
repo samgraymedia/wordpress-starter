@@ -24,7 +24,7 @@
 				<article class="post-card">
 					{% if post.thumbnail %}
 						<a href="{{ post.link }}" class="post-card-image">
-							<img src="{{ post.thumbnail.src }}" alt="{{ post.title }}" loading="lazy" />
+							<img data-src="{{ post.thumbnail.src }}" alt="{{ post.title }}" loading="lazy" decoding="async" />
 						</a>
 					{% endif %}
 

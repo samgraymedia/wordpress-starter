@@ -18,7 +18,7 @@ SupportsMultiple: true
 				{% for slide in fields.slides %}
 					<div class="slider__slide" data-index="{{loop.index0}}">
 						{% if slide.image %}
-							<img src="{{ slide.image.url }}" alt="{{ slide.image.alt }}" class="slider__img">
+							<img data-src="{{ slide.image.url }}" alt="{{ slide.image.alt }}" class="slider__img" loading="lazy" decoding="async">
 						{% endif %}
 
 						{% if slide.overlay %}

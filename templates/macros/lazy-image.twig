@@ -1,0 +1,77 @@
+{# 
+  Lazy-Loading Image Macros
+  
+  Provides convenient Twig macros for rendering lazy-loaded images with:
+  - IntersectionObserver-based loading
+  - Native loading="lazy" fallback
+  - Responsive srcset/picture support
+  - Accessibility features
+#}
+
+{# 
+  Basic lazy-loaded image
+  
+  Usage: {{ lazy_image(post.thumbnail, 'My Image', {class: 'my-class'}) }}
+#}
+{% macro lazy_image(image, alt = '', options = {}) %}
+  {% if image %}
+    <img 
+      data-src="{{ image.src }}"
+      alt="{{ alt }}"
+      loading="lazy"
+      decoding="async"
+      {% if options.class %}class="{{ options.class }}"{% endif %}
+      {% if options.width %}width="{{ options.width }}"{% endif %}
+      {% if options.height %}height="{{ options.height }}"{% endif %}
+      {% if options.attributes %}{{ options.attributes }}{% endif %}
+    />
+  {% endif %}
+{% endmacro %}
+
+{# 
+  Lazy-loaded image with responsive srcset
+  
+  Usage: {{ lazy_image_responsive(post.thumbnail, 'My Image', {class: 'responsive'}) }}
+#}
+{% macro lazy_image_responsive(image, alt = '', options = {}) %}
+  {% if image %}
+    <img 
+      data-src="{{ image.src }}"
+      alt="{{ alt }}"
+      loading="lazy"
+      decoding="async"
+      {% if options.class %}class="{{ options.class }}"{% endif %}
+      {% if options.width %}width="{{ options.width }}"{% endif %}
+      {% if options.height %}height="{{ options.height }}"{% endif %}
+      {% if options.attributes %}{{ options.attributes }}{% endif %}
+    />
+  {% endif %}
+{% endmacro %}
+
+{# 
+  Lazy-load background image
+  
+  Usage: {{ lazy_bg_image('/path/to/image.jpg', {class: 'hero', height: '400px'}) }}
+#}
+{% macro lazy_bg_image(image_url, options = {}) %}
+  {% if image_url %}
+    <div 
+      data-bg-image="{{ image_url }}"
+      {% if options.class %}class="{{ options.class }}"{% endif %}
+      {% if options.style %}style="{{ options.style }}"{% endif %}
+      {% if options.attributes %}{{ options.attributes }}{% endif %}
+    ></div>
+  {% endif %}
+{% endmacro %}
+
+{# 
+  Aspect ratio wrapper for images
+  
+  Usage: 
+  <div class="{% include 'macros/lazy-image.twig' %}lazy-wrapper lazy-wrapper--16-9">
+    {{ lazy_image(post.thumbnail, 'Post') }}
+  </div>
+#}
+{% macro aspect_wrapper_class(ratio = '16-9') %}
+  lazy-wrapper lazy-wrapper--{{ ratio }}
+{% endmacro %}

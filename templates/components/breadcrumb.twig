@@ -1,0 +1,72 @@
+{# 
+  Breadcrumb Navigation Component
+  
+  Renders navigation breadcrumbs with Schema.org markup
+  
+  Usage in templates:
+  {% include 'components/breadcrumb.twig' %}
+  
+  Or with custom trail:
+  {% include 'components/breadcrumb.twig' with {
+    trail: custom_breadcrumb_trail,
+    separator: '/'
+  } %}
+#}
+
+{% import 'macros/lazy-image.twig' as lazy %}
+
+{# Auto-generate trail if not provided #}
+{% if not trail %}
+  {% set trail = breadcrumb_trail %}
+{% endif %}
+
+{# Only render if trail exists and should display #}
+{% if trail and trail|length > 1 %}
+  <nav aria-label="Breadcrumb" class="breadcrumb">
+    <!-- Desktop breadcrumbs -->
+    <ol class="breadcrumb__list breadcrumb__list--desktop">
+      {% for crumb in trail %}
+        <li class="breadcrumb__item {% if crumb.current %}breadcrumb__item--current{% endif %}">
+          {% if crumb.url and not crumb.current %}
+            <a href="{{ crumb.url }}" class="breadcrumb__link">
+              {{ crumb.label }}
+            </a>
+          {% else %}
+            <span class="breadcrumb__text">{{ crumb.label }}</span>
+          {% endif %}
+          
+          {% if not loop.last and not crumb.separator %}
+            <span class="breadcrumb__separator" aria-hidden="true">{{ separator|default('/') }}</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+
+    <!-- Mobile breadcrumbs (abbreviated) -->
+    <ol class="breadcrumb__list breadcrumb__list--mobile">
+      {% set mobile_trail = breadcrumb_mobile %}
+      {% if mobile_trail %}
+        {% for crumb in mobile_trail %}
+          <li class="breadcrumb__item {% if crumb.current %}breadcrumb__item--current{% endif %}">
+            {% if crumb.url and not crumb.current %}
+              <a href="{{ crumb.url }}" class="breadcrumb__link">
+                {{ crumb.label }}
+              </a>
+            {% else %}
+              <span class="breadcrumb__text">{{ crumb.label }}</span>
+            {% endif %}
+            
+            {% if not loop.last and not crumb.separator %}
+              <span class="breadcrumb__separator" aria-hidden="true">{{ separator|default('/') }}</span>
+            {% endif %}
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ol>
+
+    <!-- Schema.org BreadcrumbList JSON-LD -->
+    {% if breadcrumb_schema %}
+      <script type="application/ld+json">{{ breadcrumb_schema|raw }}</script>
+    {% endif %}
+  </nav>
+{% endif %}

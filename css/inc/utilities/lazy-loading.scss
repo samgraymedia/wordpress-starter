@@ -1,0 +1,192 @@
+/**
+ * Lazy Loading Styles
+ * 
+ * Styles for lazy-loaded images with loading states and blur-up animation
+ */
+
+// Blur-up placeholder effect using CSS filters
+.lazy {
+  // Default state - may have a blur placeholder filter
+  &[data-placeholder] {
+    filter: blur(20px);
+    transition: filter 0.6s ease-in-out;
+  }
+
+  // Loading state
+  &.lazy--loading {
+    animation: pulse 1.5s ease-in-out infinite;
+
+    &[data-placeholder] {
+      filter: blur(20px);
+    }
+  }
+
+  // Loaded state - remove blur
+  &.lazy--loaded {
+    filter: blur(0);
+    animation: none;
+
+    &[data-placeholder] {
+      filter: blur(0);
+    }
+  }
+
+  // Error state
+  &.lazy--error {
+    opacity: 0.7;
+    background-color: var(--color-bg-secondary, #f5f5f5);
+    animation: none;
+  }
+}
+
+// Special handling for background images
+[data-bg-image] {
+  background-size: cover;
+  background-position: center;
+
+  &.lazy--loading {
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  &.lazy--loaded {
+    animation: none;
+  }
+}
+
+// Image wrappers for maintaining aspect ratio
+.lazy-wrapper {
+  position: relative;
+  overflow: hidden;
+
+  &--1-1 {
+    aspect-ratio: 1 / 1;
+  }
+
+  &--16-9 {
+    aspect-ratio: 16 / 9;
+  }
+
+  &--4-3 {
+    aspect-ratio: 4 / 3;
+  }
+
+  &--21-9 {
+    aspect-ratio: 21 / 9;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+// Picture element handling
+picture {
+  &.lazy--loading {
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  &.lazy--loaded {
+    animation: none;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+
+    &.lazy--loaded {
+      filter: blur(0);
+    }
+  }
+}
+
+// Pulse animation for loading state
+@keyframes pulse {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+// Fade-in animation for loaded images
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Apply fade-in to loaded images
+.lazy--loaded {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+// Print styles
+@media print {
+  .lazy {
+    &[data-src] {
+      // Force show data-src in print
+      display: block;
+    }
+
+    &.lazy--loading {
+      animation: none;
+    }
+  }
+
+  picture {
+    &.lazy--loading {
+      animation: none;
+    }
+  }
+
+  [data-bg-image] {
+    &.lazy--loading {
+      animation: none;
+    }
+  }
+}
+
+// Accessibility: Respect prefers-reduced-motion
+@media (prefers-reduced-motion: reduce) {
+  .lazy {
+    transition: none;
+    animation: none !important;
+
+    &.lazy--loaded {
+      animation: none !important;
+    }
+  }
+
+  .lazy--loading,
+  [data-bg-image].lazy--loading,
+  picture.lazy--loading {
+    animation: none !important;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

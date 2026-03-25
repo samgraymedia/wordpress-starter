@@ -12,9 +12,11 @@
 			{# Hero Section #}
 			{% if post.thumbnail %}
 				<div class="service-hero mb-5">
-					<img src="{{ post.thumbnail.src('large') }}" 
-						 alt="{{ post.title }}" 
-						 class="img-fluid rounded" />
+					<img data-src="{{ post.thumbnail.src('large') }}" 
+					     alt="{{ post.title }}" 
+					     class="img-fluid rounded"
+					     loading="lazy"
+					     decoding="async" />
 				</div>
 			{% endif %}
 

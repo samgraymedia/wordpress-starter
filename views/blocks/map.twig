@@ -1,0 +1,167 @@
+{#
+  Map / Locations Block Template
+  
+  Displays multiple locations with addresses, contact info, maps, and images
+  Supports three layout styles: grid, list, and map view
+#}
+
+{% set grid_class = {
+  '2': 'map__grid--2cols',
+  '3': 'map__grid--3cols',
+} %}
+
+{% set layout_modifier = 'map--' ~ fields.layout %}
+{% set columns_class = grid_class[fields.columns|default('2')] %}
+
+<div class="map {{ layout_modifier }}" {% if anchor %}id="{{ anchor }}"{% endif %}>
+  
+  {% if fields.title %}
+    <h2 class="map__title">{{ fields.title }}</h2>
+  {% endif %}
+  
+  {% if fields.layout == 'grid' %}
+    
+    <div class="map__grid {{ columns_class }}">
+      {% for location in fields.locations %}
+        <div class="map__card">
+          {% if location.image %}
+            <div class="map__card-image">
+              <img data-src="{{ location.image.url }}" 
+                   alt="{{ location.image.alt }}" 
+                   class="map__card-img"
+                   loading="lazy"
+                   decoding="async">
+            </div>
+          {% endif %}
+          
+          <div class="map__card-content">
+            <div class="map__location-info">
+              {% if location.address %}
+                <p class="map__address">
+                  📍 {{ location.address|nl2br }}
+                </p>
+              {% endif %}
+              
+              {% if location.phone %}
+                <p class="map__phone">
+                  <a href="tel:{{ location.phone|replace({' ': '', '(': '', ')': '', '-': ''}) }}">
+                    📞 {{ location.phone }}
+                  </a>
+                </p>
+              {% endif %}
+              
+              {% if location.hours %}
+                <div class="map__hours">
+                  <p class="map__hours-label">Hours:</p>
+                  <p class="map__hours-text">{{ location.hours|nl2br }}</p>
+                </div>
+              {% endif %}
+            </div>
+            
+            {% if location.link %}
+              <a href="{{ location.link }}" 
+                 class="map__link" 
+                 target="_blank" 
+                 rel="noopener noreferrer">
+                View on Map →
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+  {% elseif fields.layout == 'list' %}
+    
+    <div class="map__list">
+      {% for location in fields.locations %}
+        <div class="map__list-item">
+          {% if location.image %}
+            <div class="map__list-image">
+              <img data-src="{{ location.image.url }}" 
+                   alt="{{ location.image.alt }}" 
+                   class="map__list-img"
+                   loading="lazy"
+                   decoding="async">
+            </div>
+          {% endif %}
+          
+          <div class="map__list-content">
+            <div class="map__location-info">
+              {% if location.address %}
+                <p class="map__address">
+                  📍 {{ location.address|nl2br }}
+                </p>
+              {% endif %}
+              
+              {% if location.phone %}
+                <p class="map__phone">
+                  <a href="tel:{{ location.phone|replace({' ': '', '(': '', ')': '', '-': ''}) }}">
+                    📞 {{ location.phone }}
+                  </a>
+                </p>
+              {% endif %}
+              
+              {% if location.hours %}
+                <div class="map__hours">
+                  <p class="map__hours-label">Hours:</p>
+                  <p class="map__hours-text">{{ location.hours|nl2br }}</p>
+                </div>
+              {% endif %}
+            </div>
+            
+            {% if location.link %}
+              <a href="{{ location.link }}" 
+                 class="map__link" 
+                 target="_blank" 
+                 rel="noopener noreferrer">
+                View on Map →
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+  {% elseif fields.layout == 'map' %}
+    
+    <div class="map__container">
+      <div class="map__map-area" id="map-container">
+        <!-- Map will be rendered here if coordinates provided -->
+      </div>
+      
+      <div class="map__sidebar">
+        {% for location in fields.locations %}
+          <div class="map__map-item" 
+               {% if location.map_coords %}data-coords="{{ location.map_coords }}"{% endif %}>
+            
+            {% if location.address %}
+              <p class="map__address">
+                📍 {{ location.address|nl2br }}
+              </p>
+            {% endif %}
+            
+            {% if location.phone %}
+              <p class="map__phone">
+                <a href="tel:{{ location.phone|replace({' ': '', '(': '', ')': '', '-': ''}) }}">
+                  📞 {{ location.phone }}
+                </a>
+              </p>
+            {% endif %}
+            
+            {% if location.link %}
+              <a href="{{ location.link }}" 
+                 class="map__link" 
+                 target="_blank" 
+                 rel="noopener noreferrer">
+                View on Map →
+              </a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+  {% endif %}
+  
+</div>

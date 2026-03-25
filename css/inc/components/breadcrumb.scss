@@ -1,0 +1,144 @@
+/**
+ * Breadcrumb Navigation Styles
+ * 
+ * Responsive breadcrumb navigation with mobile abbreviation
+ */
+
+.breadcrumb {
+  padding: $spacing-2 0;
+  margin-bottom: $spacing-4;
+  background-color: transparent;
+
+  @media print {
+    display: none;
+  }
+}
+
+.breadcrumb__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $spacing-1;
+  font-size: $font-sm;
+  line-height: $line-height-base;
+}
+
+// Desktop breadcrumbs - hide on mobile
+.breadcrumb__list--desktop {
+  display: flex;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+// Mobile breadcrumbs - only show on mobile
+.breadcrumb__list--mobile {
+  display: none;
+
+  @media (max-width: 767px) {
+    display: flex;
+  }
+}
+
+.breadcrumb__item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+
+  &.breadcrumb__item--current {
+    color: var(--color-text-muted);
+
+    .breadcrumb__separator {
+      display: none;
+
+      &:last-of-type {
+        display: inline;
+      }
+    }
+  }
+}
+
+.breadcrumb__link {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+  font-weight: $font-regular;
+
+  &:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  &:visited {
+    color: var(--color-primary);
+    opacity: 0.8;
+  }
+}
+
+.breadcrumb__text {
+  color: var(--color-text);
+  font-weight: $font-regular;
+}
+
+.breadcrumb__separator {
+  display: inline-block;
+  margin: 0 $spacing-1;
+  color: var(--color-text-muted);
+  user-select: none;
+
+  @media (max-width: 480px) {
+    margin: 0 calc($spacing-1 / 2);
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .breadcrumb {
+    color: var(--color-text);
+  }
+
+  .breadcrumb__link {
+    color: var(--color-primary-light);
+
+    &:hover {
+      color: var(--color-primary);
+    }
+
+    &:visited {
+      color: var(--color-primary-light);
+      opacity: 0.8;
+    }
+  }
+
+  .breadcrumb__separator {
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb__item.breadcrumb__item--current {
+    color: var(--color-text-muted);
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .breadcrumb__link {
+    transition: none;
+  }
+}
+
+// Print styles
+@media print {
+  .breadcrumb {
+    display: none;
+  }
+}
