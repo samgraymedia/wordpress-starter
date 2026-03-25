@@ -65,9 +65,9 @@ SupportsMultiple: true
 														'behance': 'fa-behance',
 														'website': 'fa-link',
 													} %}
-													<a href="{{ social.url }}" target="_blank" rel="noopener noreferrer" class="team__social-link team__social-link--{{ social.platform }}" title="Visit {{ social.platform|capitalize }}">
-														<i class="fa-brands {{ icon_map[social.platform] }}"></i>
-													</a>
+												<a href="{{ social.url }}" target="_blank" rel="noopener noreferrer" class="team__social-link team__social-link--{{ social.platform }}" aria-label="Visit our {{ social.platform|capitalize }} profile">
+													<i class="fa-brands {{ icon_map[social.platform] }}" aria-hidden="true"></i>
+												</a>
 												{% endfor %}
 											</div>
 										{% endif %}

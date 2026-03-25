@@ -23,10 +23,11 @@ SupportsMultiple: true
 					<iframe 
 						class="video__iframe"
 						src="https://www.youtube.com/embed/{{fields.youtube_url}}?rel=0" 
-						title="YouTube video player" 
+						title="YouTube video: {{ fields.title|default('Video') }}" 
 						frameborder="0" 
-						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-						allowfullscreen>
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" 
+						allowfullscreen
+						aria-label="YouTube video: {{ fields.title|default('Video') }}">
 					</iframe>
 				</div>
 			{% elseif fields.video_file %}

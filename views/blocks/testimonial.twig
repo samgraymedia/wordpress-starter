@@ -25,18 +25,27 @@ SupportsMultiple: true
 
 		{% if fields.testimonials %}
 			{% if fields.layout == 'carousel' %}
-				<div class="testimonial__carousel" data-autoplay="{{ fields.autoplay ? 'true' : 'false' }}">
-					<div class="testimonial__carousel-track">
+				<div class="testimonial__carousel" data-autoplay="{{ fields.autoplay ? 'true' : 'false' }}" role="region" aria-label="Customer testimonials carousel" aria-live="polite">
+					<div role="status" aria-live="polite" aria-atomic="true" class="sr-only" id="carousel-{{ block.id }}-status"></div>
+					
+					{% if fields.autoplay %}
+						<button class="testimonial__control testimonial__control--pause-play" aria-label="Pause carousel" aria-pressed="false" id="carousel-{{ block.id }}-pause" type="button">
+							<span class="sr-only">Pause carousel autoplay</span>
+							<span aria-hidden="true">⏸</span>
+						</button>
+					{% endif %}
+
+					<div class="testimonial__carousel-track" role="presentation">
 						{% for testimonial in fields.testimonials %}
-							<div class="testimonial__slide">
+							<div class="testimonial__slide" role="group" aria-roledescription="slide" aria-label="Slide {{ loop.index }} of {{ fields.testimonials|length }}">
 								<div class="testimonial__card">
 									<blockquote class="testimonial__quote">
 										{{ testimonial.post_excerpt|wp_strip_all_tags|truncate(220) }}
 									</blockquote>
 
 									{% if fields.show_rating %}
-										<div class="testimonial__rating">
-											<span class="testimonial__stars">★★★★★</span>
+										<div class="testimonial__rating" aria-label="Rating: 5 out of 5 stars">
+											<span class="testimonial__stars" aria-hidden="true">★★★★★</span>
 										</div>
 									{% endif %}
 
@@ -58,11 +67,11 @@ SupportsMultiple: true
 					</div>
 
 					<div class="testimonial__carousel-controls">
-						<button class="testimonial__control testimonial__control--prev" aria-label="Previous">
-							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
-						</button>
-						<button class="testimonial__control testimonial__control--next" aria-label="Next">
-							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+					<button class="testimonial__control testimonial__control--prev" aria-label="View previous testimonial" type="button">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+					</button>
+					<button class="testimonial__control testimonial__control--next" aria-label="View next testimonial" type="button">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
 						</button>
 					</div>
 				</div>
@@ -85,8 +94,8 @@ SupportsMultiple: true
 
 							<div class="testimonial__item-meta">
 								{% if fields.show_rating %}
-									<div class="testimonial__rating">
-										<span class="testimonial__stars">★★★★★</span>
+									<div class="testimonial__rating" aria-label="Rating: 5 out of 5 stars">
+										<span class="testimonial__stars" aria-hidden="true">★★★★★</span>
 									</div>
 								{% endif %}
 
@@ -108,8 +117,8 @@ SupportsMultiple: true
 								</blockquote>
 
 								{% if fields.show_rating %}
-									<div class="testimonial__rating">
-										<span class="testimonial__stars">★★★★★</span>
+								<div class="testimonial__rating" aria-label="Rating: 5 out of 5 stars">
+									<span class="testimonial__stars" aria-hidden="true">★★★★★</span>
 									</div>
 								{% endif %}
 

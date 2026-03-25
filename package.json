@@ -10,12 +10,15 @@
     "watch:css": "sass style.scss:style.css --watch --style=compressed --no-source-map",
     "watch": "concurrently \"npm:dev\" \"npm:watch:css\"",
     "lint": "eslint scripts/**/*.js",
-    "lint:fix": "eslint scripts/**/*.js --fix"
+    "lint:fix": "eslint scripts/**/*.js --fix",
+    "a11y:audit": "node scripts/utils/a11y-audit.js"
   },
   "dependencies": {
     "bootstrap": "^5.3.0"
   },
   "devDependencies": {
+    "@axe-core/cli": "^4.8.0",
+    "axe-core": "^4.8.0",
     "concurrently": "^8.2.0",
     "eslint": "^8.53.0",
     "sass": "^1.69.0",

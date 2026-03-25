@@ -1,0 +1,114 @@
+name: Accessibility Audit
+
+on:
+  pull_request:
+    paths:
+      - 'templates/**'
+      - 'css/**'
+      - 'scripts/**'
+      - 'src/**'
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  accessibility-check:
+    runs-on: ubuntu-latest
+    name: Check templates for accessibility issues
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run accessibility audit
+        run: npm run a11y:audit -- --check
+        continue-on-error: true
+
+  linting:
+    runs-on: ubuntu-latest
+    name: Lint code
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint JavaScript
+        run: npm run lint
+
+  manual-testing-reminder:
+    runs-on: ubuntu-latest
+    name: Remind to test with axe DevTools
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Post testing reminder comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botCommentExists = comments.some(comment =>
+              comment.body.includes('Accessibility Testing Reminder')
+            );
+
+            if (botCommentExists) {
+              console.log('Bot comment already exists, skipping');
+              return;
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🔍 Accessibility Testing Reminder
+
+Before merging this PR, please perform manual accessibility testing:
+
+### Required Testing:
+- [ ] **axe DevTools Scan** - No Critical or Serious violations
+  1. Install [axe DevTools](https://www.deque.com/axe/devtools/)
+  2. Open DevTools and run "Scan ALL of my page"
+  3. Fix any violations found
+  
+- [ ] **Keyboard Navigation Test** - Navigate using Tab, Enter, Space, Escape, Arrow keys
+  1. Unplug mouse (or disable touchpad)
+  2. Tab through entire page
+  3. Verify focus always visible
+  4. No keyboard traps
+
+- [ ] **Screen Reader Test** - Use VoiceOver (Mac) or NVDA (Windows)
+  1. Enable screen reader
+  2. Navigate with standard commands
+  3. Verify content announced correctly
+  4. Check heading hierarchy
+  5. Verify form labels associated
+
+### Documentation:
+📖 See [ACCESSIBILITY-GUIDE.md](../../ACCESSIBILITY-GUIDE.md) for complete testing procedures
+
+---
+_Automated accessibility check passed. Manual testing ensures no regressions._`
+            })

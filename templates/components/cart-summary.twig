@@ -8,7 +8,7 @@
 		<span class="cart-summary__icon">🛒</span>
 		<span class="cart-summary__label">{{ _e('Cart', 'starter-theme-1.x') }}</span>
 		{% if woocommerce.cart_count > 0 %}
-			<span class="cart-summary__count">{{ woocommerce.cart_count }}</span>
+			<span class="cart-summary__count" aria-label="{{ woocommerce.cart_count }} item{{ woocommerce.cart_count != 1 ? 's' : '' }} in cart">{{ woocommerce.cart_count }}</span>
 		{% endif %}
 	</a>
 

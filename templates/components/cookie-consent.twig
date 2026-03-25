@@ -30,12 +30,12 @@ GDPR compliant cookie consent UI with customizable preferences
 </div>
 
 {# Cookie Preferences Modal #}
-<div id="cookie-preferences-modal" class="cookie-preferences-modal">
-    <div class="cookie-preferences-modal__overlay" data-close-preferences></div>
+<div id="cookie-preferences-modal" class="cookie-preferences-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-preferences-modal-title">
+    <div class="cookie-preferences-modal__overlay" data-close-preferences role="presentation"></div>
     
     <div class="cookie-preferences-modal__dialog">
         <div class="cookie-preferences-modal__header">
-            <h2 class="cookie-preferences-modal__title">Cookie Preferences</h2>
+            <h2 class="cookie-preferences-modal__title" id="cookie-preferences-modal-title">Cookie Preferences</h2>
             <button type="button" class="cookie-preferences-modal__close" data-close-preferences aria-label="Close preferences">
                 <i class="fa-solid fa-xmark"></i>
             </button>
