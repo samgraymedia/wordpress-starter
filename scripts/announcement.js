@@ -3,6 +3,9 @@
  * Handles dismiss functionality with localStorage persistence
  */
 
+import Logger from "./utils/logger.js";
+console.log("[SITE] Announcement module loaded");
+
 (function () {
   "use strict";
 
@@ -11,12 +14,14 @@
       this.element = element;
       this.id = element.dataset.announcementId;
       this.closeButton = element.querySelector(".announcement__close");
+      Logger.debug("[Announcement] Initializing", { id: this.id });
       this.init();
     }
 
     init() {
       // Check if this announcement has been dismissed
       if (this.isDismissed()) {
+        Logger.debug("[Announcement] Already dismissed", { id: this.id });
         this.element.classList.add("is-hidden");
         return;
       }
@@ -25,6 +30,7 @@
       if (this.closeButton) {
         this.closeButton.addEventListener("click", (e) => {
           e.preventDefault();
+          Logger.debug("[Announcement] Dismissed by user", { id: this.id });
           this.dismiss();
         });
 
@@ -32,6 +38,9 @@
         this.closeButton.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
+            Logger.debug("[Announcement] Dismissed by keyboard", {
+              id: this.id,
+            });
             this.dismiss();
           }
         });

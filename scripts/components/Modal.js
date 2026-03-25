@@ -14,6 +14,7 @@ import {
   setAttribute,
   removeAttribute,
 } from "../utils/dom.js";
+import Logger from "../utils/logger.js";
 
 /**
  * Modal class for managing Bootstrap modals with custom logic
@@ -47,9 +48,11 @@ export class Modal {
       ...options,
     };
 
+    Logger.debug("[Modal] Initializing", { id: element.id });
+
     // Check if Bootstrap is available
     if (typeof bootstrap === "undefined") {
-      console.warn("[Modal] Bootstrap JS not loaded");
+      Logger.warn("[Modal] Bootstrap JS not loaded");
       return;
     }
 
@@ -64,16 +67,21 @@ export class Modal {
    * Setup modal event listeners
    */
   setupListeners() {
+    Logger.debug("[Modal] Setting up event listeners", { id: this.element.id });
+
     // Bootstrap modal events
     this.element.addEventListener("show.bs.modal", (e) => {
+      Logger.debug("[Modal] Opening", { id: this.element.id });
       this.onBeforeOpen(e);
     });
 
     this.element.addEventListener("shown.bs.modal", (e) => {
+      Logger.debug("[Modal] Opened", { id: this.element.id });
       this.onAfterOpen(e);
     });
 
     this.element.addEventListener("hide.bs.modal", (e) => {
+      Logger.debug("[Modal] Closing", { id: this.element.id });
       this.onBeforeClose(e);
     });
 

@@ -7,10 +7,32 @@
  * @module index
  */
 
+// Primitive console.log that cannot fail
+window.addEventListener("DOMContentLoaded", () => {
+  console.log("[SITE] DOMContentLoaded fired - checking script status");
+});
+
+// Check readyState immediately
+console.log("[SITE] Site.js module loaded, readyState:", document.readyState);
+
+// Ensure themeConfig exists before imports (to support early Logger initialization)
+if (typeof window !== "undefined" && !window.themeConfig) {
+  window.themeConfig = {
+    siteUrl: "/",
+    ajaxUrl: "/wp-admin/admin-ajax.php",
+    nonce: "",
+    isLoggedIn: false,
+    currentUser: 0,
+    debug: true, // Default to true for development; WordPress overrides with WP_DEBUG
+  };
+}
+
 // Import utilities
 import { querySelectorAll, addClass, removeClass } from "./utils/dom.js";
 import { throttle, debounce } from "./utils/events.js";
 import { initLazyLoading } from "./utils/lazy-loading.js";
+import Logger from "./utils/logger.js";
+import ErrorReporter from "./utils/error-reporter.js";
 
 // Import components
 import { Modal } from "./components/Modal.js";
@@ -23,42 +45,93 @@ import { initForms } from "./modules/forms.js";
 import { initCookieConsent } from "./modules/cookie-consent.js";
 import themeToggle from "./modules/theme-toggle.js";
 
+// Import feature scripts (side-effect modules that auto-initialize)
+import "./gallery.js";
+import "./slider.js";
+import "./video.js";
+import "./accordion.js";
+import "./announcement.js";
+import "./share-buttons.js";
+import "./tabs.js";
+import "./hamburger.js";
+
 /**
  * Initialize all theme components and modules
  * Called when DOM is ready
  */
 function initTheme() {
-  console.log("[Theme] Initializing components...");
+  console.log("[SITE] initTheme() executing...");
 
-  // Initialize lazy loading early
-  initLazyLoading({
-    rootMargin: "50px",
-    threshold: 0.01,
-  });
+  try {
+    // Initialize error logging system first (before anything else that might error)
+    console.log("[SITE] Getting ErrorReporter...", typeof ErrorReporter);
+    const errorReporter = ErrorReporter;
 
-  // Initialize Bootstrap components that might be on the page
-  initBootstrapComponents();
+    console.log("[SITE] Getting Logger...", typeof Logger);
+    Logger.setErrorReporter(errorReporter);
+    Logger.debug("[Theme] Logger initialized");
 
-  // Initialize custom components
-  initModalComponents();
-  initDropdownComponents();
+    Logger.info("[Theme] Initializing components...");
 
-  // Initialize feature modules
-  initCart();
-  initSearch();
-  initForms();
-  initCookieConsent();
+    // Initialize lazy loading early
+    Logger.debug("[Theme] Initializing lazy loading...");
+    initLazyLoading({
+      rootMargin: "50px",
+      threshold: 0.01,
+    });
+    Logger.debug("[Theme] Lazy loading initialized");
 
-  // Initialize theme toggle (must run early for proper theme application)
-  themeToggle.init();
+    // Initialize Bootstrap components that might be on the page
+    Logger.debug("[Theme] Initializing Bootstrap components...");
+    initBootstrapComponents();
+    Logger.debug("[Theme] Bootstrap components initialized");
 
-  // Setup theme toggle button click handler
-  setupThemeToggle();
+    // Initialize custom components
+    Logger.debug("[Theme] Initializing Modal components...");
+    initModalComponents();
+    Logger.debug("[Theme] Modal components initialized");
 
-  // Add any global event listeners
-  setupGlobalListeners();
+    Logger.debug("[Theme] Initializing Dropdown components...");
+    initDropdownComponents();
+    Logger.debug("[Theme] Dropdown components initialized");
 
-  console.log("[Theme] Initialization complete");
+    // Initialize feature modules
+    Logger.debug("[Theme] Initializing Cart module...");
+    initCart();
+    Logger.debug("[Theme] Cart module initialized");
+
+    Logger.debug("[Theme] Initializing Search module...");
+    initSearch();
+    Logger.debug("[Theme] Search module initialized");
+
+    Logger.debug("[Theme] Initializing Forms module...");
+    initForms();
+    Logger.debug("[Theme] Forms module initialized");
+
+    Logger.debug("[Theme] Initializing Cookie Consent module...");
+    initCookieConsent();
+    Logger.debug("[Theme] Cookie Consent module initialized");
+
+    // Initialize theme toggle (must run early for proper theme application)
+    Logger.debug("[Theme] Initializing Theme Toggle...");
+    themeToggle.init();
+    Logger.debug("[Theme] Theme Toggle initialized");
+
+    // Setup theme toggle button click handler
+    Logger.debug("[Theme] Setting up Theme Toggle UI...");
+    setupThemeToggle();
+    Logger.debug("[Theme] Theme Toggle UI setup complete");
+
+    // Add any global event listeners
+    Logger.debug("[Theme] Setting up global event listeners...");
+    setupGlobalListeners();
+    Logger.debug("[Theme] Global event listeners setup complete");
+
+    Logger.info("[Theme] Initialization complete");
+  } catch (error) {
+    console.error("[SITE] Fatal error in initTheme():", error);
+    console.error("[SITE] Stack:", error.stack);
+  }
 }
 
 /**
@@ -68,7 +141,7 @@ function initTheme() {
  */
 function initBootstrapComponents() {
   if (typeof bootstrap === "undefined") {
-    console.warn("[Theme] Bootstrap not loaded");
+    Logger.warn("[Theme] Bootstrap not loaded");
     return;
   }
 
@@ -198,6 +271,3 @@ if (document.readyState === "loading") {
 } else {
   initTheme();
 }
-
-// Export for external use if needed
-export { initTheme, Modal, Dropdown };

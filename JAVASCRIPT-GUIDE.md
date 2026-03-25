@@ -253,6 +253,84 @@ function initTheme() {
 
 ## Using Utilities
 
+### Logger Utility (`utils/logger.js`)
+
+The theme includes a comprehensive logging system for debugging and production error tracking. Import and use it in any module:
+
+```javascript
+import Logger from "../utils/logger.js";
+
+// All methods accept message, optional data, and optional metadata
+Logger.debug("Detailed debugging info", { userID: 123 });
+Logger.info("Informational message", { action: "form_submitted" });
+Logger.warn("Warning about potential issue", { warning: "low-memory" });
+Logger.error("Error occurred", errorObject, { context: "checkout", userId: 1 });
+```
+
+**Features:**
+
+- **Environment-Aware**: Development mode logs everything; production only sends errors/warnings to server
+- **Stack Traces**: Automatic stack trace capture in development (configurable depth)
+- **Color-Coded Output**: Different colors for each level (blue=info, orange=warn, red=error)
+- **Server Reporting**: Errors automatically batch and transmit to server endpoint
+- **Offline Support**: Queues errors when offline, transmits when connection restored
+- **Low Overhead**: Lazy initialization, efficient batching, no performance impact
+
+**Examples in Modules:**
+
+```javascript
+// In forms.js
+import Logger from "../utils/logger.js";
+
+export function initForms() {
+  Logger.debug("[Forms] Initializing...");
+
+  try {
+    // Form setup
+  } catch (error) {
+    Logger.error("[Forms] Setup failed", error, { context: "init" });
+  }
+}
+
+// In search.js
+try {
+  const results = await fetchSearchResults(query);
+  Logger.info("[Search] Found results", { count: results.length });
+} catch (error) {
+  Logger.error("[Search] Search failed", error, {
+    query,
+    context: "live-search",
+  });
+}
+
+// In cart.js
+try {
+  await addToCart(productId);
+  Logger.info("[Cart] Item added", { productId, quantity });
+} catch (error) {
+  Logger.error("[Cart] Add failed", error, {
+    productId,
+    context: "add-to-cart",
+  });
+}
+```
+
+**Configuration:**
+
+```javascript
+// Customize logger behavior if needed
+Logger.configure({
+  debug: true, // true/false - override WP_DEBUG detection
+  minLevel: "debug", // 'debug', 'info', 'warn', 'error'
+  enableColors: true, // Color-coded console output
+  enableTimestamp: true, // Add timestamps to logs
+  enableStackTrace: true, // Include stack traces in dev mode
+  stackTraceDepth: 5, // How many stack frames to show
+});
+```
+
+See [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md#javascript-error-logging--debugging) for complete logging documentation.
+
 ### DOM Utilities (`utils/dom.js`)
 
 ```javascript

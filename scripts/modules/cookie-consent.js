@@ -19,6 +19,7 @@ import {
   setConsentPreferences,
   hasConsent,
 } from "../utils/cookies.js";
+import Logger from "../utils/logger.js";
 
 const CONSENT_BANNER_ID = "cookie-consent-banner";
 const PREFERENCES_MODAL_ID = "cookie-preferences-modal";
@@ -28,19 +29,27 @@ const CONSENT_STORAGE_KEY = "cookie-consent";
  * Initialize cookie consent module
  */
 export function initCookieConsent() {
+  Logger.debug("[Cookie Consent] Initializing...");
+
   const banner = querySelector(`#${CONSENT_BANNER_ID}`);
 
   if (!banner) {
+    Logger.debug("[Cookie Consent] Banner not found in DOM");
     return; // Banner not in DOM
   }
 
   // Check if user has already made a choice
-  if (getConsentPreferences()) {
+  const existingPrefs = getConsentPreferences();
+  if (existingPrefs) {
+    Logger.debug("[Cookie Consent] User preferences already set", {
+      preferences: existingPrefs,
+    });
     banner.style.display = "none";
     return;
   }
 
   // Show banner
+  Logger.debug("[Cookie Consent] Showing banner for first time");
   banner.style.display = "block";
 
   // Setup event listeners
@@ -86,6 +95,8 @@ function setupEventListeners() {
  * Handle accept all button click
  */
 function handleAcceptAll() {
+  Logger.info("[Cookie Consent] User accepted all cookies");
+
   const preferences = {
     necessary: true,
     analytics: true,
@@ -102,6 +113,8 @@ function handleAcceptAll() {
  * Handle reject all button click
  */
 function handleRejectAll() {
+  Logger.info("[Cookie Consent] User rejected non-essential cookies");
+
   const preferences = {
     necessary: true, // Always required
     analytics: false,

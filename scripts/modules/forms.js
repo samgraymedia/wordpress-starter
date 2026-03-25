@@ -14,12 +14,13 @@ import {
   removeClass,
   setText,
 } from "../utils/dom.js";
+import Logger from "../utils/logger.js";
 
 /**
  * Initialize form functionality
  */
 export function initForms() {
-  console.log("[Forms] Initializing...");
+  Logger.debug("[Forms] Initializing...");
 
   // Handle Contact Form 7 if present
   if (typeof wpcf7 !== "undefined") {
@@ -35,17 +36,17 @@ export function initForms() {
  */
 function setupContactForm7() {
   document.addEventListener("wpcf7mailsent", (e) => {
-    console.log("[Forms] CF7 form submitted successfully");
+    Logger.info("[Forms] CF7 form submitted successfully");
     // Handle successful submission
   });
 
   document.addEventListener("wpcf7mailfailed", (e) => {
-    console.log("[Forms] CF7 form submission failed");
+    Logger.error("[Forms] CF7 form submission failed");
     // Handle failed submission
   });
 
   document.addEventListener("wpcf7invalid", (e) => {
-    console.log("[Forms] CF7 form has invalid fields");
+    Logger.warn("[Forms] CF7 form has invalid fields");
     // Handle validation errors
   });
 }

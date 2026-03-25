@@ -1,6 +1,6 @@
 # Custom Gutenberg Blocks Guide
 
-**Complete reference for all 19 custom Gutenberg blocks in the theme**
+**Complete reference for all 35 custom Gutenberg blocks in the theme**
 
 This guide documents all available blocks, their fields, usage, and styling.
 
@@ -20,17 +20,18 @@ This guide documents all available blocks, their fields, usage, and styling.
 
 ## Block Overview
 
-This theme includes **19 pre-built custom Gutenberg blocks** organized by purpose:
+This theme includes **35 pre-built custom Gutenberg blocks** organized by purpose:
 
-### Layout Blocks (5)
+### Layout & Structure Blocks (6)
 
 - **Hero** - Large hero section with background image and buttons
 - **Banner** - Promotional banner with optional overlay
 - **Image + Text** - Side-by-side image and text layout
 - **Gallery** - Responsive image grid with lightbox
 - **Video** - Video player with keyboard shortcuts
+- **Spacer** - Vertical spacing utility block
 
-### Content Blocks (7)
+### Content & Text Blocks (8)
 
 - **Text** - Basic rich text block with formatting
 - **Tabs** - Tabbed content with keyboard navigation
@@ -39,25 +40,61 @@ This theme includes **19 pre-built custom Gutenberg blocks** organized by purpos
 - **Cards Grid** - Flexible reusable card grid (3 styles: standard, overlay, horizontal)
 - **FAQ Filtered** - Advanced FAQ with search and category filtering
 - **Related Content** - Query-based automatic content feed (latest posts, filtering)
+- **Quote** - Testimonial/blockquote with attribution
 
-### Call-to-Action Blocks (2)
+### Navigation & Lists (4)
 
-- **CTA** - Call-to-action with configurable buttons
-- **Hero** - Large hero banner (also used for CTAs)
+- **Breadcrumb** - Navigation hierarchy display with schema markup
+- **Icon List** - Features/benefits list with icons
+- **Logo Grid** - Client/partner logo carousel
+- **Slider** - Image/content carousel with navigation
 
-### Commerce/Pricing Blocks (1)
+### Services & Commerce (4)
 
+- **Service Showcase** - Featured services display
+- **Service Pricing** - Service pricing tiers/plans
+- **Service Comparison** - Table comparison of services/features
 - **Pricing/Plans** - Subscription tiers display (2 layouts: horizontal cards, comparison table)
 
-### Interactive Blocks (3)
+### Interactive & Forms (4)
 
 - **Newsletter** - Email subscription form
 - **Contact** - Contact information section
+- **Form Embed** - Embedded form integrations (Gravity Forms, Contact Form 7, etc.)
 - **Share Buttons** - Social media sharing buttons
 
-### Utility Blocks (1)
+### Team & Testimonials (3)
+
+- **Team** - Team member profiles grid
+- **Testimonial** - Single testimonial with rating/attribution
+- **Service Testimonials Carousel** - Auto-rotating testimonials carousel
+
+### Utility & Components (4)
 
 - **Announcement** - Dismissible announcement bar
+- **Stats** - Statistics/metrics display with counters
+- **Steps** - Step-by-step process workflow
+- **Downloads** - File/asset download links list
+
+### Maps & Location (1)
+
+- **Map** - Embedded map display (Google Maps, Mapbox)
+
+---
+
+## Complete Block Count Summary
+
+| Category             | Count  | Blocks                                                                     |
+| -------------------- | ------ | -------------------------------------------------------------------------- |
+| Layout & Structure   | 6      | Hero, Banner, Image+Text, Gallery, Video, Spacer                           |
+| Content & Text       | 8      | Text, Tabs, Accordion, Blog Posts, Cards Grid, FAQ, Related Content, Quote |
+| Navigation & Lists   | 4      | Breadcrumb, Icon List, Logo Grid, Slider                                   |
+| Services & Commerce  | 4      | Service Showcase, Service Pricing, Service Comparison, Pricing/Plans       |
+| Interactive & Forms  | 4      | Newsletter, Contact, Form Embed, Share Buttons                             |
+| Team & Testimonials  | 3      | Team, Testimonial, Service Testimonials Carousel                           |
+| Utility & Components | 4      | Announcement, Stats, Steps, Downloads                                      |
+| Maps & Location      | 1      | Map                                                                        |
+| **TOTAL**            | **35** | **All custom blocks**                                                      |
 
 ---
 
@@ -795,6 +832,550 @@ css/inc/blocks/             # Block-specific styles
 - `.related-content__excerpt` (post excerpt)
 - `.related-content__read-more` (CTA link)
 - `.related-content__empty` (no posts state)
+
+---
+
+### 19. Breadcrumb Block
+
+**Purpose:** Navigation breadcrumb trail showing page hierarchy for SEO and UX
+
+**Category:** Navigation  
+**Post Types:** page, post, product
+
+**Available Fields:**
+
+| Field             | Type   | Required | Description                                 |
+| ----------------- | ------ | -------- | ------------------------------------------- |
+| Enable Breadcrumb | Toggle | No       | Show/hide breadcrumb                        |
+| Show Home Link    | Toggle | No       | Include home page link                      |
+| Separator         | Text   | No       | Breadcrumb separator character (default: /) |
+
+**Features:**
+
+- Automatic hierarchy detection
+- Schema.org BreadcrumbList JSON-LD markup
+- Mobile-responsive
+- WCAG 2.1 AA compliant
+- Works with all post types
+- Customizable separator
+
+**CSS Classes:** `.breadcrumb` with elements `.breadcrumb__item`, `.breadcrumb__link`, `.breadcrumb__separator`
+
+---
+
+### 20. Icon List Block
+
+**Purpose:** Display list of features, benefits, or items with icons
+
+**Category:** Lists & Navigation  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field            | Type        | Required | Description                     |
+| ---------------- | ----------- | -------- | ------------------------------- |
+| Title            | Text        | No       | Section heading                 |
+| Items (Repeater) | Repeater    | Yes      | List items with icons           |
+| Item Icon        | Icon Picker | Yes      | Icon for list item              |
+| Item Title       | Text        | Yes      | Item heading                    |
+| Item Description | Textarea    | No       | Item description                |
+| Columns          | Select      | No       | 1, 2, or 3 columns (responsive) |
+| Show Icons       | Toggle      | No       | Display icons (toggle on/off)   |
+
+**Features:**
+
+- Icon picker with 100+ icons
+- Responsive grid layout
+- Optional descriptions
+- Hover effects
+- Dark mode support
+
+**CSS Classes:** `.icon-list` with `.icon-list__item`, `.icon-list__icon`, `.icon-list__title`, `.icon-list__description`
+
+---
+
+### 21. Logo Grid Block
+
+**Purpose:** Display client logos, partner logos, or brand carousel
+
+**Category:** Lists & Navigation  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field            | Type     | Required | Description              |
+| ---------------- | -------- | -------- | ------------------------ |
+| Title            | Text     | No       | Section heading          |
+| Logos (Repeater) | Repeater | Yes      | Logo items               |
+| Logo Image       | Image    | Yes      | Logo/brand image         |
+| Logo Link        | URL      | No       | Link when clicked        |
+| Columns          | Select   | No       | 2-5 columns (responsive) |
+
+**Features:**
+
+- Responsive grid layout
+- Optional logo links
+- Image optimization
+- Auto aspect-ratio
+- Clickable logos
+
+**CSS Classes:** `.logo-grid` with `.logo-grid__item`, `.logo-grid__image`, `.logo-grid__link`
+
+---
+
+### 22. Slider / Carousel Block
+
+**Purpose:** Image or content carousel with navigation controls
+
+**Category:** Layout & Structure  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field              | Type     | Required | Description                         |
+| ------------------ | -------- | -------- | ----------------------------------- |
+| Slides (Repeater)  | Repeater | Yes      | Carousel slides                     |
+| Slide Image        | Image    | Yes      | Slide image                         |
+| Slide Title        | Text     | No       | Slide headline                      |
+| Slide Description  | WYSIWYG  | No       | Slide content                       |
+| Auto-play          | Toggle   | No       | Auto-rotate slides                  |
+| Auto-play Interval | Number   | No       | Seconds between slides (default: 5) |
+| Display Controls   | Toggle   | No       | Show prev/next buttons              |
+| Display Indicators | Toggle   | No       | Show dots indicator                 |
+
+**Features:**
+
+- Auto-rotate with configurable interval
+- Previous/next navigation
+- Dot indicators
+- Keyboard controls
+- Touch/swipe support
+- Pause on hover
+- Accessible with ARIA labels
+
+**CSS Classes:** `.slider` with `.slider__item`, `.slider__image`, `.slider__title`, `.slider__controls`
+
+---
+
+### 23. Service Showcase Block
+
+**Purpose:** Feature prominent services with images and descriptions
+
+**Category:** Services  
+**Post Types:** page
+
+**Available Fields:**
+
+| Field               | Type        | Required | Description             |
+| ------------------- | ----------- | -------- | ----------------------- |
+| Title               | Text        | No       | Section title           |
+| Services (Repeater) | Repeater    | Yes      | Service items           |
+| Service Title       | Text        | Yes      | Service name            |
+| Service Icon        | Icon Picker | No       | Service icon            |
+| Service Image       | Image       | No       | Service image           |
+| Service Description | WYSIWYG     | Yes      | Service details         |
+| Service Link        | URL         | No       | Link to service page    |
+| Layout              | Select      | No       | Grid, list, or carousel |
+| Columns             | Select      | No       | 2 or 3 columns          |
+
+**Features:**
+
+- Service cards with icons
+- Featured images
+- Call-to-action links
+- Multiple layout options
+- Dark mode support
+
+**CSS Classes:** `.service-showcase` with `.service-showcase__item`, `.service-showcase__title`, `.service-showcase__description`
+
+---
+
+### 24. Service Pricing Block
+
+**Purpose:** Display service pricing tiers and options
+
+**Category:** Services  
+**Post Types:** page
+
+**Available Fields:**
+
+| Field             | Type     | Required | Description                      |
+| ----------------- | -------- | -------- | -------------------------------- |
+| Title             | Text     | No       | Section heading                  |
+| Prices (Repeater) | Repeater | Yes      | Pricing tiers                    |
+| Plan Name         | Text     | Yes      | Tier name                        |
+| Price             | Text     | Yes      | Price amount                     |
+| Price Unit        | Text     | No       | /month, /year, etc.              |
+| Features          | Textarea | Yes      | Feature list (newline separated) |
+| Call-to-Action    | Text     | No       | Button label                     |
+| Link              | URL      | No       | Signup link                      |
+
+**Features:**
+
+- Multiple pricing tiers
+- Feature lists
+- Call-to-action buttons
+- Compare pricing
+- Dark mode support
+
+**CSS Classes:** `.service-pricing` with `.service-pricing__tier`, `.service-pricing__price`, `.service-pricing__features`
+
+---
+
+### 25. Service Comparison Block
+
+**Purpose:** Compare services, features, or plans in table format
+
+**Category:** Services  
+**Post Types:** page
+
+**Available Fields:**
+
+| Field          | Type        | Required | Description         |
+| -------------- | ----------- | -------- | ------------------- |
+| Title          | Text        | No       | Section title       |
+| Services       | Repeater    | Yes      | Service columns     |
+| Service Name   | Text        | Yes      | Column header       |
+| Features       | Repeater    | Yes      | Feature rows        |
+| Feature Name   | Text        | Yes      | Feature description |
+| Feature Values | Repeater    | Yes      | Values per service  |
+| Feature Value  | Text/Toggle | Yes      | Yes/No/text value   |
+
+**Features:**
+
+- Responsive comparison table
+- Toggle values (Yes/No)
+- Custom values per service
+- Sticky header on scroll
+- Sortable columns
+- Mobile-friendly card layout
+
+**CSS Classes:** `.service-comparison` with `.service-comparison__table`, `.service-comparison__feature`, `.service-comparison__value`
+
+---
+
+### 26. Quote / Testimonial Block
+
+**Purpose:** Display a blockquote or testimonial with attribution
+
+**Category:** Content & Text  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field        | Type    | Required | Description                     |
+| ------------ | ------- | -------- | ------------------------------- |
+| Quote Text   | WYSIWYG | Yes      | The quote content               |
+| Author Name  | Text    | No       | Quote attribution               |
+| Author Title | Text    | No       | Author position/title           |
+| Author Image | Image   | No       | Author photo                    |
+| Style        | Select  | No       | Default, bordered, accent color |
+| Citation     | Text    | No       | Source/reference                |
+
+**Features:**
+
+- Formatted blockquote styling
+- Author attribution
+- Optional author photo
+- Multiple style options
+- Pull quotes
+- Semantic HTML (<blockquote>)
+
+**CSS Classes:** `.quote` with `.quote__text`, `.quote__citation`, `.quote__author`, `.quote__author-image`
+
+---
+
+### 27. Spacer Block
+
+**Purpose:** Add vertical spacing between blocks
+
+**Category:** Utility & Components  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field            | Type   | Required | Description           |
+| ---------------- | ------ | -------- | --------------------- |
+| Desktop Height   | Number | No       | Space on desktop (px) |
+| Tablet Height    | Number | No       | Space on tablet (px)  |
+| Mobile Height    | Number | No       | Space on mobile (px)  |
+| Background Color | Color  | No       | Optional background   |
+
+**Features:**
+
+- Responsive height configuration
+- Optional background color
+- Visual editor preview
+- Custom height per breakpoint
+
+**CSS Classes:** `.spacer` with inline styles
+
+---
+
+### 28. Form Embed Block
+
+**Purpose:** Embed contact forms, signup forms, or external form integrations
+
+**Category:** Interactive & Forms  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field            | Type   | Required | Description                           |
+| ---------------- | ------ | -------- | ------------------------------------- |
+| Form Type        | Select | Yes      | Gravity Forms, CF7, custom, Mailchimp |
+| Form Selection   | Select | Yes      | Which form to display                 |
+| Show Title       | Toggle | No       | Display form title                    |
+| Show Description | Toggle | No       | Display form description              |
+| Form Theme       | Select | No       | Light, dark, custom CSS               |
+
+**Features:**
+
+- Gravity Forms integration
+- Contact Form 7 support
+- Mailchimp signup support
+- Custom form shortcodes
+- Theme styling
+- Responsive layout
+
+**CSS Classes:** `.form-embed` with `.form-embed__form`, `.form-embed__field`, `.form-embed__submit`
+
+---
+
+### 29. Team Block
+
+**Purpose:** Display team members with profiles, roles, and contact info
+
+**Category:** Team & Testimonials  
+**Post Types:** page
+
+**Available Fields:**
+
+| Field                   | Type     | Required | Description           |
+| ----------------------- | -------- | -------- | --------------------- |
+| Title                   | Text     | No       | Section heading       |
+| Team Members (Repeater) | Repeater | Yes      | Member profiles       |
+| Member Name             | Text     | Yes      | Full name             |
+| Member Photo            | Image    | Yes      | Profile image         |
+| Member Title            | Text     | No       | Job title/role        |
+| Member Bio              | WYSIWYG  | No       | Brief bio             |
+| Member Email            | Email    | No       | Contact email         |
+| Member Phone            | Phone    | No       | Contact phone         |
+| Social Links            | Repeater | No       | Social media profiles |
+| Columns                 | Select   | No       | 2, 3, or 4 columns    |
+
+**Features:**
+
+- Member profiles with photos
+- Job titles and bios
+- Contact information
+- Social media links
+- Responsive grid
+- Hover effects
+
+**CSS Classes:** `.team` with `.team__member`, `.team__photo`, `.team__name`, `.team__title`, `.team__bio`
+
+---
+
+### 30. Testimonial Block
+
+**Purpose:** Display single testimonial with name, role, and optional rating
+
+**Category:** Team & Testimonials  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field            | Type    | Required | Description             |
+| ---------------- | ------- | -------- | ----------------------- |
+| Testimonial Text | WYSIWYG | Yes      | Quote content           |
+| Author Name      | Text    | Yes      | Customer/client name    |
+| Author Role      | Text    | No       | Job title or company    |
+| Author Image     | Image   | No       | Profile photo           |
+| Rating           | Select  | No       | 1-5 star rating         |
+| Style            | Select  | No       | Card, bordered, minimal |
+
+**Features:**
+
+- Testimonial cards
+- Star ratings (1-5)
+- Author photos
+- Multiple style options
+- Dark mode support
+- Responsive layout
+
+**CSS Classes:** `.testimonial` with `.testimonial__text`, `.testimonial__author`, `.testimonial__rating`
+
+---
+
+### 31. Service Testimonials Carousel Block
+
+**Purpose:** Auto-rotating carousel of customer testimonials
+
+**Category:** Team & Testimonials  
+**Post Types:** page
+
+**Available Fields:**
+
+| Field                   | Type     | Required | Description       |
+| ----------------------- | -------- | -------- | ----------------- |
+| Title                   | Text     | No       | Section heading   |
+| Testimonials (Repeater) | Repeater | Yes      | Testimonial items |
+| Quote                   | WYSIWYG  | Yes      | Testimonial text  |
+| Name                    | Text     | Yes      | Author name       |
+| Title                   | Text     | No       | Author title      |
+| Image                   | Image    | No       | Author photo      |
+| Rating                  | Number   | No       | Star rating (1-5) |
+| Auto-play               | Toggle   | No       | Auto-rotate       |
+| Duration                | Number   | No       | Seconds per slide |
+
+**Features:**
+
+- Auto-rotating carousel
+- Manual navigation controls
+- Star ratings
+- Author photos
+- Pause on hover
+- Keyboard controls
+- Touch swipe support
+
+**CSS Classes:** `.testimonials-carousel` with `.carousel__item`, `.carousel__quote`, `.carousel__author`
+
+---
+
+### 32. Stats / Counters Block
+
+**Purpose:** Display statistics, metrics, or counters with animations
+
+**Category:** Utility & Components  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field            | Type        | Required | Description        |
+| ---------------- | ----------- | -------- | ------------------ |
+| Title            | Text        | No       | Section title      |
+| Stats (Repeater) | Repeater    | Yes      | Stat items         |
+| Number           | Number      | Yes      | Stat number/value  |
+| Label            | Text        | Yes      | Stat description   |
+| Prefix           | Text        | No       | + \$ % etc.        |
+| Suffix           | Text        | No       | k M % etc.         |
+| Icon             | Icon Picker | No       | Stat icon          |
+| Columns          | Select      | No       | 2, 3, or 4 columns |
+
+**Features:**
+
+- Animated counters
+- Custom prefixes/suffixes
+- Icons with stats
+- Responsive grid
+- Number formatting
+- Dark mode support
+
+**CSS Classes:** `.stats` with `.stats__item`, `.stats__number`, `.stats__label`, `.stats__icon`
+
+---
+
+### 33. Steps / Process Block
+
+**Purpose:** Display step-by-step process, workflow, or instructions
+
+**Category:** Utility & Components  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field            | Type        | Required | Description          |
+| ---------------- | ----------- | -------- | -------------------- |
+| Title            | Text        | No       | Section title        |
+| Steps (Repeater) | Repeater    | Yes      | Step items           |
+| Step Number      | Number      | Auto     | Auto-numbered        |
+| Step Title       | Text        | Yes      | Step name            |
+| Step Description | WYSIWYG     | Yes      | Step details         |
+| Step Icon        | Icon Picker | No       | Step icon            |
+| Layout           | Select      | No       | Vertical, horizontal |
+
+**Features:**
+
+- Numbered steps
+- Icon support
+- Descriptions
+- Vertical/horizontal layout
+- Responsive design
+- Progress indicators
+
+**CSS Classes:** `.steps` with `.steps__item`, `.steps__number`, `.steps__title`, `.steps__description`
+
+---
+
+### 34. Downloads Block
+
+**Purpose:** Display downloadable files, resources, or documents
+
+**Category:** Utility & Components  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field                | Type        | Required | Description       |
+| -------------------- | ----------- | -------- | ----------------- |
+| Title                | Text        | No       | Section heading   |
+| Downloads (Repeater) | Repeater    | Yes      | Download items    |
+| File Name            | Text        | Yes      | Display name      |
+| File                 | File        | Yes      | File to download  |
+| File Type            | Text        | No       | PDF, Doc, Video   |
+| File Size            | Text        | No       | Display file size |
+| Description          | Textarea    | No       | Item description  |
+| Icon                 | Icon Picker | No       | File type icon    |
+
+**Features:**
+
+- File download links
+- File size display
+- Icon indicators
+- File type detection
+- Download tracking
+- Responsive list
+
+**CSS Classes:** `.downloads` with `.downloads__item`, `.downloads__link`, `.downloads__size`, `.downloads__icon`
+
+---
+
+### 35. Map Block
+
+**Purpose:** Embed Google Maps or Mapbox map with markers and controls
+
+**Category:** Maps & Location  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field              | Type     | Required | Description           |
+| ------------------ | -------- | -------- | --------------------- |
+| Map Provider       | Select   | Yes      | Google Maps or Mapbox |
+| API Key            | Text     | Yes      | Maps API key          |
+| Latitude           | Number   | Yes      | Center latitude       |
+| Longitude          | Number   | Yes      | Center longitude      |
+| Zoom Level         | Number   | No       | Map zoom (1-20)       |
+| Markers (Repeater) | Repeater | No       | Location markers      |
+| Marker Title       | Text     | No       | Marker label          |
+| Marker Lat         | Number   | Yes      | Marker latitude       |
+| Marker Lng         | Number   | Yes      | Marker longitude      |
+| Marker Info        | Textarea | No       | Info window text      |
+| Map Height         | Number   | No       | Height in pixels      |
+| Map Controls       | Toggle   | No       | Show zoom controls    |
+
+**Features:**
+
+- Google Maps/Mapbox support
+- Multiple markers
+- Info windows
+- Custom controls
+- Mobile responsive
+- Touch-friendly
+- Street View support
+
+**CSS Classes:** `.map` with `.map__container`, `.map__marker`, `.map__info-window`
 
 ---
 

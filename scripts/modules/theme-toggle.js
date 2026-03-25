@@ -4,6 +4,8 @@
  * and system preference detection
  */
 
+import Logger from "../utils/logger.js";
+
 const STORAGE_KEY = "theme-preference";
 const ATTR_NAME = "data-theme";
 
@@ -42,6 +44,8 @@ function getReflected() {
  * @param {boolean} persist - save to localStorage
  */
 function setTheme(theme, persist = true) {
+  Logger.debug("[Theme Toggle] Setting theme to", { theme, persist });
+
   if (theme === "system") {
     document.documentElement.removeAttribute(ATTR_NAME);
   } else {
@@ -52,10 +56,16 @@ function setTheme(theme, persist = true) {
     localStorage.setItem(STORAGE_KEY, theme);
   }
 
+  const reflected = getReflected();
+  Logger.debug("[Theme Toggle] Theme applied", {
+    theme,
+    reflected,
+  });
+
   // Dispatch custom event so other modules can react to theme change
   window.dispatchEvent(
     new CustomEvent("theme-change", {
-      detail: { theme, reflected: getReflected() },
+      detail: { theme, reflected },
     }),
   );
 }
@@ -66,6 +76,7 @@ function setTheme(theme, persist = true) {
  */
 function toggle() {
   const current = getCurrent();
+  Logger.debug("[Theme Toggle] Toggling theme", { current });
 
   let next;
   if (current === "light") {
@@ -76,6 +87,7 @@ function toggle() {
     next = "light";
   }
 
+  Logger.info("[Theme Toggle] Theme toggled", { from: current, to: next });
   setTheme(next);
 }
 
@@ -84,22 +96,34 @@ function toggle() {
  * Reads from localStorage, then falls back to system preference
  */
 function init() {
+  Logger.debug("[Theme Toggle] Initializing...");
+
   // 1. Read stored preference from localStorage
   const stored = localStorage.getItem(STORAGE_KEY);
+  Logger.debug("[Theme Toggle] Stored preference", { stored });
 
   // 2. Validate stored preference
   if (stored === "light" || stored === "dark" || stored === "system") {
     setTheme(stored, false);
   } else {
     // 3. Fall back to system preference (default behavior)
+    Logger.debug(
+      "[Theme Toggle] No valid stored preference, using system default",
+    );
     setTheme("system", false);
   }
+
+  Logger.info("[Theme Toggle] Initialized with theme", {
+    current: getCurrent(),
+    reflected: getReflected(),
+  });
 
   // 4. Listen for system preference changes and update if currently on 'system'
   const darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
   darkModeQuery.addListener(() => {
     if (getCurrent() === "system") {
+      Logger.debug("[Theme Toggle] System preference changed");
       // Dispatch event even though we don't change the DOM attribute
       window.dispatchEvent(
         new CustomEvent("theme-change", {
@@ -113,6 +137,7 @@ function init() {
   if (darkModeQuery.addEventListener) {
     darkModeQuery.addEventListener("change", () => {
       if (getCurrent() === "system") {
+        Logger.debug("[Theme Toggle] System preference changed (modern API)");
         window.dispatchEvent(
           new CustomEvent("theme-change", {
             detail: { theme: "system", reflected: getReflected() },

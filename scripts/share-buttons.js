@@ -3,8 +3,13 @@
  * Handles social sharing functionality
  */
 
-document.addEventListener("DOMContentLoaded", function () {
+import Logger from "./utils/logger.js";
+console.log("[SITE] Share Buttons module loaded");
+
+function initShareButtons() {
   const shareButtons = document.querySelectorAll(".share-buttons__button");
+
+  Logger.debug("[Share Buttons] Found buttons", { count: shareButtons.length });
 
   shareButtons.forEach((button) => {
     button.addEventListener("click", function (e) {
@@ -22,6 +27,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const left = (window.innerWidth - width) / 2;
       const top = (window.innerHeight - height) / 2;
 
+      Logger.info("[Share Buttons] Sharing", { platform });
+
       // Open share dialog in a popup window
       window.open(
         url,
@@ -33,13 +40,15 @@ document.addEventListener("DOMContentLoaded", function () {
       trackShare(platform);
     });
   });
-});
+}
 
 /**
  * Track share events (optional analytics tracking)
  * @param {string} platform - The social platform being shared to
  */
 function trackShare(platform) {
+  Logger.debug("[Share Buttons] Tracking share event", { platform });
+
   // If using Google Analytics, you can track the event
   if (typeof gtag !== "undefined") {
     gtag("event", "share", {
@@ -69,4 +78,11 @@ function trackShare(platform) {
       ),
     );
   }
+}
+
+// Initialize when DOM is ready or immediately if already loaded
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initShareButtons);
+} else {
+  initShareButtons();
 }

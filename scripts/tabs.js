@@ -3,16 +3,26 @@
  * Handles tab switching with keyboard navigation support
  */
 
-document.addEventListener("DOMContentLoaded", function () {
+import Logger from "./utils/logger.js";
+console.log("[SITE] Tabs module loaded");
+
+function initTabs() {
   const tabsBlocks = document.querySelectorAll(".tabs-block");
+
+  Logger.debug("[Tabs] Found", { tabCount: tabsBlocks.length });
 
   tabsBlocks.forEach(function (tabsBlock) {
     const buttons = tabsBlock.querySelectorAll(".tabs-block__button");
     const panels = tabsBlock.querySelectorAll(".tabs-block__panel");
 
+    Logger.debug("[Tabs] Initializing tabs block", {
+      tabCount: buttons.length,
+    });
+
     // Click handler for tab buttons
     buttons.forEach((button, index) => {
       button.addEventListener("click", function () {
+        Logger.debug("[Tabs] Tab clicked", { index });
         activateTab(index, buttons, panels);
       });
 
@@ -77,4 +87,18 @@ document.addEventListener("DOMContentLoaded", function () {
     buttons[index].classList.add("is-active");
     panels[index].classList.add("is-active");
   }
-});
+}
+
+// Initialize when DOM is ready or immediately if already loaded
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initTabs);
+} else {
+  initTabs();
+}
+
+// Initialize when DOM is ready or immediately if already loaded
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initTabs);
+} else {
+  initTabs();
+}

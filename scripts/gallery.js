@@ -3,6 +3,9 @@
  * Adds lightbox functionality to gallery images
  */
 
+import Logger from "./utils/logger.js";
+console.log("[SITE] Gallery module loaded");
+
 (function () {
   "use strict";
 
@@ -11,6 +14,7 @@
       this.currentIndex = 0;
       this.currentGallery = null;
       this.images = [];
+      Logger.debug("[Gallery] Initializing lightbox");
       this.init();
     }
 
@@ -18,11 +22,18 @@
       // Find all gallery blocks
       const galleries = document.querySelectorAll(".gallery__item");
 
+      Logger.debug("[Gallery] Found gallery items", {
+        count: galleries.length,
+      });
+
       galleries.forEach((item) => {
         const img = item.querySelector(".gallery__image");
         if (img) {
           img.style.cursor = "pointer";
-          img.addEventListener("click", (e) => this.openLightbox(e));
+          img.addEventListener("click", (e) => {
+            Logger.debug("[Gallery] Image clicked for lightbox");
+            this.openLightbox(e);
+          });
         }
       });
     }
@@ -31,7 +42,10 @@
       const clickedImg = event.target;
       const gallerySection = clickedImg.closest(".gallery");
 
-      if (!gallerySection) return;
+      if (!gallerySection) {
+        Logger.warn("[Gallery] Gallery container not found");
+        return;
+      }
 
       // Get all images in this gallery
       this.images = Array.from(

@@ -593,80 +593,13 @@ function theme_enqueue_assets(): void {
 			'nonce'        => wp_create_nonce( 'theme-nonce' ),
 			'isLoggedIn'   => is_user_logged_in(),
 			'currentUser'  => get_current_user_id(),
+			'debug'        => defined( 'WP_DEBUG' ) && WP_DEBUG,
 		)
 	);
 
-	// Enqueue gallery JavaScript for lightbox functionality
-	wp_enqueue_script(
-		'gallery-lightbox-js',
-		$theme_uri . '/scripts/gallery.js',
-		array(), // No dependencies
-		$theme_version,
-		true // Load in footer
-	);
-
-	// Enqueue slider JavaScript for carousel functionality
-	wp_enqueue_script(
-		'slider-js',
-		$theme_uri . '/scripts/slider.js',
-		array(), // No dependencies
-		$theme_version,
-		true // Load in footer
-	);
-
-	// Enqueue video JavaScript for player functionality
-	wp_enqueue_script(
-		'video-js',
-		$theme_uri . '/scripts/video.js',
-		array(), // No dependencies
-		$theme_version,
-		true // Load in footer
-	);
-
-	// Enqueue accordion JavaScript for expand/collapse functionality
-	wp_enqueue_script(
-		'accordion-js',
-		$theme_uri . '/scripts/accordion.js',
-		array(), // No dependencies
-		$theme_version,
-		true // Load in footer
-	);
-
-	// Enqueue announcement JavaScript for dismiss functionality
-	wp_enqueue_script(
-		'announcement-js',
-		$theme_uri . '/scripts/announcement.js',
-		array(), // No dependencies
-		$theme_version,
-		true // Load in footer
-	);
-
-	// Enqueue share buttons JavaScript for social sharing functionality
-	wp_enqueue_script(
-		'share-buttons-js',
-		$theme_uri . '/scripts/share-buttons.js',
-		array(), // No dependencies
-		$theme_version,
-		true // Load in footer
-	);
-
-	// Enqueue tabs JavaScript for tab navigation and keyboard support
-	wp_enqueue_script(
-		'tabs-js',
-		$theme_uri . '/scripts/tabs.js',
-		array(), // No dependencies
-		$theme_version,
-		true // Load in footer
-	);
-
-	// Enqueue hamburger menu JavaScript for mobile navigation toggle
-	wp_enqueue_script(
-		'hamburger-js',
-		$theme_uri . '/scripts/hamburger.js',
-		array(), // No dependencies
-		$theme_version,
-		true // Load in footer
-	);
+	// Note: Individual feature scripts (gallery, slider, video, accordion, etc.)
+	// are bundled into site.js by Vite and don't need separate enqueues.
+	// They are imported in scripts/index.js and included in the main bundle.
 }
 add_action( 'wp_enqueue_scripts', 'theme_enqueue_assets' );
 

@@ -3,6 +3,9 @@
  * Handles accordion expand/collapse functionality
  */
 
+import Logger from "./utils/logger.js";
+console.log("[SITE] Accordion module loaded");
+
 (function () {
   "use strict";
 
@@ -12,6 +15,10 @@
       this.triggers = this.element.querySelectorAll(".accordion__trigger");
       this.panels = this.element.querySelectorAll(".accordion__panel");
       this.items = this.element.querySelectorAll(".accordion__item");
+      Logger.debug("[Accordion] Initializing", {
+        id: element.dataset.accordionId,
+        itemCount: this.items.length,
+      });
       this.init();
     }
 
@@ -22,6 +29,9 @@
         trigger.addEventListener("keydown", (e) =>
           this.handleKeyboard(e, index),
         );
+      });
+      Logger.debug("[Accordion] Initialized successfully", {
+        id: this.element.dataset.accordionId,
       });
     }
 

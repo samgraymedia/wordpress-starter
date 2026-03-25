@@ -3,6 +3,9 @@
  * Handles carousel navigation and autoplay functionality
  */
 
+import Logger from "./utils/logger.js";
+console.log("[SITE] Slider module loaded");
+
 (function () {
   "use strict";
 
@@ -23,17 +26,28 @@
       this.autoplayInterval = null;
       this.touchStartX = null;
 
+      Logger.debug("[Slider] Initializing", {
+        slideCount: this.totalSlides,
+        autoplay: this.autoplay,
+      });
+
       this.init();
     }
 
     init() {
       // Event listeners
       if (this.prevBtn) {
-        this.prevBtn.addEventListener("click", () => this.prevSlide());
+        this.prevBtn.addEventListener("click", () => {
+          Logger.debug("[Slider] Previous slide");
+          this.prevSlide();
+        });
       }
 
       if (this.nextBtn) {
-        this.nextBtn.addEventListener("click", () => this.nextSlide());
+        this.nextBtn.addEventListener("click", () => {
+          Logger.debug("[Slider] Next slide");
+          this.nextSlide();
+        });
       }
 
       this.dots.forEach((dot) => {

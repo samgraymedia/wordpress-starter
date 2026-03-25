@@ -1629,6 +1629,103 @@ define( 'WP_DEBUG_DISPLAY', false );
 <pre>{{ variable|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
 ```
 
+### JavaScript Error Logging & Debugging
+
+The theme includes a comprehensive **Logger** utility for client-side debugging and error tracking. It provides environment-aware logging that's verbose in development and minimal in production.
+
+#### Logger Usage
+
+```javascript
+import Logger from "./utils/logger.js";
+
+// Basic logging methods
+Logger.debug("Debug info"); // [DEBUG] message
+Logger.info("Info message"); // [INFO] message
+Logger.warn("Warning"); // [WARN] message
+Logger.error("An error occurred"); // [ERROR] message
+
+// Log with additional data
+Logger.error("Form validation failed", {
+  fieldName: "email",
+  value: input.value,
+  reason: "Invalid format",
+});
+
+// Conditional logging based on environment
+if (window.themeConfig.debug) {
+  Logger.debug("Development mode active");
+}
+```
+
+#### Logger Features
+
+- **Environment-Aware**: Verbose output in development (`WP_DEBUG = true`), minimal logging in production
+- **Automatic Stack Traces**: Includes stack trace information in development mode
+- **Color-Coded Output**: Different colors for each log level (blue=info, orange=warn, red=error)
+- **Server Reporting**: Errors are automatically reported to the server endpoint
+- **Timestamp Support**: Optional timestamps on all log messages
+- **Log Level Filtering**: Configure minimum level to log (debug, info, warn, error)
+
+#### Configuration
+
+```javascript
+// Logger reads WP_DEBUG flag from window.themeConfig
+// This is automatically exposed from PHP via wp_localize_script()
+// window.themeConfig.debug = true/false
+
+// Customize logger behavior
+Logger.configure({
+  debug: true, // Override environment detection
+  minLevel: "debug", // debug, info, warn, error
+  enableColors: true, // Color-coded output
+  enableTimestamp: true, // Add timestamps to logs
+  enableStackTrace: true, // Include stack traces (dev only)
+  stackTraceDepth: 5, // Number of stack frames to show
+});
+```
+
+#### Error Reporting to Server
+
+Errors are automatically batched and sent to the server endpoint for tracking. In development mode, only errors are reported. In production, both errors and warnings are reported.
+
+```javascript
+// The error reporter is automatically initialized
+// Errors are batched (max 10 or every 30 seconds) before sending
+// Failed transmissions are automatically retried with exponential backoff
+
+// Manually flush pending errors if needed
+import ErrorReporter from "./utils/error-reporter.js";
+ErrorReporter.flush();
+```
+
+#### Integration with Modules
+
+All theme modules should use the Logger instead of `console.log()`:
+
+```javascript
+// OLD - Not recommended
+console.log("Form submitted");
+console.error("Validation error:", error);
+
+// NEW - Logger approach
+import Logger from "../utils/logger.js";
+
+Logger.info("Form submitted", { formId: "contact-form" });
+Logger.error("Validation error", error, { context: "form-validation" });
+```
+
+#### Testing Logger
+
+Unit tests are available in `tests/logger.test.js`:
+
+```bash
+# Run logger tests (requires Jest configured)
+npm test -- logger.test.js
+
+# Check specific test
+npm test -- logger.test.js --testNamePattern="should log"
+```
+
 ---
 
 ## Performance Optimization

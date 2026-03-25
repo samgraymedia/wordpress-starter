@@ -15,12 +15,13 @@ import {
 } from "../utils/dom.js";
 import { debounce } from "../utils/events.js";
 import { ajax } from "../utils/http.js";
+import Logger from "../utils/logger.js";
 
 /**
  * Initialize search functionality
  */
 export function initSearch() {
-  console.log("[Search] Initializing...");
+  Logger.debug("[Search] Initializing...");
 
   const searchForm = querySelector(".search-form");
   if (!searchForm) {
@@ -63,7 +64,10 @@ async function handleSearchInput(e) {
       displayNoResults();
     }
   } catch (error) {
-    console.error("[Search] Error fetching suggestions:", error);
+    Logger.error("[Search] Error fetching suggestions", error, {
+      context: "live-search",
+      query,
+    });
   }
 }
 

@@ -9,6 +9,7 @@
 
 import { querySelector, querySelectorAll } from "../utils/dom.js";
 import { ajax } from "../utils/http.js";
+import Logger from "../utils/logger.js";
 
 /**
  * Initialize cart functionality
@@ -16,11 +17,11 @@ import { ajax } from "../utils/http.js";
 export function initCart() {
   // Check if WooCommerce is active
   if (typeof wc === "undefined") {
-    console.log("[Cart] WooCommerce not active");
+    Logger.debug("[Cart] WooCommerce not active");
     return;
   }
 
-  console.log("[Cart] Initializing...");
+  Logger.debug("[Cart] Initializing...");
 
   // Setup add to cart button handlers
   setupAddToCartButtons();
@@ -70,7 +71,11 @@ async function handleAddToCart(e) {
       button.textContent = "Add to Cart";
     }, 2000);
   } catch (error) {
-    console.error("[Cart] Error adding to cart:", error);
+    Logger.error("[Cart] Error adding to cart", error, {
+      productId,
+      quantity,
+      context: "add-to-cart",
+    });
     button.disabled = false;
     button.textContent = "Add to Cart";
   }

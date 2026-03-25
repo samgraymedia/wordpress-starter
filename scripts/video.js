@@ -3,6 +3,9 @@
  * Handles video player initialization and interactions
  */
 
+import Logger from "./utils/logger.js";
+console.log("[SITE] Video module loaded");
+
 (function () {
   "use strict";
 
@@ -10,13 +13,16 @@
     constructor(element) {
       this.element = element;
       this.videoType = element.dataset.videoType || "file";
+      Logger.debug("[Video Player] Initializing", { type: this.videoType });
       this.init();
     }
 
     init() {
       if (this.videoType === "file") {
+        Logger.debug("[Video Player] Setting up file video");
         this.initFileVideo();
       } else if (this.videoType === "youtube") {
+        Logger.debug("[Video Player] Setting up YouTube video");
         this.initYouTubeVideo();
       }
     }
@@ -24,17 +30,22 @@
     initFileVideo() {
       const videoElement = this.element.querySelector(".video__element");
 
-      if (!videoElement) return;
+      if (!videoElement) {
+        Logger.warn("[Video Player] Video element not found");
+        return;
+      }
 
       // Ensure video has proper controls
       videoElement.controls = true;
 
       // Add custom event listeners for enhanced functionality
       videoElement.addEventListener("play", () => {
+        Logger.debug("[Video Player] Video playing");
         this.onPlay();
       });
 
       videoElement.addEventListener("pause", () => {
+        Logger.debug("[Video Player] Video paused");
         this.onPause();
       });
 

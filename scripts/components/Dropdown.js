@@ -7,6 +7,7 @@
  */
 
 import { querySelector, addClass, removeClass } from "../utils/dom.js";
+import Logger from "../utils/logger.js";
 
 /**
  * Dropdown class for managing Bootstrap dropdowns with custom logic
@@ -40,16 +41,18 @@ export class Dropdown {
       ...options,
     };
 
+    Logger.debug("[Dropdown] Initializing");
+
     // Check if Bootstrap is available
     if (typeof bootstrap === "undefined") {
-      console.warn("[Dropdown] Bootstrap JS not loaded");
+      Logger.warn("[Dropdown] Bootstrap JS not loaded");
       return;
     }
 
     // Find the toggle button
     this.toggle = querySelector('[data-bs-toggle="dropdown"]', this.element);
     if (!this.toggle) {
-      console.warn("[Dropdown] No toggle button found");
+      Logger.warn("[Dropdown] No toggle button found");
       return;
     }
 
@@ -64,18 +67,23 @@ export class Dropdown {
    * Setup dropdown event listeners
    */
   setupListeners() {
+    Logger.debug("[Dropdown] Setting up event listeners");
+
     if (!this.toggle) return;
 
     // Bootstrap dropdown events
     this.toggle.addEventListener("show.bs.dropdown", (e) => {
+      Logger.debug("[Dropdown] Opening");
       this.onBeforeOpen(e);
     });
 
     this.toggle.addEventListener("shown.bs.dropdown", (e) => {
+      Logger.debug("[Dropdown] Opened");
       this.onAfterOpen(e);
     });
 
     this.toggle.addEventListener("hide.bs.dropdown", (e) => {
+      Logger.debug("[Dropdown] Closing");
       this.onBeforeClose(e);
     });
 

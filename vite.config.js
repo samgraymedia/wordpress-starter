@@ -23,7 +23,7 @@ export default defineConfig({
     sourcemap: false, // Don't generate source maps in production
     target: "esnext",
 
-    // Make sure we generate the right file names
+    // Disable code splitting - keep everything in one bundle for WordPress
     rollupOptions: {
       input: {
         main: "./scripts/index.js",
@@ -32,6 +32,8 @@ export default defineConfig({
         entryFileNames: "site.js",
         chunkFileNames: "[name]-[hash].js",
         assetFileNames: "[name]-[hash][extname]",
+        // Prevent code splitting by merging chunks into main bundle
+        manualChunks: () => undefined,
       },
     },
   },
