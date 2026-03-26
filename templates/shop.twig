@@ -1,24 +1,54 @@
 {#
   WooCommerce Shop Page Template
-  Displays all products with pagination
+  Displays all products with filtering, breadcrumbs, and pagination
+  
+  Features:
+  - Hero section with background image
+  - Breadcrumb navigation
+  - Product filtering sidebar
+  - Responsive product grid (3/2/1 columns)
+  - Sorting and view options
 #}
 
 {% extends "base.twig" %}
 
 {% block content %}
-	<div class="shop">
-		<div
-			class="container">
+	<div
+		class="shop">
 
-			{# Shop header #}
-			<div class="shop__header">
-				<h1 class="shop__title">{{ shop_title }}</h1>
-				{% if shop_description %}
-					<div class="shop__description">
-						{{ shop_description }}
+		{# Hero Section #}
+		<div class="shop__hero">
+			<div class="shop__hero-bg" style="background-image: url('{{ shop_hero_image }}')">
+				<div class="shop__hero-overlay"></div>
+				<div class="container">
+					<div class="shop__hero-content">
+						<h1 class="shop__hero-title">{{ shop_title }}</h1>
+						{% if shop_description %}
+							<p class="shop__hero-subtitle">{{ shop_description }}</p>
+						{% endif %}
 					</div>
-				{% endif %}
+				</div>
 			</div>
+		</div>
+
+		{# Breadcrumb Navigation #}
+		<div class="shop__breadcrumb">
+			<div class="container">
+				<nav aria-label="breadcrumb" class="shop__breadcrumb-nav">
+					<ul class="shop__breadcrumb-list">
+						<li class="shop__breadcrumb-item">
+							<a href="{{ site.url }}" class="shop__breadcrumb-link">{{ _e('Home', 'starter-theme-1.x') }}</a>
+						</li>
+						<li class="shop__breadcrumb-item active">
+							<span class="shop__breadcrumb-text">{{ _e('Shop', 'starter-theme-1.x') }}</span>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+
+		{# Main shop content #}
+		<div class="container">
 
 			<div
 				class="shop__wrapper">
@@ -26,7 +56,13 @@
 				{# Sidebar with filters #}
 				{% if sidebar %}
 					<aside class="shop__sidebar">
-						{% include "sidebar.twig" %}
+						<div class="shop__sidebar-inner">
+							<h3 class="shop__sidebar-title">{{ _e('Filter Products', 'starter-theme-1.x') }}</h3>
+							{% include "sidebar.twig" %}
+
+							{# WooCommerce filters #}
+							{% do action('woocommerce_before_main_content') %}
+						</div>
 					</aside>
 				{% endif %}
 
@@ -36,17 +72,35 @@
 
 					{# Shop toolbar (sorting, view options) #}
 					<div class="shop__toolbar">
-						{% do action('woocommerce_before_shop_loop') %}
+						<div
+							class="shop__toolbar-left">
+							{# Results count #}
+							<div class="shop__results-count">
+								{% do action('woocommerce_result_count') %}
+							</div>
+						</div>
+
+						<div
+							class="shop__toolbar-right">
+							{# Sorting dropdown #}
+							<div class="shop__sorting">
+								{% do action('woocommerce_catalog_ordering') %}
+							</div>
+						</div>
 					</div>
 
 					{# Products grid #}
 					{% if posts %}
-						<div class="shop__products">
+						<div class="shop__products shop__products--grid">
+							{% do action('woocommerce_before_shop_loop') %}
+
 							{% for product in posts %}
 								{% include "components/product-card.twig" with {
-                  product: product
-                } %}
+									product: product
+								} %}
 							{% endfor %}
+
+							{% do action('woocommerce_after_shop_loop') %}
 						</div>
 					{% else %}
 						<div class="shop__empty">
@@ -64,5 +118,6 @@
 			</div>
 
 		</div>
+
 	</div>
 {% endblock %}

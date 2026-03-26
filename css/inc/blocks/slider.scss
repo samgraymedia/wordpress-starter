@@ -1,3 +1,9 @@
+/**
+ * slider.scss - BEM Block
+ */
+
+@import "../base/vars";
+
 // Slider / Carousel Block Styling
 
 .slider {
@@ -73,7 +79,7 @@
 
   &__content {
     width: 100%;
-    padding: 4rem 2rem 2rem;
+    padding: $spacing-6 $spacing-5 $spacing-5;
     text-align: center;
     background: linear-gradient(
       180deg,
@@ -82,12 +88,12 @@
       rgba(0, 0, 0, 0.9) 100%
     );
 
-    @media (max-width: 768px) {
-      padding: 3rem 1.5rem 1.5rem;
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-6 $spacing-4 $spacing-4;
     }
 
-    @media (max-width: 480px) {
-      padding: 2.5rem 1rem 1rem;
+    @media (max-width: $breakpoint-sm) {
+      padding: $spacing-5 $spacing-3 $spacing-3;
     }
   }
 

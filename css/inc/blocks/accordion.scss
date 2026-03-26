@@ -1,3 +1,13 @@
+/**
+ * Accordion Block - BEM Methodology
+ *
+ * Block: .accordion
+ * Elements: .accordion__section-title, .accordion__items, .accordion__item, .accordion__trigger, .accordion__content
+ * Modifiers: .accordion__item--expanded
+ */
+
+@import "../base/vars";
+
 // Accordion Block Styling
 
 .accordion {

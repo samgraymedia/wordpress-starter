@@ -66,6 +66,7 @@ return array(
 		// WooCommerce image sizes (only registered if WooCommerce is active)
 		'woocommerce_thumbnail' => array( 300, 300, true ),
 		'woocommerce_single'    => array( 600, 600, true ),
+		'woocommerce_gallery'   => array( 800, 800, true ),
 	),
 
 	/**

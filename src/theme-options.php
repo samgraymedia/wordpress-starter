@@ -111,6 +111,26 @@ acf_add_local_field_group( array(
 			'rows'          => 4,
 			'placeholder'   => 'Monday - Friday: 9:00 AM - 5:00 PM' . "\n" . 'Saturday: 10:00 AM - 3:00 PM' . "\n" . 'Sunday: Closed',
 		),
+
+		// Appearance Settings Section
+		array(
+			'key'           => 'field_appearance_section',
+			'label'         => 'Appearance Settings',
+			'name'          => 'appearance_section',
+			'type'          => 'tab',
+		),
+		array(
+			'key'           => 'field_enable_dark_mode',
+			'label'         => 'Enable Dark Mode',
+			'name'          => 'enable_dark_mode',
+			'type'          => 'true_false',
+			'message'       => 'Allow users to toggle between light and dark theme',
+			'default_value' => 1,
+			'ui'            => 1,
+			'ui_on_text'    => 'Enabled',
+			'ui_off_text'   => 'Disabled',
+			'instruction'   => 'When enabled, visitors can toggle between light and dark modes. The preference is saved in their browser.',
+		),
 	),
 	'location' => array(
 		array(

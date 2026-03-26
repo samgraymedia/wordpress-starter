@@ -10,6 +10,8 @@
  *            .cards-grid__grid--2cols, .cards-grid__grid--3cols, .cards-grid__grid--4cols
  */
 
+@import "../base/vars";
+
 .cards-grid {
   padding: $spacing-6 0;
   background-color: $white;

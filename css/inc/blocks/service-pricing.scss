@@ -1,19 +1,25 @@
 /**
+ * service-pricing.scss - BEM Block
+ */
+
+@import "../base/vars";
+
+/**
  * Service Pricing Block Styles
  */
 
 .block-service-pricing {
-  margin: 2rem 0;
+  margin: $spacing-5 0;
 
   .pricing-grid {
     display: grid;
-    gap: 2rem;
-    margin: 1rem 0;
+    gap: $spacing-5;
+    margin: $spacing-3 0;
 
     &.columns-2 {
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 
-      @media (min-width: 768px) {
+      @media (min-width: $breakpoint-md) {
         grid-template-columns: repeat(2, 1fr);
       }
     }
@@ -21,7 +27,7 @@
     &.columns-3 {
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 
-      @media (min-width: 1024px) {
+      @media (min-width: $breakpoint-lg) {
         grid-template-columns: repeat(3, 1fr);
       }
     }
@@ -29,7 +35,7 @@
     &.columns-4 {
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 
-      @media (min-width: 1400px) {
+      @media (min-width: $breakpoint-2xl) {
         grid-template-columns: repeat(4, 1fr);
       }
     }
@@ -38,12 +44,12 @@
   .pricing-card {
     display: flex;
     flex-direction: column;
-    background: #fff;
-    border: 2px solid #e0e0e0;
-    border-radius: 0.75rem;
-    padding: 2rem;
+    background: $white;
+    border: 2px solid $gray-300;
+    border-radius: $border-radius;
+    padding: $spacing-5;
     position: relative;
-    transition: all 0.3s ease;
+    transition: all $transition-normal;
     text-align: center;
 
     &.is-featured {

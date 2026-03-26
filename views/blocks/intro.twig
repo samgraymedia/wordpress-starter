@@ -1,0 +1,52 @@
+{#
+Title: Section Intro
+Description: Intro section with eyebrow, heading, description text, and optional CTA button
+Category: common
+Icon: heading
+Keywords: intro section header eyebrow
+Mode: auto
+PostTypes: page post
+SupportsMode: true
+SupportsMultiple: true
+#}
+
+{%- set eyebrow = fields.eyebrow | default('') -%}
+{%- set heading = fields.heading | default('') -%}
+{%- set description = fields.description | default('') -%}
+{%- set alignment = fields.alignment | default('left') -%}
+{%- set max_width = fields.max_width | default('full') -%}
+{%- set cta_button = fields.cta_button | default({}) -%}
+
+<section class="intro intro--align-{{ alignment }} wrapper intro--width-{{ max_width }} {{ block.classes }}">
+	<div class="intro__wrapper">
+		{%- if eyebrow -%}
+			<div class="intro__eyebrow">
+				{{ eyebrow }}
+			</div>
+		{%- endif -%}
+
+		{%- if heading -%}
+			<h2 class="intro__heading">
+				{{ heading }}
+			</h2>
+		{%- endif -%}
+
+		{%- if description -%}
+			<p class="intro__description">
+				{{ description }}
+			</p>
+		{%- endif -%}
+
+		{%- if cta_button.url -%}
+			<div class="intro__cta">
+				<a href="{{ cta_button.url }}" class="intro__button btn btn--primary" {%- if cta_button.target %} target="{{ cta_button.target }}" {% endif %}>
+					{{ cta_button.title }}
+					<svg class="intro__button-arrow" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<line x1="5" y1="12" x2="19" y2="12"></line>
+						<polyline points="12 5 19 12 12 19"></polyline>
+					</svg>
+				</a>
+			</div>
+		{%- endif -%}
+	</div>
+</section>

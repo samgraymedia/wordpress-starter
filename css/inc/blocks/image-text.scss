@@ -1,3 +1,12 @@
+/**
+ * Image + Text Block - BEM Methodology
+ * Block: .image-text
+ * Elements: .image-text__image, .image-text__content, .image-text__title, .image-text__text
+ * Modifiers: .image-text--reverse
+ */
+
+@import "../base/vars";
+
 // Image + Text Block Styling
 
 .image-text {

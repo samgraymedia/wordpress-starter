@@ -1,13 +1,19 @@
 /**
+ * service-comparison.scss - BEM Block
+ */
+
+@import "../base/vars";
+
+/**
  * Service Comparison Block Styles
  */
 
 .block-service-comparison {
-  margin: 2rem 0;
+  margin: $spacing-5 0;
 
   .service-comparison-wrapper {
-    background: #fff;
-    border-radius: 0.5rem;
+    background: $white;
+    border-radius: $border-radius-lg;
     overflow: auto;
   }
 
@@ -17,30 +23,30 @@
     margin: 0;
 
     thead {
-      background: #f8f9fa;
-      border-bottom: 2px solid #dee2e6;
+      background: $bg-light;
+      border-bottom: 2px solid $gray-300;
     }
 
     th,
     td {
-      padding: 1rem;
+      padding: $spacing-3;
       text-align: left;
-      border-bottom: 1px solid #dee2e6;
+      border-bottom: 1px solid $gray-300;
     }
 
     th {
-      font-weight: 600;
-      color: #333;
+      font-weight: $font-semibold;
+      color: $gray-900;
     }
 
     td {
-      color: #555;
+      color: $gray-700;
     }
 
     .comparison-feature {
       width: 20%;
-      font-weight: 500;
-      background: #f8f9fa;
+      font-weight: $font-medium;
+      background: $bg-light;
     }
 
     .comparison-service {

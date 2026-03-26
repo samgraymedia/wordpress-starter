@@ -1,102 +1,197 @@
 {#
   WooCommerce Single Product Page Template
   Displays a single product with images, price, description, and add to cart
+  
+  Features:
+  - Breadcrumb navigation
+  - Product image carousel/gallery
+  - Product details (price, description, add to cart)
+  - Custom product tabs (description, reviews, specifications)
+  - Related products section
+  - Schema markup for SEO
 #}
 
 {% extends "base.twig" %}
 
 {% block content %}
-	<div class="product-single">
+	<div
+		class="product-single">
+
+		{# Breadcrumb Navigation #}
+		<div class="product-single__breadcrumb">
+			<div class="container">
+				<nav aria-label="breadcrumb" class="product-single__breadcrumb-nav">
+					<ul class="product-single__breadcrumb-list">
+						<li class="product-single__breadcrumb-item">
+							<a href="{{ site.url }}" class="product-single__breadcrumb-link">{{ _e('Home', 'starter-theme-1.x') }}</a>
+						</li>
+						<li class="product-single__breadcrumb-item">
+							<a href="{{ function('get_permalink', function('wc_get_page_id', 'shop')) }}" class="product-single__breadcrumb-link">{{ _e('Shop', 'woocommerce') }}</a>
+						</li>
+						{% if product.get_category() %}
+							{% set categories = product.get_category() %}
+							{% for category in categories %}
+								<li class="product-single__breadcrumb-item">
+									<a href="{{ category.link }}" class="product-single__breadcrumb-link">{{ category.name }}</a>
+								</li>
+							{% endfor %}
+						{% endif %}
+						<li class="product-single__breadcrumb-item active">
+							<span class="product-single__breadcrumb-text">{{ product.title }}</span>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+
+		{# Product content #}
 		<div class="container">
 
 			<div
 				class="product-single__wrapper">
 
-				{# Product images #}
-				<div class="product-single__images">
-					{% if product.get_image('woocommerce_single') %}
-						<div class="product-single__main-image">
-							{{ product.get_image('woocommerce_single')|safe }}
-						</div>
-					{% endif %}
+				{# Product images - Carousel #}
+				<div class="product-single__gallery-wrapper">
+					{% if product.get_image('woocommerce_single') or product.get_gallery_image_ids() %}
+						<div
+							class="product-single__images">
+							{# Main image with lightbox #}
+							<div class="product-single__main-image" data-slide="0">
+								<a href="{{ function('wp_get_attachment_image_url', product.get_image_id(), 'full') }}" class="product-single__image-link" data-lightbox="product-gallery">
+									{{ product.get_image('woocommerce_single')|safe }}
+								</a>
+							</div>
 
-					{# Product gallery #}
-					{% if product.get_gallery_image_ids() %}
-						<div class="product-single__gallery">
-							{% for image_id in product.get_gallery_image_ids() %}
-								<div class="product-single__gallery-item">
-									{{ image_id|product_image }}
+							{# Image carousel/thumbnails #}
+							{% set gallery_images = product.get_gallery_image_ids() %}
+							{% if gallery_images %}
+								<div class="product-single__carousel">
+									<div
+										class="product-single__carousel-track">
+										{# Add main image first #}
+										<div class="product-single__carousel-item active" data-index="0">
+											<img src="{{ function('wp_get_attachment_image_url', product.get_image_id(), 'woocommerce_gallery_thumbnail') }}" alt="{{ product.get_title() }}" loading="lazy"/>
+										</div>
+
+										{# Add gallery images #}
+										{% for image_id in gallery_images %}
+											<div class="product-single__carousel-item" data-index="{{ loop.index }}">
+												{% set image_url = function('wp_get_attachment_image_url', image_id, 'woocommerce_gallery_thumbnail') %}
+												<img src="{{ image_url }}" alt="{{ product.get_title() }}" loading="lazy"/>
+											</div>
+										{% endfor %}
+									</div>
+
+									{# Carousel controls #}
+									<button class="product-single__carousel-btn product-single__carousel-btn--prev" aria-label="{{ _e('Previous image', 'starter-theme-1.x') }}">
+										<span class="icon-chevron-left"></span>
+									</button>
+									<button class="product-single__carousel-btn product-single__carousel-btn--next" aria-label="{{ _e('Next image', 'starter-theme-1.x') }}">
+										<span class="icon-chevron-right"></span>
+									</button>
 								</div>
-							{% endfor %}
+							{% endif %}
 						</div>
 					{% endif %}
 				</div>
-			</div>
 
-			{# Product details #}
-			<div class="product-single__details">
+				{# Product details #}
+				<div
+					class="product-single__details">
 
-				{# Breadcrumbs #}
-				{# WooCommerce breadcrumbs are handled by the theme #}
-					<div class="product-single__breadcrumbs"> {# Breadcrumbs would go here #}
+					{# Title and badges #}
+					<div class="product-single__header">
+						<h1 class="product-single__title">{{ product.get_title() }}</h1>
 
-					{# Title and rating #}<h1 class="product-single__title"> {{ product.get_title() }}</h1>
+						{% if product.is_on_sale() %}
+							<span class="badge badge--sale">{{ _e('Sale', 'starter-theme-1.x') }}</span>
+						{% endif %}
+					</div>
 
-					<div class="product-single__rating">
-						{% do action('woocommerce_single_product_summary') %}
+					{# Rating and reviews count #}
+					<div class="product-single__rating-section">
+						{% if product.get_average_rating() > 0 %}
+							<div class="product-single__rating">
+								<span class="product-single__rating-value">{{ product.get_average_rating() }}</span>
+								<span class="product-single__review-count">({{ product.get_review_count() }}
+									{{ _e('reviews', 'starter-theme-1.x') }})</span>
+							</div>
+						{% endif %}
 					</div>
 
 					{# Price #}
-					<div class="product-single__price">
-						{{ product.get_price_html()|safe }}
+					<div class="product-single__price-section">
+						<div class="product-single__price">
+							{{ product.get_price_html()|safe }}
+						</div>
 					</div>
-
-					{# Sale badge #}
-					{% if product|is_on_sale %}
-						<span class="badge badge--sale">{{ _e('Sale!', 'starter-theme-1.x') }}</span>
-					{% endif %}
 
 					{# Short description #}
 					{% if product.get_short_description() %}
-						<div class="product-single__excerpt">
+						<div class="product-single__short-description">
 							{{ product.get_short_description()|safe }}
 						</div>
 					{% endif %}
 
 					{# Add to cart form #}
-					<div class="product-single__cart">
-						{% do action('woocommerce_after_single_product_summary', 20) %}
+					<div class="product-single__cart-section">
+						{% set stock_status = function('get_post_meta', product.get_id(), '_stock_status', true) %}
+						{% set stock_quantity = function('get_post_meta', product.get_id(), '_stock', true) %}
+						{% if stock_status == 'instock' %}
+							<form class="product-single__form" method="post" action="{{ site.url }}/index.php">
+								<input type="hidden" name="add-to-cart" value="{{ product.get_id() }}">
+								<div class="product-single__quantity">
+									<label for="quantity">{{ _e('Quantity:', 'starter-theme-1.x') }}</label>
+									<input type="number" id="quantity" name="quantity" value="1" min="1" {% if stock_quantity %} max="{{ stock_quantity }}" {% endif %}>
+								</div>
+								<button type="submit" class="product-single__add-to-cart btn btn--primary">
+									{{ _e('Add to Cart', 'starter-theme-1.x') }}
+								</button>
+							</form>
+						{% else %}
+							<div class="product-single__out-of-stock">
+								<p>{{ _e('This product is currently out of stock.', 'starter-theme-1.x') }}</p>
+							</div>
+						{% endif %}
 					</div>
 
-					{# Product meta #}
-					<div class="product-single__meta">
+					{# Product meta information #}
+					<div class="product-single__meta-section">
 						{% if product.get_sku() %}
-							<p class="product-single__sku">
-								<strong>{{ _e('SKU:', 'starter-theme-1.x') }}</strong>
-								{{ product.get_sku() }}
-							</p>
+							<div class="product-single__meta-item">
+								<span class="product-single__meta-label">{{ _e('SKU:', 'starter-theme-1.x') }}</span>
+								<span class="product-single__meta-value">{{ product.get_sku() }}</span>
+							</div>
 						{% endif %}
 
-						{% if product.get_categories() %}
-							<p class="product-single__categories">
-								<strong>{{ _e('Categories:', 'starter-theme-1.x') }}</strong>
-								{% for category in product.get_categories() %}
-									<a href="{{ category.get_permalink() }}">{{ category.get_name() }}</a>
-									{% if not loop.last %},
-									{% endif %}
-								{% endfor %}
-							</p>
+						{% set categories = function('get_the_terms', product.get_id(), 'product_cat') %}
+						{% if categories %}
+							<div class="product-single__meta-item">
+								<span class="product-single__meta-label">{{ _e('Categories:', 'starter-theme-1.x') }}</span>
+								<div class="product-single__meta-value">
+									{% for category in categories %}
+										<a href="{{ function('get_term_link', category.term_id, 'product_cat') }}" class="product-single__category-link">{{ category.name }}</a>
+										{% if not loop.last %}
+											<span class="separator">,</span>
+										{% endif %}
+									{% endfor %}
+								</div>
+							</div>
 						{% endif %}
 
-						{% if product.get_tags() %}
-							<p class="product-single__tags">
-								<strong>{{ _e('Tags:', 'starter-theme-1.x') }}</strong>
-								{% for tag in product.get_tags() %}
-									<a href="{{ tag.get_permalink() }}">{{ tag.get_name() }}</a>
-									{% if not loop.last %},
-									{% endif %}
-								{% endfor %}
-							</p>
+						{% set tags = function('get_the_terms', product.get_id(), 'product_tag') %}
+						{% if tags %}
+							<div class="product-single__meta-item">
+								<span class="product-single__meta-label">{{ _e('Tags:', 'starter-theme-1.x') }}</span>
+								<div class="product-single__meta-value">
+									{% for tag in tags %}
+										<a href="{{ function('get_term_link', tag.term_id, 'product_tag') }}" class="product-single__tag-link">{{ tag.name }}</a>
+										{% if not loop.last %}
+											<span class="separator">,</span>
+										{% endif %}
+									{% endfor %}
+								</div>
+							</div>
 						{% endif %}
 					</div>
 
@@ -104,44 +199,112 @@
 
 			</div>
 
-			{# Product description tabs #}
-			<div class="product-single__tabs">
-				{% do action('woocommerce_after_single_product_summary', 10) %}
-			</div>
-
-			{# Related products #}
-			<div class="product-single__related">
-				{% do action('woocommerce_after_single_product_summary', 20) %}
-			</div>
-
 		</div>
-	</div>
 
-	{# Product Schema Markup - SEO Enhancement #}
-	<script type="application/ld+json">
-	{
-		"@context": "https://schema.org",
-		"@type": "Product",
-		"name": "{{ product.get_title() }}",
-		"description": "{{ product.get_short_description()|striptags|slice(0, 360) }}",
-		"brand": {
-			"@type": "Brand",
-			"name": "{{ site.name }}"
-		},
-		"offers": {
-			"@type": "Offer",
-			"url": "{{ product.get_permalink() }}",
-			"priceCurrency": "{{ function('get_woocommerce_currency') }}",
-			"price": "{{ product.get_price() }}",
-			"availability": "{{ product.is_in_stock() ? 'InStock' : 'OutOfStock' }}"
-		}
-		{% if product.get_average_rating() > 0 %},
-		"aggregateRating": {
-			"@type": "AggregateRating",
-			"ratingValue": "{{ product.get_average_rating() }}",
-			"reviewCount": "{{ product.get_review_count() }}"
-		}
-		{% endif %}
-	}
-	</script>
-{% endblock %}
+		{# Product tabs - Description, Reviews, Additional Info #}
+		<div class="product-single__tabs-section">
+			<div class="container">
+				<div class="product-single__tabs-wrapper">
+					<div class="product-single__tabs">
+						<div class="product-single__tab-nav">
+							<button class="product-single__tab-trigger active" data-tab="description">
+								{{ _e('Description', 'starter-theme-1.x') }}
+							</button>
+							<button class="product-single__tab-trigger" data-tab="reviews">
+								{{ _e('Reviews', 'starter-theme-1.x') }}
+							</button>
+							{% if product.get_attributes() %}
+								<button class="product-single__tab-trigger" data-tab="additional">
+									{{ _e('Additional Information', 'starter-theme-1.x') }}
+								</button>
+							{% endif %}
+						</div>
+
+						<div class="product-single__tab-content active" id="tab-description">
+							{% if product.get_description() %}
+								{{ product.get_description()|safe }}
+							{% endif %}
+						</div>
+
+						<div class="product-single__tab-content" id="tab-reviews">
+							<div class="product-single__reviews">
+								{% if product.get_review_count() > 0 %}
+									<p>{{ product.get_review_count() }}
+										{{ _e('reviews', 'starter-theme-1.x') }}</p>
+								{% else %}
+									<p>{{ _e('No reviews yet', 'starter-theme-1.x') }}</p>
+								{% endif %}
+							</div>
+						</div>
+
+						{% if product.get_attributes() %}
+							<div class="product-single__tab-content" id="tab-additional">
+								<table class="product-single__attributes">
+									<tbody>
+										{% for attr_name, attr_value in product.get_attributes() %}
+											<tr>
+												<td class="product-single__attribute-name">{{ attr_name }}</td>
+												<td class="product-single__attribute-value">{{ attr_value }}</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						{% endif %}
+					</div>
+					{# Related products #}
+					<div class="product-single__related-section">
+						<div class="container">
+							<div class="product-single__related-wrapper">
+								{% set related_products = function('wc_get_related_products', product.get_id(), 4) %}
+								{% if related_products %}
+									<h2 class="product-single__related-title">{{ _e('Related Products', 'starter-theme-1.x') }}</h2>
+									<div class="product-single__related-grid">
+										{% for related_id in related_products %}
+											{% set related = function('wc_get_product', related_id) %}
+											{% if related %}
+												<div class="product-single__related-item">
+													<a href="{{ related.get_permalink() }}" class="product-single__related-link">
+														{% if related.get_image() %}
+															{{ related.get_image('woocommerce_thumbnail')|safe }}
+														{% endif %}
+														<h3 class="product-single__related-product-title">{{ related.get_title() }}</h3>
+														<span class="product-single__related-price">{{ related.get_price_html()|safe }}</span>
+													</a>
+												</div>
+											{% endif %}
+										{% endfor %}
+									</div>
+								{% endif %}
+							</div>
+
+							{# Product Schema Markup - SEO Enhancement #}
+							<script type="application/ld+json">
+								{
+																																																					"@context": "https://schema.org",
+																																																					"@type": "Product",
+																																																					"name": "{{ product.get_title() }}",
+																																																					"description": "{{ product.get_short_description()|striptags|slice(0, 360) }}",
+																																																					"brand": {
+																																																						"@type": "Brand",
+																																																						"name": "{{ site.name }}"
+																																																					},
+																																																					"image": "{{ function('wp_get_attachment_image_url', product.get_image_id(), 'full') }}",
+																																																					"offers": {
+																																																						"@type": "Offer",
+																																																						"url": "{{ product.get_permalink() }}",
+																																																						"priceCurrency": "{{ function('get_woocommerce_currency') }}",
+																																																						"price": "{{ product.get_price() }}",
+																																																						"availability": "{{ (function('get_post_meta', product.get_id(), '_stock_status', true) == 'instock') ? 'InStock' : 'OutOfStock' }}"
+																																																					}
+								{% if product.get_average_rating() > 0 %},
+																																																												"aggregateRating": {
+																																																													"@type": "AggregateRating",
+																																																													"ratingValue": "{{ product.get_average_rating() }}",
+																																																													"reviewCount": "{{ product.get_review_count() }}"
+																																																												}
+								{% endif %}
+								}
+							</script>
+
+						{% endblock %}

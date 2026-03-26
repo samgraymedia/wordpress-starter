@@ -1,4 +1,12 @@
-// Hero Block Styling
+/**
+ * Hero Block - BEM Methodology
+ * 
+ * Block: .hero
+ * Elements: .hero__content, .hero__overlay, .hero__title, .hero__subtitle, .hero__text
+ * Modifiers: .hero--dark, .hero--light
+ */
+
+@import "../base/vars";
 
 .hero {
   position: relative;

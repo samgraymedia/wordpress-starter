@@ -3,6 +3,8 @@
  * Displays structured lists with icons, labels, and descriptions
  */
 
+@import "../base/vars";
+
 .icon-list {
   &__header {
     margin-bottom: $spacing-4;

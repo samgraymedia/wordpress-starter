@@ -1,0 +1,678 @@
+{#
+  WooCommerce Checkout Page Template
+  Displays multi-step checkout form with billing, shipping, payment, and order review
+  
+  Features:
+  - Multi-step checkout progress indicator
+  - Billing information form
+  - Shipping method selection
+  - Payment method selection with icons
+  - Order review sidebar
+  - Terms & conditions acceptance
+  - Order placed confirmation
+#}
+
+{% extends "base.twig" %}
+
+{% block content %}
+	<div
+		class="checkout-page">
+
+		{# Security Nonce #}
+		{{ function('wp_nonce_field', 'wc_checkout_nonce', '_wpnonce', false, false) }}
+
+		{# Breadcrumb Navigation #}
+		<div class="checkout-page__breadcrumb">
+			<div class="container">
+				<nav aria-label="breadcrumb" class="checkout-page__breadcrumb-nav">
+					<ul class="checkout-page__breadcrumb-list">
+						<li class="checkout-page__breadcrumb-item">
+							<a href="{{ site.url }}" class="checkout-page__breadcrumb-link">{{ _e('Home', 'starter-theme-1.x') }}</a>
+						</li>
+						<li class="checkout-page__breadcrumb-item">
+							<a href="{{ function('get_permalink', function('wc_get_page_id', 'shop')) }}" class="checkout-page__breadcrumb-link">{{ _e('Shop', 'woocommerce') }}</a>
+						</li>
+						<li class="checkout-page__breadcrumb-item">
+							<a href="{{ function('get_permalink', function('wc_get_page_id', 'cart')) }}" class="checkout-page__breadcrumb-link">{{ _e('Cart', 'woocommerce') }}</a>
+						</li>
+						<li class="checkout-page__breadcrumb-item active">
+							<span class="checkout-page__breadcrumb-text">{{ _e('Checkout', 'woocommerce') }}</span>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+
+		{# Page Header #}
+		<div class="checkout-page__header">
+			<div class="container">
+				<h1 class="checkout-page__title">{{ _e('Checkout', 'woocommerce') }}</h1>
+				<p class="checkout-page__subtitle">{{ _e('Complete your purchase securely', 'starter-theme-1.x') }}</p>
+			</div>
+		</div>
+
+		<div
+			class="container">
+
+			{# Login / Guest Checkout Section #}
+			{% if not is_user_logged_in() %}
+				<div class="checkout-page__login-section">
+					<div class="checkout-page__login-tabs">
+						<button type="button" class="checkout-page__login-tab checkout-page__login-tab--active" data-tab="guest">
+							{{ _e('Guest Checkout', 'woocommerce') }}
+						</button>
+						<button type="button" class="checkout-page__login-tab" data-tab="login">
+							{{ _e('Have an Account?', 'woocommerce') }}
+						</button>
+					</div>
+
+					{# Guest Checkout Tab #}
+					<div id="guest-tab" class="checkout-page__login-tab-content checkout-page__login-tab-content--active">
+						<p class="checkout-page__login-text">{{ _e('Complete your purchase without creating an account. You can create an account after checkout.', 'starter-theme-1.x') }}</p>
+					</div>
+
+					{# Login Tab #}
+					<div id="login-tab" class="checkout-page__login-tab-content">
+						<div class="checkout-page__login-form">
+							<div class="checkout-page__form-group">
+								<label for="login_username" class="checkout-page__form-label">
+									{{ _e('Username or Email', 'woocommerce') }}
+									<span class="required">*</span>
+								</label>
+								<input type="text" name="username" id="login_username" class="checkout-page__form-input" placeholder="{{ _e('you@example.com', 'starter-theme-1.x') }}" required/>
+							</div>
+							<div class="checkout-page__form-group">
+								<label for="login_password" class="checkout-page__form-label">
+									{{ _e('Password', 'woocommerce') }}
+									<span class="required">*</span>
+								</label>
+								<input type="password" name="password" id="login_password" class="checkout-page__form-input" required/>
+							</div>
+							<button type="button" class="checkout-page__btn checkout-page__btn--secondary" id="checkout-login-btn">
+								{{ _e('Sign In', 'woocommerce') }}
+							</button>
+							<a href="{{ site.link }}/wp-login.php?action=lostpassword" class="checkout-page__login-link">
+								{{ _e('Forgot password?', 'woocommerce') }}
+							</a>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+
+			{# Progress Indicator #}
+			<div class="checkout-page__progress">
+				<div class="checkout-page__progress-step checkout-page__progress-step--active">
+					<span class="checkout-page__progress-number">1</span>
+					<span class="checkout-page__progress-label">{{ _e('Billing', 'woocommerce') }}</span>
+				</div>
+				<div class="checkout-page__progress-line"></div>
+
+				<div class="checkout-page__progress-step">
+					<span class="checkout-page__progress-number">2</span>
+					<span class="checkout-page__progress-label">{{ _e('Shipping', 'woocommerce') }}</span>
+				</div>
+				<div class="checkout-page__progress-line"></div>
+
+				<div class="checkout-page__progress-step">
+					<span class="checkout-page__progress-number">3</span>
+					<span class="checkout-page__progress-label">{{ _e('Payment', 'woocommerce') }}</span>
+				</div>
+				<div class="checkout-page__progress-line"></div>
+
+				<div class="checkout-page__progress-step">
+					<span class="checkout-page__progress-number">4</span>
+					<span class="checkout-page__progress-label">{{ _e('Review', 'woocommerce') }}</span>
+				</div>
+			</div>
+
+			{# Checkout Content - Two Column #}
+			<div
+				class="checkout-page__wrapper">
+
+				{# Left Column - Checkout Form #}
+				<div
+					class="checkout-page__form-wrapper">
+
+					{# Coupon Section #}
+					<div class="checkout-page__coupon-section">
+						<a href="#" class="checkout-page__coupon-toggle" data-toggle="coupon-form">
+							{{ _e('Have a coupon?', 'woocommerce') }}
+							<span class="icon-chevron-down"></span>
+						</a>
+						<div id="coupon-form" class="checkout-page__coupon-form" style="display: none;">
+							<div class="checkout-page__form-group">
+								<input type="text" name="coupon_code" id="coupon_code" class="checkout-page__form-input" placeholder="{{ _e('Enter coupon code', 'woocommerce') }}" aria-label="{{ _e('Coupon code', 'woocommerce') }}"/>
+								<button type="button" class="checkout-page__btn checkout-page__btn--coupon">
+									{{ _e('Apply Coupon', 'woocommerce') }}
+								</button>
+							</div>
+						</div>
+					</div>
+
+					{# Step 1: Billing Information #}
+					<fieldset class="checkout-page__step checkout-page__step--active">
+						<legend class="checkout-page__step-title">
+							<span class="checkout-page__step-number">1</span>
+							{{ _e('Billing Address', 'woocommerce') }}
+						</legend>
+
+						<div class="checkout-page__form-row">
+							<div class="checkout-page__form-group">
+								<label for="billing_first_name" class="checkout-page__form-label">
+									{{ _e('First Name', 'woocommerce') }}
+									<span class="required">*</span>
+								</label>
+								<input type="text" name="billing_first_name" id="billing_first_name" class="checkout-page__form-input" placeholder="{{ _e('John', 'starter-theme-1.x') }}" required/>
+							</div>
+							<div class="checkout-page__form-group">
+								<label for="billing_last_name" class="checkout-page__form-label">
+									{{ _e('Last Name', 'woocommerce') }}
+									<span class="required">*</span>
+								</label>
+								<input type="text" name="billing_last_name" id="billing_last_name" class="checkout-page__form-input" placeholder="{{ _e('Doe', 'starter-theme-1.x') }}" required/>
+							</div>
+						</div>
+
+						<div class="checkout-page__form-row">
+							<div class="checkout-page__form-group checkout-page__form-group--full">
+								<label for="billing_company" class="checkout-page__form-label">
+									{{ _e('Company (optional)', 'woocommerce') }}
+								</label>
+								<input type="text" name="billing_company" id="billing_company" class="checkout-page__form-input" placeholder="{{ _e('Acme Corp', 'starter-theme-1.x') }}"/>
+							</div>
+						</div>
+
+						<div class="checkout-page__form-row">
+							<div class="checkout-page__form-group checkout-page__form-group--full">
+								<label for="billing_address_1" class="checkout-page__form-label">
+									{{ _e('Street Address', 'woocommerce') }}
+									<span class="required">*</span>
+								</label>
+								<input type="text" name="billing_address_1" id="billing_address_1" class="checkout-page__form-input" placeholder="{{ _e('123 Main Street', 'starter-theme-1.x') }}" required/>
+							</div>
+						</div>
+
+						<div class="checkout-page__form-row">
+							<div class="checkout-page__form-group checkout-page__form-group--full">
+								<label for="billing_address_2" class="checkout-page__form-label">
+									{{ _e('Apartment, suite, etc. (optional)', 'woocommerce') }}
+								</label>
+								<input type="text" name="billing_address_2" id="billing_address_2" class="checkout-page__form-input" placeholder="{{ _e('Suite 100', 'starter-theme-1.x') }}"/>
+							</div>
+						</div>
+
+						<div class="checkout-page__form-row">
+							<div class="checkout-page__form-group">
+								<label for="billing_city" class="checkout-page__form-label">
+									{{ _e('City', 'woocommerce') }}
+									<span class="required">*</span>
+								</label>
+								<input type="text" name="billing_city" id="billing_city" class="checkout-page__form-input" placeholder="{{ _e('New York', 'starter-theme-1.x') }}" required/>
+							</div>
+							<div class="checkout-page__form-group">
+								<label for="billing_state" class="checkout-page__form-label">
+									{{ _e('State / Province', 'woocommerce') }}
+									<span class="required">*</span>
+								</label>
+								<input type="text" name="billing_state" id="billing_state" class="checkout-page__form-input" placeholder="{{ _e('NY', 'starter-theme-1.x') }}" required/>
+							</div>
+						</div>
+
+						<div class="checkout-page__form-row">
+							<div class="checkout-page__form-group">
+								<label for="billing_postcode" class="checkout-page__form-label">
+									{{ _e('ZIP / Postal Code', 'woocommerce') }}
+									<span class="required">*</span>
+								</label>
+								<input type="text" name="billing_postcode" id="billing_postcode" class="checkout-page__form-input" placeholder="{{ _e('10001', 'starter-theme-1.x') }}" required/>
+							</div>
+							<div class="checkout-page__form-group">
+								<label for="billing_country" class="checkout-page__form-label">
+									{{ _e('Country', 'woocommerce') }}
+									<span class="required">*</span>
+								</label>
+								<select name="billing_country" id="billing_country" class="checkout-page__form-select" required>
+									<option value="">{{ _e('Select Country', 'woocommerce') }}</option>
+									<option value="US">{{ _e('United States', 'woocommerce') }}</option>
+									<option value="CA">{{ _e('Canada', 'woocommerce') }}</option>
+									<option value="GB">{{ _e('United Kingdom', 'woocommerce') }}</option>
+									<option value="AU">{{ _e('Australia', 'woocommerce') }}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="checkout-page__form-row">
+							<div class="checkout-page__form-group checkout-page__form-group--full">
+								<label for="billing_email" class="checkout-page__form-label">
+									{{ _e('Email Address', 'woocommerce') }}
+									<span class="required">*</span>
+								</label>
+								<input type="email" name="billing_email" id="billing_email" class="checkout-page__form-input" placeholder="{{ _e('john@example.com', 'starter-theme-1.x') }}" required/>
+							</div>
+						</div>
+
+						<div class="checkout-page__form-row">
+							<div class="checkout-page__form-group checkout-page__form-group--full">
+								<label for="billing_phone" class="checkout-page__form-label">
+									{{ _e('Phone Number', 'woocommerce') }}
+									<span class="required">*</span>
+								</label>
+								<input type="tel" name="billing_phone" id="billing_phone" class="checkout-page__form-input" placeholder="{{ _e('(555) 123-4567', 'starter-theme-1.x') }}" required/>
+							</div>
+						</div>
+
+						{# Account Creation Option (if not logged in) #}
+						{% if not is_user_logged_in() %}
+							<div class="checkout-page__form-row checkout-page__form-row--account-creation">
+								<div class="checkout-page__form-group checkout-page__form-group--full">
+									<label class="checkout-page__checkbox-label">
+										<input type="checkbox" name="create_account" id="create_account" class="checkout-page__form-checkbox" value="yes"/>
+										<span>{{ _e('Create an account for faster checkout next time?', 'woocommerce') }}</span>
+									</label>
+								</div>
+
+								{# Account Password Fields (shown when create_account is checked) #}
+								<div id="account-password-fields" class="checkout-page__account-password-fields" style="display: none;">
+									<div class="checkout-page__form-group">
+										<label for="account_password" class="checkout-page__form-label">
+											{{ _e('Account Password', 'woocommerce') }}
+											<span class="required">*</span>
+										</label>
+										<input type="password" name="account_password" id="account_password" class="checkout-page__form-input" placeholder="{{ _e('Minimum 8 characters', 'starter-theme-1.x') }}" data-required-if="create_account"/>
+										<div class="checkout-page__password-strength">
+											<span class="checkout-page__password-indicator" id="password-strength"></span>
+										</div>
+									</div>
+									<div class="checkout-page__form-group">
+										<label for="account_password_confirm" class="checkout-page__form-label">
+											{{ _e('Confirm Password', 'woocommerce') }}
+											<span class="required">*</span>
+										</label>
+										<input type="password" name="account_password_confirm" id="account_password_confirm" class="checkout-page__form-input" placeholder="{{ _e('Re-enter password', 'starter-theme-1.x') }}" data-required-if="create_account"/>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+					</fieldset>
+
+					{# Step 2: Shipping Information #}
+					<fieldset class="checkout-page__step">
+						<legend class="checkout-page__step-title">
+							<span class="checkout-page__step-number">2</span>
+							{{ _e('Shipping Address', 'woocommerce') }}
+						</legend>
+
+						<div class="checkout-page__form-row">
+							<div class="checkout-page__form-group checkout-page__form-group--full">
+								<label class="checkout-page__checkbox-label">
+									<input type="checkbox" name="ship_to_different_address" id="ship_to_different_address" class="checkout-page__form-checkbox"/>
+									<span>{{ _e('Ship to a different address?', 'woocommerce') }}</span>
+								</label>
+							</div>
+						</div>
+
+						<div
+							id="shipping_address_fields" class="checkout-page__shipping-fields" style="display: none;">
+							{# Shipping address fields (similar to billing) #}
+							<p class="checkout-page__info-text">{{ _e('Enter the address where you would like your order shipped.', 'starter-theme-1.x') }}</p>
+						</div>
+
+						{# Shipping Method Selection #}
+						<div class="checkout-page__shipping-methods">
+							<h3 class="checkout-page__shipping-methods-title">{{ _e('Shipping Method', 'woocommerce') }}</h3>
+
+							{% set shipping_methods = function('WC')->shipping()->get_shipping_methods() %}
+
+							{% if shipping_methods %}
+								{% for method_id, method in shipping_methods %}
+									<div class="checkout-page__shipping-method-option">
+										<label class="checkout-page__radio-label">
+											<input type="radio" name="shipping_method" value="{{ method_id }}" class="checkout-page__form-radio" {% if loop.first %} checked {% endif %}/>
+											<span class="checkout-page__radio-text">
+												<span class="checkout-page__shipping-method-name">{{ method.method_title }}</span>
+												<span class="checkout-page__shipping-method-description">{{ method.method_description }}</span>
+											</span>
+										</label>
+									</div>
+								{% endfor %}
+							{% else %}
+								{# Fallback shipping methods #}
+								<div class="checkout-page__shipping-method-option">
+									<label class="checkout-page__radio-label">
+										<input type="radio" name="shipping_method" value="flat_rate" class="checkout-page__form-radio" checked/>
+										<span class="checkout-page__radio-text">
+											<span class="checkout-page__shipping-method-name">{{ _e('Standard Shipping', 'starter-theme-1.x') }}</span>
+											<span class="checkout-page__shipping-method-price">{{ _e('$9.99 - Arrives in 5-7 business days', 'starter-theme-1.x') }}</span>
+										</span>
+									</label>
+								</div>
+								<div class="checkout-page__shipping-method-option">
+									<label class="checkout-page__radio-label">
+										<input type="radio" name="shipping_method" value="expedited" class="checkout-page__form-radio"/>
+										<span class="checkout-page__radio-text">
+											<span class="checkout-page__shipping-method-name">{{ _e('Expedited Shipping', 'starter-theme-1.x') }}</span>
+											<span class="checkout-page__shipping-method-price">{{ _e('$19.99 - Arrives in 2-3 business days', 'starter-theme-1.x') }}</span>
+										</span>
+									</label>
+								</div>
+								<div class="checkout-page__shipping-method-option">
+									<label class="checkout-page__radio-label">
+										<input type="radio" name="shipping_method" value="overnight" class="checkout-page__form-radio"/>
+										<span class="checkout-page__radio-text">
+											<span class="checkout-page__shipping-method-name">{{ _e('Overnight Shipping', 'starter-theme-1.x') }}</span>
+											<span class="checkout-page__shipping-method-price">{{ _e('$39.99 - Arrives next business day', 'starter-theme-1.x') }}</span>
+										</span>
+									</label>
+								</div>
+							{% endif %}
+						</div>
+
+						{# Shipping Calculator #}
+						<div class="checkout-page__shipping-calculator">
+							<h4 class="checkout-page__calculator-title">{{ _e('Calculate Shipping', 'woocommerce') }}</h4>
+							<p class="checkout-page__calculator-description">{{ _e('Enter your address to calculate exact shipping costs', 'starter-theme-1.x') }}</p>
+
+							<div class="checkout-page__form-row">
+								<div class="checkout-page__form-group">
+									<label for="calc_postcode" class="checkout-page__form-label">
+										{{ _e('Postal Code', 'woocommerce') }}
+									</label>
+									<input type="text" name="calc_postcode" id="calc_postcode" class="checkout-page__form-input" placeholder="{{ _e('10001', 'starter-theme-1.x') }}"/>
+								</div>
+								<div class="checkout-page__form-group">
+									<label for="calc_country" class="checkout-page__form-label">
+										{{ _e('Country', 'woocommerce') }}
+									</label>
+									<select name="calc_country" id="calc_country" class="checkout-page__form-select">
+										<option value="">{{ _e('Select Country', 'woocommerce') }}</option>
+										<option value="US">{{ _e('United States', 'woocommerce') }}</option>
+										<option value="CA">{{ _e('Canada', 'woocommerce') }}</option>
+										<option value="GB">{{ _e('United Kingdom', 'woocommerce') }}</option>
+										<option value="AU">{{ _e('Australia', 'woocommerce') }}</option>
+									</select>
+								</div>
+								<div class="checkout-page__form-group">
+									<label for="calc_state" class="checkout-page__form-label">
+										{{ _e('State / Province', 'woocommerce') }}
+									</label>
+									<input type="text" name="calc_state" id="calc_state" class="checkout-page__form-input" placeholder="{{ _e('NY', 'starter-theme-1.x') }}"/>
+								</div>
+							</div>
+
+							<button type="button" id="calc_shipping_btn" class="checkout-page__btn checkout-page__btn--secondary">
+								{{ _e('Calculate Shipping', 'woocommerce') }}
+							</button>
+							<div id="shipping-calc-results" class="checkout-page__calc-results"></div>
+						</div>
+					</fieldset>
+
+					{# Step 3: Payment Information #}
+					<fieldset class="checkout-page__step">
+						<legend class="checkout-page__step-title">
+							<span class="checkout-page__step-number">3</span>
+							{{ _e('Payment Method', 'woocommerce') }}
+						</legend>
+
+						{# WooCommerce Payment Gateways #}
+						<div class="checkout-page__payment-methods">
+							{% set payment_gateways = function('WC')->payment_gateways().get_available_payment_gateways() %}
+
+							{% if payment_gateways %}
+								{% for gateway_id, gateway in payment_gateways %}
+									<div class="checkout-page__payment-method-option">
+										<label class="checkout-page__radio-label">
+											<input type="radio" name="payment_method" value="{{ gateway_id }}" class="checkout-page__form-radio" {% if loop.first %} checked {% endif %}/>
+											<span class="checkout-page__radio-text">
+												{% if gateway_id == 'stripe' %}
+													<span class="checkout-page__payment-method-icon icon-credit-card"></span>
+												{% elseif gateway_id == 'paypal' %}
+													<span class="checkout-page__payment-method-icon icon-paypal"></span>
+												{% else %}
+													<span class="checkout-page__payment-method-icon"></span>
+												{% endif %}
+												<span>{{ gateway.title }}</span>
+											</span>
+										</label>
+
+										{# Stripe Card Fields #}
+										{% if gateway_id == 'stripe' %}
+											<div class="checkout-page__payment-method-details" id="{{ gateway_id }}_fields">
+												<div id="stripe-card-element" class="checkout-page__form-group"></div>
+												<div id="stripe-card-errors" class="checkout-page__form-error"></div>
+											</div>
+										{% elseif gateway_id == 'paypal' %}
+											<div class="checkout-page__payment-method-details" id="{{ gateway_id }}_fields" style="display: none;">
+												<p class="checkout-page__info-text">{{ _e('You will be redirected to PayPal to complete your purchase.', 'starter-theme-1.x') }}</p>
+											</div>
+										{% endif %}
+									</div>
+								{% endfor %}
+							{% else %}
+								{# Fallback payment method #}
+								<div class="checkout-page__payment-method-option">
+									<label class="checkout-page__radio-label">
+										<input type="radio" name="payment_method" value="default" class="checkout-page__form-radio" checked/>
+										<span class="checkout-page__radio-text">
+											<span class="checkout-page__payment-method-icon icon-credit-card"></span>
+											<span>{{ _e('Credit Card', 'woocommerce') }}</span>
+										</span>
+									</label>
+									<div class="checkout-page__payment-method-details" id="default_fields">
+										<div class="checkout-page__form-group checkout-page__form-group--full">
+											<label for="card_number" class="checkout-page__form-label">
+												{{ _e('Card Number', 'woocommerce') }}
+												<span class="required">*</span>
+											</label>
+											<input type="text" name="card_number" id="card_number" class="checkout-page__form-input" placeholder="{{ _e('1234 5678 9012 3456', 'starter-theme-1.x') }}" required/>
+										</div>
+										<div class="checkout-page__form-row">
+											<div class="checkout-page__form-group">
+												<label for="card_expiry" class="checkout-page__form-label">
+													{{ _e('Expiry Date', 'woocommerce') }}
+													<span class="required">*</span>
+												</label>
+												<input type="text" name="card_expiry" id="card_expiry" class="checkout-page__form-input" placeholder="{{ _e('MM/YY', 'starter-theme-1.x') }}" required/>
+											</div>
+											<div class="checkout-page__form-group">
+												<label for="card_cvc" class="checkout-page__form-label">
+													{{ _e('CVC', 'woocommerce') }}
+													<span class="required">*</span>
+												</label>
+												<input type="text" name="card_cvc" id="card_cvc" class="checkout-page__form-input" placeholder="{{ _e('123', 'starter-theme-1.x') }}" required/>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endif %}
+						</div>
+
+						{# Security Badges #}
+						<div class="checkout-page__security-badges">
+							<span class="checkout-page__security-badge ssl-secure">
+								<svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+								</svg>
+								{{ _e('SSL Secure', 'starter-theme-1.x') }}
+							</span>
+							<span class="checkout-page__security-badge pci-compliant">
+								<svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M9 11l3 3L22 4"></path>
+									<path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+								</svg>
+								{{ _e('PCI Compliant', 'starter-theme-1.x') }}
+							</span>
+						</div>
+
+						{# Security Information #}
+						<div class="checkout-page__security-info">
+							<span class="icon-lock"></span>
+							{{ _e('Your payment information is secure and encrypted.', 'starter-theme-1.x') }}
+						</div>
+					</fieldset>
+
+					{# Step 4: Review Order #}
+					<fieldset class="checkout-page__step">
+						<legend class="checkout-page__step-title">
+							<span class="checkout-page__step-number">4</span>
+							{{ _e('Review Order', 'woocommerce') }}
+						</legend>
+
+						<div class="checkout-page__order-review">
+							<table class="checkout-page__order-table">
+								<thead>
+									<tr>
+										<th class="checkout-page__order-col-product">{{ _e('Product', 'woocommerce') }}</th>
+										<th class="checkout-page__order-col-quantity">{{ _e('Qty', 'woocommerce') }}</th>
+										<th class="checkout-page__order-col-price">{{ _e('Price', 'woocommerce') }}</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for item in woocommerce_cart.get_cart() %}
+										<tr>
+											<td class="checkout-page__order-col-product">
+												<span class="checkout-page__product-name">{{ item.data.get_name() }}</span>
+												{% if item.variation %}
+													<span class="checkout-page__product-variation">{{ item.variation|join(', ') }}</span>
+												{% endif %}
+											</td>
+											<td class="checkout-page__order-col-quantity">{{ item.quantity }}</td>
+											<td class="checkout-page__order-col-price">{{ (item.data.get_price() * item.quantity)|wc_price|safe }}</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+
+							{# Order Summary #}
+							<div class="checkout-page__order-summary">
+								<div class="checkout-page__summary-row">
+									<span class="checkout-page__summary-label">{{ _e('Subtotal:', 'woocommerce') }}</span>
+									<span class="checkout-page__summary-value">{{ woocommerce_cart.get_subtotal()|wc_price|safe }}</span>
+								</div>
+								<div class="checkout-page__summary-row">
+									<span class="checkout-page__summary-label">{{ _e('Shipping:', 'woocommerce') }}</span>
+									<span class="checkout-page__summary-value">{{ woocommerce_cart.get_shipping_total()|wc_price|safe }}</span>
+								</div>
+								{% if woocommerce_cart.get_tax_total() > 0 %}
+									<div class="checkout-page__summary-row">
+										<span class="checkout-page__summary-label">{{ _e('Tax:', 'woocommerce') }}</span>
+										<span class="checkout-page__summary-value">{{ woocommerce_cart.get_tax_total()|wc_price|safe }}</span>
+									</div>
+								{% endif %}
+								<div class="checkout-page__summary-row checkout-page__summary-row--final">
+									<span class="checkout-page__summary-label">{{ _e('Total:', 'woocommerce') }}</span>
+									<span class="checkout-page__summary-value">{{ woocommerce_cart.get_total()|wc_price|safe }}</span>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+
+					{# Terms & Conditions #}
+					<div class="checkout-page__terms-section">
+						<label class="checkout-page__checkbox-label checkout-page__checkbox-label--large">
+							<input type="checkbox" name="terms_conditions" id="terms_conditions" class="checkout-page__form-checkbox" required/>
+							<span>
+								{{ _e('I agree to the', 'starter-theme-1.x') }}
+								<a href="#" class="checkout-page__terms-link">{{ _e('Terms & Conditions', 'woocommerce') }}</a>
+								{{ _e('and', 'starter-theme-1.x') }}
+								<a href="#" class="checkout-page__terms-link">{{ _e('Privacy Policy', 'woocommerce') }}</a>
+							</span>
+						</label>
+					</div>
+
+					{# Place Order Button #}
+					<button type="submit" class="checkout-page__btn checkout-page__btn--place-order" id="place_order">
+						{{ _e('Place Order', 'woocommerce') }}
+						<span class="icon-arrow-right"></span>
+					</button>
+
+					<p class="checkout-page__privacy-notice">
+						{{ _e('Your personal data will be used to process your order and support your experience on this website, in accordance with our', 'woocommerce') }}
+						<a href="#">{{ _e('Privacy Policy', 'woocommerce') }}</a>.
+					</p>
+
+				</div>
+
+				{# Right Column - Order Summary Sidebar #}
+				<aside class="checkout-page__sidebar">
+					<div class="checkout-page__order-summary-sticky">
+						<h2 class="checkout-page__sidebar-title">{{ _e('Order Summary', 'woocommerce') }}</h2>
+
+						{# Items List #}
+						<div class="checkout-page__sidebar-items">
+							{% for item in woocommerce_cart.get_cart() %}
+								<div class="checkout-page__sidebar-item">
+									<div class="checkout-page__sidebar-item-image">
+										{% if item.data.get_image('shop_thumbnail') %}
+											{{ item.data.get_image('shop_thumbnail')|safe }}
+										{% else %}
+											<img src="{{ function('wc_placeholder_img_src') }}" alt="{{ item.data.get_name() }}"/>
+										{% endif %}
+										<span class="checkout-page__sidebar-item-qty">{{ item.quantity }}</span>
+									</div>
+									<div class="checkout-page__sidebar-item-details">
+										<h4 class="checkout-page__sidebar-item-name">{{ item.data.get_name() }}</h4>
+										<p class="checkout-page__sidebar-item-price">{{ (item.data.get_price() * item.quantity)|wc_price|safe }}</p>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+
+						{# Summary Totals #}
+						<div class="checkout-page__sidebar-totals">
+							<div class="checkout-page__total-row">
+								<span>{{ _e('Subtotal', 'woocommerce') }}</span>
+								<span>{{ woocommerce_cart.get_subtotal()|wc_price|safe }}</span>
+							</div>
+							<div class="checkout-page__total-row">
+								<span>{{ _e('Shipping', 'woocommerce') }}</span>
+								<span>{{ woocommerce_cart.get_shipping_total()|wc_price|safe }}</span>
+							</div>
+							{% if woocommerce_cart.get_tax_total() > 0 %}
+								<div class="checkout-page__total-row">
+									<span>{{ _e('Tax', 'woocommerce') }}</span>
+									<span>{{ woocommerce_cart.get_tax_total()|wc_price|safe }}</span>
+								</div>
+							{% endif %}
+							<div class="checkout-page__total-row checkout-page__total-row--final">
+								<span class="checkout-page__total-label--final">{{ _e('Total', 'woocommerce') }}</span>
+								<span class="checkout-page__total-value--final">{{ woocommerce_cart.get_total()|wc_price|safe }}</span>
+							</div>
+						</div>
+
+						{# Trust Badges #}
+						<div class="checkout-page__sidebar-badges">
+							<div class="checkout-page__badge">
+								<span class="icon-lock"></span>
+								<div>
+									<strong>{{ _e('Secure Checkout', 'starter-theme-1.x') }}</strong>
+									<small>{{ _e('SSL Encrypted', 'starter-theme-1.x') }}</small>
+								</div>
+							</div>
+							<div class="checkout-page__badge">
+								<span class="icon-truck"></span>
+								<div>
+									<strong>{{ _e('Fast Shipping', 'starter-theme-1.x') }}</strong>
+									<small>{{ _e('Quick delivery', 'starter-theme-1.x') }}</small>
+								</div>
+							</div>
+							<div class="checkout-page__badge">
+								<span class="icon-refresh"></span>
+								<div>
+									<strong>{{ _e('Easy Returns', 'starter-theme-1.x') }}</strong>
+									<small>{{ _e('30-day guarantee', 'starter-theme-1.x') }}</small>
+								</div>
+							</div>
+						</div>
+					</div>
+				</aside>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	{# WooCommerce Checkout Hooks #}
+	{% do action('woocommerce_after_checkout_form') %}
+
+{% endblock %}

@@ -1,19 +1,25 @@
 /**
+ * service-showcase.scss - BEM Block
+ */
+
+@import "../base/vars";
+
+/**
  * Service Showcase Block Styles
  */
 
 .block-service-showcase {
-  margin: 2rem 0;
+  margin: $spacing-5 0;
 
   .service-showcase-grid {
     display: grid;
-    gap: 2rem;
-    margin-top: 1rem;
+    gap: $spacing-5;
+    margin-top: $spacing-3;
 
     &.layout-grid-2 {
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 
-      @media (min-width: 768px) {
+      @media (min-width: $breakpoint-md) {
         grid-template-columns: repeat(2, 1fr);
       }
     }
@@ -21,7 +27,7 @@
     &.layout-grid-3 {
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 
-      @media (min-width: 768px) {
+      @media (min-width: $breakpoint-md) {
         grid-template-columns: repeat(3, 1fr);
       }
     }
@@ -29,7 +35,7 @@
     &.layout-grid-4 {
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 
-      @media (min-width: 1200px) {
+      @media (min-width: $breakpoint-xl) {
         grid-template-columns: repeat(4, 1fr);
       }
     }
@@ -42,11 +48,11 @@
   .service-card {
     display: flex;
     flex-direction: column;
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 0.5rem;
+    background: $white;
+    border: 1px solid $gray-300;
+    border-radius: $border-radius-lg;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform $transition-normal, box-shadow $transition-normal;
 
     &:hover {
       transform: translateY(-4px);

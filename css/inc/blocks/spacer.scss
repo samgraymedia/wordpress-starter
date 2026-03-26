@@ -1,4 +1,10 @@
-// Spacer / Divider Block Styling
+/**
+ * Spacer/Divider Block - BEM Methodology
+ * Block: .spacer
+ * Elements: .spacer__divider, .spacer__divider-line
+ * Modifiers: .spacer__divider--full, .spacer__divider--left, .spacer__divider--center, .spacer__divider--right, .spacer__divider--solid, .spacer__divider--dashed, .spacer__divider--dotted, .spacer__divider--gray, .spacer__divider--primary, .spacer__divider--secondary, .spacer__divider--light, .spacer__divider--dark
+ */
+@import "../base/vars";
 
 // CSS variables for height presets
 :root {
@@ -131,8 +137,8 @@
     margin: $spacing-3 0;
 
     &__divider-line {
-      border-color: #000 !important;
-      background-color: #000 !important;
+      border-color: $black;
+      background-color: $black;
     }
   }
 }

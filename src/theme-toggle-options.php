@@ -11,6 +11,22 @@
 namespace StartTheme\ThemeToggle;
 
 /**
+ * Check if dark mode is enabled in ACF theme options
+ * 
+ * @return bool
+ */
+function is_dark_mode_enabled() {
+    $enabled = get_field( 'enable_dark_mode', 'option' );
+    
+    // Treat empty value as enabled (for backward compatibility)
+    if ( $enabled === '' ) {
+        return true;
+    }
+    
+    return (bool) $enabled;
+}
+
+/**
  * Initialize theme toggle functionality
  */
 function init() {
@@ -62,6 +78,7 @@ function register_rest_routes() {
  */
 function get_theme_preference( $request ) {
     $user_id = get_current_user_id();
+    $dark_mode_enabled = is_dark_mode_enabled();
     
     if ( $user_id ) {
         // Logged-in user: get from user meta
@@ -74,8 +91,9 @@ function get_theme_preference( $request ) {
     
     return rest_ensure_response(
         array(
-            'preference' => $preference ?: 'system',
-            'is_user'    => (bool) $user_id,
+            'preference'       => $preference ?: 'system',
+            'is_user'          => (bool) $user_id,
+            'dark_mode_enabled' => $dark_mode_enabled,
         )
     );
 }
@@ -139,13 +157,26 @@ function check_theme_write_permission() {
 /**
  * Output theme toggle script inline in <head>
  * Must run before any other scripts to prevent flash of wrong theme
+ * Checks if dark mode is enabled in ACF options before running
  * 
  * @return void
  */
 function inline_theme_script() {
+    // Get dark mode setting from ACF options (defaults to true if not set)
+    $dark_mode_enabled = get_field( 'enable_dark_mode', 'option' );
+    if ( $dark_mode_enabled === '' ) {
+        $dark_mode_enabled = true;
+    }
     ?>
 <script>
 (function() {
+    // Dark mode feature toggle (controlled via ACF options page)
+    const DARK_MODE_ENABLED = <?php echo wp_json_encode( (bool) $dark_mode_enabled ); ?>;
+    
+    if ( ! DARK_MODE_ENABLED ) {
+        return; // Exit if dark mode is disabled in theme options
+    }
+    
     const STORAGE_KEY = 'theme-preference';
     const ATTR_NAME = 'data-theme';
     

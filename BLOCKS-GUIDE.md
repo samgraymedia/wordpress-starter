@@ -1,6 +1,6 @@
 # Custom Gutenberg Blocks Guide
 
-**Complete reference for all 35 custom Gutenberg blocks in the theme**
+**Complete reference for all 38 custom Gutenberg blocks in the theme**
 
 This guide documents all available blocks, their fields, usage, and styling.
 
@@ -20,7 +20,7 @@ This guide documents all available blocks, their fields, usage, and styling.
 
 ## Block Overview
 
-This theme includes **35 pre-built custom Gutenberg blocks** organized by purpose:
+This theme includes **38 pre-built custom Gutenberg blocks** organized by purpose:
 
 ### Layout & Structure Blocks (6)
 
@@ -31,8 +31,9 @@ This theme includes **35 pre-built custom Gutenberg blocks** organized by purpos
 - **Video** - Video player with keyboard shortcuts
 - **Spacer** - Vertical spacing utility block
 
-### Content & Text Blocks (8)
+### Content & Text Blocks (9)
 
+- **Section Intro** - Header section with eyebrow, heading, description, and optional CTA
 - **Text** - Basic rich text block with formatting
 - **Tabs** - Tabbed content with keyboard navigation
 - **Accordion** - Expandable content sections
@@ -56,11 +57,13 @@ This theme includes **35 pre-built custom Gutenberg blocks** organized by purpos
 - **Service Comparison** - Table comparison of services/features
 - **Pricing/Plans** - Subscription tiers display (2 layouts: horizontal cards, comparison table)
 
-### Interactive & Forms (4)
+### Interactive & Forms (6)
 
+- **CTA (Call-to-Action)** - Promotional section with headline, description, and action buttons
 - **Newsletter** - Email subscription form
 - **Contact** - Contact information section
 - **Form Embed** - Embedded form integrations (Gravity Forms, Contact Form 7, etc.)
+- **Embed** - Generic embed for YouTube, Vimeo, Spotify, iframes, widgets
 - **Share Buttons** - Social media sharing buttons
 
 ### Team & Testimonials (3)
@@ -76,6 +79,10 @@ This theme includes **35 pre-built custom Gutenberg blocks** organized by purpos
 - **Steps** - Step-by-step process workflow
 - **Downloads** - File/asset download links list
 
+### Data & Tables (1)
+
+- **Table** - Flexible data tables for specs, pricing, hours, comparisons, and more
+
 ### Maps & Location (1)
 
 - **Map** - Embedded map display (Google Maps, Mapbox)
@@ -84,17 +91,18 @@ This theme includes **35 pre-built custom Gutenberg blocks** organized by purpos
 
 ## Complete Block Count Summary
 
-| Category             | Count  | Blocks                                                                     |
-| -------------------- | ------ | -------------------------------------------------------------------------- |
-| Layout & Structure   | 6      | Hero, Banner, Image+Text, Gallery, Video, Spacer                           |
-| Content & Text       | 8      | Text, Tabs, Accordion, Blog Posts, Cards Grid, FAQ, Related Content, Quote |
-| Navigation & Lists   | 4      | Breadcrumb, Icon List, Logo Grid, Slider                                   |
-| Services & Commerce  | 4      | Service Showcase, Service Pricing, Service Comparison, Pricing/Plans       |
-| Interactive & Forms  | 4      | Newsletter, Contact, Form Embed, Share Buttons                             |
-| Team & Testimonials  | 3      | Team, Testimonial, Service Testimonials Carousel                           |
-| Utility & Components | 4      | Announcement, Stats, Steps, Downloads                                      |
-| Maps & Location      | 1      | Map                                                                        |
-| **TOTAL**            | **35** | **All custom blocks**                                                      |
+| Category             | Count  | Blocks                                                                                    |
+| -------------------- | ------ | ----------------------------------------------------------------------------------------- |
+| Layout & Structure   | 6      | Hero, Banner, Image+Text, Gallery, Video, Spacer                                          |
+| Content & Text       | 9      | Section Intro, Text, Tabs, Accordion, Blog Posts, Cards Grid, FAQ, Related Content, Quote |
+| Navigation & Lists   | 4      | Breadcrumb, Icon List, Logo Grid, Slider                                                  |
+| Services & Commerce  | 4      | Service Showcase, Service Pricing, Service Comparison, Pricing/Plans                      |
+| Interactive & Forms  | 6      | CTA, Newsletter, Contact, Form Embed, Embed, Share Buttons                                |
+| Team & Testimonials  | 3      | Team, Testimonial, Service Testimonials Carousel                                          |
+| Utility & Components | 4      | Announcement, Stats, Steps, Downloads                                                     |
+| Data & Tables        | 1      | Table                                                                                     |
+| Maps & Location      | 1      | Map                                                                                       |
+| **TOTAL**            | **38** | **All custom blocks**                                                                     |
 
 ---
 
@@ -325,7 +333,93 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 6. Text Block
+### 6. Section Intro Block
+
+**Purpose:** Reusable header section with eyebrow text, heading, description, and optional call-to-action button. Used throughout sites for consistent section introductions.
+
+**Category:** Common / Content  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field          | Type   | Required | Max Length | Description                                 |
+| -------------- | ------ | -------- | ---------- | ------------------------------------------- |
+| Eyebrow Text   | Text   | No       | 100        | Small text above heading (e.g., "Features") |
+| Heading        | Text   | Yes      | 200        | Main section headline                       |
+| Description    | Text   | No       | 500        | Short intro text below heading              |
+| Text Alignment | Select | No       | —          | left, center, or right                      |
+| Max Width      | Select | No       | —          | full, 800px, 1000px, or 1200px              |
+| CTA Button     | Link   | No       | —          | Optional call-to-action link with label     |
+
+**Features:**
+
+- Eyebrow text for categorizing content sections
+- Large, responsive heading (2.5rem on desktop, scales down on mobile)
+- Supporting description text
+- Three text alignment options: left, center, right
+- Max width constraints to control content width
+- Optional CTA button with animated arrow icon
+- Automatic max-width constraint based on selection
+- Fully responsive on mobile (button stacks to full width)
+- Dark mode support with CSS variables
+- Keyboard-accessible button with focus indicators
+- Hover effects on button with smooth animations
+
+**Use Cases:**
+
+- "Features" section header with intro text and "Learn More" button
+- "About Us" page intro with company description
+- "Pricing" section with eyebrow "Find Your Plan" and CTA "Get Started"
+- "Services" intro with description and "View Services" button
+- Blog/news section headers
+- FAQ section introductions
+- Case studies with client info intro
+
+**Example Usage:**
+
+```twig
+{% include "blocks/intro" with {
+    eyebrow: "Getting Started",
+    heading: "Everything You Need to Know",
+    description: "Learn about our features and find the perfect plan for your needs.",
+    alignment: "center",
+    max_width: "1000",
+    cta_button: {
+        title: "Explore Plans",
+        url: "/pricing"
+    }
+} %}
+```
+
+**CSS Classes:**
+
+- `.intro` - Block wrapper
+- `.intro--align-left|center|right` - Alignment modifiers
+- `.intro--width-full|800|1000|1200` - Max-width modifiers
+- `.intro__wrapper` - Content container
+- `.intro__eyebrow` - Eyebrow text element
+- `.intro__heading` - Main heading (h2)
+- `.intro__description` - Description paragraph
+- `.intro__cta` - CTA button container
+- `.intro__button` - CTA button link
+- `.intro__button-arrow` - Arrow icon in button
+
+**Responsive Behavior:**
+
+- **Desktop (1024px+):** Full heading size (2.5rem), normal spacing
+- **Tablet (769px-1023px):** Reduced heading (2rem), adjusted width variants
+- **Mobile (≤768px):** Compact heading (1.75rem), narrow (1.5rem on very small), full-width max-width variants, button at full width
+- **Extra Small (<480px):** Minimal heading (1.5rem), simplified CTA button
+
+**Related Files:**
+
+- Template: `views/blocks/intro.twig`
+- Styles: `css/inc/blocks/intro.scss`
+- Fields: `src/blocks/intro.php`
+
+---
+
+### 7. Text Block
 
 **Purpose:** Basic rich text block with formatting options
 
@@ -352,7 +446,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 7. Tabs Block
+### 8. Tabs Block
 
 **Purpose:** Display content in organized tabs with click and keyboard navigation
 
@@ -386,7 +480,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 8. Accordion Block
+### 9. Accordion Block
 
 **Purpose:** Expandable content sections that collapse/expand on click
 
@@ -414,7 +508,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 9. Blog Posts Block
+### 10. Blog Posts Block
 
 **Purpose:** Display selected blog posts in a responsive grid
 
@@ -449,7 +543,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 10. Share Buttons Block
+### 11. Share Buttons Block
 
 **Purpose:** Display social sharing buttons for the current page
 
@@ -493,7 +587,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 11. CTA (Call-to-Action) Block
+### 12. CTA (Call-to-Action) Block
 
 **Purpose:** Promotional section with headline, description, and action buttons
 
@@ -518,7 +612,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 12. Newsletter Block
+### 13. Newsletter Block
 
 **Purpose:** Email subscription form for building mailing lists
 
@@ -547,7 +641,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 13. Contact Block
+### 14. Contact Block
 
 **Purpose:** Display contact information and optional contact form
 
@@ -575,7 +669,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 14. Announcement Block
+### 15. Announcement Block
 
 **Purpose:** Important announcement or alert banner with dismiss option
 
@@ -607,7 +701,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 15. Pricing / Plans Block
+### 16. Pricing / Plans Block
 
 **Purpose:** Display subscription tiers and pricing plans with feature comparison and CTA buttons
 
@@ -656,7 +750,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 16. Cards Grid Block
+### 17. Cards Grid Block
 
 **Purpose:** Flexible, reusable grid for displaying cards (services, features, portfolio items, etc.)
 
@@ -701,7 +795,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 17. FAQ / Search Block
+### 18. FAQ / Search Block
 
 **Purpose:** Advanced FAQ section with real-time search filtering and category selection
 
@@ -752,7 +846,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 18. Related Content / Latest Content Block
+### 19. Related Content / Latest Content Block
 
 **Purpose:** Query-based automatic content feed for displaying related or latest posts dynamically
 
@@ -835,7 +929,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 19. Breadcrumb Block
+### 20. Breadcrumb Block
 
 **Purpose:** Navigation breadcrumb trail showing page hierarchy for SEO and UX
 
@@ -863,7 +957,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 20. Icon List Block
+### 21. Icon List Block
 
 **Purpose:** Display list of features, benefits, or items with icons
 
@@ -894,7 +988,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 21. Logo Grid Block
+### 22. Logo Grid Block
 
 **Purpose:** Display client logos, partner logos, or brand carousel
 
@@ -923,7 +1017,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 22. Slider / Carousel Block
+### 23. Slider / Carousel Block
 
 **Purpose:** Image or content carousel with navigation controls
 
@@ -957,7 +1051,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 23. Service Showcase Block
+### 24. Service Showcase Block
 
 **Purpose:** Feature prominent services with images and descriptions
 
@@ -990,7 +1084,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 24. Service Pricing Block
+### 25. Service Pricing Block
 
 **Purpose:** Display service pricing tiers and options
 
@@ -1022,7 +1116,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 25. Service Comparison Block
+### 26. Service Comparison Block
 
 **Purpose:** Compare services, features, or plans in table format
 
@@ -1054,7 +1148,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 26. Quote / Testimonial Block
+### 27. Quote / Testimonial Block
 
 **Purpose:** Display a blockquote or testimonial with attribution
 
@@ -1085,7 +1179,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 27. Spacer Block
+### 28. Spacer Block
 
 **Purpose:** Add vertical spacing between blocks
 
@@ -1112,7 +1206,7 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 28. Form Embed Block
+### 29. Form Embed Block
 
 **Purpose:** Embed contact forms, signup forms, or external form integrations
 
@@ -1142,7 +1236,136 @@ css/inc/blocks/             # Block-specific styles
 
 ---
 
-### 29. Team Block
+### 30. Embed Block
+
+**Purpose:** Generic embed block for controlled, branded output of external content (YouTube, Vimeo, Spotify, podcasts, iframes, third-party widgets)
+
+**Category:** Interactive & Forms  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field             | Type   | Required | Description                                  |
+| ----------------- | ------ | -------- | -------------------------------------------- |
+| Embed Type        | Select | Yes      | YouTube, Vimeo, Spotify, Podcast, Custom URL |
+| Embed URL         | URL    | Yes      | URL to embed (supports common providers)     |
+| Title             | Text   | No       | Optional title above embed                   |
+| Description       | Text   | No       | Optional description text                    |
+| Aspect Ratio      | Select | No       | 16:9, 4:3, 1:1, 21:9, custom                 |
+| Custom Width      | Number | No       | Width in pixels (for custom aspect ratio)    |
+| Custom Height     | Number | No       | Height in pixels (for custom aspect ratio)   |
+| Show Title        | Toggle | No       | Display embed provider title (if available)  |
+| Allow Full Screen | Toggle | No       | Enable fullscreen capability                 |
+| Lazy Load         | Toggle | No       | Defer loading until visible in viewport      |
+| Privacy Mode      | Toggle | No       | YouTube no-cookie domain for privacy         |
+| Responsive        | Toggle | No       | Maintain aspect ratio on all devices         |
+| Extra Classes     | Text   | No       | Custom CSS classes for styling               |
+
+**Supported Providers:**
+
+- **YouTube** - Standard YouTube URL or short URL (youtube.com, youtu.be)
+- **Vimeo** - Vimeo video URL (vimeo.com)
+- **Spotify** - Spotify track, album, or playlist URL
+- **Podcast** - Podcast RSS feed or embed URL
+- **Custom iframe** - Any URL that supports embedding
+- **Twitter** - Tweet/X URL (twitter.com)
+- **Instagram** - Instagram post URL
+- **TikTok** - TikTok video URL
+
+**Features:**
+
+- Responsive wrapper with customizable aspect ratios
+- Automatic provider detection from URL
+- Privacy-conscious loading (YouTube no-cookie option)
+- Lazy loading for performance optimization
+- Fullscreen capability toggle
+- Fallback link if embed fails
+- Keyboard-accessible controls
+- Mobile-responsive with touch support
+- Dark mode support
+- Custom branding options via CSS classes
+- Semantic HTML with proper embedding practices
+
+**Aspect Ratio Options:**
+
+- **16:9** - Standard widescreen (videos, etc.)
+- **4:3** - Classic presentation format
+- **1:1** - Square (Instagram, etc.)
+- **21:9** - Ultra-wide cinema format
+- **Custom** - User-specified width/height
+
+**Use Cases:**
+
+- Hero section with embedded YouTube intro video
+- Blog post with embedded Spotify playlist
+- Podcast episode player
+- Social media timeline (Twitter/Instagram feeds)
+- Third-party widget embeds (calculators, maps, etc.)
+- Documentation or tutorial videos
+- Live stream embeds
+- Presentation slides
+- Product demos
+
+**Example Usage:**
+
+```twig
+{% include "blocks/embed" with {
+    embed_type: "youtube",
+    embed_url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    title: "Check Out Our Tutorial",
+    aspect_ratio: "16:9",
+    lazy_load: true,
+    responsive: true,
+    privacy_mode: true
+} %}
+```
+
+**Privacy & Performance Considerations:**
+
+- **Privacy Mode** - Uses `youtube-nocookie.com` domain to prevent YouTube from storing viewer information
+- **Lazy Loading** - Defers iframe creation until embed becomes visible (reduces initial page load)
+- **Responsive Wrappers** - Maintains aspect ratio without layout shift
+- **Fallback Links** - If embed fails, provides direct link to content
+
+**CSS Classes:**
+
+- `.embed` - Block wrapper
+- `.embed__title` - Optional title element
+- `.embed__description` - Optional description text
+- `.embed__wrapper` - Responsive container
+- `.embed__iframe` - Embedded iframe element
+- `.embed__fallback` - Fallback link if embed fails
+- `.embed--responsive` - Modifier for responsive sizing
+- `.embed--lazy` - Modifier for lazy-loaded embeds
+- `.embed--youtube`, `.embed--vimeo`, `.embed--spotify` - Provider-specific modifiers
+
+**Styling Details:**
+
+- Responsive padding-bottom technique for aspect ratio maintenance
+- Overflow hidden to prevent scroll within container
+- Smooth transitions on hover
+- Focus states for keyboard accessibility
+- Dark mode color adjustments for title/description text
+- Print-friendly with fallback link display
+
+**Related Files:**
+
+- Template: `views/blocks/embed.twig`
+- Styles: `css/inc/blocks/embed.scss`
+- Fields: `src/blocks/embed.php`
+- JavaScript: `scripts/modules/embed.js` (for lazy loading)
+
+**Notes:**
+
+- Uses native WordPress oEmbed API for provider detection
+- Falls back to iframe embedding for custom URLs
+- All embeds are sanitized for security
+- Supports both HTTP and HTTPS URLs
+- Compatible with privacy regulations (GDPR, CCPA)
+
+---
+
+### 31. Team Block
 
 **Purpose:** Display team members with profiles, roles, and contact info
 
@@ -1173,11 +1396,7 @@ css/inc/blocks/             # Block-specific styles
 - Responsive grid
 - Hover effects
 
-**CSS Classes:** `.team` with `.team__member`, `.team__photo`, `.team__name`, `.team__title`, `.team__bio`
-
----
-
-### 30. Testimonial Block
+### 32. Testimonial Block
 
 **Purpose:** Display single testimonial with name, role, and optional rating
 
@@ -1204,11 +1423,7 @@ css/inc/blocks/             # Block-specific styles
 - Dark mode support
 - Responsive layout
 
-**CSS Classes:** `.testimonial` with `.testimonial__text`, `.testimonial__author`, `.testimonial__rating`
-
----
-
-### 31. Service Testimonials Carousel Block
+### 33. Service Testimonials Carousel Block
 
 **Purpose:** Auto-rotating carousel of customer testimonials
 
@@ -1239,11 +1454,7 @@ css/inc/blocks/             # Block-specific styles
 - Keyboard controls
 - Touch swipe support
 
-**CSS Classes:** `.testimonials-carousel` with `.carousel__item`, `.carousel__quote`, `.carousel__author`
-
----
-
-### 32. Stats / Counters Block
+### 34. Stats / Counters Block
 
 **Purpose:** Display statistics, metrics, or counters with animations
 
@@ -1272,11 +1483,7 @@ css/inc/blocks/             # Block-specific styles
 - Number formatting
 - Dark mode support
 
-**CSS Classes:** `.stats` with `.stats__item`, `.stats__number`, `.stats__label`, `.stats__icon`
-
----
-
-### 33. Steps / Process Block
+### 35. Steps / Process Block
 
 **Purpose:** Display step-by-step process, workflow, or instructions
 
@@ -1304,11 +1511,7 @@ css/inc/blocks/             # Block-specific styles
 - Responsive design
 - Progress indicators
 
-**CSS Classes:** `.steps` with `.steps__item`, `.steps__number`, `.steps__title`, `.steps__description`
-
----
-
-### 34. Downloads Block
+### 36. Downloads Block
 
 **Purpose:** Display downloadable files, resources, or documents
 
@@ -1337,11 +1540,131 @@ css/inc/blocks/             # Block-specific styles
 - Download tracking
 - Responsive list
 
-**CSS Classes:** `.downloads` with `.downloads__item`, `.downloads__link`, `.downloads__size`, `.downloads__icon`
+### 37. Table Block
+
+**Purpose:** Generic reusable data table for displaying specs, pricing, opening hours, feature comparisons, fee schedules, policy summaries, and any tabular data. More flexible than service-specific comparison blocks.
+
+**Category:** Data & Tables  
+**Post Types:** page, post
+
+**Available Fields:**
+
+| Field        | Type     | Required | Description                                     |
+| ------------ | -------- | -------- | ----------------------------------------------- |
+| Table Title  | Text     | No       | Optional table heading (renders as h3)          |
+| Caption      | Textarea | No       | Optional descriptive text below title           |
+| Striped      | Toggle   | No       | Alternate row background colors for readability |
+| Rows         | Repeater | Yes      | Table rows with cells                           |
+| Header Row   | Toggle   | No       | Mark row as table header                        |
+| Cells        | Repeater | Yes      | Cell content for each row                       |
+| Cell Content | Textarea | Yes      | Text, numbers, or content for cell              |
+
+**Features:**
+
+- Flexible nested structure: rows contain cells
+- First row can be marked as header (renders in `<thead>`)
+- Semantic HTML with proper `<table>`, `<thead>`, `<tbody>` structure
+- Striped rows option for improved readability
+- Optional title (h3) and caption text
+- Responsive horizontal scroll on mobile
+- Dark mode support with CSS variables
+- Hover effects on rows
+- Print-friendly styling
+- Proper table semantics for accessibility (`scope="col"` on headers)
+- Works with any tabular data
+
+**Use Cases:**
+
+- **Specs/Specifications** - Product features, technical specifications, device compatibility
+- **Opening Hours/Times** - Business hours, class schedules, availability
+- **Pricing Tables** - Service rates, fee schedules, pricing tiers (simpler than Pricing block)
+- **Feature Comparisons** - Compare products, plans, or options (more generic than Service Comparison block)
+- **Policy Summaries** - Return policies, terms, conditions tables
+- **Contact Info** - Locations with hours, phone, address in table format
+- **Nutritional Info** - Calories, ingredients, allergens tables
+- **Data/Stats** - Metrics comparisons, survey results, statistics
+
+**Example Data Structures:**
+
+**Opening Hours Table:**
+
+```
+Header Row: Day | Hours | Status
+Row 1: Monday | 9:00 AM - 5:00 PM | Open
+Row 2: Tuesday | 9:00 AM - 5:00 PM | Open
+Row 3: Saturday | Closed | Closed
+```
+
+**Pricing Comparison:**
+
+```
+Header Row: Feature | Starter | Pro | Enterprise
+Row 1: Users | 1 | 5 | Unlimited
+Row 2: Storage | 10GB | 100GB | 1TB
+Row 3: Support | Email | Priority | 24/7
+```
+
+**Product Specs:**
+
+```
+Header Row: Spec | Value
+Row 1: Weight | 2.5 kg
+Row 2: Dimensions | 10 x 20 x 30 cm
+Row 3: Color | Black, Silver, Gold
+```
+
+**Responsive Behavior:**
+
+- **Desktop (1024px+):** Full table display, horizontal layout
+- **Tablet (769px-1023px):** Table displays normally, may need horizontal scroll for wide tables
+- **Mobile (≤768px):** Horizontal scroll enabled, font size reduced to 0.875rem, minimal padding
+- Scroll container with smooth scrolling support
+
+**CSS Classes:**
+
+- `.table-wrapper` - Outer container
+- `.table__title` - Optional h3 title
+- `.table__caption` - Optional caption text
+- `.table__container` - Scroll container with border
+- `.table` - Main table element
+- `.table--striped` - Modifier for striped rows
+- `.table__row` - Table row
+- `.table__row--header` - Header row with distinct styling
+- `.table__cell` - Cell (td or th)
+- `.table__cell--header` - Header cell (th)
+
+**Styling Details:**
+
+- Base font: 0.95rem (scales down to 0.875rem on mobile)
+- Row hover: background color change with smooth transition
+- Header row: gray background (#f5f5f5) with blue bottom border
+- Striped rows: alternating row colors (odd rows #f9f9f9)
+- Borders: Light gray (#e0e0e0) between cells and around table
+- Dark mode: automatic CSS variable support for colors
+- Print: Optimized print layout with borders and white background
+
+**Comparison with Other Blocks:**
+
+| Feature            | Table Block     | Service Comparison | Pricing Block |
+| ------------------ | --------------- | ------------------ | ------------- |
+| Purpose            | Generic tabular | Service features   | Pricing tiers |
+| Flexibility        | Very high       | Limited            | Limited       |
+| Use Cases          | Any table data  | Services only      | Pricing only  |
+| Header Row Support | Yes             | Yes                | Yes           |
+| Striped Rows       | Yes             | No                 | No            |
+| Title/Caption      | Yes             | No                 | Yes           |
+| Responsive Scroll  | Yes             | No                 | No            |
+| Featured Highlight | No              | No                 | Yes           |
+
+**Related Files:**
+
+- Template: `views/blocks/table.twig`
+- Styles: `css/inc/blocks/table.scss`
+- Fields: `src/blocks/table.php`
 
 ---
 
-### 35. Map Block
+### 38. Map Block
 
 **Purpose:** Embed Google Maps or Mapbox map with markers and controls
 

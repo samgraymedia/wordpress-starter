@@ -1,14 +1,300 @@
 /**
  * Shop Page Styles - BEM Methodology
  * Block: .shop
- * Elements: .shop__header, .shop__title, .shop__products, .shop__sidebar, .shop__main, .shop__toolbar, .shop__pagination
- * Modifiers: .shop--wide, .shop--sidebar
+ * Elements: .shop__hero, .shop__sidebar, .shop__products, .shop__toolbar, .shop__pagination
+ * Modifiers: .shop__products--grid, .shop__products--list
  *
- * Main shop page layout with product grid, filters, and pagination
+ * Main shop page layout with hero section, product grid, filters, and pagination
  */
-
 @import "../base/vars";
 
 // ============================================
-// Shop Container
+// Shop Page - Hero Section
 // ============================================
+
+.shop {
+  &__hero {
+    position: relative;
+    padding: 0;
+    margin-bottom: $spacing-6;
+    overflow: hidden;
+
+    &-bg {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      @media (max-width: $breakpoint-md) {
+        min-height: 200px;
+      }
+    }
+
+    &-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    &-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: $white;
+      max-width: 600px;
+    }
+  }
+
+  &__hero-title {
+    font-size: $font-5xl;
+    font-weight: $font-bold;
+    margin-bottom: $spacing-3;
+    line-height: $line-height-heading;
+
+    @media (max-width: $breakpoint-md) {
+      font-size: $font-3xl;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-2xl;
+    }
+  }
+
+  &__hero-subtitle {
+    font-size: $font-lg;
+    font-weight: $font-regular;
+    margin: 0;
+    line-height: $line-height-base;
+
+    @media (max-width: $breakpoint-md) {
+      font-size: $font-base;
+    }
+  }
+
+  // ============================================
+  // Breadcrumb & Layout
+  // ============================================
+
+  &__breadcrumb {
+    padding: $spacing-3 0;
+    border-bottom: 1px solid $gray-200;
+    margin-bottom: $spacing-4;
+
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-2 0;
+      margin-bottom: $spacing-3;
+    }
+  }
+
+  &__wrapper {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: $spacing-6;
+    align-items: start;
+
+    @media (max-width: $breakpoint-lg) {
+      gap: $spacing-4;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+      gap: $spacing-4;
+    }
+  }
+
+  // ============================================
+  // Sidebar & Filters
+  // ============================================
+
+  &__sidebar {
+    &-inner {
+      position: sticky;
+      top: $spacing-3;
+      padding: $spacing-4;
+      background-color: $gray-50;
+      border-radius: $border-radius;
+      border: 1px solid $gray-200;
+
+      @media (max-width: $breakpoint-md) {
+        background-color: $white;
+        border: none;
+        padding: 0;
+        position: static;
+      }
+    }
+
+    &-title {
+      font-size: $font-lg;
+      font-weight: $font-bold;
+      margin-bottom: $spacing-3;
+      margin-top: 0;
+      color: $text-color;
+    }
+  }
+
+  // ============================================
+  // Main Content Area
+  // ============================================
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-4;
+  }
+
+  &__toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $spacing-3;
+    padding: $spacing-3;
+    background-color: $gray-50;
+    border-radius: $border-radius;
+    border: 1px solid $gray-200;
+
+    @media (max-width: $breakpoint-md) {
+      flex-wrap: wrap;
+      padding: $spacing-2;
+    }
+  }
+
+  &__toolbar-left,
+  &__toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+  }
+
+  &__toolbar-right {
+    margin-left: auto;
+
+    @media (max-width: $breakpoint-md) {
+      margin-left: 0;
+      order: 3;
+      width: 100%;
+    }
+  }
+
+  &__results-count {
+    font-size: $font-sm;
+    color: $text-muted;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__sorting {
+    select {
+      padding: $spacing-2 $spacing-3;
+      border: 1px solid $gray-300;
+      border-radius: $border-radius-sm;
+      background-color: $white;
+      font-size: $font-base;
+      color: $text-color;
+      cursor: pointer;
+      transition: border-color $transition-normal;
+
+      &:hover,
+      &:focus {
+        outline: none;
+        border-color: $primary;
+      }
+    }
+  }
+
+  // ============================================
+  // Product Grid & List
+  // ============================================
+
+  &__products {
+    display: grid;
+    gap: $grid-gap;
+
+    &--grid {
+      grid-template-columns: repeat(3, 1fr);
+
+      @media (max-width: $breakpoint-lg) {
+        grid-template-columns: repeat(2, 1fr);
+        gap: $spacing-4;
+      }
+
+      @media (max-width: $breakpoint-md) {
+        grid-template-columns: 1fr;
+        gap: $spacing-3;
+      }
+    }
+
+    &--list {
+      grid-template-columns: 1fr;
+
+      .product-card {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: $spacing-4;
+      }
+    }
+  }
+
+  &__empty {
+    grid-column: 1 / -1;
+    padding: $spacing-6;
+    text-align: center;
+    background-color: $gray-50;
+    border-radius: $border-radius;
+    border: 1px solid $gray-200;
+
+    p {
+      margin: 0;
+      font-size: $font-lg;
+      color: $text-muted;
+    }
+  }
+
+  // ============================================
+  // Pagination
+  // ============================================
+
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-2;
+    margin-top: $spacing-4;
+    padding-top: $spacing-4;
+    border-top: 1px solid $gray-200;
+
+    a,
+    span {
+      padding: $spacing-2 $spacing-3;
+      border-radius: $border-radius-sm;
+      min-width: 40px;
+      text-align: center;
+      font-size: $font-base;
+      text-decoration: none;
+      transition: all $transition-normal;
+      border: 1px solid $gray-300;
+      background-color: $white;
+      color: $text-color;
+
+      &:hover {
+        background-color: $primary;
+        color: $white;
+        border-color: $primary;
+      }
+
+      &.current {
+        background-color: $primary;
+        color: $white;
+        border-color: $primary;
+        font-weight: $font-semibold;
+      }
+    }
+  }
+}

@@ -1,7 +1,13 @@
+/**
+ * newsletter.scss - BEM Block
+ */
+
+@import "../base/vars";
+
 // Newsletter Block Styling
 
 .newsletter {
-  padding: 3rem 0;
+  padding: $spacing-6 0;
 
   &__inner {
     max-width: 600px;
@@ -10,25 +16,25 @@
   }
 
   &__title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
+    font-size: $font-3xl;
+    font-weight: $font-bold;
+    margin-bottom: $spacing-3;
     color: $text-color;
 
     @media (max-width: $breakpoint-md) {
-      font-size: 1.75rem;
+      font-size: $font-2xl;
     }
   }
 
   &__description {
-    font-size: 1.1rem;
-    line-height: 1.6;
+    font-size: $font-md;
+    line-height: $line-height-base;
     color: $text-muted;
-    margin-bottom: 2rem;
+    margin-bottom: $spacing-5;
 
     @media (max-width: $breakpoint-md) {
-      font-size: 1rem;
-      margin-bottom: 1.5rem;
+      font-size: $font-base;
+      margin-bottom: $spacing-4;
     }
   }
 
@@ -43,9 +49,9 @@
     // Label styling
     label {
       display: block;
-      margin-bottom: 1rem;
+      margin-bottom: $spacing-3;
       text-align: left;
-      font-weight: 500;
+      font-weight: $font-medium;
       color: $text-color;
       font-size: 0.95rem;
 
@@ -60,10 +66,10 @@
     input[type="tel"],
     textarea {
       width: 100%;
-      padding: 0.85rem 1rem;
+      padding: $spacing-3 $spacing-4;
       border: 1px solid $border-color;
-      border-radius: 4px;
-      font-size: 1rem;
+      border-radius: $border-radius-sm;
+      font-size: $font-base;
       transition: border-color $transition-normal, box-shadow $transition-normal;
       font-family: inherit;
       box-sizing: border-box;
@@ -90,26 +96,26 @@
     input[type="submit"] {
       display: inline-block;
       min-width: 200px;
-      padding: 0.9rem 2rem;
+      padding: $spacing-3 + 0.15rem $spacing-5;
       background-color: $primary;
       color: $white;
       border: none;
-      border-radius: 4px;
-      font-size: 1rem;
-      font-weight: 600;
+      border-radius: $border-radius-sm;
+      font-size: $font-base;
+      font-weight: $font-semibold;
       cursor: pointer;
       transition: all $transition-normal;
-      margin-top: 0.5rem;
+      margin-top: $spacing-2;
 
       &:hover {
-        background-color: #0056b3;
+        background-color: #0052a3;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 86, 179, 0.3);
+        box-shadow: $shadow-md;
       }
 
       &:active {
         transform: translateY(0);
-        box-shadow: 0 2px 6px rgba(0, 86, 179, 0.3);
+        box-shadow: $shadow-sm;
       }
 
       &:disabled {
@@ -128,10 +134,10 @@
 
     // CF7 response messages
     .wpcf7-response-output {
-      margin-bottom: 1rem;
-      padding: 1rem;
-      border-radius: 4px;
-      font-size: 0.95rem;
+      margin-bottom: $spacing-3;
+      padding: $spacing-3;
+      border-radius: $border-radius-sm;
+      font-size: $font-base;
 
       &.wpcf7-mail-sent-ok {
         background-color: $success-bg;

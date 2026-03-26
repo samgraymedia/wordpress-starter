@@ -1,3 +1,12 @@
+/**
+ * Gallery Lightbox Block - BEM Methodology
+ * Block: .gallery-lightbox
+ * Elements: .gallery-lightbox__modal, .gallery-lightbox__image, .gallery-lightbox__close
+ * Modifiers: None
+ */
+
+@import "../base/vars";
+
 // Gallery Lightbox Styling
 
 .gallery-lightbox {
@@ -39,7 +48,7 @@
     object-fit: contain;
     display: block;
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       max-height: 60vh;
     }
   }
@@ -47,8 +56,8 @@
   &__caption {
     color: $white;
     text-align: center;
-    margin-top: 1rem;
-    font-size: 1rem;
+    margin-top: $spacing-3;
+    font-size: $font-base;
     line-height: 1.4;
   }
 

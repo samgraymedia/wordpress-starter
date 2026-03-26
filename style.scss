@@ -33,6 +33,7 @@ Theme Name: Starter Theme
 @import "./css/inc/global/footer";
 @import "./css/inc/global/shop";
 @import "./css/inc/global/product-single";
+@import "./css/inc/global/category-archive";
 @import "./css/inc/global/dark-mode";
 
 // 6. Block-specific styles
@@ -64,6 +65,7 @@ Theme Name: Starter Theme
 @import "./css/inc/blocks/map";
 // 7. Page/Post Type specific styles
 @import "./css/inc/pages/blog.scss";
+@import "./css/inc/pages/woocommerce.scss";
 
 // 8. Utilities and helper classes
 @import "./css/inc/utilities/helpers";

@@ -1,16 +1,22 @@
 /**
+ * service-testimonials-carousel.scss - BEM Block
+ */
+
+@import "../base/vars";
+
+/**
  * Service Testimonials Carousel Block Styles
  */
 
 .block-service-testimonials-carousel {
-  margin: 2rem 0;
+  margin: $spacing-5 0;
 
   // Carousel/Slider Layout
   .testimonials-carousel {
     position: relative;
-    background: #f8f9fa;
-    border-radius: 0.75rem;
-    padding: 2rem;
+    background: $bg-light;
+    border-radius: $border-radius;
+    padding: $spacing-5;
     overflow: hidden;
 
     .carousel-items {
@@ -20,7 +26,7 @@
 
     .carousel-item {
       display: none;
-      animation: fadeIn 0.5s ease;
+      animation: fadeIn $transition-slow;
 
       &.is-active {
         display: block;
@@ -38,13 +44,13 @@
 
     .testimonial-card {
       text-align: center;
-      padding: 1rem;
+      padding: $spacing-3;
 
       .testimonial-rating {
-        font-size: 1.5rem;
-        color: #ffc107;
-        margin-bottom: 1rem;
-        letter-spacing: 0.25rem;
+        font-size: $font-xl;
+        color: $warning;
+        margin-bottom: $spacing-3;
+        letter-spacing: $spacing-1;
 
         .star {
           display: inline-block;
@@ -52,11 +58,11 @@
       }
 
       .testimonial-quote {
-        font-size: 1.1rem;
+        font-size: $font-md;
         font-style: italic;
-        color: #333;
-        margin-bottom: 1.5rem;
-        line-height: 1.6;
+        color: $gray-900;
+        margin-bottom: $spacing-4;
+        line-height: $line-height-base;
 
         &::before {
           content: '"';

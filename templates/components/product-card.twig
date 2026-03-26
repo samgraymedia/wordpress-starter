@@ -1,53 +1,175 @@
 {#
   Product Card Component
-  Displays a single product in grid view
+  Reusable product card for shop listings with badges, quick view, and styling
   
   Variables:
     - product: WooCommerce product object
+    - show_badge: Show product badges (default: true)
+    - show_quick_view: Show quick view button (default: true)
+    - show_wishlist: Show wishlist button (default: true)
+  
+  Usage:
+  {% include 'components/product-card.twig' with {
+    'product': product_object,
+    'show_badge': true,
+    'show_quick_view': true,
+    'show_wishlist': true
+  } %}
 #}
 
-<div class="product-card">
+<div
+	class="product-card">
 
-	<div class="product-card__image">
-		{% if product.get_image('woocommerce_thumbnail') %}
+	{# Product Image Container #}
+	<div
+		class="product-card__image-wrapper">
+
+		{# Product Image #}
+		<div class="product-card__image">
 			<a href="{{ product.get_permalink() }}" class="product-card__image-link">
-				{{ product.get_image('woocommerce_thumbnail')|safe }}
+				{% if product.get_image('woocommerce_thumbnail') %}
+					{{ product.get_image('woocommerce_thumbnail')|safe }}
+				{% else %}
+					<img src="{{ function('wc_placeholder_img_src') }}" alt="{{ product.get_title() }}"/>
+				{% endif %}
 			</a>
+
+			{# Overlay Actions #}
+			<div class="product-card__overlay">
+				<div class="product-card__overlay-content">
+					{% if show_quick_view %}
+						<button class="product-card__btn product-card__btn--quick-view" data-product-id="{{ product.get_id() }}" aria-label="{{ _e('Quick view', 'woocommerce') }}">
+							<span class="icon-eye"></span>
+							{{ _e('Quick View', 'woocommerce') }}
+						</button>
+					{% endif %}
+
+					{% if show_wishlist %}
+						<button class="product-card__btn product-card__btn--wishlist" data-product-id="{{ product.get_id() }}" aria-label="{{ _e('Add to wishlist', 'starter-theme-1.x') }}" title="{{ _e('Add to wishlist', 'starter-theme-1.x') }}">
+							<span class="icon-heart"></span>
+						</button>
+					{% endif %}
+				</div>
+			</div>
+
+			{# Badges #}
+			{% if show_badge %}
+				<div
+					class="product-card__badges">
+					{# Sale Badge #}
+					{% if product.is_on_sale() %}
+						<span class="product-card__badge product-card__badge--sale">
+							{{ _e('Sale!', 'woocommerce') }}
+						</span>
+					{% endif %}
+
+					{# New Badge #}
+					{% if product.get_date_created() %}
+						{% set product_age = (date().timestamp - product.get_date_created().timestamp) / 86400 %}
+						{% if product_age < 30 %}
+							<span class="product-card__badge product-card__badge--new">
+								{{ _e('New', 'woocommerce') }}
+							</span>
+						{% endif %}
+					{% endif %}
+
+					{# Featured Badge #}
+					{% if product.is_featured() %}
+						<span class="product-card__badge product-card__badge--featured">
+							{{ _e('Featured', 'woocommerce') }}
+						</span>
+					{% endif %}
+
+					{# Out of Stock Badge #}
+					{% set pcard_stock_status = function('get_post_meta', product.get_id(), '_stock_status', true) %}
+					{% set pcard_stock_qty = function('get_post_meta', product.get_id(), '_stock', true)|default(0)|int %}
+					{% if pcard_stock_status != 'instock' %}
+						<span class="product-card__badge product-card__badge--out-of-stock">
+							{{ _e('Out of Stock', 'woocommerce') }}
+						</span>
+					{% elseif pcard_stock_qty > 0 and pcard_stock_qty < 5 %}
+						<span class="product-card__badge product-card__badge--low-stock">
+							{{ _e('Low Stock', 'woocommerce') }}
+						</span>
+					{% endif %}
+				</div>
+			{% endif %}
+		</div>
+
+		{# Add to Cart Button (Floating) #}
+		{% set btn_stock_status = function('get_post_meta', product.get_id(), '_stock_status', true) %}
+		{% if btn_stock_status == 'instock' %}
+			<form class="product-card__add-to-cart" method="post" enctype="multipart/form-data">
+				<button type="submit" class="product-card__btn product-card__btn--add-to-cart" aria-label="{{ _e('Add to cart', 'woocommerce') }}">
+					<span class="icon-shopping-cart"></span>
+					<span class="product-card__btn-text">{{ _e('Add to Cart', 'woocommerce') }}</span>
+				</button>
+				<input type="hidden" name="product_id" value="{{ product.get_id() }}"/>
+			</form>
 		{% endif %}
 
-		{% if product|is_on_sale %}
-			<span class="badge badge--sale">{{ _e('Sale!', 'starter-theme-1.x') }}</span>
-		{% endif %}
 	</div>
 
-	<div class="product-card__body">
+	{# Product Info Section #}
+	<div
+		class="product-card__content">
 
+		{# Category #}
+		<div class="product-card__category">
+			{% set categories = product.get_categories() %}
+			{% if categories|length > 0 %}
+				<a href="{{ categories[0].get_permalink() }}" class="product-card__category-link">
+					{{ categories[0].get_name() }}
+				</a>
+			{% endif %}
+		</div>
+
+		{# Product Title #}
 		<h3 class="product-card__title">
-			<a href="{{ product.get_permalink() }}">{{ product.get_title() }}</a>
+			<a href="{{ product.get_permalink() }}" class="product-card__title-link">
+				{{ product.get_title() }}
+			</a>
 		</h3>
 
+		{# Rating #}
 		{% if product.get_average_rating() > 0 %}
 			<div class="product-card__rating">
-				{{ product.get_rating_html()|safe }}
+				<div class="product-card__stars">
+					{% set rating = product.get_average_rating()|round %}
+					{% for i in 1..5 %}
+						<span class="product-card__star {% if i <= rating %}product-card__star--active{% endif %}">★</span>
+					{% endfor %}
+				</div>
+				<span class="product-card__review-count">({{ product.get_review_count() }})</span>
 			</div>
 		{% endif %}
 
+		{# Short Description #}
+		{% if product.get_short_description() %}
+			<p class="product-card__description">
+				{{ product.get_short_description()|striptags|slice(0, 80) }}
+				{% if product.get_short_description()|length > 80 %}...
+				{% endif %}
+			</p>
+		{% endif %}
+
+		{# Price #}
 		<div class="product-card__price">
 			{{ product.get_price_html()|safe }}
 		</div>
 
-		{% if product.get_short_description() %}
-			<div class="product-card__excerpt">
-				{{ product.get_short_description()|safe }}
-			</div>
+		{# Stock Status #}
+		<div class="product-card__stock">
+			{% set stock_status = function('get_post_meta', product.get_id(), '_stock_status', true) %}
+			{% set stock_qty = function('get_post_meta', product.get_id(), '_stock', true)|default(0) %}
+			{% if stock_status == 'instock' or stock_qty > 0 %}
+				{{ _e('In Stock', 'woocommerce') }}
+			</span>
+		{% else %}
+			<span class="product-card__stock-label product-card__stock-label--out-of-stock">
+				{{ _e('Out of Stock', 'woocommerce') }}
+			</span>
 		{% endif %}
-
 	</div>
 
-	<div class="product-card__footer">
-		<a href="{{ product.get_permalink() }}" class="btn btn--primary btn--sm">
-			{{ _e('View Product', 'starter-theme-1.x') }}
-		</a>
-	</div>
-
-</div>
+</div></div>

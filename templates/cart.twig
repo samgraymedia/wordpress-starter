@@ -1,0 +1,366 @@
+{#
+  WooCommerce Cart Page Template
+  Displays shopping cart with items, quantities, totals, and checkout button
+  
+  Features:
+  - Cart items table with thumbnail, price, quantity
+  - Cart totals section with subtotal and shipping
+  - Coupon code input
+  - Proceed to checkout button
+  - Continue shopping link
+  - Empty cart message
+  - Update cart functionality
+#}
+
+{% extends "base.twig" %}
+
+{% block content %}
+	<div
+		class="cart-page">
+
+		{# Security Nonce #}
+		{{ function('wp_nonce_field', 'wc_nonce', '_wpnonce', false, false) }}
+
+		{# Breadcrumb Navigation #}
+		<div class="cart-page__breadcrumb">
+			<div class="container">
+				{# WooCommerce breadcrumb removed - causing issues with Timber #}
+				{# Page Header #}
+					<div class="cart-page__header"> <div class="container">
+						<h1 class="cart-page__title">{{ _e('Shopping Cart', 'woocommerce') }}</h1>
+						<p class="cart-page__subtitle">{{ _e('Review your items before checkout', 'starter-theme-1.x') }}</p>
+					</div>
+				</div>
+
+				<div class="container">
+					{% if woocommerce_cart.get_cart()|length > 0 %}
+						{# Cart Items and Totals Layout #}
+						<div
+							class="cart-page__wrapper">
+
+							{# Left Column - Cart Items #}
+							<div class="cart-page__items">
+								<div
+									class="cart-page__items-table">
+
+									{# Table Header #}
+									<div class="cart-page__row cart-page__row--header">
+										<div class="cart-page__col cart-page__col--product">{{ _e('Product', 'woocommerce') }}</div>
+										<div class="cart-page__col cart-page__col--price">{{ _e('Price', 'woocommerce') }}</div>
+										<div class="cart-page__col cart-page__col--quantity">{{ _e('Quantity', 'woocommerce') }}</div>
+										<div class="cart-page__col cart-page__col--subtotal">{{ _e('Subtotal', 'woocommerce') }}</div>
+										<div class="cart-page__col cart-page__col--remove">{{ _e('Remove', 'woocommerce') }}</div>
+									</div>
+
+									{# Cart Items #}
+									{% for item_key, item in woocommerce_cart.get_cart() %}
+										{% set product = item.data %}
+										{% set product_id = item.product_id %}
+										{% set quantity = item.quantity %}
+										{% set line_subtotal = item.line_subtotal %}
+
+										<div
+											class="cart-page__row cart-page__row--item" data-product-id="{{ product_id }}" data-cart-row="{{ item_key }}" data-remove-key="{{ item_key }}" data-cart-item-key="{{ item_key }}">
+
+											{# Product Column #}
+											<div class="cart-page__col cart-page__col--product">
+												<div
+													class="cart-page__product">
+													{# Product Image #}
+													<div class="cart-page__product-image">
+														<a href="{{ product.get_permalink() }}" class="cart-page__product-link">
+															{% if product.get_image('shop_thumbnail') %}
+																{{ product.get_image('shop_thumbnail')|safe }}
+															{% else %}
+																<img src="{{ function('wc_placeholder_img_src') }}" alt="{{ product.get_name() }}" loading="lazy"/>
+															{% endif %}
+														</a>
+													</div>
+
+													{# Product Details #}
+													<div class="cart-page__product-details">
+														<h3 class="cart-page__product-name">
+															<a href="{{ product.get_permalink() }}" class="cart-page__product-title">
+																{{ product.get_name() }}
+															</a>
+														</h3>
+
+														{# Product Meta (attributes, variations) #}
+														{% if item.variation %}
+															<div class="cart-page__product-meta">
+																{% set variation_data = item.variation %}
+																{% for key, value in variation_data %}
+																	{% if key != 'product_variation_id' %}
+																		<span class="cart-page__product-meta-item">
+																			<strong>{{ key|replace({'attribute_': ''})|title }}:</strong>
+																			{{ value }}
+																		</span>
+																	{% endif %}
+																{% endfor %}
+															</div>
+														{% endif %}
+
+														{# SKU #}
+														{% if product.get_sku() %}
+															<p class="cart-page__product-sku">
+																<small>SKU:
+																	{{ product.get_sku() }}</small>
+															</p>
+														{% endif %}
+													</div>
+												</div>
+											</div>
+
+											{# Price Column #}
+											<div class="cart-page__col cart-page__col--price">
+												<span class="cart-page__price-label">{{ _e('Price', 'woocommerce') }}:</span>
+												<span class="cart-page__price">
+													{{ product.get_price_html()|safe }}
+												</span>
+											</div>
+
+											{# Quantity Column #}
+											<div class="cart-page__col cart-page__col--quantity">
+												<div class="cart-page__quantity-wrapper">
+													<label for="cart-quantity-{{ item_key }}" class="cart-page__quantity-label">{{ _e('Qty', 'woocommerce') }}:</label>
+													<div class="cart-page__quantity">
+														<input type="number" id="cart-quantity-{{ item_key }}" name="cart[{{ item_key }}][qty]" value="{{ quantity }}" min="0" max="999" class="cart-page__quantity-input"/>
+														<span class="cart-page__quantity-actions">
+															<button type="button" class="cart-page__qty-btn cart-page__qty-btn--minus" data-key="{{ item_key }}">−</button>
+															<button type="button" class="cart-page__qty-btn cart-page__qty-btn--plus" data-key="{{ item_key }}">+</button>
+														</span>
+													</div>
+												</div>
+											</div>
+
+											{# Subtotal Column #}
+											<div class="cart-page__col cart-page__col--subtotal">
+												<span class="cart-page__subtotal-label">{{ _e('Subtotal', 'woocommerce') }}:</span>
+												<span class="cart-page__subtotal">
+													{{ (product.get_price() * quantity)|wc_price|safe }}
+												</span>
+											</div>
+
+											{# Remove Column #}
+											<div class="cart-page__col cart-page__col--remove">
+												<a href="{{ wc_get_cart_remove_url(item_key) }}" class="cart-page__remove-btn" data-remove-url="{{ wc_get_cart_remove_url(item_key) }}" data-item-key="{{ item_key }}" aria-label="{{ _e('Remove', 'woocommerce') }}" title="{{ _e('Remove this item', 'woocommerce') }}">
+													<span class="icon-trash"></span>
+												</a>
+											</div>
+
+										</div>
+									{% endfor %}
+
+								</div>
+
+								{# Update Cart Button #}
+								<div class="cart-page__actions">
+									<button type="submit" class="cart-page__btn cart-page__btn--update" name="update_cart" value="{{ _e('Update Cart', 'woocommerce') }}">
+										{{ _e('Update Cart', 'woocommerce') }}
+									</button>
+									<a href="{{ wc_get_page_permalink('shop') }}" class="cart-page__btn cart-page__btn--continue">
+										{{ _e('Continue Shopping', 'woocommerce') }}
+									</a>
+								</div>
+
+								{# Coupon Section #}
+								<div class="cart-page__coupon-section">
+									<h3 class="cart-page__coupon-title">{{ _e('Have a coupon?', 'woocommerce') }}</h3>
+									<div class="cart-page__coupon-form">
+										<input type="text" name="coupon_code" class="cart-page__coupon-input" placeholder="{{ _e('Enter coupon code', 'woocommerce') }}" aria-label="{{ _e('Coupon code', 'woocommerce') }}"/>
+										<button type="submit" class="cart-page__btn cart-page__btn--apply-coupon" name="apply_coupon" value="{{ _e('Apply Coupon', 'woocommerce') }}">
+											{{ _e('Apply Coupon', 'woocommerce') }}
+										</button>
+									</div>
+								</div>
+
+							</div>
+
+							{# Right Column - Totals #}
+							<aside class="cart-page__totals">
+								<div class="cart-page__totals-wrapper">
+									<h2 class="cart-page__totals-title">{{ _e('Order Summary', 'woocommerce') }}</h2>
+
+									{# Subtotal #}
+									<div class="cart-page__total-row">
+										<span class="cart-page__total-label">{{ _e('Subtotal', 'woocommerce') }}:</span>
+										<span class="cart-page__total-value">
+											{{ woocommerce_cart.get_subtotal()|wc_price|safe }}
+										</span>
+									</div>
+
+									{# Shipping #}
+									<div class="cart-page__total-row">
+										<span class="cart-page__total-label">{{ _e('Shipping', 'woocommerce') }}:</span>
+										<span class="cart-page__total-value">
+											{% if woocommerce_cart.needs_shipping() %}
+												{{ woocommerce_cart.get_shipping_total()|wc_price|safe }}
+											{% else %}
+												{{ _e('Calculated at checkout', 'woocommerce') }}
+											{% endif %}
+										</span>
+									</div>
+
+									{# Tax #}
+									{% if woocommerce_cart.get_tax_totals() %}
+										<div class="cart-page__total-row">
+											<span class="cart-page__total-label">{{ _e('Tax', 'woocommerce') }}:</span>
+											<span class="cart-page__total-value">
+												{{ woocommerce_cart.get_tax_total()|wc_price|safe }}
+											</span>
+										</div>
+									{% endif %}
+
+									{# Total #}
+									<div class="cart-page__total-row cart-page__total-row--final">
+										<span class="cart-page__total-label cart-page__total-label--final">{{ _e('Total', 'woocommerce') }}:</span>
+										<span class="cart-page__total-value cart-page__total-value--final">
+											{{ woocommerce_cart.get_total()|wc_price|safe }}
+										</span>
+									</div>
+
+									{# Checkout Button #}
+									<a href="{{ wc_get_checkout_url() }}" class="cart-page__btn cart-page__btn--checkout">
+										{{ _e('Proceed to Checkout', 'woocommerce') }}
+										<span class="icon-arrow-right"></span>
+									</a>
+
+									{# Secure Checkout Badge #}
+									<div class="cart-page__security-badge">
+										<span class="icon-lock"></span>
+										{{ _e('Secure checkout', 'starter-theme-1.x') }}
+									</div>
+
+									{# Payment Methods #}
+									<div class="cart-page__payment-methods">
+										<p class="cart-page__payment-label">{{ _e('We accept:', 'starter-theme-1.x') }}</p>
+										<div class="cart-page__payment-icons">
+											<span class="payment-icon payment-icon--visa" title="Visa">
+												<span class="sr-only">Visa</span>
+											</span>
+											<span class="payment-icon payment-icon--mastercard" title="Mastercard">
+												<span class="sr-only">Mastercard</span>
+											</span>
+											<span class="payment-icon payment-icon--amex" title="American Express">
+												<span class="sr-only">American Express</span>
+											</span>
+											<span class="payment-icon payment-icon--paypal" title="PayPal">
+												<span class="sr-only">PayPal</span>
+											</span>
+										</div>
+									</div>
+
+								</div>
+							</aside>
+
+						</div>
+
+					{% else %}
+						{# Empty Cart Message #}
+						<div class="cart-page__empty">
+							<div class="cart-page__empty-content">
+								<span class="cart-page__empty-icon icon-shopping-cart"></span>
+								<h2 class="cart-page__empty-title">{{ _e('Your cart is empty', 'woocommerce') }}</h2>
+								<p class="cart-page__empty-message">{{ _e('Start adding some items to your cart to get started!', 'starter-theme-1.x') }}</p>
+								<a href="{{ wc_get_page_permalink('shop') }}" class="cart-page__btn cart-page__btn--continue">
+									{{ _e('Continue Shopping', 'woocommerce') }}
+								</a>
+							</div>
+						</div>
+					{% endif %}
+
+				</div>
+
+				{# Cart Recommendations #}
+				{% set cart_items = woocommerce_cart.get_cart() %}
+				{% if cart_items|length > 0 %}
+					<div class="cart-page__recommendations" id="cart-recommendations-section">
+						<div class="container">
+							<h2 class="cart-page__recommendations-title">{{ _e('You might also like', 'starter-theme-1.x') }}</h2>
+							<div class="cart-page__recommendations-grid">
+								{% set shown_products = [] %}
+
+								{# Get first 6 related products from cart items #}
+								{% for item_key, item in cart_items %}
+									{% if shown_products|length < 6 %}
+										{% set product = item.data %}
+										{% set related_ids = product.get_upsell_ids() %}
+
+										{# If no upsells, get products from same categories #}
+										{% if related_ids|length == 0 %}
+											{% set categories = product.get_category_ids() %}
+											{% if categories|length > 0 %}
+												{# This would need custom PHP support to get related products by category #}
+											{% endif %}
+										{% endif %}
+
+										{# Display related products #}
+										{% for related_id in related_ids %}
+											{% if shown_products|length < 6 and related_id not in shown_products %}
+												{% set related_product = function('wc_get_product', related_id) %}
+												{% set rel_stock_status = function('get_post_meta', related_product.get_id(), '_stock_status', true) %}
+												{% if related_product and rel_stock_status == 'instock' %}
+													<div class="cart-recommendations__item">
+														<div class="cart-recommendations__image">
+															<a href="{{ related_product.get_permalink() }}">
+																{% if related_product.get_image('shop_thumbnail') %}
+																	{{ related_product.get_image('shop_thumbnail')|safe }}
+																{% else %}
+																	<img src="{{ function('wc_placeholder_img_src') }}" alt="{{ related_product.get_name() }}" loading="lazy"/>
+																{% endif %}
+															</a>
+														</div>
+														<div class="cart-recommendations__content">
+															<h3 class="cart-recommendations__title">
+																<a href="{{ related_product.get_permalink() }}">
+																	{{ related_product.get_name() }}
+																</a>
+															</h3>
+															<div class="cart-recommendations__price">
+																{{ related_product.get_price_html()|safe }}
+															</div>
+															<button type="button" class="btn btn-sm btn-primary cart-recommendations__add-btn" data-product-id="{{ related_product.get_id() }}" data-quantity="1">
+																{{ _e('Add to Cart', 'woocommerce') }}
+															</button>
+														</div>
+													</div>
+													{% set shown_products = shown_products|merge([related_id]) %}
+												{% endif %}
+											{% endif %}
+										{% endfor %}
+									{% endif %}
+								{% endfor %}
+
+								{# Fallback: Show featured/on-sale products if no related items #}
+								{% if shown_products|length == 0 %}
+									<p class="cart-page__empty-recommendations">{{ _e('No recommendations at this time.', 'starter-theme-1.x') }}</p>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				{% endif %}
+
+				{# WooCommerce Cart Hooks #}
+				{% do action('woocommerce_after_cart') %}
+
+				{# Remove Confirmation Modal #}
+				<div class="modal fade" id="cart-remove-confirmation-modal" data-js-component="modal">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">{{ _e('Remove Item?', 'starter-theme-1.x') }}</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<p>{{ _e('Are you sure you want to remove', 'starter-theme-1.x') }}<strong id="cart-remove-product-name"></strong>?</p>
+								<p class="text-muted small">{{ _e('This action cannot be undone.', 'starter-theme-1.x') }}</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _e('Cancel', 'starter-theme-1.x') }}</button>
+								<button type="button" id="cart-remove-confirm" class="btn btn-danger">{{ _e('Remove Item', 'woocommerce') }}</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			{% endblock %}

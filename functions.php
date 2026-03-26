@@ -470,7 +470,38 @@ require_once( 'src/page-templates-registry.php' );
 if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', array() ), true ) 
 	|| ( is_multisite() && array_key_exists( 'woocommerce/woocommerce.php', get_site_option( 'active_sitewide_plugins', array() ) ) ) ) {
 	require_once( 'src/woocommerce-integration.php' );
+	require_once( 'src/woocommerce-product-meta.php' );
+	require_once( 'src/woocommerce-category-meta.php' );
 }
+
+/**
+ * Add lazy loading to product images
+ * Adds loading="lazy" attribute to all WooCommerce product images
+ */
+function theme_add_lazy_loading_to_images( $html ) {
+	// Add loading="lazy" to img tags that don't already have a loading attribute
+	$html = preg_replace_callback(
+		'/<img\s+([^>]*?)\/?>/',
+		function( $matches ) {
+			$img_tag = $matches[1];
+			
+			// Skip if loading attribute already exists
+			if ( preg_match( '/\sloading=["\']/', $img_tag ) ) {
+				return $matches[0];
+			}
+			
+			// Add loading="lazy" before the closing /> or >
+			return '<img ' . $img_tag . ' loading="lazy">';
+		},
+		$html
+	);
+	
+	return $html;
+}
+
+// Apply lazy loading to WooCommerce product images
+add_filter( 'woocommerce_product_get_image', 'theme_add_lazy_loading_to_images' );
+add_filter( 'woocommerce_get_product_thumbnail', 'theme_add_lazy_loading_to_images' );
 
 // Auto-load blocks
 foreach ( glob( __DIR__ . '/src/blocks/*.php' ) as $block_file ) {
@@ -695,5 +726,66 @@ function theme_cleanup_login_register_pages() {
 add_action( 'deactivated_plugin', function() {
 	theme_cleanup_login_register_pages();
 });
+
+/**
+ * Contact Form 7 accessibility fix
+ * Ensures all form inputs have IDs that match their corresponding labels
+ */
+add_filter( 'wpcf7_form_elements', function( $html ) {
+	if ( empty( $html ) ) {
+		return $html;
+	}
+
+	// First, add IDs to inputs that don't have them
+	$html = preg_replace_callback(
+		'/(<input[^>]*type=["\'](?:email|text|tel)["\'][^>]*)(?!id=)((?:[^>]*?)>)/i',
+		function( $matches ) {
+			$input_tag = $matches[1] . $matches[2];
+			
+			// Check if the input already has an id
+			if ( preg_match( '/id=["\']([^"\']+)["\']/', $input_tag ) ) {
+				return $input_tag;
+			}
+
+			// Extract the name attribute to generate an ID
+			if ( preg_match( '/name=["\']([^"\']+)["\']/', $input_tag, $name_match ) ) {
+				$id_value = sanitize_html_class( $name_match[1] );
+			} else {
+				// Fallback to random ID if no name attribute
+				$id_value = 'input-' . wp_rand( 100000, 999999 );
+			}
+
+			// Add the ID attribute before the closing >
+			return str_replace( '>', ' id="' . esc_attr( $id_value ) . '">', $input_tag );
+		},
+		$html
+	);
+
+	// Second, update labels to reference the correct input IDs
+	$html = preg_replace_callback(
+		'/<label[^>]*for=["\']([^"\']*)["\'][^>]*>([^<]*)<\/label>/i',
+		function( $matches ) {
+			$label_for = $matches[1];
+			$label_text = $matches[2];
+
+			// Check if this input exists in the HTML
+			if ( preg_match( '/id=["\']' . preg_quote( $label_for ) . '["\']/', $matches[0] ) ) {
+				return $matches[0]; // Label already references existing input
+			}
+
+			// If the for attribute is empty and this is a "Your email" label, try to find the email input
+			if ( empty( $label_for ) && strpos( $label_text, 'email' ) !== false ) {
+				// Try to match with email input name
+				// Return the label with a proper for attribute
+				return str_replace( 'for=""', 'for="your-email"', $matches[0] );
+			}
+
+			return $matches[0];
+		},
+		$html
+	);
+
+	return $html;
+} );
 
 new StarterSite();

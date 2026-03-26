@@ -1,0 +1,927 @@
+/**
+ * WooCommerce Pages - Cart & Checkout Styling
+ * 
+ * BEM Naming:
+ * - .cart-page -- Main cart page container
+ * - .cart-recommendations -- Product recommendations section
+ * - .modal -- Bootstrap modal with custom enhancements
+ */
+
+// ============================================================================
+// CART PAGE LAYOUT
+// ============================================================================
+
+.cart-page {
+  padding: 2rem 0;
+
+  &__header {
+    padding: 3rem 0 2rem;
+    background: var(--color-light, #f5f5f5);
+    margin-bottom: 2rem;
+  }
+
+  &__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--color-dark, #333);
+  }
+
+  &__subtitle {
+    font-size: 1rem;
+    color: var(--color-text-secondary, #666);
+    margin: 0;
+  }
+
+  &__wrapper {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
+
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__items {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 992px) {
+      order: 2;
+    }
+  }
+
+  &__totals {
+    @media (max-width: 992px) {
+      order: 1;
+    }
+  }
+
+  &__empty {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  &__empty-content {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  &__empty-icon {
+    display: block;
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-secondary, #999);
+  }
+
+  &__empty-title {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  &__empty-message {
+    font-size: 1rem;
+    color: var(--color-text-secondary, #666);
+    margin-bottom: 2rem;
+  }
+}
+
+// ============================================================================
+// CART ITEMS TABLE
+// ============================================================================
+
+.cart-page {
+  &__items-table {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 0.5fr 0.8fr 0.8fr 0.8fr 0.6fr;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--color-border, #e0e0e0);
+
+    &--header {
+      background: var(--color-light, #f9f9f9);
+      font-weight: 600;
+      color: var(--color-text-secondary, #555);
+      font-size: 0.875rem;
+      padding: 1rem 1.25rem;
+
+      .cart-page__col {
+        order: initial;
+      }
+    }
+
+    &--item {
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.02);
+      }
+
+      &--updating {
+        opacity: 0.6;
+        pointer-events: none;
+      }
+
+      &--removing {
+        animation: fadeOut 0.3s ease forwards;
+      }
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      padding: 1rem;
+      gap: 0.75rem;
+
+      &--header {
+        display: none;
+      }
+    }
+  }
+
+  &__col {
+    min-width: 0;
+
+    &--product {
+      grid-column: 1 / 2;
+
+      @media (max-width: 768px) {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+    }
+
+    &--price,
+    &--quantity,
+    &--subtotal,
+    &--remove {
+      @media (max-width: 768px) {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        // Show label before content
+        &::before {
+          content: attr(data-label);
+          font-weight: 600;
+          min-width: 80px;
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      &-product {
+        grid-column: auto;
+      }
+
+      &-price::before {
+        content: "Price:";
+      }
+
+      &-quantity::before {
+        content: "Quantity:";
+      }
+
+      &-subtotal::before {
+        content: "Subtotal:";
+      }
+
+      &-remove::before {
+        content: "Action:";
+      }
+    }
+  }
+}
+
+// ============================================================================
+// PRODUCT ITEM (CART ROW)
+// ============================================================================
+
+.cart-page {
+  &__product {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+
+    @media (max-width: 768px) {
+      gap: 0;
+      flex-direction: column;
+    }
+  }
+
+  &__product-image {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--color-light, #f5f5f5);
+
+    a {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+      width: 100%;
+      height: 120px;
+    }
+  }
+
+  &__product-details {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__product-name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    line-height: 1.4;
+  }
+
+  &__product-title {
+    color: var(--color-dark, #333);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--color-primary, #007bff);
+    }
+  }
+
+  &__product-meta {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary, #666);
+  }
+
+  &__product-meta-item {
+    display: block;
+    margin-bottom: 0.25rem;
+
+    strong {
+      font-weight: 600;
+    }
+  }
+
+  &__product-sku {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary, #999);
+    margin: 0.5rem 0 0;
+  }
+
+  &__price {
+    font-weight: 600;
+    color: var(--color-dark, #333);
+
+    .woocommerce-Price-amount {
+      font-weight: 700;
+    }
+  }
+
+  &__price-label {
+    font-weight: 500;
+    display: inline-block;
+    margin-right: 0.5rem;
+  }
+
+  &__subtotal {
+    font-weight: 700;
+    color: var(--color-success, #28a745);
+  }
+
+  &__subtotal-label {
+    font-weight: 500;
+    display: inline-block;
+    margin-right: 0.5rem;
+  }
+}
+
+// ============================================================================
+// QUANTITY ADJUSTMENT
+// ============================================================================
+
+.cart-page {
+  &__quantity-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__quantity-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  &__quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--color-border, #ddd);
+    border-radius: 4px;
+    padding: 0.25rem;
+    background: white;
+  }
+
+  &__quantity-input {
+    width: 60px;
+    padding: 0.5rem;
+    border: none;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+
+    &:focus {
+      outline: none;
+      background: var(--color-light, #f5f5f5);
+    }
+
+    /* Chrome, Safari and Opera */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    &[type="number"] {
+      -moz-appearance: textfield;
+    }
+  }
+
+  &__quantity-actions {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  &__qty-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    background: var(--color-light, #f5f5f5);
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: all 0.2s ease;
+    border-radius: 3px;
+
+    &:hover {
+      background: var(--color-primary, #007bff);
+      color: white;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  &__remove-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background: var(--color-danger-light, #fff5f5);
+    color: var(--color-danger, #dc3545);
+    border: 1px solid var(--color-danger-light, #ffdddd);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    font-size: 1.1rem;
+
+    &:hover {
+      background: var(--color-danger, #dc3545);
+      color: white;
+      border-color: var(--color-danger, #dc3545);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+// ============================================================================
+// CART ACTIONS
+// ============================================================================
+
+.cart-page {
+  &__actions {
+    padding: 1.25rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--color-border, #e0e0e0);
+
+    @media (max-width: 568px) {
+      flex-direction: column;
+    }
+  }
+
+  &__coupon-section {
+    padding: 1.25rem;
+    background: var(--color-light, #f9f9f9);
+    border-top: 1px solid var(--color-border, #e0e0e0);
+  }
+
+  &__coupon-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+  }
+
+  &__coupon-form {
+    display: flex;
+    gap: 0.5rem;
+
+    @media (max-width: 568px) {
+      flex-direction: column;
+    }
+  }
+
+  &__coupon-input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border, #ddd);
+    border-radius: 4px;
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary, #007bff);
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    }
+  }
+
+  &__btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+
+    &--update {
+      background: var(--color-secondary, #6c757d);
+      color: white;
+
+      &:hover:not(:disabled) {
+        background: darken(#6c757d, 10%);
+      }
+    }
+
+    &--continue {
+      background: transparent;
+      color: var(--color-primary, #007bff);
+      border: 1px solid var(--color-primary, #007bff);
+
+      &:hover:not(:disabled) {
+        background: var(--color-primary, #007bff);
+        color: white;
+      }
+    }
+
+    &--apply-coupon {
+      background: var(--color-success, #28a745);
+      color: white;
+      padding: 0.75rem 1.25rem;
+
+      &:hover:not(:disabled) {
+        background: darken(#28a745, 10%);
+      }
+    }
+
+    &--checkout {
+      width: 100%;
+      background: var(--color-primary, #007bff);
+      color: white;
+      padding: 1rem;
+      font-size: 1.1rem;
+
+      &:hover:not(:disabled) {
+        background: darken(#007bff, 10%);
+      }
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// ============================================================================
+// CART TOTALS SIDEBAR
+// ============================================================================
+
+.cart-page {
+  &__totals-wrapper {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  &__totals-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--color-border, #e0e0e0);
+  }
+
+  &__total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    font-size: 1rem;
+    color: var(--color-text-secondary, #666);
+
+    &--final {
+      padding: 1rem 0;
+      margin: 1rem 0 0;
+      border-top: 2px solid var(--color-border, #e0e0e0);
+      border-bottom: 2px solid var(--color-border, #e0e0e0);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--color-dark, #333);
+    }
+  }
+
+  &__total-label {
+    font-weight: 500;
+
+    &--final {
+      font-weight: 700;
+    }
+  }
+
+  &__total-value {
+    font-weight: 600;
+    color: var(--color-dark, #333);
+
+    .woocommerce-Price-amount {
+      font-weight: 700;
+    }
+
+    &--final {
+      font-size: 1.25rem;
+      color: var(--color-success, #28a745);
+    }
+  }
+
+  &__security-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    background: var(--color-success-light, #d4edda);
+    color: var(--color-success, #155724);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+
+    .icon-lock {
+      font-size: 1.2rem;
+    }
+  }
+
+  &__payment-methods {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border, #e0e0e0);
+  }
+
+  &__payment-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-secondary, #666);
+    margin: 0 0 0.75rem;
+  }
+
+  &__payment-icons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+}
+
+// ============================================================================
+// PAYMENT ICONS
+// ============================================================================
+
+.payment-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 30px;
+  border: 1px solid var(--color-border, #ddd);
+  border-radius: 4px;
+  background: white;
+  font-weight: 700;
+  font-size: 0.7rem;
+  color: var(--color-dark, #333);
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-primary, #007bff);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  &--visa::before {
+    content: "VISA";
+    color: #1434cb;
+  }
+
+  &--mastercard::before {
+    content: "MC";
+    color: #eb001b;
+  }
+
+  &--amex::before {
+    content: "AMEX";
+    color: #006fcf;
+  }
+
+  &--paypal::before {
+    content: "PayPal";
+    color: #003087;
+    font-size: 0.65rem;
+  }
+
+  .sr-only {
+    display: none;
+  }
+}
+
+// ============================================================================
+// CART RECOMMENDATIONS
+// ============================================================================
+
+.cart-page {
+  &__recommendations {
+    margin-top: 4rem;
+    padding: 3rem 0;
+    background: var(--color-light, #f9f9f9);
+    border-top: 1px solid var(--color-border, #e0e0e0);
+  }
+
+  &__recommendations-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  &__recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 568px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+  }
+
+  &__empty-recommendations {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--color-text-secondary, #666);
+    padding: 2rem 0;
+  }
+}
+
+.cart-recommendations {
+  &__item {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-4px);
+    }
+  }
+
+  &__image {
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--color-light, #f5f5f5);
+
+    a {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  &__content {
+    padding: 1rem;
+  }
+
+  &__title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+    line-height: 1.4;
+    min-height: 2.8em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    a {
+      color: var(--color-dark, #333);
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: var(--color-primary, #007bff);
+      }
+    }
+  }
+
+  &__price {
+    font-weight: 700;
+    color: var(--color-success, #28a745);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+
+    .woocommerce-Price-amount {
+      font-weight: 700;
+    }
+  }
+
+  &__add-btn {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+}
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+}
+
+// ============================================================================
+// MODAL ENHANCEMENTS
+// ============================================================================
+
+.modal {
+  &-header {
+    border-bottom: 1px solid var(--color-border, #ddd);
+    background: var(--color-light, #f9f9f9);
+  }
+
+  &-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-dark, #333);
+  }
+
+  &-body {
+    color: var(--color-text-secondary, #666);
+    line-height: 1.6;
+
+    p {
+      margin: 0 0 0.75rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    strong {
+      color: var(--color-dark, #333);
+      word-break: break-word;
+    }
+  }
+
+  &-footer {
+    background: var(--color-light, #f9f9f9);
+    border-top: 1px solid var(--color-border, #ddd);
+  }
+
+  .btn {
+    font-weight: 600;
+    padding: 0.75rem 1.25rem;
+
+    &-danger {
+      background: var(--color-danger, #dc3545);
+
+      &:hover {
+        background: darken(#dc3545, 10%);
+      }
+    }
+  }
+}
+
+// ============================================================================
+// RESPONSIVE ADJUSTMENTS
+// ============================================================================
+
+@media (max-width: 768px) {
+  .cart-page {
+    padding: 1rem 0;
+
+    &__header {
+      padding: 1.5rem 0;
+      margin-bottom: 1rem;
+    }
+
+    &__title {
+      font-size: 2rem;
+    }
+
+    &__wrapper {
+      gap: 1.5rem;
+    }
+
+    &__recommendations-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    &__recommendations {
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+  }
+
+  .cart-recommendations {
+    &__item {
+      border-radius: 6px;
+    }
+
+    &__content {
+      padding: 0.75rem;
+    }
+  }
+}

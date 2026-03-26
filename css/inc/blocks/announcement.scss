@@ -1,3 +1,12 @@
+/**
+ * Announcement Block - BEM Methodology
+ *
+ * Block: .announcement
+ * Elements: .announcement__content, .announcement__close, .announcement__message
+ * Modifiers: .announcement--info, .announcement--success, .announcement--warning, .announcement--error
+ */
+
+@import "../base/vars";
 // Announcement Bar Block Styling
 
 .announcement {

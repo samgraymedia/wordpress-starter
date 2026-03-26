@@ -1,0 +1,307 @@
+{% extends "base.twig" %}
+
+{% block content %}
+	<div
+		class="order-received">
+		<!-- Header Section -->
+		<div class="order-received__header">
+			<div class="container">
+				<h1 class="order-received__title">✓ Order Confirmed</h1>
+				<p class="order-received__subtitle">Thank you for your purchase! Your order has been received and is being processed.</p>
+			</div>
+		</div>
+
+		<!-- Main Content -->
+		<div class="container">
+			<div
+				class="order-received__wrapper">
+				<!-- Order Summary Section -->
+				<div
+					class="order-received__main">
+					<!-- Success Message -->
+					<div class="order-received__alert order-received__alert--success">
+						<svg class="order-received__icon" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<polyline points="20 6 9 17 4 12"></polyline>
+						</svg>
+						<div>
+							<strong>Order #{{ order.get_order_number() }}
+								confirmed</strong>
+							<p>We've sent a confirmation email to
+								<strong>{{ order.get_billing_email() }}</strong>
+							</p>
+						</div>
+					</div>
+
+					<!-- Order Details Section -->
+					<section class="order-received__section">
+						<h2 class="order-received__section-title">Order Details</h2>
+
+						<div
+							class="order-received__details-grid">
+							<!-- Order Number -->
+							<div class="order-received__detail-item">
+								<span class="order-received__detail-label">Order Number</span>
+								<span class="order-received__detail-value">#{{ order.get_order_number() }}</span>
+							</div>
+
+							<!-- Order Date -->
+							<div class="order-received__detail-item">
+								<span class="order-received__detail-label">Order Date</span>
+								<span class="order-received__detail-value">{{ order.get_date_created()|date('M d, Y') }}</span>
+							</div>
+
+							<!-- Order Status -->
+							<div class="order-received__detail-item">
+								<span class="order-received__detail-label">Status</span>
+								<span class="order-received__detail-value order-received__status order-received__status--{{ order.get_status() }}">
+									{{ order.get_status()|replace({'_': ' '})|title }}
+								</span>
+							</div>
+
+							<!-- Estimated Delivery -->
+							<div class="order-received__detail-item">
+								<span class="order-received__detail-label">Estimated Delivery</span>
+								<span class="order-received__detail-value">{{ 'now'|strtotime|date('M d, Y', strtotime('+5 days')) }}</span>
+							</div>
+						</div>
+					</section>
+
+					<!-- Order Items Section -->
+					<section class="order-received__section">
+						<h2 class="order-received__section-title">Items Ordered</h2>
+
+						<div class="order-received__items">
+							{% for item in order_items %}
+								<div
+									class="order-received__item">
+									<!-- Item Image -->
+									{% set product = item.get_product() %}
+									{% if product %}
+										<div class="order-received__item-image">
+											{% if product.get_image_id() %}
+												<img src="{{ function('wp_get_attachment_image_url', product.get_image_id(), 'woocommerce_thumbnail') }}" alt="{{ product.get_name() }}" loading="lazy">
+											{% else %}
+												<div class="order-received__item-placeholder">{{ product.get_name()|first }}</div>
+											{% endif %}
+										</div>
+									{% endif %}
+
+									<!-- Item Details -->
+									<div class="order-received__item-details">
+										<h3 class="order-received__item-name">{{ item.get_name() }}</h3>
+
+										{% if item.get_meta_data() %}
+											<ul class="order-received__item-meta">
+												{% for meta in item.get_meta_data() %}
+													{% if meta.get_data().value %}
+														<li>{{ meta.get_data().key|title }}:
+															{{ meta.get_data().value }}</li>
+													{% endif %}
+												{% endfor %}
+											</ul>
+										{% endif %}
+
+										<div class="order-received__item-qty">Qty:
+											{{ item.get_quantity() }}</div>
+									</div>
+
+									<!-- Item Price -->
+									<div class="order-received__item-price">
+										{{ item.get_subtotal()|wc_price }}
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</section>
+
+					<!-- Order Totals Section -->
+					<section class="order-received__section">
+						<h2 class="order-received__section-title">Order Summary</h2>
+
+						<div class="order-received__totals">
+							<div class="order-received__total-row">
+								<span class="order-received__total-label">Subtotal</span>
+								<span class="order-received__total-value">{{ order_subtotal|wc_price }}</span>
+							</div>
+
+							{% if order_tax > 0 %}
+								<div class="order-received__total-row">
+									<span class="order-received__total-label">Tax</span>
+									<span class="order-received__total-value">{{ order_tax|wc_price }}</span>
+								</div>
+							{% endif %}
+
+							{% if order_shipping > 0 %}
+								<div class="order-received__total-row">
+									<span class="order-received__total-label">Shipping</span>
+									<span class="order-received__total-value">{{ order_shipping|wc_price }}</span>
+								</div>
+							{% endif %}
+
+							<div class="order-received__total-row order-received__total-row--final">
+								<span class="order-received__total-label">Total</span>
+								<span class="order-received__total-value">{{ order_total|wc_price }}</span>
+							</div>
+						</div>
+					</section>
+
+					<!-- Billing & Shipping Info Section -->
+					<section class="order-received__section">
+						<h2 class="order-received__section-title">Delivery & Billing Information</h2>
+
+						<div
+							class="order-received__info-grid">
+							<!-- Billing Address -->
+							<div class="order-received__info-block">
+								<h3 class="order-received__info-title">Billing Address</h3>
+								<address class="order-received__address">
+									{{ order.get_formatted_billing_address()|nl2br }}
+								</address>
+							</div>
+
+							<!-- Shipping Address -->
+							<div class="order-received__info-block">
+								<h3 class="order-received__info-title">Shipping Address</h3>
+								<address class="order-received__address">
+									{{ order.get_formatted_shipping_address()|nl2br }}
+								</address>
+							</div>
+						</div>
+
+						<!-- Shipping Method -->
+						<div class="order-received__shipping-method">
+							<strong>Shipping Method:</strong>
+							<span>{{ order.get_shipping_method() }}</span>
+						</div>
+					</section>
+
+					<!-- Invoice & Actions Section -->
+					<section class="order-received__section order-received__section--actions">
+						<h2 class="order-received__section-title">Next Steps</h2>
+
+						<div class="order-received__actions">
+							<a href="{{ function('wc_get_account_endpoint_url', 'view-order') }}/{{ order.get_id() }}/" class="order-received__btn order-received__btn--primary">
+								View Full Order Details
+							</a>
+
+							<a href="{{ function('wc_get_account_endpoint_url', 'orders') }}" class="order-received__btn order-received__btn--secondary">
+								Back to My Orders
+							</a>
+
+							<a href="{{ function('wc_get_page_permalink', 'shop') }}" class="order-received__btn order-received__btn--secondary">
+								Continue Shopping
+							</a>
+
+							<button class="order-received__btn order-received__btn--secondary" onclick="window.print()">
+								Print Invoice
+							</button>
+						</div>
+
+						<p class="order-received__help-text">
+							Have questions?
+							<a href="{{ site.link }}/contact">Contact our support team</a>
+							or check your email for order tracking information.
+						</p>
+					</section>
+				</div>
+
+				<!-- Sidebar -->
+				<aside
+					class="order-received__sidebar">
+					<!-- Order Status Timeline -->
+					<div class="order-received__timeline">
+						<h3 class="order-received__sidebar-title">Order Status</h3>
+
+						<div class="order-received__timeline-item order-received__timeline-item--active">
+							<div class="order-received__timeline-dot"></div>
+							<div class="order-received__timeline-content">
+								<strong>Order Placed</strong>
+								<span class="order-received__timeline-date">{{ order.get_date_created()|date('M d, Y H:i') }}</span>
+							</div>
+						</div>
+
+						<div class="order-received__timeline-item">
+							<div class="order-received__timeline-dot"></div>
+							<div class="order-received__timeline-content">
+								<strong>Processing</strong>
+								<span class="order-received__timeline-date">Usually within 24 hours</span>
+							</div>
+						</div>
+
+						<div class="order-received__timeline-item">
+							<div class="order-received__timeline-dot"></div>
+							<div class="order-received__timeline-content">
+								<strong>Shipped</strong>
+								<span class="order-received__timeline-date">You'll receive tracking info</span>
+							</div>
+						</div>
+
+						<div class="order-received__timeline-item">
+							<div class="order-received__timeline-dot"></div>
+							<div class="order-received__timeline-content">
+								<strong>Delivered</strong>
+								<span class="order-received__timeline-date">Track your package</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Customer Info -->
+					<div class="order-received__customer-info">
+						<h3 class="order-received__sidebar-title">Order Information</h3>
+
+						<div class="order-received__info-item">
+							<strong>Email:</strong>
+							<span>{{ order.get_billing_email() }}</span>
+						</div>
+
+						<div class="order-received__info-item">
+							<strong>Phone:</strong>
+							<span>{{ order.get_billing_phone() }}</span>
+						</div>
+
+						{% if current_user is not null %}
+							<div class="order-received__info-item">
+								<strong>Account:</strong>
+								<span>Logged in as
+									{{ current_user.display_name }}</span>
+							</div>
+						{% endif %}
+					</div>
+
+					<!-- Account Links -->
+					{% if current_user is not null %}
+						<nav class="order-received__nav">
+							<a href="{{ function('wc_get_account_endpoint_url', 'orders') }}" class="order-received__nav-link">
+								My Orders
+							</a>
+							<a href="{{ function('wc_get_account_endpoint_url', 'downloads') }}" class="order-received__nav-link">
+								Downloads
+							</a>
+							<a href="{{ function('wc_get_account_endpoint_url', 'edit-account') }}" class="order-received__nav-link">
+								Account Settings
+							</a>
+						</nav>
+					{% endif %}
+				</aside>
+			</div>
+		</div>
+	</div>
+
+	<!-- Print Styles -->
+	<style>
+		media="print"
+		.order-received__sidebar,
+		.order-received__section--actions {
+			display: none;
+		}
+
+		.order-received {
+			background: white;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+{% endblock %}

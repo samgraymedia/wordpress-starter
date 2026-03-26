@@ -1,3 +1,12 @@
+/**
+ * Blog Posts Block - BEM Methodology
+ *
+ * Block: .blog-posts-block
+ * Elements: .blog-posts-block__header, .blog-posts-block__title, .blog-posts-block__grid, .blog-posts-block__item
+ * Modifiers: .blog-posts-block--2cols, .blog-posts-block--3cols
+ */
+
+@import "../base/vars";
 // Blog Posts Block Styles
 
 .blog-posts-block {
@@ -9,19 +18,19 @@
 }
 
 .blog-posts-block__title {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: $font-2xl;
+  font-weight: $font-bold;
   color: $text-color;
   margin: 0 0 $spacing-4 0;
   text-align: center;
 
   @media (max-width: $breakpoint-md) {
-    font-size: 1.5rem;
+    font-size: $font-xl;
     margin-bottom: $spacing-3;
   }
 
   @media (max-width: $breakpoint-sm) {
-    font-size: 1.25rem;
+    font-size: $font-lg;
   }
 }
 
@@ -46,14 +55,14 @@
 .blog-posts-block__post {
   display: flex;
   flex-direction: column;
-  background-color: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+  background-color: $white;
+  border: 1px solid $gray-300;
+  border-radius: $border-radius-sm;
   overflow: hidden;
   transition: all $transition-normal;
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: $shadow-md;
     transform: translateY(-4px);
   }
 }
@@ -62,7 +71,7 @@
   width: 100%;
   height: 200px;
   overflow: hidden;
-  background-color: #f0f0f0;
+  background-color: $gray-100;
 
   @media (max-width: $breakpoint-md) {
     height: 180px;
@@ -99,8 +108,8 @@
 }
 
 .blog-posts-block__post-title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: $font-lg;
+  font-weight: $font-bold;
   color: $text-color;
   margin: 0 0 $spacing-2 0;
   line-height: 1.3;
@@ -117,7 +126,7 @@
 }
 
 .blog-posts-block__post-date {
-  font-size: 0.875rem;
+  font-size: $font-sm;
   color: $text-muted;
   margin: 0 0 $spacing-2 0;
 

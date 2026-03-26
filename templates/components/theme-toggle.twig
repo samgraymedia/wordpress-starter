@@ -2,6 +2,7 @@
 /**
  * Theme Toggle Component
  * Renders a toggle button for switching between light and dark modes
+ * Only displays if dark mode is enabled in ACF theme options
  * 
  * Usage:
  * {% include "components/theme-toggle.twig" %}
@@ -13,79 +14,46 @@
  */
 #}
 
-{%- set position = position|default('fixed') -%}
-{%- set placement = placement|default('top-right') -%}
-{%- set show_label = show_label|default(true) -%}
+{%- if function('get_field', 'enable_dark_mode', 'option') -%}
+	{%- set position = position|default('fixed') -%}
+	{%- set placement = placement|default('top-right') -%}
+	{%- set show_label = show_label|default(true) -%}
 
-<div class="theme-toggle" data-position="{{ position }}" data-placement="{{ placement }}">
-  <button
-    class="theme-toggle__button"
-    id="theme-toggle-btn"
-    aria-label="Toggle light and dark mode"
-    aria-pressed="{{ current_theme|default('light') == 'dark' ? 'true' : 'false' }}"
-    type="button"
-    title="Toggle dark mode (click to cycle: light → dark → system)"
-  >
-    {# Sun icon (light mode) #}
-    <svg
-      class="theme-toggle__icon theme-toggle__icon--light"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="5"></circle>
-      <line x1="12" y1="1" x2="12" y2="3"></line>
-      <line x1="12" y1="21" x2="12" y2="23"></line>
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-      <line x1="1" y1="12" x2="3" y2="12"></line>
-      <line x1="21" y1="12" x2="23" y2="12"></line>
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-    </svg>
+	<div class="theme-toggle" data-position="{{ position }}" data-placement="{{ placement }}">
+		<button
+			class="theme-toggle__button" id="theme-toggle-btn" aria-label="Toggle light and dark mode" aria-pressed="{{ current_theme|default('light') == 'dark' ? 'true' : 'false' }}" type="button" title="Toggle dark mode (click to cycle: light → dark → system)">
+			{# Sun icon (light mode) #}
+			<svg class="theme-toggle__icon theme-toggle__icon--light" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<circle cx="12" cy="12" r="5"></circle>
+				<line x1="12" y1="1" x2="12" y2="3"></line>
+				<line x1="12" y1="21" x2="12" y2="23"></line>
+				<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+				<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+				<line x1="1" y1="12" x2="3" y2="12"></line>
+				<line x1="21" y1="12" x2="23" y2="12"></line>
+				<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+				<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+			</svg>
 
-    {# Moon icon (dark mode) #}
-    <svg
-      class="theme-toggle__icon theme-toggle__icon--dark"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path
-        d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
-      ></path>
-    </svg>
+			{# Moon icon (dark mode) #}
+			<svg class="theme-toggle__icon theme-toggle__icon--dark" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+			</svg>
 
-    {# System icon (auto mode) #}
-    <svg
-      class="theme-toggle__icon theme-toggle__icon--system"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-      <line x1="2" y1="20" x2="22" y2="20"></line>
-    </svg>
-  </button>
+			{# System icon (auto mode) #}
+			<svg class="theme-toggle__icon theme-toggle__icon--system" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+				<line x1="2" y1="20" x2="22" y2="20"></line>
+			</svg>
+		</button>
 
-  {# Text labels (optional) #}
-  {%- if show_label -%}
-  <div class="theme-toggle__labels" aria-hidden="true">
-    <span class="theme-toggle__label theme-toggle__label--light">Light</span>
-    <span class="theme-toggle__label theme-toggle__label--dark">Dark</span>
-    <span class="theme-toggle__label theme-toggle__label--system">Auto</span>
-  </div>
-  {%- endif -%}
-</div>
+		{# Text labels (optional) #}
+		{%- if show_label -%}
+			<div class="theme-toggle__labels" aria-hidden="true">
+				<span class="theme-toggle__label theme-toggle__label--light">Light</span>
+				<span class="theme-toggle__label theme-toggle__label--dark">Dark</span>
+				<span class="theme-toggle__label theme-toggle__label--system">Auto</span>
+			</div>
+		{%- endif -%}
+	</div>
+{%- endif -%}

@@ -1,3 +1,12 @@
+/**
+ * Logo Grid Block - BEM Methodology
+ * Block: .logo-grid
+ * Elements: .logo-grid__item, .logo-grid__image, .logo-grid__link
+ * Modifiers: .logo-grid--2cols, .logo-grid--3cols, .logo-grid--4cols, .logo-grid--5cols
+ */
+
+@import "../base/vars";
+
 // Logo Grid Block Styling
 
 .logo-grid {

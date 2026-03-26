@@ -1,3 +1,12 @@
+/**
+ * Gallery Block - BEM Methodology
+ * Block: .gallery
+ * Elements: .gallery__grid, .gallery__item, .gallery__image, .gallery__link
+ * Modifiers: .gallery--2cols, .gallery--3cols, .gallery--4cols
+ */
+
+@import "../base/vars";
+
 // Gallery Block Styling
 
 .gallery {

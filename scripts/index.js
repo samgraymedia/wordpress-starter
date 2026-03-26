@@ -40,6 +40,7 @@ import { Dropdown } from "./components/Dropdown.js";
 
 // Import modules
 import { initCart } from "./modules/cart.js";
+import { initCheckout } from "./modules/checkout.js";
 import { initSearch } from "./modules/search.js";
 import { initForms } from "./modules/forms.js";
 import { initCookieConsent } from "./modules/cookie-consent.js";
@@ -47,6 +48,7 @@ import themeToggle from "./modules/theme-toggle.js";
 
 // Import feature scripts (side-effect modules that auto-initialize)
 import "./gallery.js";
+import "./product-gallery.js";
 import "./slider.js";
 import "./video.js";
 import "./accordion.js";
@@ -99,6 +101,10 @@ function initTheme() {
     Logger.debug("[Theme] Initializing Cart module...");
     initCart();
     Logger.debug("[Theme] Cart module initialized");
+
+    Logger.debug("[Theme] Initializing Checkout module...");
+    initCheckout();
+    Logger.debug("[Theme] Checkout module initialized");
 
     Logger.debug("[Theme] Initializing Search module...");
     initSearch();

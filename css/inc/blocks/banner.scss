@@ -1,3 +1,12 @@
+/**
+ * Banner / Promo Block - BEM Methodology
+ * Block: .banner
+ * Elements: .banner__overlay, .banner__content, .banner__title, .banner__subtitle
+ * Modifiers: .banner--has-image
+ */
+
+@import "../base/vars";
+
 // Banner / Promo Block Styling
 
 .banner {
