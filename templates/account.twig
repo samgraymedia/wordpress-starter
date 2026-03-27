@@ -54,7 +54,29 @@
 							</svg>
 							Account Settings
 						</a>
+						{% if wishlist_count is defined %}
+							<a href="{{ wishlist_url }}" class="account-page__nav-link">
+								<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+								</svg>
+								Wishlist
+								{% if wishlist_count > 0 %}
+									<span class="account-page__badge">{{ wishlist_count }}</span>
+								{% endif %}
+							</a>
+						{% endif %}
 
+						{% if comparison_count is defined %}
+							<a href="{{ comparison_url }}" class="account-page__nav-link">
+								<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M8 3h8M8 3v18M8 3H4m4 0h12v2H8v-2M8 9h12v2H8v-2M8 15h12v2H8v-2" stroke="currentColor"/>
+								</svg>
+								Compare
+								{% if comparison_count > 0 %}
+									<span class="account-page__badge">{{ comparison_count }}</span>
+								{% endif %}
+							</a>
+						{% endif %}
 						<a href="{{ function('wp_logout_url', function('home_url')) }}" class="account-page__nav-link account-page__nav-link--logout">
 							<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 								<path d="M10 3H6a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h4"></path>

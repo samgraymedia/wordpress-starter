@@ -15,6 +15,16 @@ require_once 'src/theme-config.php';
 require_once 'src/theme-options.php';
 require_once 'src/theme-toggle-options.php';
 require_once 'src/schema-organization.php';
+require_once 'src/seo-helpers.php';
+
+/**
+ * Load admin features and customization
+ */
+require_once 'src/admin/customizer-options.php';
+require_once 'src/admin/admin-dashboard.php';
+require_once 'src/admin/product-performance.php';
+require_once 'src/admin/analytics-integration.php';
+require_once 'src/admin/bulk-product-editing.php';
 
 /**
  * Load WooCommerce email customizations (if WooCommerce is active)
@@ -26,6 +36,20 @@ if ( class_exists( 'WooCommerce' ) ) {
 			require_once 'src/woocommerce-custom-emails.php';
 		}
 	});
+}
+
+/**
+ * Load WooCommerce Wishlist functionality
+ */
+if ( class_exists( 'WooCommerce' ) ) {
+	require_once 'src/woocommerce-wishlist.php';
+}
+
+/**
+ * Load WooCommerce Product Comparison functionality
+ */
+if ( class_exists( 'WooCommerce' ) ) {
+	require_once 'src/woocommerce-comparison.php';
 }
 
 /**
@@ -74,6 +98,24 @@ Timber::$dirname = $timber_config['directories'];
  */
 Timber::$autoescape = $timber_config['autoescape'];
 
+/**
+ * SECURITY: Prevent non-admin users from accessing wp-admin
+ * Clients and subscribers are redirected to the custom account page
+ */
+add_action( 'admin_init', function() {
+	// Only block if user is not an admin or editor
+	if ( is_user_logged_in() && ! current_user_can( 'manage_options' ) ) {
+		// Allow access only to profile and account-related pages
+		$allowed_screens = array( 'profile.php', 'profile' );
+		$current_screen  = get_current_screen();
+		
+		// If trying to access restricted area, redirect to custom account page
+		if ( $current_screen && ! in_array( $current_screen->base, $allowed_screens, true ) ) {
+			wp_redirect( home_url( '/account' ) );
+			exit;
+		}
+	}
+} );
 
 /**
  * We're going to configure our theme inside of a subclass of Timber\Site
@@ -85,9 +127,10 @@ class StarterSite extends Timber\Site {
 		add_action( 'after_setup_theme', array( $this, 'theme_supports' ) );
 		add_action( 'after_setup_theme', array( $this, 'create_default_menus' ), 15 );
 		add_action( 'after_setup_theme', array( $this, 'create_login_register_pages' ), 20 );
-		add_action( 'after_setup_theme', array( $this, 'create_home_page' ), 21 );
-		add_action( 'after_setup_theme', array( $this, 'create_blog_archive_page' ), 22 );
-		add_action( 'after_setup_theme', array( $this, 'delete_default_posts' ), 23 );
+		add_action( 'after_setup_theme', array( $this, 'create_account_page' ), 21 );
+		add_action( 'after_setup_theme', array( $this, 'create_home_page' ), 22 );
+		add_action( 'after_setup_theme', array( $this, 'create_blog_archive_page' ), 23 );
+		add_action( 'after_setup_theme', array( $this, 'delete_default_posts' ), 24 );
 		add_filter( 'timber/context', array( $this, 'add_to_context' ) );
 		add_filter( 'timber/twig', array( $this, 'add_to_twig' ) );
 		add_action( 'init', array( $this, 'register_post_types' ) );
@@ -200,6 +243,29 @@ class StarterSite extends Timber\Site {
 				'post_status' => 'publish',
 				'post_content' => '',
 			) );
+		}
+	}
+
+	/**
+	 * Create My Account page with the account.php template
+	 * Called during theme initialization
+	 */
+	public function create_account_page() {
+		// Create account page if it doesn't exist
+		$account_page = get_page_by_path( 'account' );
+		if ( ! $account_page ) {
+			$account_page_id = wp_insert_post( array(
+				'post_type'   => 'page',
+				'post_title'  => 'My Account',
+				'post_name'   => 'account',
+				'post_status' => 'publish',
+				'post_content' => '',
+			) );
+			
+			if ( $account_page_id && ! is_wp_error( $account_page_id ) ) {
+				// Assign the account.php template to this page
+				update_post_meta( $account_page_id, '_wp_page_template', 'account.php' );
+			}
 		}
 	}
 
@@ -485,6 +551,47 @@ if ( in_array( 'woocommerce/woocommerce.php', get_option( 'active_plugins', arra
 	require_once( 'src/woocommerce-product-meta.php' );
 	require_once( 'src/woocommerce-category-meta.php' );
 }
+
+/**
+ * Output SEO meta tags in <head>
+ * 
+ * Includes: Open Graph, Twitter Cards, Canonical tags, JSON-LD schemas
+ */
+add_action( 'wp_head', function() {
+	// Organization schema (site-wide)
+	theme_output_json_ld( theme_get_organization_schema() );
+	
+	// Open Graph meta tags
+	theme_output_open_graph();
+	
+	// Twitter Card meta tags
+	// UPDATE: Replace with your actual Twitter handle
+	theme_output_twitter_card( array(
+		'handle' => '@YourTwitterHandle',
+	) );
+	
+	// Canonical tag
+	theme_output_canonical();
+}, 5 );
+
+/**
+ * Output article/product schema for singular pages
+ */
+add_action( 'wp_head', function() {
+	if ( ! is_singular() ) {
+		return;
+	}
+	
+	// Article schema for posts and pages
+	if ( is_singular( 'post' ) || is_singular( 'page' ) ) {
+		theme_output_json_ld( theme_get_article_schema() );
+	}
+	
+	// Product schema for WooCommerce products
+	if ( is_singular( 'product' ) && function_exists( 'wc_get_product' ) ) {
+		theme_output_json_ld( theme_get_product_schema() );
+	}
+}, 5 );
 
 /**
  * Add lazy loading to product images

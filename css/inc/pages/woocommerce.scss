@@ -1311,6 +1311,122 @@
   }
 
   // ============================================================================
+  // ACTION BUTTONS (ADD TO CART + WISHLIST)
+  // ============================================================================
+
+  &__actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+
+    @media (max-width: 576px) {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+  }
+
+  &__comparison,
+  &__wishlist {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background: white;
+    color: var(--color-dark, #333);
+    border: 2px solid var(--color-border, #e5e5e5);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+
+    &:hover {
+      border-color: var(--color-primary, #0066cc);
+      color: var(--color-primary, #0066cc);
+      background: rgba(0, 102, 204, 0.05);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &.in-comparison {
+      background: #e3f2fd;
+      border-color: #0066cc;
+      color: #0066cc;
+
+      &:hover {
+        background: #bbdefb;
+        border-color: #0052a3;
+      }
+
+      i {
+        animation: scaleadd 0.3s ease;
+      }
+    }
+
+    &.in-wishlist {
+      background: #fff0f5;
+      border-color: #ff69b4;
+      color: #ff1493;
+
+      &:hover {
+        background: #ffe4f5;
+        border-color: #ff1493;
+      }
+
+      i {
+        animation: heartbeat 0.3s ease;
+      }
+    }
+
+    i {
+      font-size: 1.1rem;
+    }
+
+    .comparison-text,
+    .wishlist-text {
+      display: inline;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
+
+    @media (max-width: 576px) {
+      width: 100%;
+      justify-content: center;
+      flex: 1;
+    }
+  }
+
+  @keyframes scaleadd {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.15);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes heartbeat {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  // ============================================================================
   // PRODUCT META
   // ============================================================================
 

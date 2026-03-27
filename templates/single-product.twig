@@ -117,9 +117,19 @@
 									<label for="quantity">{{ _e('Quantity:', 'starter-theme-1.x') }}</label>
 									<input type="number" id="quantity" name="quantity" value="1" min="1" {% if stock_quantity %} max="{{ stock_quantity }}" {% endif %}>
 								</div>
-								<button type="submit" class="product-single__add-to-cart btn btn--primary">
-									{{ _e('Add to Cart', 'starter-theme-1.x') }}
-								</button>
+								<div class="product-single__actions">
+									<button type="submit" class="product-single__add-to-cart btn btn--primary">
+										{{ _e('Add to Cart', 'starter-theme-1.x') }}
+									</button>
+									<button type="button" class="product-single__comparison add-to-comparison-btn btn btn--secondary" data-product-id="{{ product.get_id() }}" title="{{ _e('Add to Comparison', 'starter-theme-1.x') }}">
+										<i class="icon-scale"></i>
+										<span class="comparison-text">{{ _e('Compare', 'starter-theme-1.x') }}</span>
+									</button>
+									<button type="button" class="product-single__wishlist add-to-wishlist-btn btn btn--secondary" data-product-id="{{ product.get_id() }}" title="{{ _e('Add to Wishlist', 'starter-theme-1.x') }}">
+										<i class="icon-heart"></i>
+										<span class="wishlist-text">{{ _e('Wishlist', 'starter-theme-1.x') }}</span>
+									</button>
+								</div>
 							</form>
 						{% else %}
 							<div class="product-single__out-of-stock">
@@ -255,28 +265,28 @@
 							{# Product Schema Markup - SEO Enhancement #}
 							<script type="application/ld+json">
 								{
-																																																																																					"@context": "https://schema.org",
-																																																																																					"@type": "Product",
-																																																																																					"name": "{{ product.get_title() }}",
-																																																																																					"description": "{{ product.get_short_description()|striptags|slice(0, 360) }}",
-																																																																																					"brand": {
-																																																																																						"@type": "Brand",
-																																																																																						"name": "{{ site.name }}"
-																																																																																					},
-																																																																																					"image": "{{ function('wp_get_attachment_image_url', product.get_image_id(), 'full') }}",
-																																																																																					"offers": {
-																																																																																						"@type": "Offer",
-																																																																																						"url": "{{ product.get_permalink() }}",
-																																																																																						"priceCurrency": "{{ function('get_woocommerce_currency') }}",
-																																																																																						"price": "{{ product.get_price() }}",
-																																																																																						"availability": "{{ (function('get_post_meta', product.get_id(), '_stock_status', true) == 'instock') ? 'InStock' : 'OutOfStock' }}"
-																																																																																					}
+																																																																																																					"@context": "https://schema.org",
+																																																																																																					"@type": "Product",
+																																																																																																					"name": "{{ product.get_title() }}",
+																																																																																																					"description": "{{ product.get_short_description()|striptags|slice(0, 360) }}",
+																																																																																																					"brand": {
+																																																																																																						"@type": "Brand",
+																																																																																																						"name": "{{ site.name }}"
+																																																																																																					},
+																																																																																																					"image": "{{ function('wp_get_attachment_image_url', product.get_image_id(), 'full') }}",
+																																																																																																					"offers": {
+																																																																																																						"@type": "Offer",
+																																																																																																						"url": "{{ product.get_permalink() }}",
+																																																																																																						"priceCurrency": "{{ function('get_woocommerce_currency') }}",
+																																																																																																						"price": "{{ product.get_price() }}",
+																																																																																																						"availability": "{{ (function('get_post_meta', product.get_id(), '_stock_status', true) == 'instock') ? 'InStock' : 'OutOfStock' }}"
+																																																																																																					}
 								{% if product.get_average_rating() > 0 %},
-																																																																																																"aggregateRating": {
-																																																																																																	"@type": "AggregateRating",
-																																																																																																	"ratingValue": "{{ product.get_average_rating() }}",
-																																																																																																	"reviewCount": "{{ product.get_review_count() }}"
-																																																																																																}
+																																																																																																																		"aggregateRating": {
+																																																																																																																			"@type": "AggregateRating",
+																																																																																																																			"ratingValue": "{{ product.get_average_rating() }}",
+																																																																																																																			"reviewCount": "{{ product.get_review_count() }}"
+																																																																																																																		}
 								{% endif %}
 								}
 							</script>

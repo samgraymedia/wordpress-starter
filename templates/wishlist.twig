@@ -1,0 +1,307 @@
+{% extends "base.twig" %}
+
+{% block content %}
+	<main class="content-wrapper">
+		<div
+			class="container py-5">
+			<!-- Header -->
+			<div class="row mb-5">
+				<div class="col-md-8">
+					<h1 class="page-title">
+						<i class="icon-heart"></i>
+						My Wishlist
+					</h1>
+					<p class="text-muted">
+						You have
+						<strong>{{ wishlist_count }}</strong>
+						item{{ wishlist_count != 1 ? 's' : '' }}
+						saved
+					</p>
+				</div>
+				<div class="col-md-4 text-end">
+					{% if not is_empty %}
+						<button class="btn btn-outline-secondary" id="clear-wishlist-btn" data-bs-toggle="modal" data-bs-target="#clearWishlistModal">
+							<i class="icon-trash"></i>
+							Clear Wishlist
+						</button>
+					{% endif %}
+				</div>
+			</div>
+
+			{% if is_empty %}
+				<!-- Empty State -->
+				<div class="alert alert-info text-center py-5">
+					<i class="icon-heart" style="font-size: 3rem; opacity: 0.3;"></i>
+					<h3 class="mt-3">Your wishlist is empty</h3>
+					<p class="text-muted mb-4">Start saving your favorite products!</p>
+					<a href="{{ site.link }}/shop/" class="btn btn-primary">
+						<i class="icon-arrow-left"></i>
+						Back to Shop
+					</a>
+				</div>
+			{% else %}
+				<!-- Wishlist Grid -->
+				<div class="row">
+					{% for item in wishlist_products %}
+						<div class="col-md-6 col-lg-4 mb-4 wishlist-item" data-product-id="{{ item.product_id }}">
+							<div
+								class="card h-100 wishlist-card">
+								<!-- Product Image -->
+								<a href="{{ item.permalink }}" class="wishlist-card__image">
+									{% if item.image %}
+										{{ item.image|raw }}
+									{% else %}
+										<img src="https://via.placeholder.com/300x300?text=No+Image" alt="{{ item.title }}" class="img-fluid">
+									{% endif %}
+
+									{% if item.on_sale %}
+										<span class="badge bg-danger position-absolute top-0 end-0 m-3">Sale</span>
+									{% endif %}
+								</a>
+
+								<!-- Product Details -->
+								<div class="card-body d-flex flex-column">
+									<h5 class="card-title">{{ item.title }}</h5>
+
+									<!-- Price -->
+									<div class="mb-3">
+										{% if item.on_sale %}
+											<span class="h6 text-muted">
+												<del>${{ item.sale_price }}</del>
+											</span>
+											<span class="h6 text-danger">
+												<strong>${{ item.price }}</strong>
+											</span>
+										{% else %}
+											<span class="h6">
+												<strong>${{ item.price }}</strong>
+											</span>
+										{% endif %}
+									</div>
+
+									<!-- Stock Status -->
+									<div class="mb-3">
+										{% if item.in_stock %}
+											<span class="badge bg-success">In Stock</span>
+										{% else %}
+											<span class="badge bg-danger">Out of Stock</span>
+										{% endif %}
+									</div>
+
+									<!-- Action Buttons -->
+									<div class="mt-auto btn-group-vertical gap-2">
+										{% if item.in_stock %}
+											<button class="btn btn-primary btn-sm move-to-cart-btn" data-product-id="{{ item.product_id }}">
+												<i class="icon-cart"></i>
+												Move to Cart
+											</button>
+										{% endif %}
+
+										<button class="btn btn-outline-danger btn-sm remove-from-wishlist-btn" data-product-id="{{ item.product_id }}">
+											<i class="icon-trash"></i>
+											Remove
+										</button>
+
+										<a href="{{ item.permalink }}" class="btn btn-outline-secondary btn-sm">
+											<i class="icon-eye"></i>
+											View Product
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+
+				<!-- Continue Shopping Button -->
+				<div class="row mt-5">
+					<div class="col-12 text-center">
+						<a href="{{ site.link }}/shop/" class="btn btn-outline-primary btn-lg">
+							<i class="icon-arrow-left"></i>
+							Continue Shopping
+						</a>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	</main>
+
+	<!-- Clear Wishlist Modal -->
+	<div class="modal fade" id="clearWishlistModal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Clear Wishlist</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					<p>Are you sure you want to clear your entire wishlist? This action cannot be undone.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-danger" id="confirm-clear-wishlist">Clear Wishlist</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<style>
+		.wishlist-card {
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+			border: 1px solid #e9ecef;
+		}
+
+		.wishlist-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+		}
+
+		.wishlist-card__image {
+			overflow: hidden;
+			height: 250px;
+			display: block;
+			position: relative;
+		}
+
+		.wishlist-card__image img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transition: transform 0.3s ease;
+		}
+
+		.wishlist-card:hover .wishlist-card__image img {
+			transform: scale(1.05);
+		}
+
+		.wishlist-card .badge {
+			font-size: 0.75rem;
+		}
+
+		.wishlist-item {
+			animation: fadeIn 0.3s ease;
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: translateY(10px);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		.wishlist-toast {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			padding: 15px 20px;
+			border-radius: 4px;
+			color: white;
+			font-weight: 500;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+			z-index: 9999;
+			opacity: 0;
+			transform: translateY(20px);
+			transition: opacity 0.3s ease, transform 0.3s ease;
+			max-width: 300px;
+		}
+
+		.wishlist-toast.show {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.wishlist-toast.success {
+			background-color: #28a745;
+		}
+
+		.wishlist-toast.error {
+			background-color: #dc3545;
+		}
+
+		.wishlist-toast.info {
+			background-color: #17a2b8;
+		}
+
+		.btn-group-vertical .btn {
+			border-radius: 4px;
+		}
+
+		/* Wishlist button styling */
+		.wishlist-btn,
+		.add-to-wishlist-btn {
+			background: none;
+			border: 1px solid #ccc;
+			border-radius: 50%;
+			width: 40px;
+			height: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			position: relative;
+		}
+
+		.wishlist-btn:hover,
+		.add-to-wishlist-btn:hover {
+			border-color: #ff6b6b;
+			background-color: #ffe0e0;
+		}
+
+		.wishlist-btn.in-wishlist,
+		.add-to-wishlist-btn.in-wishlist {
+			background-color: #ff6b6b;
+			border-color: #ff6b6b;
+			color: white;
+		}
+
+		.wishlist-btn.in-wishlist:hover,
+		.add-to-wishlist-btn.in-wishlist:hover {
+			background-color: #ff5252;
+			border-color: #ff5252;
+		}
+
+		.wishlist-count {
+			position: absolute;
+			top: -8px;
+			right: -8px;
+			background-color: #ff6b6b;
+			color: white;
+			border-radius: 50%;
+			width: 24px;
+			height: 24px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 0.75rem;
+			font-weight: bold;
+		}
+
+		.wishlist-count.hidden {
+			display: none;
+		}
+	</style>
+
+	<script>
+		document.getElementById('confirm-clear-wishlist') ?. addEventListener('click', function () {
+fetch(themeWishlist.ajax_url, {
+method: 'POST',
+headers: {
+'Content-Type': 'application/x-www-form-urlencoded'
+},
+body: new URLSearchParams(
+{action: 'theme_clear_wishlist', nonce: themeWishlist.nonce}
+)
+}).then((response) => response.json()).then((data) => {
+if (data.success) {
+window.location.reload();
+}
+});
+});
+	</script>
+{% endblock %}

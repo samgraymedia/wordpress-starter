@@ -1,0 +1,43 @@
+/**
+ * Wishlist Button Block - Editor Styles
+ */
+
+.wp-block-starter-theme-1-x-wishlist-button {
+  padding: 15px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.wp-block-starter-theme-1-x-wishlist-button .wishlist-button-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.wp-block-starter-theme-1-x-wishlist-button .wishlist-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  min-height: 40px;
+}
+
+.wp-block-starter-theme-1-x-wishlist-button .wishlist-btn:hover {
+  border-color: #ff6b6b;
+  background-color: #ffe0e0;
+  color: #ff6b6b;
+}
+
+.wp-block-starter-theme-1-x-wishlist-button .wishlist-btn.in-wishlist {
+  background-color: #ff6b6b;
+  border-color: #ff6b6b;
+  color: white;
+}
