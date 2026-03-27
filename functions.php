@@ -17,6 +17,18 @@ require_once 'src/theme-toggle-options.php';
 require_once 'src/schema-organization.php';
 
 /**
+ * Load WooCommerce email customizations (if WooCommerce is active)
+ * Deferred to woocommerce_loaded hook to ensure WC_Email class is available
+ */
+if ( class_exists( 'WooCommerce' ) ) {
+	add_action( 'woocommerce_loaded', function() {
+		if ( class_exists( 'WC_Email' ) && ! class_exists( 'Theme_Email_Abandoned_Cart' ) ) {
+			require_once 'src/woocommerce-custom-emails.php';
+		}
+	});
+}
+
+/**
  * If you are installing Timber as a Composer dependency in your theme, you'll need this block
  * to load your dependencies and initialize Timber. If you are using Timber via the WordPress.org
  * plug-in, you can safely delete this block.

@@ -98,6 +98,11 @@ function handleFormSubmit(e) {
 function validateField(e) {
   const field = e.target;
 
+  // Skip validation for search-input
+  if (field.id === "search-input") {
+    return;
+  }
+
   if (!field.checkValidity()) {
     addClass(field, "is-invalid");
     showFieldError(field);
@@ -116,6 +121,11 @@ function validateForm(form) {
   let isValid = true;
 
   querySelectorAll("input, textarea, select", form).forEach((field) => {
+    // Skip validation for search-input
+    if (field.id === "search-input") {
+      return;
+    }
+
     if (!field.checkValidity()) {
       addClass(field, "is-invalid");
       showFieldError(field);

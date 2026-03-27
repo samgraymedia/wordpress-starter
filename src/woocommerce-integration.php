@@ -18,6 +18,21 @@ add_action( 'template_redirect', function() {
 	if ( $is_cart_page ) {
 		$context = Timber::context();
 		$context['woocommerce_cart'] = WC()->cart;
+		
+		// Calculate cart totals for display
+		$cart = WC()->cart;
+		$subtotal = (float) $cart->get_cart_contents_total();
+		$shipping = (float) $cart->get_shipping_total();
+		$tax = (float) $cart->get_total_tax();
+		$total = $subtotal + $shipping + $tax;
+		
+		$context['cart_totals'] = array(
+			'subtotal' => $subtotal,
+			'shipping' => $shipping,
+			'tax'      => $tax,
+			'total'    => $total
+		);
+		
 		Timber::render( 'cart.twig', $context );
 		exit;
 	}
@@ -26,6 +41,21 @@ add_action( 'template_redirect', function() {
 	if ( is_checkout() && ! is_order_received_page() ) {
 		$context = Timber::context();
 		$context['checkout'] = WC()->checkout();
+		
+		// Calculate cart totals for display
+		$cart = WC()->cart;
+		$subtotal = (float) $cart->get_cart_contents_total();
+		$shipping = (float) $cart->get_shipping_total();
+		$tax = (float) $cart->get_total_tax();
+		$total = $subtotal + $shipping + $tax;
+		
+		$context['cart_totals'] = array(
+			'subtotal' => $subtotal,
+			'shipping' => $shipping,
+			'tax'      => $tax,
+			'total'    => $total
+		);
+		
 		Timber::render( 'checkout.twig', $context );
 		exit;
 	}
@@ -86,6 +116,62 @@ add_action( 'template_redirect', function() {
 	// Shop/archives
 	if ( is_product_category() || is_product_tag() || is_shop() ) {
 		$context = Timber::context();
+		
+		// Query products directly using WooCommerce args
+		// Do NOT use the global $wp_query, as it contains the shop page itself, not products
+		$paged = get_query_var('paged') ? get_query_var('paged') : 1;
+		$posts_per_page = get_option('posts_per_page');
+		
+		$args = array(
+			'post_type' => 'product',
+			'posts_per_page' => $posts_per_page,
+			'paged' => $paged,
+			'orderby' => get_query_var('orderby') ? get_query_var('orderby') : 'date',
+			'order' => 'DESC',
+			'tax_query' => array(),
+		);
+		
+		// Add category filtering
+		if ( is_product_category() ) {
+			$cat_id = get_queried_object_id();
+			if ( $cat_id ) {
+				$args['tax_query'][] = array(
+					'taxonomy' => 'product_cat',
+					'field' => 'term_id',
+					'terms' => $cat_id,
+				);
+			}
+		}
+		
+		// Add tag filtering
+		if ( is_product_tag() ) {
+			$tag_id = get_queried_object_id();
+			if ( $tag_id ) {
+				$args['tax_query'][] = array(
+					'taxonomy' => 'product_tag',
+					'field' => 'term_id',
+					'terms' => $tag_id,
+				);
+			}
+		}
+		
+		$product_query = new WP_Query( $args );
+		
+		$products = [];
+		if ( $product_query->have_posts() ) {
+			while ( $product_query->have_posts() ) {
+				$product_query->the_post();
+				$product = wc_get_product( get_the_ID() );
+				if ( $product ) {
+					$products[] = $product;
+				}
+			}
+			wp_reset_postdata();
+		}
+		
+		$context['posts'] = $products;
+		$context['wp_query'] = $product_query; // For pagination
+		
 		Timber::render( 'shop.twig', $context );
 		exit;
 	}

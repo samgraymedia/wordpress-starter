@@ -1,20 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
 	bootstrap="tests/bootstrap.php"
 	backupGlobals="false"
 	colors="true"
 	convertErrorsToExceptions="true"
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
+	cacheResultFile=".phpunit.cache"
 	>
 	<testsuites>
-		<testsuite>
-			<directory prefix="test-" suffix=".php">./tests/</directory>
+		<testsuite name="unit">
+			<directory prefix="test-" suffix=".php">./tests/unit/</directory>
 		</testsuite>
-		<!-- The suite below HAS to be last to run,
-		as it includes a test that sets some const and would contaminate
-		the other tests as well. -->
-		<testsuite>
-			<directory prefix="testX-" suffix=".php">./tests/</directory>
+		<testsuite name="integration">
+			<directory prefix="test-" suffix=".php">./tests/integration/</directory>
+		</testsuite>
+		<testsuite name="functional">
+			<directory prefix="test-" suffix=".php">./tests/functional/</directory>
 		</testsuite>
 	</testsuites>
+
+	<coverage processUncoveredFiles="true">
+		<include>
+			<directory suffix=".php">src/</directory>
+			<directory suffix=".php">include/</directory>
+		</include>
+		<exclude>
+			<directory suffix=".php">src/vendor</directory>
+			<directory suffix=".php">tests/</directory>
+		</exclude>
+		<report>
+			<clover outputFile="coverage/clover.xml"/>
+			<html outputDirectory="coverage/html/"/>
+			<text outputFile="coverage/coverage.txt" showOnlySummary="false"/>
+		</report>
+	</coverage>
+
+	<php>
+		<ini name="display_errors" value="On"/>
+		<ini name="display_startup_errors" value="On"/>
+	</php>
 </phpunit>

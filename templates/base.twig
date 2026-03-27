@@ -8,28 +8,11 @@
 <header class="header" role="banner">
 	{% block header %}
 		<div class="wrapper">
-			{% set header_menu = function('wp_get_nav_menu_items', function('get_nav_menu_locations')['header'] ?? 0) %}
 			<nav id="nav-main" class="nav-main" aria-label="{{ _e('Main Navigation') }}">
-				{% if header_menu %}
-					<ul class="nav-menu">
-						{% for item in header_menu %}
-							<li class="nav-menu__item">
-								<a href="{{ item.url }}" class="nav-menu__link">{{ item.title }}</a>
-							</li>
-						{% endfor %}
-					</ul>
-				{% endif %}
+				{% set header_menu = function('wp_get_nav_menu_items', function('get_nav_menu_locations')['header'] ?? 0) %}
+				{% include "menu.twig" with {'items': header_menu} %}
 			</nav>
-			{% if function('class_exists', 'WooCommerce') %}
-				<div class="header__utilities">
-					<div class="header__search">
-						{% include "components/search-form.twig" %}
-					</div>
-					<div class="header__account">
-						{% include "components/user-account.twig" %}
-					</div>
-				</div>
-			{% endif %}
+
 		</div>
 	{% endblock %}
 </header>

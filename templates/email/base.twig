@@ -1,0 +1,395 @@
+{# Base Email Template
+   
+   This is the base template for all WooCommerce transactional emails.
+   
+   Available variables:
+   - heading: Email heading text
+   - order: WC_Order object (for order-related emails)
+   - customer_name: Customer name
+   - site_name: Site/store name
+   - additional_content: Custom content from admin
+   - preview_text: Email preview text (shown before opening)
+#}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="{{ site.charset | default('UTF-8') }}">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>{{ heading | default('Order Notification') }}</title>
+		<style>
+			/* Email-Safe Base Styles */
+			body {
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+				line-height: 1.6;
+				color: #212529;
+				background-color: #f9fafb;
+				margin: 0;
+				padding: 0;
+			}
+
+			table {
+				border-collapse: collapse;
+				width: 100%;
+				max-width: 600px;
+				margin: 0 auto;
+			}
+
+			img {
+				max-width: 100%;
+				height: auto;
+				display: block;
+			}
+
+			/* Color Palette */
+			.color-primary {
+				color: #0066cc;
+			}
+			.bg-primary {
+				background-color: #0066cc;
+			}
+			.border-primary {
+				border-color: #0066cc;
+			}
+
+			.color-success {
+				color: #28a745;
+			}
+			.bg-success {
+				background-color: #28a745;
+			}
+
+			.color-warning {
+				color: #ffc107;
+			}
+			.bg-warning {
+				background-color: #ffc107;
+			}
+
+			.color-danger {
+				color: #dc3545;
+			}
+			.bg-danger {
+				background-color: #dc3545;
+			}
+
+			.color-text {
+				color: #212529;
+			}
+			.color-text-muted {
+				color: #6c757d;
+			}
+			.bg-light {
+				background-color: #f9fafb;
+			}
+
+			/* Typography */
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				margin: 0 0 1rem;
+				line-height: 1.2;
+			}
+
+			h1 {
+				font-size: 28px;
+				font-weight: 700;
+			}
+
+			h2 {
+				font-size: 22px;
+				font-weight: 700;
+			}
+
+			h3 {
+				font-size: 18px;
+				font-weight: 600;
+			}
+
+			p {
+				margin: 0 0 1rem;
+			}
+
+			a {
+				color: #0066cc;
+				text-decoration: none;
+			}
+
+			a:hover {
+				text-decoration: underline;
+			}
+
+			.button {
+				display: inline-block;
+				padding: 12px 24px;
+				background-color: #0066cc;
+				color: white;
+				text-decoration: none;
+				border-radius: 4px;
+				font-weight: 600;
+				margin: 1rem 0;
+				border: none;
+				cursor: pointer;
+			}
+
+			.button:hover {
+				background-color: #0052a3;
+				text-decoration: none;
+			}
+
+			/* Spacing & Layout */
+			.container {
+				max-width: 600px;
+				margin: 0 auto;
+				background-color: white;
+			}
+
+			.header {
+				padding: 30px 20px;
+				background-color: #f9fafb;
+				border-bottom: 1px solid #dee2e6;
+			}
+
+			.logo {
+				max-width: 180px;
+				height: auto;
+			}
+
+			.content {
+				padding: 30px 20px;
+			}
+
+			.footer {
+				background-color: #f9fafb;
+				border-top: 1px solid #dee2e6;
+				padding: 20px;
+				font-size: 12px;
+				color: #6c757d;
+				text-align: center;
+			}
+
+			.footer a {
+				color: #0066cc;
+			}
+
+			/* Divider */
+			hr {
+				border: none;
+				border-top: 1px solid #dee2e6;
+				margin: 20px 0;
+			}
+
+			/* Order Table */
+			.order-table {
+				width: 100%;
+				border-collapse: collapse;
+				margin: 20px 0;
+			}
+
+			.order-table th {
+				background-color: #f9fafb;
+				padding: 10px;
+				text-align: left;
+				border-bottom: 2px solid #dee2e6;
+				font-weight: 600;
+			}
+
+			.order-table td {
+				padding: 10px;
+				border-bottom: 1px solid #dee2e6;
+			}
+
+			.order-table .text-right {
+				text-align: right;
+			}
+
+			/* Alert Boxes */
+			.alert {
+				padding: 15px;
+				margin: 15px 0;
+				border-radius: 4px;
+				border-left: 4px solid #dee2e6;
+			}
+
+			.alert-info {
+				background-color: #e7f3ff;
+				border-left-color: #0066cc;
+				color: #004085;
+			}
+
+			.alert-success {
+				background-color: #d4edda;
+				border-left-color: #28a745;
+				color: #155724;
+			}
+
+			.alert-warning {
+				background-color: #fff3cd;
+				border-left-color: #ffc107;
+				color: #856404;
+			}
+
+			.alert-danger {
+				background-color: #f8d7da;
+				border-left-color: #dc3545;
+				color: #721c24;
+			}
+
+			/* Media Queries for Mobile */
+			@media only screen and(max-width: 600px) {
+				.container {
+					width: 100% !important;
+				}
+
+				.header,
+				.content,
+				.footer {
+					padding: 20px 15px !important;
+				}
+
+				h1 {
+					font-size: 22px !important;
+				}
+
+				h2 {
+					font-size: 18px !important;
+				}
+
+				.order-table {
+					font-size: 14px !important;
+				}
+
+				.button {
+					display: block !important;
+					width: 100% !important;
+					padding: 12px !important;
+					text-align: center !important;
+				}
+			}
+
+			/* Utility Classes */
+			.text-center {
+				text-align: center;
+			}
+			.text-right {
+				text-align: right;
+			}
+			.text-muted {
+				color: #6c757d;
+			}
+			.mt-0 {
+				margin-top: 0;
+			}
+			.mt-1 {
+				margin-top: 8px;
+			}
+			.mt-2 {
+				margin-top: 16px;
+			}
+			.mt-3 {
+				margin-top: 24px;
+			}
+			.mb-0 {
+				margin-bottom: 0;
+			}
+			.mb-1 {
+				margin-bottom: 8px;
+			}
+			.mb-2 {
+				margin-bottom: 16px;
+			}
+			.mb-3 {
+				margin-bottom: 24px;
+			}
+			.p-0 {
+				padding: 0;
+			}
+			.p-1 {
+				padding: 8px;
+			}
+			.p-2 {
+				padding: 16px;
+			}
+			.p-3 {
+				padding: 24px;
+			}
+		</style>
+	</head>
+	<body>
+		{% if preview_text %}
+			{# Hidden preview text for email clients #}
+			<div style="display:none; font-size:1px; color:#fefefe; line-height:1px; font-family:Arial,sans-serif; max-height:0px; max-width:0px; opacity:0; overflow:hidden;">
+				{{ preview_text }}
+			</div>
+		{% endif %}
+
+		<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+			<tr>
+				<td align="center" style="padding: 20px 0;">
+					<table
+						role="presentation" class="container" cellpadding="0" cellspacing="0" border="0">
+
+						{# Email Header #}
+						<tr>
+							<td class="header">
+								{% if site.logo %}
+									<img src="{{ site.logo.src }}" alt="{{ site.name }}" class="logo" style="max-width: 180px;">
+								{% else %}
+									<div style="font-size: 24px; font-weight: bold; color: #0066cc;">{{ site.name }}</div>
+								{% endif %}
+							</td>
+						</tr>
+
+						{# Email Content (Slot for Child Template) #}
+						<tr>
+							<td class="content">
+								{% block email_content %}
+									{# Child template content goes here #}
+									<h1>{{ heading }}</h1>
+									<p>This is a notification email.</p>
+								{% endblock %}
+							</td>
+						</tr>
+
+						{# Email Footer #}
+						<tr>
+							<td class="footer">
+								<p class="mb-1">
+									<strong>{{ site.name }}</strong>
+								</p>
+
+								{% if store_address %}
+									<p class="text-muted mb-1">
+										{{ store_address | raw }}
+									</p>
+								{% endif %}
+
+								{% if additional_content %}
+									<hr style="margin: 15px 0;">
+									<div style="font-size: 13px; line-height: 1.5;">
+										{{ additional_content | raw }}
+									</div>
+								{% endif %}
+
+								<hr style="margin: 15px 0;">
+
+								<p class="text-muted mb-1">
+									<a href="{{ site.url }}">Visit our website</a>
+								</p>
+
+								<p class="text-muted" style="margin: 0; font-size: 11px;">
+									©
+									{{ 'now'|date('Y') }}
+									{{ site.name }}. All rights reserved.
+								</p>
+							</td>
+						</tr>
+
+					</table>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

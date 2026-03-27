@@ -185,7 +185,7 @@
 									<div class="cart-page__total-row">
 										<span class="cart-page__total-label">{{ _e('Subtotal', 'woocommerce') }}:</span>
 										<span class="cart-page__total-value">
-											{{ woocommerce_cart.get_subtotal()|wc_price|safe }}
+											{{ cart_totals.subtotal|wc_price|safe }}
 										</span>
 									</div>
 
@@ -194,7 +194,7 @@
 										<span class="cart-page__total-label">{{ _e('Shipping', 'woocommerce') }}:</span>
 										<span class="cart-page__total-value">
 											{% if woocommerce_cart.needs_shipping() %}
-												{{ woocommerce_cart.get_shipping_total()|wc_price|safe }}
+												{{ cart_totals.shipping|wc_price|safe }}
 											{% else %}
 												{{ _e('Calculated at checkout', 'woocommerce') }}
 											{% endif %}
@@ -202,11 +202,11 @@
 									</div>
 
 									{# Tax #}
-									{% if woocommerce_cart.get_tax_totals() %}
+									{% if cart_totals.tax is defined and (cart_totals.tax|default(0)) > 0 %}
 										<div class="cart-page__total-row">
 											<span class="cart-page__total-label">{{ _e('Tax', 'woocommerce') }}:</span>
 											<span class="cart-page__total-value">
-												{{ woocommerce_cart.get_tax_total()|wc_price|safe }}
+												{{ cart_totals.tax|wc_price|safe }}
 											</span>
 										</div>
 									{% endif %}
@@ -215,7 +215,7 @@
 									<div class="cart-page__total-row cart-page__total-row--final">
 										<span class="cart-page__total-label cart-page__total-label--final">{{ _e('Total', 'woocommerce') }}:</span>
 										<span class="cart-page__total-value cart-page__total-value--final">
-											{{ woocommerce_cart.get_total()|wc_price|safe }}
+											{{ cart_totals.total|wc_price|safe }}
 										</span>
 									</div>
 

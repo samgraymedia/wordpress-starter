@@ -2,8 +2,73 @@
 
 {% block content %}
 	<div class="error-404">
-		<div class="wrapper">
-			Sorry, we couldn't find what you're looking for.
+		<div
+			class="error-404__container">
+
+			{# Error Code #}
+			<div class="error-404__code">404</div>
+
+			{# Main Heading #}
+			<h1 class="error-404__heading">
+				{{ error_404_heading }}
+			</h1>
+
+			{# Error Message #}
+			<p class="error-404__message">
+				{{ error_404_message }}
+			</p>
+
+			{# Search Form (if enabled) #}
+			{% if error_404_show_search %}
+				<div class="error-404__search">
+					<form role="search" method="get" class="error-404__search-form" action="{{ site.url }}">
+						<label for="error-404-search" class="screen-reader-text">
+							{{ _e('Search for:', 'starter-theme-1.x') }}
+						</label>
+						<input type="search" id="error-404-search" class="error-404__search-input" placeholder="{{ _e('Search for a page...', 'starter-theme-1.x') }}" value="{{ get_search_query() }}" name="s"/>
+						<button type="submit" class="error-404__search-button">
+							{{ _e('Search', 'starter-theme-1.x') }}
+						</button>
+					</form>
+				</div>
+			{% endif %}
+
+			{# Primary CTA Button #}
+			<div class="error-404__actions">
+				{% if error_404_cta_text and error_404_cta_url %}
+					<a href="{{ error_404_cta_url }}" class="error-404__button error-404__button--primary">
+						{{ error_404_cta_text }}
+					</a>
+				{% else %}
+					<a href="{{ site.link }}" class="error-404__button error-404__button--primary">
+						{{ _e('Return to Home', 'starter-theme-1.x') }}
+					</a>
+				{% endif %}
+			</div>
+
+			{# Suggested Links (if enabled) #}
+			{% if error_404_show_suggestions %}
+				<nav class="error-404__suggestions">
+					<h2 class="error-404__suggestions-title">{{ _e('You might find these helpful:', 'starter-theme-1.x') }}</h2>
+					<ul class="error-404__suggestions-list">
+						<li>
+							<a href="{{ site.link }}" class="error-404__suggestion-link">{{ _e('Home', 'starter-theme-1.x') }}</a>
+						</li>
+						{% if is_woocommerce_active %}
+							<li>
+								<a href="{{ site.link }}shop/" class="error-404__suggestion-link">{{ _e('Shop', 'starter-theme-1.x') }}</a>
+							</li>
+						{% endif %}
+						<li>
+							<a href="{{ site.link }}blog/" class="error-404__suggestion-link">{{ _e('Blog', 'starter-theme-1.x') }}</a>
+						</li>
+						<li>
+							<a href="{{ site.link }}contact/" class="error-404__suggestion-link">{{ _e('Contact Us', 'starter-theme-1.x') }}</a>
+						</li>
+					</ul>
+				</nav>
+			{% endif %}
+
 		</div>
 	</div>
 {% endblock %}

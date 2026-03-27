@@ -17,33 +17,6 @@
 	<div
 		class="product-single">
 
-		{# Breadcrumb Navigation #}
-		<div class="product-single__breadcrumb">
-			<div class="container">
-				<nav aria-label="breadcrumb" class="product-single__breadcrumb-nav">
-					<ul class="product-single__breadcrumb-list">
-						<li class="product-single__breadcrumb-item">
-							<a href="{{ site.url }}" class="product-single__breadcrumb-link">{{ _e('Home', 'starter-theme-1.x') }}</a>
-						</li>
-						<li class="product-single__breadcrumb-item">
-							<a href="{{ function('get_permalink', function('wc_get_page_id', 'shop')) }}" class="product-single__breadcrumb-link">{{ _e('Shop', 'woocommerce') }}</a>
-						</li>
-						{% if product.get_category() %}
-							{% set categories = product.get_category() %}
-							{% for category in categories %}
-								<li class="product-single__breadcrumb-item">
-									<a href="{{ category.link }}" class="product-single__breadcrumb-link">{{ category.name }}</a>
-								</li>
-							{% endfor %}
-						{% endif %}
-						<li class="product-single__breadcrumb-item active">
-							<span class="product-single__breadcrumb-text">{{ product.title }}</span>
-						</li>
-					</ul>
-				</nav>
-			</div>
-		</div>
-
 		{# Product content #}
 		<div class="container">
 
@@ -205,28 +178,28 @@
 		<div class="product-single__tabs-section">
 			<div class="container">
 				<div class="product-single__tabs-wrapper">
-					<div class="product-single__tabs">
-						<div class="product-single__tab-nav">
-							<button class="product-single__tab-trigger active" data-tab="description">
+					<div class="product-single__tabs tabs-block">
+						<div class="product-single__tab-nav" role="tablist">
+							<button class="product-single__tab-trigger tabs-block__button is-active" data-tab="description" role="tab" aria-selected="true" aria-controls="tab-description">
 								{{ _e('Description', 'starter-theme-1.x') }}
 							</button>
-							<button class="product-single__tab-trigger" data-tab="reviews">
+							<button class="product-single__tab-trigger tabs-block__button" data-tab="reviews" role="tab" aria-selected="false" aria-controls="tab-reviews">
 								{{ _e('Reviews', 'starter-theme-1.x') }}
 							</button>
 							{% if product.get_attributes() %}
-								<button class="product-single__tab-trigger" data-tab="additional">
+								<button class="product-single__tab-trigger tabs-block__button" data-tab="additional" role="tab" aria-selected="false" aria-controls="tab-additional">
 									{{ _e('Additional Information', 'starter-theme-1.x') }}
 								</button>
 							{% endif %}
 						</div>
 
-						<div class="product-single__tab-content active" id="tab-description">
+						<div class="product-single__tab-content tabs-block__panel is-active" id="tab-description" role="tabpanel">
 							{% if product.get_description() %}
 								{{ product.get_description()|safe }}
 							{% endif %}
 						</div>
 
-						<div class="product-single__tab-content" id="tab-reviews">
+						<div class="product-single__tab-content tabs-block__panel" id="tab-reviews" role="tabpanel" hidden>
 							<div class="product-single__reviews">
 								{% if product.get_review_count() > 0 %}
 									<p>{{ product.get_review_count() }}
@@ -238,7 +211,7 @@
 						</div>
 
 						{% if product.get_attributes() %}
-							<div class="product-single__tab-content" id="tab-additional">
+							<div class="product-single__tab-content tabs-block__panel" id="tab-additional" role="tabpanel" hidden>
 								<table class="product-single__attributes">
 									<tbody>
 										{% for attr_name, attr_value in product.get_attributes() %}
@@ -278,31 +251,32 @@
 								{% endif %}
 							</div>
 
+
 							{# Product Schema Markup - SEO Enhancement #}
 							<script type="application/ld+json">
 								{
-																																																					"@context": "https://schema.org",
-																																																					"@type": "Product",
-																																																					"name": "{{ product.get_title() }}",
-																																																					"description": "{{ product.get_short_description()|striptags|slice(0, 360) }}",
-																																																					"brand": {
-																																																						"@type": "Brand",
-																																																						"name": "{{ site.name }}"
-																																																					},
-																																																					"image": "{{ function('wp_get_attachment_image_url', product.get_image_id(), 'full') }}",
-																																																					"offers": {
-																																																						"@type": "Offer",
-																																																						"url": "{{ product.get_permalink() }}",
-																																																						"priceCurrency": "{{ function('get_woocommerce_currency') }}",
-																																																						"price": "{{ product.get_price() }}",
-																																																						"availability": "{{ (function('get_post_meta', product.get_id(), '_stock_status', true) == 'instock') ? 'InStock' : 'OutOfStock' }}"
-																																																					}
+																																																																																					"@context": "https://schema.org",
+																																																																																					"@type": "Product",
+																																																																																					"name": "{{ product.get_title() }}",
+																																																																																					"description": "{{ product.get_short_description()|striptags|slice(0, 360) }}",
+																																																																																					"brand": {
+																																																																																						"@type": "Brand",
+																																																																																						"name": "{{ site.name }}"
+																																																																																					},
+																																																																																					"image": "{{ function('wp_get_attachment_image_url', product.get_image_id(), 'full') }}",
+																																																																																					"offers": {
+																																																																																						"@type": "Offer",
+																																																																																						"url": "{{ product.get_permalink() }}",
+																																																																																						"priceCurrency": "{{ function('get_woocommerce_currency') }}",
+																																																																																						"price": "{{ product.get_price() }}",
+																																																																																						"availability": "{{ (function('get_post_meta', product.get_id(), '_stock_status', true) == 'instock') ? 'InStock' : 'OutOfStock' }}"
+																																																																																					}
 								{% if product.get_average_rating() > 0 %},
-																																																												"aggregateRating": {
-																																																													"@type": "AggregateRating",
-																																																													"ratingValue": "{{ product.get_average_rating() }}",
-																																																													"reviewCount": "{{ product.get_review_count() }}"
-																																																												}
+																																																																																																"aggregateRating": {
+																																																																																																	"@type": "AggregateRating",
+																																																																																																	"ratingValue": "{{ product.get_average_rating() }}",
+																																																																																																	"reviewCount": "{{ product.get_review_count() }}"
+																																																																																																}
 								{% endif %}
 								}
 							</script>

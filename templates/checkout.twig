@@ -21,27 +21,6 @@
 		{# Security Nonce #}
 		{{ function('wp_nonce_field', 'wc_checkout_nonce', '_wpnonce', false, false) }}
 
-		{# Breadcrumb Navigation #}
-		<div class="checkout-page__breadcrumb">
-			<div class="container">
-				<nav aria-label="breadcrumb" class="checkout-page__breadcrumb-nav">
-					<ul class="checkout-page__breadcrumb-list">
-						<li class="checkout-page__breadcrumb-item">
-							<a href="{{ site.url }}" class="checkout-page__breadcrumb-link">{{ _e('Home', 'starter-theme-1.x') }}</a>
-						</li>
-						<li class="checkout-page__breadcrumb-item">
-							<a href="{{ function('get_permalink', function('wc_get_page_id', 'shop')) }}" class="checkout-page__breadcrumb-link">{{ _e('Shop', 'woocommerce') }}</a>
-						</li>
-						<li class="checkout-page__breadcrumb-item">
-							<a href="{{ function('get_permalink', function('wc_get_page_id', 'cart')) }}" class="checkout-page__breadcrumb-link">{{ _e('Cart', 'woocommerce') }}</a>
-						</li>
-						<li class="checkout-page__breadcrumb-item active">
-							<span class="checkout-page__breadcrumb-text">{{ _e('Checkout', 'woocommerce') }}</span>
-						</li>
-					</ul>
-				</nav>
-			</div>
-		</div>
 
 		{# Page Header #}
 		<div class="checkout-page__header">
@@ -55,7 +34,7 @@
 			class="container">
 
 			{# Login / Guest Checkout Section #}
-			{% if not is_user_logged_in() %}
+			{% if not user %}
 				<div class="checkout-page__login-section">
 					<div class="checkout-page__login-tabs">
 						<button type="button" class="checkout-page__login-tab checkout-page__login-tab--active" data-tab="guest">
@@ -262,7 +241,7 @@
 						</div>
 
 						{# Account Creation Option (if not logged in) #}
-						{% if not is_user_logged_in() %}
+						{% if not user %}
 							<div class="checkout-page__form-row checkout-page__form-row--account-creation">
 								<div class="checkout-page__form-group checkout-page__form-group--full">
 									<label class="checkout-page__checkbox-label">
@@ -321,7 +300,8 @@
 						<div class="checkout-page__shipping-methods">
 							<h3 class="checkout-page__shipping-methods-title">{{ _e('Shipping Method', 'woocommerce') }}</h3>
 
-							{% set shipping_methods = function('WC')->shipping()->get_shipping_methods() %}
+							{% set wc = function('WC') %}
+							{% set shipping_methods = wc.shipping.get_shipping_methods() %}
 
 							{% if shipping_methods %}
 								{% for method_id, method in shipping_methods %}
@@ -415,7 +395,8 @@
 
 						{# WooCommerce Payment Gateways #}
 						<div class="checkout-page__payment-methods">
-							{% set payment_gateways = function('WC')->payment_gateways().get_available_payment_gateways() %}
+							{% set wc_pg = function('WC') %}
+							{% set payment_gateways = wc_pg.payment_gateways.get_available_payment_gateways() %}
 
 							{% if payment_gateways %}
 								{% for gateway_id, gateway in payment_gateways %}
@@ -546,21 +527,21 @@
 							<div class="checkout-page__order-summary">
 								<div class="checkout-page__summary-row">
 									<span class="checkout-page__summary-label">{{ _e('Subtotal:', 'woocommerce') }}</span>
-									<span class="checkout-page__summary-value">{{ woocommerce_cart.get_subtotal()|wc_price|safe }}</span>
+									<span class="checkout-page__summary-value">{{ cart_totals.subtotal|wc_price|safe }}</span>
 								</div>
 								<div class="checkout-page__summary-row">
 									<span class="checkout-page__summary-label">{{ _e('Shipping:', 'woocommerce') }}</span>
-									<span class="checkout-page__summary-value">{{ woocommerce_cart.get_shipping_total()|wc_price|safe }}</span>
+									<span class="checkout-page__summary-value">{{ cart_totals.shipping|wc_price|safe }}</span>
 								</div>
-								{% if woocommerce_cart.get_tax_total() > 0 %}
+								{% if cart_totals.tax is defined and (cart_totals.tax|default(0)) > 0 %}
 									<div class="checkout-page__summary-row">
 										<span class="checkout-page__summary-label">{{ _e('Tax:', 'woocommerce') }}</span>
-										<span class="checkout-page__summary-value">{{ woocommerce_cart.get_tax_total()|wc_price|safe }}</span>
+										<span class="checkout-page__summary-value">{{ cart_totals.tax|wc_price|safe }}</span>
 									</div>
 								{% endif %}
 								<div class="checkout-page__summary-row checkout-page__summary-row--final">
 									<span class="checkout-page__summary-label">{{ _e('Total:', 'woocommerce') }}</span>
-									<span class="checkout-page__summary-value">{{ woocommerce_cart.get_total()|wc_price|safe }}</span>
+									<span class="checkout-page__summary-value">{{ cart_totals.total|wc_price|safe }}</span>
 								</div>
 							</div>
 						</div>
@@ -621,21 +602,21 @@
 						<div class="checkout-page__sidebar-totals">
 							<div class="checkout-page__total-row">
 								<span>{{ _e('Subtotal', 'woocommerce') }}</span>
-								<span>{{ woocommerce_cart.get_subtotal()|wc_price|safe }}</span>
+								<span>{{ cart_totals.subtotal|wc_price|safe }}</span>
 							</div>
 							<div class="checkout-page__total-row">
 								<span>{{ _e('Shipping', 'woocommerce') }}</span>
-								<span>{{ woocommerce_cart.get_shipping_total()|wc_price|safe }}</span>
+								<span>{{ cart_totals.shipping|wc_price|safe }}</span>
 							</div>
-							{% if woocommerce_cart.get_tax_total() > 0 %}
+							{% if cart_totals.tax is defined and (cart_totals.tax|default(0)) > 0 %}
 								<div class="checkout-page__total-row">
 									<span>{{ _e('Tax', 'woocommerce') }}</span>
-									<span>{{ woocommerce_cart.get_tax_total()|wc_price|safe }}</span>
+									<span>{{ cart_totals.tax|wc_price|safe }}</span>
 								</div>
 							{% endif %}
 							<div class="checkout-page__total-row checkout-page__total-row--final">
 								<span class="checkout-page__total-label--final">{{ _e('Total', 'woocommerce') }}</span>
-								<span class="checkout-page__total-value--final">{{ woocommerce_cart.get_total()|wc_price|safe }}</span>
+								<span class="checkout-page__total-value--final">{{ cart_totals.total|wc_price|safe }}</span>
 							</div>
 						</div>
 

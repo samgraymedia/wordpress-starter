@@ -26,6 +26,7 @@ Theme Name: Starter Theme
 @import "./css/inc/components/cookie-consent";
 @import "./css/inc/components/theme-toggle";
 @import "./css/inc/components/breadcrumb";
+@import "./css/inc/components/search-form";
 
 // 5. Global layout sections
 @import "./css/inc/global/nav";
@@ -64,8 +65,10 @@ Theme Name: Starter Theme
 @import "./css/inc/blocks/form-embed";
 @import "./css/inc/blocks/map";
 // 7. Page/Post Type specific styles
+@import "./css/inc/pages/404.scss";
 @import "./css/inc/pages/blog.scss";
 @import "./css/inc/pages/woocommerce.scss";
+@import "./css/inc/pages/checkout.scss";
 
 // 8. Utilities and helper classes
 @import "./css/inc/utilities/helpers";

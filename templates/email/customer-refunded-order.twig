@@ -1,0 +1,154 @@
+{# Customer Refunded Order Email
+   
+   Sent to customer when order is refunded (full or partial).
+   
+   Variables:
+   - order: WC_Order object
+   - refund: WC_Order_Refund object
+   - partial_refund: Boolean indicating if partial
+   - email_heading: Email heading text
+   - additional_content: Custom message
+#}
+{% extends "email/base.twig" %}
+
+{% block email_content %}
+	<h2>{{ email_heading | default('Refund Processed') }}</h2>
+
+	<p>
+		Hi
+		{{ order.get_billing_first_name() }},
+	</p>
+
+	{% if partial_refund %}
+		<p>
+			We've processed a partial refund for your order. See details below.
+		</p>
+		<div class="alert alert-warning">
+			<strong>Partial Refund</strong>
+			— Some items from your order have been refunded
+		</div>
+	{% else %}
+		<p>
+			We've processed a full refund for your order. See details below.
+		</p>
+		<div class="alert alert-info">
+			<strong>Full Refund</strong>
+			— Your entire order has been refunded
+		</div>
+	{% endif %}
+
+	{# Order & Refund Details #}
+	<h3>Refund Details</h3>
+	<table style="width: 100%; margin-bottom: 20px;">
+		<tr>
+			<td style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">
+				<strong>Order Number:</strong>
+				#{{ order.get_order_number() }}
+			</td>
+		</tr>
+		<tr>
+			<td style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">
+				<strong>Refund Amount:</strong>
+				{{ refund.get_amount() | wc_price }}
+			</td>
+		</tr>
+		<tr>
+			<td style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">
+				<strong>Refund Reason:</strong>
+				{{ refund.get_reason() | default('No reason provided') }}
+			</td>
+		</tr>
+	</table>
+
+	{# Refunded Items #}
+	{% set refunded_items = refund.get_items() %}
+	{% if refunded_items | length > 0 %}
+		<h3>Refunded Items</h3>
+		<table class="order-table">
+			<thead>
+				<tr>
+					<th>Product</th>
+					<th class="text-right">Qty</th>
+					<th class="text-right">Refunded</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in refunded_items %}
+					<tr>
+						<td>{{ item.get_name() }}</td>
+						<td class="text-right">{{ item.get_quantity() }}</td>
+						<td class="text-right">{{ item.get_total() | wc_price }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+
+	{# Refund Timeline #}
+	<h3>When Will I See the Refund?</h3>
+	<p>
+		The refund has been initiated and should appear in your account within:
+	</p>
+	<ul style="margin: 10px 0 20px 20px;">
+		<li>
+			<strong>3-5 Business Days</strong>
+			for credit card refunds</li>
+		<li>
+			<strong>5-10 Business Days</strong>
+			for bank transfers</li>
+		<li>
+			<strong>1-2 Hours</strong>
+			for digital wallet refunds (PayPal, Apple Pay, Google Pay)</li>
+	</ul>
+
+	<p style="font-size: 13px; color: #6c757d;">
+		<em>Please note: Your bank or payment provider may take additional time to process the refund.</em>
+	</p>
+
+	{# Return Shipping #}
+	<h3>Return Shipping</h3>
+	<p>
+		{% if order.needs_shipping_address() %}
+			If this refund includes a return shipment, please:
+			<ol style="margin: 10px 0 0 20px;">
+				<li>Pack your items securely</li>
+				<li>Use the return label provided (check your package)</li>
+				<li>Drop off at your nearest carrier location</li>
+			</ol>
+		{% else %}
+			No return shipment is required for this refund.
+		{% endif %}
+	</p>
+
+	{# Support #}
+	<h3>Questions About This Refund?</h3>
+	<p>
+		If you have any questions about your refund or return, please don't hesitate to reach out:
+	</p>
+	<p style="margin-left: 20px;">
+		<strong>Email:</strong>
+		<a href="mailto:{{ bloginfo('admin_email') }}">{{ bloginfo('admin_email') }}</a><br>
+		<strong>Phone:</strong>
+		Call us during business hours
+	</p>
+
+	{# Account Link #}
+	<div style="margin: 30px 0; text-align: center;">
+		<a href="{{ wc_get_page_permalink('myaccount') }}orders/{{ order.get_id() }}" class="button">
+			View Order Details
+		</a>
+	</div>
+
+	{# Additional Content #}
+	{% if additional_content %}
+		<div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6;">
+			{{ additional_content | raw }}
+		</div>
+	{% endif %}
+
+	<p style="margin-top: 30px;">
+		Thank you for your patience.<br>
+		<strong>{{ site.name }}
+			Customer Service</strong>
+	</p>
+{% endblock %}

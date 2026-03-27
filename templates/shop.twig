@@ -31,21 +31,6 @@
 			</div>
 		</div>
 
-		{# Breadcrumb Navigation #}
-		<div class="shop__breadcrumb">
-			<div class="container">
-				<nav aria-label="breadcrumb" class="shop__breadcrumb-nav">
-					<ul class="shop__breadcrumb-list">
-						<li class="shop__breadcrumb-item">
-							<a href="{{ site.url }}" class="shop__breadcrumb-link">{{ _e('Home', 'starter-theme-1.x') }}</a>
-						</li>
-						<li class="shop__breadcrumb-item active">
-							<span class="shop__breadcrumb-text">{{ _e('Shop', 'starter-theme-1.x') }}</span>
-						</li>
-					</ul>
-				</nav>
-			</div>
-		</div>
 
 		{# Main shop content #}
 		<div class="container">
@@ -76,16 +61,16 @@
 							class="shop__toolbar-left">
 							{# Results count #}
 							<div class="shop__results-count">
-								{% do action('woocommerce_result_count') %}
+								{% if posts %}
+									Showing
+									<strong>{{ posts|length }}</strong>
+									{{ posts|length == 1 ? 'product' : 'products' }}
+								{% endif %}
 							</div>
 						</div>
 
 						<div
-							class="shop__toolbar-right">
-							{# Sorting dropdown #}
-							<div class="shop__sorting">
-								{% do action('woocommerce_catalog_ordering') %}
-							</div>
+							class="shop__toolbar-right">{# Could add sorting here later #}
 						</div>
 					</div>
 

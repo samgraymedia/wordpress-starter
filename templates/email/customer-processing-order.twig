@@ -1,0 +1,153 @@
+{# Customer Processing Order Email
+   
+   Sent to customer when order is received and being processed.
+   
+   Variables:
+   - order: WC_Order object
+   - email_heading: Email heading text
+   - additional_content: Custom merchant message
+#}
+{% extends "email/base.twig" %}
+
+{% block email_content %}
+	<h2>{{ email_heading | default('Order Received!') }}</h2>
+
+	<p>
+		Hi
+		{{ order.get_billing_first_name() }},
+	</p>
+
+	<p>
+		Thank you for your order! We've received it and it's now being prepared for shipment.
+	</p>
+
+	{# Order Number & Date #}
+	<div class="alert alert-success">
+		<p class="mb-1">
+			<strong>Order #{{ order.get_order_number() }}</strong>
+		</p>
+		<p class="text-muted mb-0">
+			Order Date:
+			{{ order.get_date_created().format('F j, Y @ g:i a') }}
+		</p>
+	</div>
+
+	{# Order Summary #}
+	<h3>Order Summary</h3>
+	<table class="order-table">
+		<thead>
+			<tr>
+				<th>Product</th>
+				<th class="text-right">Qty</th>
+				<th class="text-right">Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in order.get_items() %}
+				<tr>
+					<td>{{ item.get_name() }}</td>
+					<td class="text-right">{{ item.get_quantity() }}</td>
+					<td class="text-right">{{ item.get_total() | wc_price }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	{# Order Totals #}
+	<table style="width: 100%; text-align: right; margin: 20px 0; border-top: 2px solid #dee2e6;">
+		<tr>
+			<td style="padding: 10px 0; text-align: right;">
+				Subtotal:
+			</td>
+			<td style="padding: 10px 0; width: 150px;">
+				{{ order.get_subtotal() | wc_price }}
+			</td>
+		</tr>
+		{% set shipping = order.get_shipping_total() %}
+		{% if shipping > 0 %}
+			<tr>
+				<td style="padding: 10px 0;">
+					Shipping:
+				</td>
+				<td style="padding: 10px 0; width: 150px;">
+					{{ shipping | wc_price }}
+				</td>
+			</tr>
+		{% endif %}
+		{% set tax = order.get_total_tax() %}
+		{% if tax > 0 %}
+			<tr>
+				<td style="padding: 10px 0;">
+					Tax:
+				</td>
+				<td style="padding: 10px 0; width: 150px;">
+					{{ tax | wc_price }}
+				</td>
+			</tr>
+		{% endif %}
+		<tr style="border-top: 2px solid #0066cc; font-size: 16px; font-weight: bold;">
+			<td style="padding: 15px 0;">
+				Total:
+			</td>
+			<td style="padding: 15px 0; width: 150px;">
+				{{ order.get_total() | wc_price }}
+			</td>
+		</tr>
+	</table>
+
+	{# Shipping Address #}
+	<h3>Shipping Address</h3>
+	<div style="background-color: #f9fafb; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+		{{ order.get_formatted_shipping_address() | raw }}
+	</div>
+
+	{# Shipping Method #}
+	{% set shipping_method = order.get_shipping_method() %}
+	{% if shipping_method %}
+		<h3>Shipping Method</h3>
+		<p>{{ shipping_method }}</p>
+	{% endif %}
+
+	{# Next Steps #}
+	<h3>What's Next?</h3>
+	<p>
+		We're preparing your order for shipment. We'll send you a tracking number as soon as your package ships.
+	</p>
+
+	<p>
+		We'll notify you at
+		<strong>{{ order.get_billing_email() }}</strong>
+		with tracking information.
+	</p>
+
+	{# Customer Account Link #}
+	<div style="margin: 30px 0;">
+		<a href="{{ wc_get_page_permalink('myaccount') }}orders/{{ order.get_id() }}" class="button">
+			← Track Your Order
+		</a>
+	</div>
+
+	{# FAQ Section #}
+	<h3>Have Questions?</h3>
+	<p>
+		<strong>Returns & Exchanges:</strong>
+		Our return policy allows 30 days from purchase.
+		<br><br>
+		<strong>Contact Us:</strong>
+		Email us at
+		<a href="mailto:{{ bloginfo('admin_email') }}">{{ bloginfo('admin_email') }}</a>
+	</p>
+
+	{# Additional Content #}
+	{% if additional_content %}
+		<div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6;">
+			{{ additional_content | raw }}
+		</div>
+	{% endif %}
+
+	{# Closing #}
+	<p style="margin-top: 30px;">
+		Thank you for shopping with us!<br>
+		<strong>{{ site.name }}</strong>
+	</p>
+{% endblock %}

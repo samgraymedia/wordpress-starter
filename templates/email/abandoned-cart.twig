@@ -1,0 +1,158 @@
+{# Abandoned Cart Recovery Email
+   
+   Sent to customer when they leave items in their cart without completing purchase.
+   
+   Variables:
+   - customer_name: Customer name
+   - customer_email: Customer email
+   - cart_items: Array of cart items
+   - cart_total: Total value of abandoned cart
+   - cart_url: Link to complete purchase
+   - site_name: Site name
+   - discount_code: Optional promotional code (optional)
+   - discount_percent: Optional discount percentage (optional)
+#}
+{% extends "email/base.twig" %}
+
+{% block email_content %}
+	<h2>Your Items Are Waiting</h2>
+
+	<p>
+		Hi
+		{{ customer_name }},
+	</p>
+
+	<p>
+		We noticed you left some items in your cart. Don't worry — we've saved them for you!
+	</p>
+
+	{# Cart Recovery Alert #}
+	<div class="alert alert-warning">
+		<strong>⏱️ Your Cart Expires in 7 Days</strong><br>
+		<span class="text-muted">Complete your order to lock in these price</span>
+	</div>
+
+	{# Abandoned Items #}
+	<h3>Items in Your Cart</h3>
+	<table class="order-table">
+		<thead>
+			<tr>
+				<th>Product</th>
+				<th class="text-right">Qty</th>
+				<th class="text-right">Price</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in cart_items %}
+				<tr>
+					<td>
+						<strong>{{ item.name }}</strong>
+						{% if item.sku %}
+							<br><span class="text-muted" style="font-size: 12px;">SKU:
+								{{ item.sku }}</span>
+						{% endif %}
+					</td>
+					<td class="text-right">{{ item.quantity }}</td>
+					<td class="text-right">{{ item.total }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	{# Cart Total #}
+	<table style="width: 100%; text-align: right; margin: 20px 0; border-top: 2px solid #dee2e6;">
+		<tr style="font-size: 16px; font-weight: bold;">
+			<td style="padding: 15px 0;">
+				Cart Total:
+			</td>
+			<td style="padding: 15px 0; width: 150px;">
+				{{ cart_total }}
+			</td>
+		</tr>
+	</table>
+
+	{# Special Offer #}
+	{% if discount_code and discount_percent %}
+		<div style="background-color: #e7f3ff; padding: 20px; border-radius: 4px; text-align: center; margin: 30px 0; border-left: 4px solid #0066cc;">
+			<p style="margin: 0 0 10px 0;">
+				<strong style="font-size: 16px; color: #0066cc;">We have a special offer for you!</strong>
+			</p>
+			<p style="margin: 0 0 15px 0; color: #004085;">
+				This exclusive offer expires in 24 hours
+			</p>
+			<p style="margin: 0;">
+				<strong style="font-size: 20px; color: #0066cc;">{{ discount_percent }}% OFF</strong><br>
+				<span style="font-size: 13px; color: #6c757d;">Use code at checkout</span>
+			</p>
+			<p style="margin: 15px 0 0 0; padding: 10px; background-color: white; border-radius: 4px; font-family: monospace; font-weight: bold; font-size: 16px;">
+				{{ discount_code }}
+			</p>
+		</div>
+	{% endif %}
+
+	{# Recovery CTA #}
+	<div style="margin: 30px 0; text-align: center;">
+		<a href="{{ cart_url }}" class="button" style="font-size: 16px; padding: 15px 30px;">
+			Complete Your Purchase
+		</a>
+	</div>
+
+	{# Why Complete the Purchase #}
+	<h3>Secure Your Items</h3>
+	<p>
+		Completing your order now ensures:
+	</p>
+	<ul style="margin: 10px 0 20px 20px;">
+		<li>✓ Your items are reserved and won't sell out</li>
+		<li>✓ Current prices are locked (prices may change)</li>
+		<li>✓ Fast shipping to your address</li>
+		<li>✓ Easy returns within 30 days</li>
+	</ul>
+
+	{# Payment Methods #}
+	<h3>Easy Checkout</h3>
+	<p>
+		We accept all major payment methods:
+	</p>
+	<p style="margin-top: 10px;">
+		💳 Credit/Debit Cards | 🐉 PayPal | 🍎 Apple Pay | 🔵 Google Pay
+	</p>
+
+	{# Alternative CTA #}
+	<p style="margin-top: 30px; text-align: center;">
+		Can't find what you're looking for?
+		<a href="{{ site_url }}">Browse more products</a>
+	</p>
+
+	{# Shipping Info #}
+	<h3>Fast & Reliable Shipping</h3>
+	<p>
+		Orders usually ship within 1-2 business days. Standard shipping takes 5-7 days.
+	</p>
+
+	{# Support #}
+	<h3>Questions?</h3>
+	<p>
+		Need help completing your purchase? We're here to assist:
+	</p>
+	<p style="margin-left: 20px;">
+		<strong>Email:</strong>
+		<a href="mailto:{{ bloginfo('admin_email') }}">{{ bloginfo('admin_email') }}</a><br>
+		<strong>Chat:</strong>
+		Available on our website<br>
+		<strong>Phone:</strong>
+		Call during business hours
+	</p>
+
+	{# Closing #}
+	<p style="margin-top: 40px;">
+		Don't miss out!<br>
+		<strong>{{ site.name }}
+			Shop</strong>
+	</p>
+
+	{# Footer Note #}
+	<p style="margin-top: 30px; font-size: 12px; color: #6c757d; text-align: center;">
+		<em>This cart will expire in 7 days. Complete your order to keep these items reserved.</em>
+	</p>
+{% endblock %}

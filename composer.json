@@ -16,9 +16,12 @@
     }
   ],
   "require": {
-    "timber/timber": "1.*"
+    "timber/timber": "^2.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "5.7.16|6.*"
+    "phpunit/phpunit": "^9.0",
+    "wp-cli/wp-cli-bundle": "^2.6",
+    "brain/monkey": "^2.6",
+    "mockery/mockery": "^1.5"
   }
 }

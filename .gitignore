@@ -6,6 +6,11 @@ vendor/
 dist/
 .cache/
 
+# Testing and coverage
+coverage/
+.phpunit.cache
+*.log
+
 # Environment variables
 .env
 .env.local

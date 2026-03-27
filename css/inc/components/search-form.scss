@@ -1,0 +1,78 @@
+/**
+ * Search Form Component Styling
+ * Displays product search functionality in header
+ */
+
+.search-form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  &__label {
+    display: none;
+    font-size: 0.85rem;
+    color: var(--color-gray, #666);
+    margin-bottom: 0.5rem;
+  }
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    background: white;
+    border: 2px solid var(--color-light, #e0e0e0);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &:focus-within {
+      border-color: var(--color-primary, #0066cc);
+      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    }
+  }
+
+  &__input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    background: transparent;
+    font-size: 0.95rem;
+    color: var(--color-dark, #333);
+    outline: none;
+
+    &::placeholder {
+      color: var(--color-gray, #999);
+    }
+
+    &:focus {
+      color: var(--color-dark, #333);
+    }
+  }
+
+  &__button {
+    padding: 0.75rem 1.25rem;
+    background: var(--color-primary, #0066cc);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: darken(#0066cc, 10%);
+    }
+
+    &:focus {
+      outline: 2px solid var(--color-primary, #0066cc);
+      outline-offset: -2px;
+    }
+
+    @media (max-width: 480px) {
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+    }
+  }
+}

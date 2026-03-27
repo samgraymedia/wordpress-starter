@@ -1,0 +1,180 @@
+{# Customer Completed Order Email
+   
+   Sent to customer when order is completed/shipped.
+   
+   Variables:
+   - order: WC_Order object
+   - email_heading: Email heading text
+   - additional_content: Custom message
+#}
+{% extends "email/base.twig" %}
+
+{% block email_content %}
+	<h2>{{ email_heading | default('Order Complete!') }}</h2>
+
+	<p>
+		Hi
+		{{ order.get_billing_first_name() }},
+	</p>
+
+	<p>
+		Your order is on its way! Check the tracking information below to follow your shipment.
+	</p>
+
+	{# Order Status Alert #}
+	<div class="alert alert-success">
+		<p class="mb-0">
+			<strong style="font-size: 16px;">✓ Order Complete</strong><br>
+			<span class="text-muted">Order #{{ order.get_order_number() }}</span>
+		</p>
+	</div>
+
+	{# Order Items #}
+	<h3>Items Shipped</h3>
+	<table class="order-table">
+		<thead>
+			<tr>
+				<th>Product</th>
+				<th class="text-right">Qty</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in order.get_items() %}
+				<tr>
+					<td>{{ item.get_name() }}</td>
+					<td class="text-right">{{ item.get_quantity() }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	{# Tracking Information #}
+	<h3>Tracking Information</h3>
+	<div style="background-color: #e7f3ff; padding: 15px; border-left: 4px solid #0066cc; border-radius: 4px; margin-bottom: 20px;">
+		<p class="mb-1">
+			<strong>Carrier:</strong>
+			<span id="carrier-name">Check your email for tracking details</span>
+		</p>
+		<p class="mb-1">
+			<strong>Tracking Number:</strong>
+			<span id="tracking-number">Will be sent separately</span>
+		</p>
+		<p style="margin: 10px 0 0 0;">
+			<a href="https://tracking.example.com" style="color: #0066cc;">Track Your Package →</a>
+		</p>
+	</div>
+
+	<p>
+		<em>Note: Tracking information is typically available 24 hours after shipment.</em>
+	</p>
+
+	{# Shipping Address #}
+	<h3>Shipping To</h3>
+	<div style="background-color: #f9fafb; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+		{{ order.get_formatted_shipping_address() | raw }}
+	</div>
+
+	{# Order Totals #}
+	<h3>Order Total</h3>
+	<table style="width: 100%; text-align: right; margin: 20px 0;">
+		<tr>
+			<td style="padding: 8px 0;">
+				Subtotal:
+			</td>
+			<td style="padding: 8px 0; width: 120px;">
+				{{ order.get_subtotal() | wc_price }}
+			</td>
+		</tr>
+		{% set shipping = order.get_shipping_total() %}
+		{% if shipping > 0 %}
+			<tr>
+				<td style="padding: 8px 0;">
+					Shipping:
+				</td>
+				<td style="padding: 8px 0; width: 120px;">
+					{{ shipping | wc_price }}
+				</td>
+			</tr>
+		{% endif %}
+		{% set tax = order.get_total_tax() %}
+		{% if tax > 0 %}
+			<tr>
+				<td style="padding: 8px 0;">
+					Tax:
+				</td>
+				<td style="padding: 8px 0; width: 120px;">
+					{{ tax | wc_price }}
+				</td>
+			</tr>
+		{% endif %}
+		<tr style="border-top: 2px solid #dee2e6; padding-top: 10px; font-size: 16px; font-weight: bold;">
+			<td style="padding: 15px 0;">
+				Total:
+			</td>
+			<td style="padding: 15px 0; width: 120px;">
+				{{ order.get_total() | wc_price }}
+			</td>
+		</tr>
+	</table>
+
+	{# Account Link #}
+	<div style="margin: 30px 0; text-align: center;">
+		<a href="{{ wc_get_page_permalink('myaccount') }}orders/{{ order.get_id() }}" class="button">
+			View Full Order Details
+		</a>
+	</div>
+
+	{# Product Care / Next Steps #}
+	<h3>Product Care</h3>
+	<p>
+		Here are some helpful resources for your new products:
+	</p>
+	<ul style="margin: 10px 0 20px 20px;">
+		<li>
+			<a href="{{ site.url }}/care-instructions">Care Instructions</a>
+		</li>
+		<li>
+			<a href="{{ site.url }}/warranty">Warranty Information</a>
+		</li>
+		<li>
+			<a href="{{ site.url }}/faqs">Frequently Asked Questions</a>
+		</li>
+	</ul>
+
+	{# Reviews Section #}
+	<h3>How Was Your Experience?</h3>
+	<p>
+		We'd love to hear what you think about your order! Your feedback helps us improve.
+	</p>
+	<div style="margin: 20px 0;">
+		<a href="{{ wc_get_page_permalink('myaccount') }}orders/{{ order.get_id() }}" style="color: #0066cc;">Leave a Review →</a>
+	</div>
+
+	{# Returns & Support #}
+	<h3>Need to Return Something?</h3>
+	<p>
+		We want you to be 100% happy. If you need to return or exchange your order, we make it easy:
+	</p>
+	<p style="margin-left: 20px;">
+		<strong>30-Day Returns:</strong>
+		Free returns within 30 days of delivery<br>
+		<strong>Easy Process:</strong>
+		Just email us with your order number<br>
+		<strong>Full Support:</strong>
+		<a href="mailto:{{ bloginfo('admin_email') }}">{{ bloginfo('admin_email') }}</a>
+	</p>
+
+	{# Additional Content #}
+	{% if additional_content %}
+		<div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6;">
+			{{ additional_content | raw }}
+		</div>
+	{% endif %}
+
+	{# Closing #}
+	<p style="margin-top: 30px;">
+		Thank you for your business!<br>
+		<strong>{{ site.name }}
+			Team</strong>
+	</p>
+{% endblock %}

@@ -1,14 +1,26 @@
 {% if items %}
 	<ul class="nav-menu">
-		<li>
+		<li class='logo'>
 			<h3 class="header__logo">
 				<a class="header__logo-link" href="{{site.url}}" rel="home">{{site.name}}</a>
 			</h3>
 		</li>
+		{% if function('class_exists', 'WooCommerce') %}
+
+			<ul class="nav__utilities">
+				<li class="nav__search">
+					{% include "components/search-form.twig" %}
+				</li>
+
+			</ul>
+		</li>
+	{% endif %}
+	<ul class="nav-menu__list">
+
 		{% for item in items %}
 
 			<li class="nav-menu__item {{ item.classes | join(' ') }}">
-				<a href="{{ item.link }}" class="nav-menu__link" {% if item.current %} aria-current="page" {% endif %} {% if item.children %} aria-expanded="false" aria-haspopup="true" {% endif %} {% if item.target == '_blank' %} target="_blank" rel="noopener noreferrer" {% endif %}>
+				<a href="{{ item.url }}" class="nav-menu__link" {% if item.current %} aria-current="page" {% endif %} {% if item.children %} aria-expanded="false" aria-haspopup="true" {% endif %} {% if item.target == '_blank' %} target="_blank" rel="noopener noreferrer" {% endif %}>
 					{{ item.title }}
 				</a>
 				{% if item.children %}
@@ -18,5 +30,7 @@
 				{% endif %}
 			</li>
 		{% endfor %}
+		{% include "components/user-account.twig" %}
+
 	</ul>
-{% endif %}
+</ul>{% endif %}

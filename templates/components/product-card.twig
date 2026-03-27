@@ -82,14 +82,16 @@
 
 					{# Out of Stock Badge #}
 					{% set pcard_stock_status = function('get_post_meta', product.get_id(), '_stock_status', true) %}
-					{% set pcard_stock_qty = function('get_post_meta', product.get_id(), '_stock', true)|default(0)|int %}
-					{% if pcard_stock_status != 'instock' %}
+					{% set pcard_stock_qty = function('get_post_meta', product.get_id(), '_stock', true)|default(0) %}
+					{% if pcard_stock_status == 'instock' %}
+						{% if pcard_stock_qty > 0 and pcard_stock_qty < 5 %}
+							<span class="product-card__badge product-card__badge--low-stock">
+								{{ _e('Low Stock', 'woocommerce') }}
+							</span>
+						{% endif %}
+					{% else %}
 						<span class="product-card__badge product-card__badge--out-of-stock">
 							{{ _e('Out of Stock', 'woocommerce') }}
-						</span>
-					{% elseif pcard_stock_qty > 0 and pcard_stock_qty < 5 %}
-						<span class="product-card__badge product-card__badge--low-stock">
-							{{ _e('Low Stock', 'woocommerce') }}
 						</span>
 					{% endif %}
 				</div>
@@ -116,10 +118,10 @@
 
 		{# Category #}
 		<div class="product-card__category">
-			{% set categories = product.get_categories() %}
-			{% if categories|length > 0 %}
-				<a href="{{ categories[0].get_permalink() }}" class="product-card__category-link">
-					{{ categories[0].get_name() }}
+			{% set categories = function('get_the_terms', product.get_id(), 'product_cat') %}
+			{% if categories and categories|length > 0 %}
+				<a href="{{ function('get_term_link', categories[0].term_id, 'product_cat') }}" class="product-card__category-link">
+					{{ categories[0].name }}
 				</a>
 			{% endif %}
 		</div>
@@ -158,18 +160,17 @@
 			{{ product.get_price_html()|safe }}
 		</div>
 
-		{# Stock Status #}
+		{# Stock Status Section #}
 		<div class="product-card__stock">
 			{% set stock_status = function('get_post_meta', product.get_id(), '_stock_status', true) %}
-			{% set stock_qty = function('get_post_meta', product.get_id(), '_stock', true)|default(0) %}
-			{% if stock_status == 'instock' or stock_qty > 0 %}
-				{{ _e('In Stock', 'woocommerce') }}
-			</span>
-		{% else %}
-			<span class="product-card__stock-label product-card__stock-label--out-of-stock">
-				{{ _e('Out of Stock', 'woocommerce') }}
-			</span>
-		{% endif %}
-	</div>
-
-</div></div>
+			{% if stock_status == 'instock' %}
+				<span class="product-card__stock-label product-card__stock-label--in-stock">
+					<span class="product-card__stock-dot"></span>
+					{{ _e('In Stock', 'woocommerce') }}
+				</span>
+			{% else %}
+				<span class="product-card__stock-label product-card__stock-label--out-of-stock">
+					{{ _e('Out of Stock', 'woocommerce') }}
+				</span>
+			{% endif %}
+		</div>

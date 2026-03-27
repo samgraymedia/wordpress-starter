@@ -1,0 +1,138 @@
+{# Welcome Email (New Account)
+   
+   Sent to customer when they create a new account.
+   
+   Variables:
+   - customer_name: Customer first name
+   - customer_email: Customer email
+   - site_name: Site name
+   - site_url: Site URL
+#}
+{% extends "email/base.twig" %}
+
+{% block email_content %}
+	<h2>Welcome to
+		{{ site_name }}!</h2>
+
+	<p>
+		Hi
+		{{ customer_name }},
+	</p>
+
+	<p>
+		Welcome to our community! We're thrilled to have you join us. Your account is now active and ready to use.
+	</p>
+
+	{# Account Confirmation #}
+	<div class="alert alert-success">
+		<p class="mb-0">
+			✓
+			<strong>Account Created</strong><br>
+			<span class="text-muted" style="font-size: 13px;">Email:
+				{{ customer_email }}</span>
+		</p>
+	</div>
+
+	{# First Steps #}
+	<h3>Here's What You Can Do Now</h3>
+	<table style="width: 100%; margin: 20px 0;">
+		<tr>
+			<td style="padding: 12px 0; border-bottom: 1px solid #dee2e6;">
+				<strong>📦 Shop Our Store</strong><br>
+				<span class="text-muted" style="font-size: 13px;">Browse our full collection of products</span>
+			</td>
+		</tr>
+		<tr>
+			<td style="padding: 12px 0; border-bottom: 1px solid #dee2e6;">
+				<strong>❤️ Create a Wishlist</strong><br>
+				<span class="text-muted" style="font-size: 13px;">Save your favorite items for later</span>
+			</td>
+		</tr>
+		<tr>
+			<td style="padding: 12px 0; border-bottom: 1px solid #dee2e6;">
+				<strong>👤 Manage Your Profile</strong><br>
+				<span class="text-muted" style="font-size: 13px;">Update your account information</span>
+			</td>
+		</tr>
+		<tr>
+			<td style="padding: 12px 0;">
+				<strong>🎉 Get Exclusive Offers</strong><br>
+				<span class="text-muted" style="font-size: 13px;">Sign up for our newsletter for deals and updates</span>
+			</td>
+		</tr>
+	</table>
+
+	{# CTA Button #}
+	<div style="margin: 30px 0; text-align: center;">
+		<a href="{{ site_url }}" class="button">
+			Start Shopping Now
+		</a>
+	</div>
+
+	{# Welcome Offer #}
+	<h3>Exclusive Welcome Offer</h3>
+	<div style="background-color: #fff3cd; padding: 20px; border-radius: 4px; border-left: 4px solid #ffc107; text-align: center; margin-bottom: 20px;">
+		<p style="margin: 0 0 10px 0;">
+			<strong style="font-size: 18px; color: #856404;">10% OFF Your First Order</strong>
+		</p>
+		<p style="margin: 0; color: #856404;">
+			Use code:
+			<strong>WELCOME10</strong>
+			at checkout
+		</p>
+	</div>
+
+	{# Account Features #}
+	<h3>Your Account Includes</h3>
+	<ul style="margin: 15px 0 20px 20px;">
+		<li>Order history and tracking</li>
+		<li>Saved addresses for faster checkout</li>
+		<li>Wishlist and favorites</li>
+		<li>Account notifications and preferences</li>
+		<li>Reward points (when applicable)</li>
+	</ul>
+
+	{# Helpful Links #}
+	<h3>Need Help Getting Started?</h3>
+	<p>
+		<a href="{{ site_url }}/faqs">Frequently Asked Questions</a>
+		|
+		<a href="{{ site_url }}/shipping-info">Shipping Information</a>
+		|
+		<a href="{{ site_url }}/returns">Returns & Exchanges</a>
+	</p>
+
+	{# Contact Info #}
+	<h3>Have Questions?</h3>
+	<p>
+		Our customer service team is here to help:
+	</p>
+	<p style="margin-left: 20px;">
+		<strong>Email:</strong>
+		<a href="mailto:{{ bloginfo('admin_email') }}">{{ bloginfo('admin_email') }}</a><br>
+		<strong>Hours:</strong>
+		Monday - Friday, 9 AM - 5 PM
+	</p>
+
+	{# Closing #}
+	<p style="margin-top: 40px;">
+		Happy shopping,<br>
+		<strong>The
+			{{ site_name }}
+			Team</strong>
+	</p>
+
+	{# Social Links (Optional) #}
+	<div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #dee2e6; text-align: center;">
+		<p class="text-muted">
+			Follow us for updates and inspiration:
+		</p>
+		<p>
+			<a href="https://facebook.com/your-page" style="margin: 0 10px;">Facebook</a>
+			|
+			<a href="https://instagram.com/your-profile" style="margin: 0 10px;">Instagram</a>
+			|
+			<a href="https://twitter.com/your-profile" style="margin: 0 10px;">Twitter</a>
+		</p>
+	</div>
+{% endblock %}

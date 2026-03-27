@@ -1,0 +1,234 @@
+{# Post-Purchase Follow-up Email
+   
+   Sent to customer 7-10 days after order delivery for engagement and reviews.
+   
+   Variables:
+   - customer_name: Customer first name
+   - order: WC_Order object (for previous order details)
+   - order_id: Order ID
+   - site_name: Site name
+   - site_url: Site URL
+#}
+{% extends "email/base.twig" %}
+
+{% block email_content %}
+	<h2>Thank You for Your Purchase!</h2>
+
+	<p>
+		Hi
+		{{ customer_name }},
+	</p>
+
+	<p>
+		We hope you're enjoying your recent purchase from
+		{{ site_name }}! We'd love to hear how it's working out for you.
+	</p>
+
+	{# Quick Satisfaction Check #}
+	<div style="background-color: #e7f3ff; padding: 20px; border-radius: 4px; text-align: center; margin: 30px 0; border-left: 4px solid #0066cc;">
+		<p style="margin: 0 0 15px 0;">
+			<strong style="font-size: 16px;">How satisfied are you with your purchase?</strong>
+		</p>
+		<p style="margin: 0;">
+			<span style="margin: 0 5px;">
+				<a href="{{ site_url }}/review/5-stars" style="text-decoration: none; font-size: 20px;">⭐⭐⭐⭐⭐</a>
+			</span>
+			<span style="margin: 0 5px;">|</span>
+			<span style="margin: 0 5px;">
+				<a href="{{ site_url }}/review/4-stars" style="text-decoration: none; font-size: 18px;">⭐⭐⭐⭐</a>
+			</span>
+			<span style="margin: 0 5px;">|</span>
+			<span style="margin: 0 5px;">
+				<a href="{{ site_url }}/contact" style="text-decoration: none; font-size: 18px;">Tell us more</a>
+			</span>
+		</p>
+	</div>
+
+	{# Your Order #}
+	<h3>Your Order Details</h3>
+	<table style="width: 100%; margin-bottom: 20px;">
+		<tr>
+			<td style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">
+				<strong>Order Number:</strong>
+				#{{ order.get_order_number() }}
+			</td>
+		</tr>
+		<tr>
+			<td style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">
+				<strong>Delivery Status:</strong>
+				Delivered ✓
+			</td>
+		</tr>
+		<tr>
+			<td style="padding: 8px 0;">
+				<strong>Order Date:</strong>
+				{{ order.get_date_created().format('F j, Y') }}
+			</td>
+		</tr>
+	</table>
+
+	{# Items Purchased #}
+	<h3>What You Ordered</h3>
+	<table class="order-table">
+		<thead>
+			<tr>
+				<th>Product</th>
+				<th class="text-right">Qty</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in order.get_items() %}
+				<tr>
+					<td>
+						{{ item.get_name() }}
+						<br>
+						<a href="{{ item.get_product().get_permalink() }}" style="color: #0066cc; font-size: 12px;">View product page →</a>
+					</td>
+					<td class="text-right">{{ item.get_quantity() }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	{# Share Your Review #}
+	<h3>Leave a Review</h3>
+	<p>
+		Your feedback helps other customers make informed decisions. Share your experience:
+	</p>
+	<div style="margin: 20px 0; text-align: center;">
+		<a href="{{ site_url }}/orders/{{ order.get_id() }}/reviews" class="button">
+			Leave a Review
+		</a>
+	</div>
+
+	{# Helpful Resources #}
+	<h3>Get the Most Out of Your Purchase</h3>
+	<p>
+		Here are some resources to help you:
+	</p>
+	<table style="width: 100%; margin: 15px 0;">
+		<tr>
+			<td style="padding: 12px 0; border-bottom: 1px solid #dee2e6;">
+				<strong>Care & Maintenance</strong><br>
+				<span class="text-muted" style="font-size: 13px;">
+					<a href="{{ site_url }}/care-guides">View our care guides →</a>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td style="padding: 12px 0; border-bottom: 1px solid #dee2e6;">
+				<strong>Warranty Information</strong><br>
+				<span class="text-muted" style="font-size: 13px;">
+					<a href="{{ site_url }}/warranty">Learn about your warranty →</a>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td style="padding: 12px 0; border-bottom: 1px solid #dee2e6;">
+				<strong>Usage Tips</strong><br>
+				<span class="text-muted" style="font-size: 13px;">
+					<a href="{{ site_url }}/how-to-guides">Read our how-to guides →</a>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td style="padding: 12px 0;">
+				<strong>Frequently Asked Questions</strong><br>
+				<span class="text-muted" style="font-size: 13px;">
+					<a href="{{ site_url }}/faqs">Browse FAQs →</a>
+				</span>
+			</td>
+		</tr>
+	</table>
+
+	{# Complementary Products #}
+	<h3>You Might Also Like</h3>
+	<p>
+		Based on your recent purchase, we think you might enjoy these related items:
+	</p>
+	<div style="margin: 20px 0;">
+		<a href="{{ site_url }}/recommended-for-you/{{ order.get_id() }}" class="button">
+			See Recommendations
+		</a>
+	</div>
+
+	{# Referral Program (Optional) #}
+	<h3>Share the Love</h3>
+	<p>
+		Love what you purchased? Refer a friend and you both get rewarded:
+	</p>
+	<p style="margin-left: 20px;">
+		🎉
+		<strong>Get $10 credit</strong>
+		for each friend who makes their first purchase<br>
+		🎉
+		<strong>Your friend gets 10% off</strong>
+		their first order<br>
+	</p>
+	<div style="margin: 20px 0;">
+		<a href="{{ site_url }}/referral" class="button" style="background-color: #28a745;">
+			Invite Friends
+		</a>
+	</div>
+
+	{# Issue or Problem? #}
+	<h3>Not Satisfied?</h3>
+	<p>
+		If there's an issue with your order or you're not completely satisfied:
+	</p>
+	<ul style="margin: 10px 0 20px 20px;">
+		<li>
+			<strong>Easy Returns:</strong>
+			30-day hassle-free returns</li>
+		<li>
+			<strong>Fast Replacement:</strong>
+			Defective items replaced immediately</li>
+		<li>
+			<strong>Money-Back Guarantee:</strong>
+			Full refund if unsatisfied</li>
+	</ul>
+	<p>
+		<strong>Contact Us:</strong>
+		<a href="mailto:{{ bloginfo('admin_email') }}">{{ bloginfo('admin_email') }}</a>
+	</p>
+
+	{# Loyalty/Membership Promotion (Optional) #}
+	<h3>Join Our Community</h3>
+	<p>
+		Become a member and unlock exclusive benefits:
+	</p>
+	<ul style="margin: 10px 0 20px 20px;">
+		<li>💎 Exclusive member-only pricing</li>
+		<li>🎁 Early access to new products</li>
+		<li>⚡ Free shipping on all orders</li>
+		<li>🏆 Loyalty points on every purchase</li>
+	</ul>
+	<div style="margin: 20px 0;">
+		<a href="{{ site_url }}/loyalty-program" class="button" style="background-color: #ffc107; color: #856404;">
+			Learn More
+		</a>
+	</div>
+
+	{# Closing #}
+	<p style="margin-top: 40px;">
+		Thank you for your business!<br>
+		<strong>{{ site.name }}
+			Team</strong>
+	</p>
+
+	{# Social & Newsletter #}
+	<div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #dee2e6; text-align: center;">
+		<p class="text-muted">
+			Stay connected with us:
+		</p>
+		<p style="margin-top: 10px;">
+			<a href="https://facebook.com/your-page" style="margin: 0 10px; color: #0066cc;">Facebook</a>
+			|
+			<a href="https://instagram.com/your-profile" style="margin: 0 10px; color: #0066cc;">Instagram</a>
+			|
+			<a href="https://twitter.com/your-profile" style="margin: 0 10px; color: #0066cc;">Twitter</a>
+			|
+			<a href="{{ site_url }}/newsletter" style="margin: 0 10px; color: #0066cc;">Newsletter</a>
+		</p>
+	</div>
+{% endblock %}

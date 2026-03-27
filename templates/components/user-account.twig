@@ -3,34 +3,28 @@
   Displays user login/logout section in header
 #}
 
-<div class="user-account">
-	{% if is_user_logged_in %}
-		<div class="user-account__logged-in">
-			<span class="user-account__greeting">
-				{{ _e('Hello,', 'starter-theme-1.x') }}
-				<strong>{{ user.display_name }}</strong>
-			</span>
-			<div class="user-account__actions">
-				<a href="{{ site.url }}/wp-admin" class="user-account__link user-account__link--account">
-					{{ _e('My Account', 'starter-theme-1.x') }}
-				</a>
-				|
-				<a href="{{ wp_logout_url(site.url) }}" class="user-account__link user-account__link--logout">
-					{{ _e('Logout', 'starter-theme-1.x') }}
-				</a>
-			</div>
-		</div>
-	{% else %}
-		<div class="user-account__logged-out">
-			<a href="{{ site.url }}/login" class="user-account__link user-account__link--login">
-				{{ _e('Login', 'starter-theme-1.x') }}
+{% if is_user_logged_in %}
+	<li class="nav-menu__item nav-menu__item--account">
+		<a href="{{ site.url }}/wp-admin" class="nav-menu__link nav-menu__link--account">
+			{{ _e('My Account', 'starter-theme-1.x') }}
+		</a>
+	</li>
+	<li class="nav-menu__item nav-menu__item--logout">
+		<a href="{{ wp_logout_url(site.url) }}" class="nav-menu__link nav-menu__link--logout">
+			{{ _e('Logout', 'starter-theme-1.x') }}
+		</a>
+	</li>
+{% else %}
+	<li class="nav-menu__item nav-menu__item--login">
+		<a href="{{ site.url }}/login" class="nav-menu__link nav-menu__link--login">
+			{{ _e('Login', 'starter-theme-1.x') }}
+		</a>
+	</li>
+	{% if get_option('users_can_register') %}
+		<li class="nav-menu__item nav-menu__item--register">
+			<a href="{{ site.url }}/register" class="nav-menu__link nav-menu__link--register">
+				{{ _e('Register', 'starter-theme-1.x') }}
 			</a>
-			{% if get_option('users_can_register') %}
-				|
-				<a href="{{ site.url }}/register" class="user-account__link user-account__link--register">
-					{{ _e('Register', 'starter-theme-1.x') }}
-				</a>
-			{% endif %}
-		</div>
+		</li>
 	{% endif %}
-</div>
+{% endif %}
