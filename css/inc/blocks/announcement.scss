@@ -2,8 +2,8 @@
  * Announcement Block - BEM Methodology
  *
  * Block: .announcement
- * Elements: .announcement__content, .announcement__close, .announcement__message
- * Modifiers: .announcement--info, .announcement--success, .announcement--warning, .announcement--error
+ * Elements: .announcement__slides, .announcement__slide, .announcement__content, .announcement__button, .announcement__icon, .announcement__text
+ * Modifiers: .announcement--slider
  */
 
 @import "../base/vars";
@@ -30,6 +30,36 @@
 
     @media (max-width: $breakpoint-md) {
       gap: $spacing-3;
+    }
+  }
+
+  // Slider container
+  &__slides {
+    display: flex;
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+  }
+
+  // Individual slide
+  &__slide {
+    display: none !important;
+    position: absolute;
+    width: 100%;
+    flex-shrink: 0;
+    top: 0;
+    left: 0;
+
+    &.is-active {
+      display: flex !important;
+      position: relative;
+      align-items: center;
+      gap: $spacing-4;
+
+      @media (max-width: $breakpoint-md) {
+        gap: $spacing-3;
+      }
     }
   }
 
@@ -99,77 +129,44 @@
 
   &__button {
     flex-shrink: 0;
-    padding: $spacing-2 $spacing-3 + 0.25rem;
-    background-color: rgba($white, 0.2);
-    color: inherit;
-    border: 1px solid rgba($white, 0.4);
+    padding: $spacing-2 + 0.25rem $spacing-3 + 0.5rem;
+    background-color: rgba($white, 0.25);
+    color: $white;
+    border: 2px solid $white;
     border-radius: $border-radius;
     font-size: $font-xs;
-    font-weight: $font-semibold;
+    font-weight: $font-bold;
     text-decoration: none;
     cursor: pointer;
     transition: all $transition-normal;
     white-space: nowrap;
+    display: inline-block;
 
     &:hover {
-      background-color: rgba($white, 0.3);
-      border-color: rgba($white, 0.6);
+      background-color: $white;
+      color: $primary;
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
     }
 
     &:focus {
-      outline: 2px solid rgba($white, 0.6);
+      outline: 2px solid rgba($white, 0.8);
       outline-offset: 2px;
     }
 
     @media (max-width: $breakpoint-md) {
-      padding: $spacing-2 $spacing-3;
+      padding: $spacing-2 + 0.125rem $spacing-3;
       font-size: calc($font-xs - 0.05rem);
     }
 
     @media (max-width: $breakpoint-sm) {
-      padding: $spacing-2 - 0.1rem $spacing-3 - 0.125rem;
+      padding: $spacing-2 $spacing-3 - 0.125rem;
       font-size: calc($font-xs - 0.1rem);
-    }
-  }
-
-  &__close {
-    flex-shrink: 0;
-    width: $icon-size-xl;
-    height: $icon-size-xl;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    color: inherit;
-    cursor: pointer;
-    padding: 0;
-    transition: opacity $transition-fast;
-
-    svg {
-      width: $icon-size-md;
-      height: $icon-size-md;
-      stroke-width: 2;
-    }
-
-    &:hover {
-      opacity: 0.8;
-    }
-
-    &:focus {
-      outline: 2px solid rgba($white, 0.6);
-      outline-offset: 2px;
-      border-radius: $border-radius;
-    }
-
-    @media (max-width: $breakpoint-sm) {
-      width: 28px;
-      height: 28px;
-
-      svg {
-        width: $icon-size-sm;
-        height: $icon-size-sm;
-      }
+      width: 100%;
+      text-align: center;
     }
   }
 
@@ -195,13 +192,12 @@
 @media (max-width: $breakpoint-md) {
   .announcement {
     &__inner {
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: stretch;
     }
 
     &__button {
-      order: 3;
-      width: 100%;
-      text-align: center;
+      align-self: flex-start;
     }
   }
 }
@@ -214,13 +210,19 @@
       gap: $spacing-2 + 0.25rem;
     }
 
-    &__content {
+    &__slide.is-active {
+      flex-direction: column;
       gap: $spacing-2;
-      order: 1;
+
+      .announcement__content {
+        gap: $spacing-2;
+        width: 100%;
+      }
     }
 
-    &__close {
-      order: 2;
+    &__button {
+      width: 100%;
+      text-align: center;
     }
   }
 }
