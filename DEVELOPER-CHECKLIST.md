@@ -30,7 +30,7 @@ Use this guide to ensure consistency, quality, and best practices across all dev
 - [ ] **Templating:** Timber + Twig (not plain PHP templates)
 - [ ] **Styling:** BEM methodology + SCSS (see [BEM-GUIDE.md](BEM-GUIDE.md))
 - [ ] **JavaScript:** ES6 modules via Vite (see [JAVASCRIPT-GUIDE.md](JAVASCRIPT-GUIDE.md))
-- [ ] **Blocks:** Custom Gutenberg blocks with ACF Pro (see [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md))
+- [ ] **Blocks:** Text block for rich content with ACF Pro (see [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md))
 - [ ] **Database:** WordPress post types, ACF field groups, custom taxonomies (see [CONFIG-GUIDE.md](CONFIG-GUIDE.md))
 
 ### Setup Your Local Environment
@@ -71,16 +71,16 @@ npm run lint     # ESLint JavaScript check
 
 ### Step 2: Choose Your Approach
 
-**Approach A: Use Gutenberg Blocks (Recommended)**
+**Approach A: Use the Text Block (Recommended)**
 
-- Admin builds page in visual editor
-- Combine Hero + Cards Grid + CTA + Newsletter blocks
+- Admin builds page in visual editor with Text block for content
+- Use rich text formatting in the block
 - No developer customization needed! ✨
 
 **Approach B: Create Custom Twig Template**
 
 - Create new file: `templates/my-custom-page.twig`
-- Compose layout with Twig components and blocks
+- Compose layout with Twig components
 - Bind to page in WordPress (Custom Field or PHP condition)
 
 **Approach C: Add PHP Logic**
@@ -91,33 +91,30 @@ npm run lint     # ESLint JavaScript check
 
 ### Step 3: Building the Page Structure
 
-**Example: Team Page with Gutenberg Blocks**
+**Example: About Page with Text Block**
 
 ```
-1. Hero Block (Page intro)
-   - Title: "Our Team"
-   - Subtitle: "Meet the people behind our success"
-   - Image: Team group photo
+1. Page Header (Twig template or custom PHP)
+   - Title: "About Us"
+   - Subtitle: "Our Story"
 
-2. Cards Grid Block (Team members)
-   - Style: Horizontal layout (image left, info right)
-   - 3 cards: Each team member
-   - Fields: Photo, name, title, bio, social links
+2. Text Block (Content)
+   - Use rich text editor for formatted content
+   - Support for headings, lists, links, quotes
 
-3. CTA Block (Join us)
-   - Title: "Join Our Team"
-   - Button: "View Careers"
+3. Optional: Footer Section (Twig template)
+   - Call-to-action or additional information
 ```
 
-All done in WordPress editor—no coding needed!
+Most pages can be built in WordPress editor—no coding needed!
 
 ### Step 4: Checklist
 
 Creating a new page?
 
-- [ ] Chose between Gutenberg blocks vs custom template
+- [ ] Chose between Text block vs custom template
 - [ ] Documented the page purpose and intended audience
-- [ ] Used existing blocks where possible (avoid custom code)
+- [ ] Used Text block where possible (avoid custom code)
 - [ ] If custom code needed: created `.twig` template following naming convention
 - [ ] Tested responsive design (mobile, tablet, desktop)
 - [ ] Added SEO meta title, description, and Open Graph image
@@ -126,137 +123,31 @@ Creating a new page?
 
 ---
 
-## Building a New Block
+## Adding Content with the Text Block
 
-### Step 1: Decide Block Scope
+### Overview
 
-Ask yourself:
+The theme includes a **Text Block** for rich text content. This is the primary block for adding formatted content:
 
-- Will this be reusable across multiple pages?
-- Will non-developers need to edit this?
-- Does it need special functionality (search, filtering)?
+**Features:**
 
-If YES to any: → **Build a Gutenberg block**
-If NO to all: → Use a **Twig component** instead
+- Rich text editing (WYSIWYG)
+- Support for headings, lists, quotes, links
+- No developer coding required—fully editable in WordPress
 
-### Step 2: Create Block Files
+### Using the Text Block
 
-**File 1: Block Template** (`views/blocks/my-block.twig`)
+1. Open page in editor
+2. Click "+" to add a block
+3. Search for "Text"
+4. Add and format your content
+5. Publish
 
-```twig
-{#
-Title: My Block Name
-Description: What this block does
-Category: common
-Icon: <svg>...</svg>
-Keywords: keyword1 keyword2
-Mode: auto
-PostTypes: page post
-SupportsMode: true
-SupportsMultiple: true
-#}
+No code needed!
 
-<section class="my-block {{ block.classes }}">
-  <div class="wrapper">
-    {% if fields.title %}
-      <h2 class="my-block__title">{{ fields.title }}</h2>
-    {% endif %}
-  </div>
-</section>
-```
+### Creating Additional Blocks
 
-**File 2: Block Fields** (`src/blocks/my-block.php`)
-
-```php
-<?php
-
-if( function_exists('acf_add_local_field_group') ):
-
-acf_add_local_field_group(array(
-    'key' => 'group_my_block',
-    'title' => 'My Block',
-    'fields' => array(
-        array(
-            'key' => 'field_title',
-            'label' => 'Title',
-            'name' => 'title',
-            'type' => 'text',
-            'required' => 1,
-        ),
-        // Add more fields...
-    ),
-    'location' => array(
-        array(
-            array(
-                'param' => 'block',
-                'operator' => '==',
-                'value' => 'acf/my-block',
-            ),
-        ),
-    ),
-));
-
-endif;
-```
-
-**File 3: Block Styles** (`css/inc/blocks/my-block.scss`)
-
-```scss
-@import "../base/vars";
-
-.my-block {
-  padding: $spacing-4;
-  background-color: $bg-light;
-
-  &__title {
-    font-size: $font-2xl;
-    font-weight: bold;
-    color: $primary;
-  }
-
-  // Mobile responsiveness
-  @media (max-width: $breakpoint-md) {
-    padding: $spacing-3;
-
-    &__title {
-      font-size: $font-xl;
-    }
-  }
-}
-```
-
-### Step 3: Test the Block
-
-- [ ] Block appears in Gutenberg editor
-- [ ] All fields are editable
-- [ ] Block renders correctly on frontend
-- [ ] Styles apply (check inspector)
-- [ ] Mobile responsive looks good
-- [ ] Run `npm run build` - no errors
-- [ ] Test in browser with cache cleared (Cmd+Shift+R)
-
-### Step 4: Document the Block
-
-Update [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md) with:
-
-- [ ] Block purpose and use cases
-- [ ] Field table and descriptions
-- [ ] CSS class names (BEM naming)
-- [ ] Example usage screenshots
-
-### Step 5: Checklist
-
-Building a new block? Ensure:
-
-- [ ] Used BEM methodology for CSS class names
-- [ ] Made fields conditional with {% if field %} checks
-- [ ] Added helpful instructions in ACF field label
-- [ ] Mobile breakpoints tested (sm/md/lg)
-- [ ] Accessibility: ARIA labels, semantic HTML
-- [ ] Schema markup (if relevant—pricing, FAQs, products)
-- [ ] No inline styles (use SCSS only)
-- [ ] SVG icons (not image files when possible)
-- [ ] Updated BLOCKS-GUIDE.md with documentation
+If you need to extend the theme with new blocks, refer to [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md) for the block architecture and creation pattern.
 
 ---
 

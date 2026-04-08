@@ -94,6 +94,11 @@ function theme_track_product_conversion( $order_id ) {
  * @return void
  */
 function theme_hook_product_view_tracking() {
+	// Only track if WooCommerce is active
+	if ( ! function_exists( 'is_product' ) ) {
+		return;
+	}
+
 	if ( is_singular( 'product' ) || is_product() ) {
 		$product_id = get_the_ID();
 		theme_track_product_view( $product_id );
@@ -190,6 +195,11 @@ function theme_get_top_products( $metric = 'conversions', $limit = 10 ) {
  * @return void
  */
 function theme_add_product_performance_columns( $columns ) {
+	// Only add if WooCommerce is active
+	if ( ! function_exists( 'wc_get_product' ) ) {
+		return $columns;
+	}
+
 	$columns['product_views'] = __( 'Views', 'starter-theme-1.x' );
 	$columns['product_conversions'] = __( 'Sales', 'starter-theme-1.x' );
 	$columns['product_revenue'] = __( 'Revenue', 'starter-theme-1.x' );
@@ -205,6 +215,11 @@ add_filter( 'manage_product_posts_columns', 'theme_add_product_performance_colum
  * @return void
  */
 function theme_render_product_performance_column( $column, $post_id ) {
+	// Only render if WooCommerce is active
+	if ( ! function_exists( 'wc_price' ) ) {
+		return;
+	}
+
 	if ( 'product_views' === $column ) {
 		$views = intval( get_post_meta( $post_id, '_theme_view_count', true ) );
 		echo esc_html( $views );
@@ -225,6 +240,11 @@ add_action( 'manage_product_posts_custom_column', 'theme_render_product_performa
  * @return array
  */
 function theme_make_product_performance_sortable( $columns ) {
+	// Only add if WooCommerce is active
+	if ( ! function_exists( 'wc_get_product' ) ) {
+		return $columns;
+	}
+
 	$columns['product_views'] = 'product_views';
 	$columns['product_conversions'] = 'product_conversions';
 	$columns['product_revenue'] = 'product_revenue';
@@ -239,6 +259,11 @@ add_filter( 'manage_edit-product_sortable_columns', 'theme_make_product_performa
  */
 function theme_product_performance_sortable_query( $query ) {
 	if ( ! is_admin() || ! $query->is_main_query() ) {
+		return;
+	}
+
+	// Only sort if WooCommerce is active
+	if ( ! function_exists( 'wc_get_product' ) ) {
 		return;
 	}
 
@@ -263,6 +288,11 @@ add_action( 'pre_get_posts', 'theme_product_performance_sortable_query' );
  * @return void
  */
 function theme_add_product_performance_metabox() {
+	// Only add if WooCommerce is active
+	if ( ! function_exists( 'wc_get_product' ) ) {
+		return;
+	}
+
 	add_meta_box(
 		'theme_product_performance',
 		__( 'Product Performance', 'starter-theme-1.x' ),
@@ -281,6 +311,11 @@ add_action( 'add_meta_boxes', 'theme_add_product_performance_metabox' );
  * @return void
  */
 function theme_render_product_performance_metabox( $post ) {
+	// Only render if WooCommerce is active
+	if ( ! function_exists( 'wc_price' ) ) {
+		return;
+	}
+
 	$perf = theme_get_product_performance( $post->ID );
 	?>
 	<div class="theme-performance-metabox">

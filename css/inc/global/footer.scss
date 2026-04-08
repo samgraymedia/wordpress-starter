@@ -8,17 +8,6 @@
  * Beautiful, modern footer with multi-column layout, social links, and newsletter signup
  */
 
-@import "../base/vars";
-
 // ============================================
 // Footer Container
 // ============================================
-footer {
-  border-top: 1px solid $border-color;
-  .footer-content {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: space-between;
-  }
-}

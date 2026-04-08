@@ -249,8 +249,14 @@ class StarterSite extends Timber\Site {
 	/**
 	 * Create My Account page with the account.php template
 	 * Called during theme initialization
+	 * Only creates page if WooCommerce is active
 	 */
 	public function create_account_page() {
+		// Only create account page if WooCommerce is active
+		if ( ! class_exists( 'WooCommerce' ) && ! ( function_exists( 'is_plugin_active' ) && is_plugin_active( 'woocommerce/woocommerce.php' ) ) ) {
+			return; // Skip if WooCommerce not active
+		}
+
 		// Create account page if it doesn't exist
 		$account_page = get_page_by_path( 'account' );
 		if ( ! $account_page ) {

@@ -18,9 +18,6 @@
     "test:php": "phpunit",
     "test:php:coverage": "phpunit --coverage-html=coverage/html --coverage-clover=coverage/clover.xml"
   },
-  "dependencies": {
-    "bootstrap": "^5.3.0"
-  },
   "devDependencies": {
     "@axe-core/cli": "^4.8.0",
     "@babel/core": "^7.23.0",

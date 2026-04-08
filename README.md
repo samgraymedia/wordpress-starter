@@ -12,7 +12,7 @@ Designed for structured, component-based theme development with modern build too
 
 Features:
 
-- 19 pre-built custom Gutenberg blocks (Hero, Banner, Pricing, Cards Grid, FAQ Search, Related Content, and more)
+- Text Gutenberg block for rich text content
 - Responsive mobile navigation with hamburger menu
 - Auto-discovery registries (post types, taxonomies, page templates, blocks)
 - Centralized configuration system with type-safe access
@@ -90,7 +90,7 @@ Complete documentation:
 
 - [QUICK-REFERENCE.md](QUICK-REFERENCE.md) - Fast lookup
 - [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md) - Complete development reference
-- [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md) - All 15 custom Gutenberg blocks reference
+- [BLOCKS-GUIDE.md](BLOCKS-GUIDE.md) - Gutenberg blocks reference (Text block)
 - [JAVASCRIPT-GUIDE.md](JAVASCRIPT-GUIDE.md) - JavaScript module system and Vite (includes hamburger menu)
 - [ARCHITECTURE.md](ARCHITECTURE.md) - System design
 - [CONFIG-GUIDE.md](CONFIG-GUIDE.md) - Configuration system
