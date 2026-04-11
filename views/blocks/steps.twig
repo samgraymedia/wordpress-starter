@@ -1,0 +1,39 @@
+{#
+Title: Steps
+Description: Display a list of steps with titles and descriptions
+Category: design
+Icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+Keywords: steps process guide workflow
+Mode: auto
+PostTypes: page
+SupportsMode: true
+SupportsMultiple: true
+#}
+
+<div id="steps-{{block.id}}" class="block steps {{block.classes}}">
+	<div class="wrapper">
+		{% if fields.lead %}
+			<span class="steps__lead">{{ fields.lead }}</span>
+		{% endif %}
+
+		{% if fields.title %}
+			<h2 class="steps__title">{{ fields.title }}</h2>
+		{% endif %}
+
+		{% if fields.steps %}
+			<div class="steps__container">
+				{% for step in fields.steps %}
+					<div class="steps__step">
+						<div class="steps__number">{{ loop.index }}</div>
+						<div class="steps__content">
+							<h3 class="steps__step-title">{{ step.step_title }}</h3>
+							{% if step.step_description %}
+								<p class="steps__step-description">{{ step.step_description }}</p>
+							{% endif %}
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+</div>

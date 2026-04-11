@@ -1,0 +1,15 @@
+.wrapper {
+  padding: 0 64px;
+  max-width: 1800px;
+  margin: 0 auto;
+  @media (max-width: $breakpoint-lg) {
+    padding: 0 32px;
+  }
+  @media (max-width: $breakpoint-md) {
+    padding: 0 16px;
+  }
+
+  &--narrow {
+    max-width: 1400px;
+  }
+}

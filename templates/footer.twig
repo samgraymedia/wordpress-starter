@@ -20,12 +20,11 @@
 			{% endif %}
 		</nav>
 
-		<div>
+		<div class="footer-contact">
 			<h3>{{ _e('Contact') }}</h3>
 			{% set contact_email = function('get_field', 'contact_email', 'option') %}
 			{% if contact_email %}
 				<p>
-					<strong>{{ _e('Email') }}:</strong>
 					<a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
 				</p>
 			{% endif %}

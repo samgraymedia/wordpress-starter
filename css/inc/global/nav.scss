@@ -5,13 +5,131 @@
  * Elements: .nav-main__list, .nav-main__item, .nav-main__link, .nav-main__submenu
  * Modifiers: .nav-main--active
  *
- * Navigation is responsive and includes:
- * - Main menu with hover states
- * - Dropdown submenus
- * - Search form integration
- * - Mobile responsive design
+
  */
 
 // ============================================
 // Header Layout
 // ============================================
+header.header {
+  background-color: rgba($black, 0.85);
+  backdrop-filter: blur(20px);
+  padding-top: 16px;
+  padding-bottom: 16px;
+  position: fixed;
+  z-index: 100000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid rgba(248, 250, 252, 0.06);
+  nav {
+    .nav-menu {
+      display: flex;
+      justify-content: space-between;
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        .dot {
+          width: 10px;
+          height: 10px;
+          background: $primary;
+          border-radius: 50%;
+          display: inline-block;
+        }
+        a {
+          font-size: 24px;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+          color: $white;
+          text-decoration: none;
+        }
+      }
+      &__list {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+        li {
+          a {
+            color: $text-muted;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            &:hover {
+              color: $white;
+              background: rgba(132, 204, 22, 0.12);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Tablet styles
+  @media (max-width: $breakpoint-lg) {
+    padding-top: 12px;
+    padding-bottom: 12px;
+
+    nav {
+      .nav-menu {
+        .logo {
+          justify-content: center;
+          a {
+            font-size: 20px;
+          }
+        }
+        &__list {
+          gap: 20px;
+          justify-content: center;
+
+          li {
+            a {
+              padding: 6px 12px;
+              font-size: 12px;
+              letter-spacing: 0.08em;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Mobile styles
+  @media (max-width: $breakpoint-md) {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    nav {
+      .nav-menu {
+        flex-direction: column;
+        gap: 12px;
+
+        .logo {
+          gap: 6px;
+          .dot {
+            width: 8px;
+            height: 8px;
+          }
+          a {
+            font-size: 18px;
+          }
+        }
+        &__list {
+          gap: 12px;
+          flex-direction: row;
+          justify-content: center;
+          li {
+            a {
+              padding: 6px 12px;
+              font-size: 11px;
+              letter-spacing: 0.06em;
+            }
+          }
+        }
+      }
+    }
+  }
+}

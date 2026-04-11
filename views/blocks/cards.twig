@@ -1,0 +1,33 @@
+{#
+Title: Cards
+Description: Cards section with title, 3 cards layout with icon, title, description and pill
+Category: design
+Icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M9 9h6v6H9z"/></svg>
+Keywords: cards section
+Mode: auto
+PostTypes: page post
+SupportsMode: true
+SupportsMultiple: true
+#}
+<div id="cards-{{block.id}}" class="block cards {{block.classes}}">
+	<div class='wrapper'>
+		<div class='cards__title'>
+			<span class='cards__lead'>{{ fields.lead }}</span>
+			<h2>{{ fields.title }}</h2>
+		</div>
+		<div class='cards__cards'>
+			{% for card in fields.cards %}
+				<div class='cards__card'>
+					{{ card.icon }}
+					<h3>{{ card.title }}</h3>
+
+					<p>{{ card.description }}</p>
+					{% if card.pill %}
+						<div class='cards__pill'>{{ card.pill }}</div>
+					{% endif %}
+				</div>
+			{% endfor %}
+
+		</div>
+	</div>
+</div>

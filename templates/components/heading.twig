@@ -23,15 +23,14 @@
 #}
 
 {% if level is not defined or level < 1 or level > 6 %}
-    {% set level = 2 %}
+	{% set level = 2 %}
 {% endif %}
 
 {% set heading_tag = 'h' ~ level %}
 {% set heading_classes = 'heading heading--' ~ level ~ ' ' ~ (classes|default('')) | trim %}
 
-<{{ heading_tag }} {% if id %}id="{{ id }}"{% endif %} class="{{ heading_classes }}">
-    {% if accent %}
-        <span class="heading__accent" aria-hidden="true"></span>
-    {% endif %}
-    {{ text }}
-</{{ heading_tag }}>
+<{{heading_tag}} {% if id %} id="{{ id }}" {% endif %} class="{{ heading_classes }}">{{ text }}
+	{% if accent %}
+		<span class="heading__accent" aria-hidden="true"></span>
+	{% endif %}
+</{{heading_tag}}>

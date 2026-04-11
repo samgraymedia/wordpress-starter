@@ -1,0 +1,50 @@
+{#
+Title: Testimonial
+Description: Display up to 4 testimonial posts with optional featured post
+Category: design
+Icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/><path d="M9 4v16"/></svg>
+Keywords: testimonial posts featured articles
+Mode: auto
+PostTypes: page
+SupportsMode: true
+SupportsMultiple: true
+#}
+<div id="testimonial-{{block.id}}" class="block testimonial {{block.classes}}">
+	<div class="wrapper">
+		{% if fields.title %}
+			<span class="testimonial__lead">{{ fields.lead }}</span>
+			<h2 class="testimonial__title">{{ fields.title }}</h2>
+		{% endif %}
+
+		{% if fields.posts %}
+			<div class="testimonial__grid">
+				{% for post in fields.posts %}
+					{% set testimonial_text = fn('get_post_meta', post.ID, 'testimonial_wysiwyg', true) %}
+					{% set job_title = fn('get_post_meta', post.ID, 'job_title', true) %}
+					{% set job_org = fn('get_post_meta', post.ID, 'job_organization', true) %}
+
+					<div class="testimonial__card">
+						<div class="testimonial__content">
+							<p class="testimonial__text">{{ testimonial_text }}</p>
+							<div class="testimonial__author">
+								<div class="testimonial__avatar">
+									{% set words = post.post_title|split(' ') %}
+									{% for word in words %}
+										{{ word[0:1]|upper }}
+									{% endfor %}
+								</div>
+								<div class="testimonial__author-info">
+									<h4 class="testimonial__author-name">{{ post.post_title }}</h4>
+									<p class="testimonial__author-title">{{ job_title }}
+										at
+										{{ job_org }}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+
+			</div>
+		{% endif %}
+	</div>
+</div>

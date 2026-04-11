@@ -1,0 +1,97 @@
+{#
+Title: Hero
+Description: Hero section with title, intro, buttons, and choice of image or stats
+Category: design
+Icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M9 9h6v6H9z"/></svg>
+Keywords: hero banner section
+Mode: auto
+PostTypes: page post
+SupportsMode: true
+SupportsMultiple: true
+#}
+
+<div id="hero-{{block.id}}" class="block hero {{block.classes}}">
+	<div class="wrapper">
+		<div class="hero__content">
+			<div class="hero__left">
+				{% if fields.title_lead %}
+					<div class="hero__lead">
+						<span>{{ fields.title_lead }}</span>
+					</div>
+
+				{% endif %}
+				{% if fields.title %}
+					<div class="hero__title">
+						<h1>{{ fields.title }}</h1>
+					</div>
+				{% endif %}
+
+
+				{% if fields.intro %}
+					<div class="hero__intro">
+						<p>
+							{{ fields.intro }}</p>
+					</div>
+				{% endif %}
+				{% if fields.buttons %}
+					<div class="hero__buttons">
+						{% for button in fields.buttons %}
+							<a href="{{ button.url }}" class="btn btn--{{ button.style }}">{{ button.label }}</a>
+						{% endfor %}
+					</div>
+				{% endif %}
+
+			</div>
+
+			<div class="hero__right">
+				{% if fields.content_type == 'image' %}
+					{# Image #}
+					{% if fields.image %}
+						{{ fields.image.url }}
+						{{ fields.image.alt }}
+					{% endif %}
+				{% elseif fields.content_type == 'stats' %}
+					<div
+						class="hero__stats">
+						{# Stats #}
+						{% if fields.stats_lead %}
+							<div class="hero__stats--lead">
+								{{ fields.stats_lead }}
+							</div>
+						{% endif %}
+
+						{% if fields.stat_one_number and fields.stat_two_number %}
+							<div class="hero__stats-wrapper two-stats">
+								<div class="hero__stat">
+									<div class="hero__stat-number--one">{{ fields.stat_one_number }}<span class="hero__stat-number--two">/{{ fields.stat_two_number }}</span>
+									</div>
+
+
+								</div>
+
+							</div>
+						{% elseif fields.stat_one_number %}
+							<div class="hero__stats-wrapper one-stat">
+								<div class="hero__stat">
+									<div class="hero__stat-number">{{ fields.stat_one_number }}</div>
+								</div>
+							</div>
+						{% elseif fields.stat_two_number %}
+							<div class="hero__stats-wrapper one-stat">
+								<div class="hero__stat">
+									<div class="hero__stat-number">{{ fields.stat_two_number }}</div>
+								</div>
+							</div>
+						{% endif %}
+
+						{% if fields.stats_description %}
+							<div class="hero__stats-description">
+								{{ fields.stats_description }}
+							</div>
+						{% endif %}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>

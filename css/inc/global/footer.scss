@@ -11,3 +11,50 @@
 // ============================================
 // Footer Container
 // ============================================
+
+footer {
+  padding-top: 96px;
+  padding-bottom: 96px;
+  background: linear-gradient(180deg, $black 0%, #050505 100%);
+  color: $white;
+  border-top: 1px solid rgba(248, 250, 252, 0.06);
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    h3 {
+      color: $white;
+      margin-bottom: 32px;
+    }
+    nav {
+      ul {
+        list-style: none;
+        display: flex;
+        flex-flow: column;
+        gap: 16px;
+        li {
+          a {
+            color: $white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            &:hover {
+              color: $primary;
+              padding-left: 4px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .footer-content {
+    p {
+      a {
+        color: $white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        &:hover {
+          color: $primary;
+        }
+      }
+    }
+  }
+}

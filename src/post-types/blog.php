@@ -33,7 +33,7 @@ return array(
 		'hierarchical'       => false,
 		'menu_position'      => 4,
 		'menu_icon'          => 'dashicons-edit',
-		'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields', 'author', 'comments' ),
+	'supports'           => array( 'title', 'thumbnail', 'excerpt', 'custom-fields', 'author', 'comments' ),
 		'show_in_rest'       => false,
 	),
 	'fields' => array(

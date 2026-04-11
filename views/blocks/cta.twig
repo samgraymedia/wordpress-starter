@@ -1,0 +1,40 @@
+{#
+Title: Call to Action
+Description: CTA section with title, description, and call-to-action buttons
+Category: design
+Icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+Keywords: cta call to action buttons
+Mode: auto
+PostTypes: page
+SupportsMode: true
+SupportsMultiple: true
+#}
+
+<div id="cta-{{block.id}}" class="block cta {{block.classes}}">
+	<div class="wrapper">
+		<div class="cta__content">
+			{% if fields.title %}
+				{% set words = fields.title|split(' ') %}
+				{% set lastWord = words|last %}
+				{% set otherWords = words|slice(0, -1)|join(' ') %}
+				<h2 class="cta__title">{{ otherWords }}
+					<span class="cta__title-highlight">{{ lastWord }}</span>
+				</h2>
+			{% endif %}
+
+			{% if fields.description %}
+				<p class="cta__description">{{ fields.description }}</p>
+			{% endif %}
+		</div>
+
+		{% if fields.buttons %}
+			<div class="cta__buttons">
+				{% for button in fields.buttons %}
+					<a href="{{ button.button_url }}" class="btn btn--{{ button.button_style }}">
+						{{ button.button_label }}
+					</a>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+</div>

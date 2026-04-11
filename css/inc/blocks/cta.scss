@@ -1,0 +1,121 @@
+.cta {
+  padding: 80px;
+  background-color: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 24px;
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  &__content {
+    margin-bottom: 40px;
+    max-width: 700px;
+  }
+
+  &__title {
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: $black;
+    margin-bottom: 20px;
+  }
+
+  &__title-highlight {
+    color: $secondary;
+  }
+
+  &__description {
+    font-size: 18px;
+    color: #64748b;
+    line-height: 1.6;
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    &--secondary {
+      background-color: transparent;
+      color: $secondary;
+      border: 2px solid $secondary;
+
+      &:hover {
+        color: $primary;
+        border-color: $primary;
+        background: rgba($primary, 0.08);
+      }
+    }
+  }
+
+  // Tablet styles
+  @media (max-width: $breakpoint-lg) {
+    padding: 60px;
+
+    &__content {
+      margin-bottom: 32px;
+    }
+
+    &__title {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+
+    &__description {
+      font-size: 16px;
+    }
+
+    &__buttons {
+      gap: 12px;
+    }
+
+    &__button {
+      padding: 14px 28px;
+      font-size: 15px;
+    }
+  }
+
+  // Mobile styles
+  @media (max-width: $breakpoint-md) {
+    padding: 40px 24px;
+
+    .wrapper {
+      align-items: stretch;
+    }
+
+    &__content {
+      margin-bottom: 24px;
+    }
+
+    &__title {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    &__description {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    &__buttons {
+      gap: 10px;
+      flex-direction: column;
+    }
+
+    &__button {
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 14px;
+
+      &--secondary {
+        border-width: 1px;
+      }
+    }
+  }
+}

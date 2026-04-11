@@ -1,0 +1,50 @@
+{#
+Title: Blog Posts
+Description: Display up to 4 blog posts with optional featured post
+Category: design
+Icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/><path d="M9 4v16"/></svg>
+Keywords: blog posts featured articles
+Mode: auto
+PostTypes: page
+SupportsMode: true
+SupportsMultiple: true
+#}
+
+<div id="blog-posts-{{block.id}}" class="block blog-posts {{block.classes}}">
+	<div class="wrapper">
+		{% if fields.title %}
+			<span class="blog-posts__lead">{{ fields.lead }}</span>
+			<h2 class="blog-posts__title">{{ fields.title }}</h2>
+		{% endif %}
+
+		<div class="blog-posts__container">
+			{% if fields.posts %}
+				<div class="blog-posts__grid">
+					{% for post in fields.posts %}
+						<article class="blog-posts__card">
+							<a href="{{ post.permalink }}" class="blog-posts__card-link">
+								{% set featured_image = fn('get_the_post_thumbnail_url', post.ID) %}
+								{% if featured_image %}
+									<img src="{{ featured_image }}" alt="{{ post.title }}" class="blog-posts__card-image"/>
+								{% endif %}
+
+								<div class='blog-posts__info {% if loop.index > 1 %}blog-posts__info--secondary{% endif %}'>
+
+									{% if loop.index > 1 %}
+										<span class="blog-posts__card-number">{{ '%02d'|format(loop.index - 1) }}</span>
+									{% endif %}
+									<div>
+										<h3 class="blog-posts__card-title">{{ post.post_title }}</h3>
+										{% if post.post_excerpt %}
+											<p class="blog-posts__card-excerpt">{{ post.post_excerpt }}</p>
+										{% endif %}
+									</div>
+								</div>
+							</a>
+						</article>
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</div>

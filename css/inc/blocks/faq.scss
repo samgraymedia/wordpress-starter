@@ -1,0 +1,84 @@
+.faq {
+  padding: 64px;
+  background-color: $black;
+  &__lead {
+    color: $primary;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    &::before {
+      content: "";
+      width: 40px;
+      height: 2px;
+      background: $primary;
+    }
+  }
+  &__title {
+    width: 50%;
+    font-size: 60px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: $white;
+    margin-bottom: 64px;
+    @media (max-width: $breakpoint-lg) {
+      width: 100%;
+    }
+  }
+
+  &__grid {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  &__icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(132, 204, 22, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #84cc16;
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 400;
+  }
+  &__item {
+    width: calc(50% - 22px);
+    background: #141414;
+    border: 1px solid rgba(248, 250, 252, 0.06);
+    border-radius: 16px;
+    padding: 32px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    &:hover {
+      border-color: rgba(132, 204, 22, 0.5);
+    }
+    h3 {
+      font-size: 17px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+      color: $white;
+    }
+    @media (max-width: $breakpoint-md) {
+      width: 100%;
+    }
+  }
+  &__answer {
+    color: #94a3b8;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+}

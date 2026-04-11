@@ -1,0 +1,89 @@
+.steps {
+  padding: 64px;
+  background-color: $black;
+  &__lead {
+    color: $primary;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    &::before {
+      content: "";
+      width: 40px;
+      height: 2px;
+      background: $primary;
+    }
+  }
+  &__title {
+    width: 50%;
+    font-size: 60px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: $white;
+    margin-bottom: 64px;
+    @media (max-width: $breakpoint-lg) {
+      width: 100%;
+    }
+  }
+
+  &__container {
+    color: $white;
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  &__steps {
+    display: flex;
+    flex-flow: column;
+    gap: 8px;
+  }
+
+  &__step {
+    text-align: center;
+    padding: 48px 32px;
+    width: calc(33.3333% - 22px);
+    @media (max-width: $breakpoint-lg) {
+      width: 100%;
+    }
+    &:hover {
+      .steps__number {
+        background: rgba(132, 204, 22, 0.3);
+        border-color: rgba(132, 204, 22, 0.5);
+        color: $white;
+      }
+    }
+  }
+
+  &__number {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid rgba(132, 204, 22, 0.3);
+    background: rgba(132, 204, 22, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: $primary;
+    margin: 0 auto 32px;
+    transition: all 0.3s ease;
+  }
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  p {
+    color: #94a3b8;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+}
