@@ -15,3 +15,55 @@
 // ============================================
 // Header Layout
 // ============================================
+header.header {
+  height: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba($black, 0.4);
+}
+.nav-menu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  justify-content: space-between;
+  h3,
+  h3 a {
+    font-size: 36px;
+    color: $white;
+    text-decoration: none;
+    text-transform: capitalize;
+    font-weight: 100;
+    font-family: $font-family-heading;
+  }
+
+  &__list {
+    list-style: none;
+    li {
+      a {
+        display: flex;
+        gap: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 1.2rem;
+        font-weight: 500;
+        text-decoration: none;
+        color: $white;
+        transition: all 0.3s ease;
+       
+        svg {
+          width: 16px;
+          transition: transform 0.3s ease;
+        }
+
+      }
+    }
+  }
+}

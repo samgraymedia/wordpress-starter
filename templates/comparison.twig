@@ -33,10 +33,11 @@
 					<i class="icon-scale" style="font-size: 3rem; opacity: 0.3;"></i>
 					<h3 class="mt-3">No products to compare</h3>
 					<p class="text-muted mb-4">Add products to comparison to see them side-by-side</p>
-					<a href="{{ site.link }}/shop/" class="btn btn-primary">
-						<i class="icon-arrow-left"></i>
-						Back to Shop
-					</a>
+					{% include 'components/button.twig' with {
+				href: site.link ~ '/shop/',
+				text: 'Back to Shop',
+				class: 'btn-primary'
+				} %}
 				</div>
 			{% else %}
 				<!-- Comparison Table -->
@@ -180,10 +181,11 @@
 								{% for product in comparison_products %}
 									<td class="text-center">
 										<div class="btn-group-vertical gap-2" style="width: 100%;">
-											<a href="{{ product.permalink }}" class="btn btn-primary btn-sm">
-												<i class="icon-eye"></i>
-												View
-											</a>
+											{% include 'components/button.twig' with {
+												href: product.permalink,
+												text: '<i class="icon-eye"></i> View',
+												class: 'btn-primary btn-sm'
+											} %}
 											<button class="btn btn-sm btn-outline-danger remove-from-comparison-btn" data-product-id="{{ product.product_id }}">
 												<i class="icon-trash"></i>
 												Remove
@@ -199,10 +201,11 @@
 				<!-- Back to Shop -->
 				<div class="row mt-5">
 					<div class="col-12 text-center">
-						<a href="{{ site.link }}/shop/" class="btn btn-outline-primary btn-lg">
-							<i class="icon-arrow-left"></i>
-							Continue Shopping
-						</a>
+						{% include 'components/button.twig' with {
+							href: site.link ~ '/shop/',
+							text: '<i class="icon-arrow-left"></i> Continue Shopping',
+							class: 'btn-outline-primary btn-lg'
+						} %}
 					</div>
 				</div>
 			{% endif %}

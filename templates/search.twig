@@ -14,7 +14,7 @@
 
 			{% if posts %}
 				{# Check if searching for products #}
-				{% if posts[0].post_type == 'product' %}
+				{% if posts[0].post_type == 'collection' %}
 					{# Display products in a grid #}
 					<div class="search-results__products">
 						{% for post in posts %}

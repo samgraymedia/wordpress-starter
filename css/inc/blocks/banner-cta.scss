@@ -1,0 +1,42 @@
+// Banner CTA Block
+// Lead text, title, buttons with background image/SVG
+
+.banner-cta {
+  position: relative;
+  overflow: hidden;
+  margin: 4rem 0;
+  &__content {
+    border: 1px solid rgba(33, 35, 37, 0.2);
+    padding: 216px 53px;
+  }
+  &__lead {
+    align-items: center;
+    display: flex;
+    font-family: $font-family-heading;
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1.3;
+    text-transform: uppercase;
+    &:before {
+      background: currentcolor;
+      content: "";
+      display: block;
+      height: 0.6rem;
+      margin-right: 1.2rem;
+      transform: rotate(45deg) translateY(-0.2rem);
+      width: 0.6rem;
+    }
+  }
+  &__title {
+    font-family: $font-family-heading;
+    font-size: 6.4rem;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 3rem 0 5rem;
+    width: 70.6rem;
+  }
+}

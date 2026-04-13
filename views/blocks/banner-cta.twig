@@ -1,0 +1,47 @@
+{#
+ * Banner CTA Block
+ * Title: Banner CTA
+ * Description: Display a banner with lead text, title, buttons, and background media
+ * Category: media
+ * Icon: cover-image
+ * Keywords: banner cta call-to-action
+ * Mode: edit
+#}
+
+<div class="block banner-cta" data-block-id="{{ block.id }}">
+	{% if fields.media %}
+
+		<div class="banner-cta__background" style="background-image: url('{{ fields.media.url }}');"></div>
+
+	{% endif %}
+
+	<div class="wrapper">
+		<div class="banner-cta__content">
+			{% if fields.lead %}
+
+				<span class="banner-cta__lead">{{ fields.lead }}</span>
+
+			{% endif %}
+
+			{% if fields.title %}
+
+				<h2 class="banner-cta__title">{{ fields.title }}</h2>
+
+			{% endif %}
+
+			{% if fields.buttons %}
+
+				<div class="banner-cta__buttons">
+					{% for button in fields.buttons %}
+						{% set button_class = 'btn--' ~ (button.style ?: 'primary') %}
+						{% include 'components/button.twig' with {
+							href: button.url,
+							text: button.text,
+							class: button_class
+						} %}
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</div>

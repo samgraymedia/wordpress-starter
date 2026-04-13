@@ -15,6 +15,7 @@ Theme Name: Starter Theme
 @import "./css/inc/base/btns";
 
 // 3. Reusable components (BEM components)
+@import "./css/inc/cursor-follower";
 
 // 4. Global layout sections
 @import "./css/inc/global/nav";
@@ -22,6 +23,17 @@ Theme Name: Starter Theme
 @import "./css/inc/global/footer";
 // 5. Block-specific styles
 @import "./css/inc/blocks/text";
+@import "./css/inc/blocks/hero";
+@import "./css/inc/blocks/cta";
+@import "./css/inc/blocks/banner";
+@import "./css/inc/blocks/banner-cta";
+@import "./css/inc/blocks/testimonial";
+@import "./css/inc/blocks/collection-products";
+@import "./css/inc/blocks/image-pair";
+@import "./css/inc/blocks/projects";
+@import "./css/inc/blocks/page-header";
+@import "./css/inc/blocks/lead-content";
+@import "./css/inc/blocks/image-text";
 
 // 6. Page/Post Type specific styles
 @import "./css/inc/pages/404.scss";

@@ -1,0 +1,68 @@
+{#
+	Title: Projects Grid
+	Description: Display selected projects with images and links
+	Category: Projects
+	Icon: dashicons-layout
+#}
+<div class="block projects-block" data-block-id="{{ block.id }}">
+	<div class="wrapper">
+		{% if fields.title %}
+			<div class="projects-block__header">
+				<div class='left'>
+					<p class="projects-block__lead">{{ fields.lead }}</p>
+				</div>
+				<div class='right'>
+					<h2 class="projects-block__title">{{ fields.title }}</h2>
+					{% include 'components/button.twig' with {
+						href: './projects',
+						text: 'View All Projects',
+						class: 'btn--primary'
+					} %}
+				</div>
+			</div>
+		{% endif %}
+		{% if fields.projects %}
+			<div class="projects-grid">
+				{% for project_id in fields.projects %}
+					{% set project_url = project.link %}
+
+					{% set project = TimberPost(project_id) %}
+					{% if project %}
+						<a href="{{ project_url }}" class="project-item">
+
+							<h3>{{ project.post_title }}</h3>
+
+							{% if project.thumbnail %}
+								<div class="project-thumbnail">
+									<img src="{{ project.thumbnail.src }}" alt="{{ project.post_title }}"/>
+								</div>
+
+							{% endif %}
+
+							{% set related_products = project.meta('related_products') %}
+							{% if related_products %}
+								<div class="related-products">
+									<ul>
+										{% for product_id in related_products %}
+											{% set product = TimberPost(product_id) %}
+											{% if product %}
+												<li>{{ product.post_title }}</li>
+											{% endif %}
+										{% endfor %}
+									</ul>
+								</div>
+							{% endif %}
+
+
+							<svg viewbox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-svg" data-v-eea74c7c="">
+								<path d="M1.17969 0V5.52832H11.9766L9.18457 2.8623L9.12012 2.80176L9.18066 2.73633L9.83301 2.0293L9.89453 1.96191L9.96094 2.02441L14.1523 6.02539L14.2197 6.08984L14.1523 6.15527L9.96094 10.1553L9.89453 10.2178L9.83301 10.1504L9.18066 9.44336L9.12012 9.37793L9.18457 9.31738L11.9766 6.65234H0V0H1.17969Z" fill="currentcolor"></path>
+							</svg>
+						</a>
+
+
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	{% endif %}
+</div></div>

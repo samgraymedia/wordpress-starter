@@ -1,0 +1,20 @@
+{#
+	Title: Lead + Content
+	Description: Simple section with lead text and content
+	Category: Content
+	Icon: dashicons-text
+#}
+
+<div class="block lead-content" data-block-id="{{ block.id }}">
+	<div class="wrapper">
+		<div class="lead-content__container">
+			{% if fields.lead %}
+				<p class="lead-content__lead">{{ fields.lead }}</p>
+			{% endif %}
+
+			{% if fields.content %}
+				<p class="lead-content__text">{{ fields.content }}</p>
+			{% endif %}
+		</div>
+	</div>
+</div>

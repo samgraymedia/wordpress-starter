@@ -34,10 +34,11 @@
 					<i class="icon-heart" style="font-size: 3rem; opacity: 0.3;"></i>
 					<h3 class="mt-3">Your wishlist is empty</h3>
 					<p class="text-muted mb-4">Start saving your favorite products!</p>
-					<a href="{{ site.link }}/shop/" class="btn btn-primary">
-						<i class="icon-arrow-left"></i>
-						Back to Shop
-					</a>
+					{% include 'components/button.twig' with {
+				href: site.link ~ '/shop/',
+				text: 'Back to Shop',
+				class: 'btn-primary'
+				} %}
 				</div>
 			{% else %}
 				<!-- Wishlist Grid -->
@@ -116,10 +117,11 @@
 				<!-- Continue Shopping Button -->
 				<div class="row mt-5">
 					<div class="col-12 text-center">
-						<a href="{{ site.link }}/shop/" class="btn btn-outline-primary btn-lg">
-							<i class="icon-arrow-left"></i>
-							Continue Shopping
-						</a>
+						{% include 'components/button.twig' with {
+						href: site.link ~ '/shop/',
+						text: 'Continue Shopping',
+						class: 'btn-outline-primary btn-lg'
+					} %}
 					</div>
 				</div>
 			{% endif %}

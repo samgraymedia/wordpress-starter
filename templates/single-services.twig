@@ -6,132 +6,132 @@
 {% extends "base.twig" %}
 
 {% block content %}
-<div class="container single-service">
-	<div class="row">
-		<div class="col-lg-8">
-			{# Hero Section #}
-			{% if post.thumbnail %}
-				<div class="service-hero mb-5">
-					<img data-src="{{ post.thumbnail.src('large') }}" 
-					     alt="{{ post.title }}" 
-					     class="img-fluid rounded"
-					     loading="lazy"
-					     decoding="async" />
-				</div>
-			{% endif %}
-
-			{# Title #}
-			<h1 class="service-title mb-3">{{ post.title }}</h1>
-
-			{# Meta Information #}
-			<div class="service-meta mb-4">
-				{% set price = post.get_field('service_price') %}
-				{% set duration = post.get_field('service_duration') %}
-				
-				{% if price or duration %}
-					<div class="meta-items">
-						{% if price %}
-							<div class="meta-item">
-								<strong>Price:</strong>
-								<span class="badge bg-primary">${{ price|number_format(2) }}</span>
-							</div>
-						{% endif %}
-						{% if duration %}
-							<div class="meta-item">
-								<strong>Duration:</strong>
-								<span class="badge bg-secondary">{{ duration }}</span>
-							</div>
-						{% endif %}
+	<div class="container single-service">
+		<div class="row">
+			<div
+				class="col-lg-8">
+				{# Hero Section #}
+				{% if post.thumbnail %}
+					<div class="service-hero mb-5">
+						<img data-src="{{ post.thumbnail.src('large') }}" alt="{{ post.title }}" class="img-fluid rounded" loading="lazy" decoding="async"/>
 					</div>
 				{% endif %}
-			</div>
 
-			{# Main Content #}
-			<div class="service-content mb-5">
-				{{ post.content }}
-			</div>
+				{# Title #}
+				<h1 class="service-title mb-3">{{ post.title }}</h1>
 
-			{# Features Section #}
-			{% set features = post.get_field('service_features') %}
-			{% if features %}
-				<div class="service-features-section mb-5">
-					<h2 class="section-title">Key Features & Benefits</h2>
-					<div class="features-list">
-						{% for feature in features %}
-							<div class="feature-item mb-3">
-								<div class="feature-header">
-									<span class="feature-icon">✓</span>
-									<h4 class="feature-title">{{ feature.feature_title }}</h4>
+				{# Meta Information #}
+				<div class="service-meta mb-4">
+					{% set price = post.get_field('service_price') %}
+					{% set duration = post.get_field('service_duration') %}
+
+					{% if price or duration %}
+						<div class="meta-items">
+							{% if price %}
+								<div class="meta-item">
+									<strong>Price:</strong>
+									<span class="badge bg-primary">${{ price|number_format(2) }}</span>
 								</div>
-								{% if feature.feature_description %}
-									<p class="feature-description ms-4">{{ feature.feature_description }}</p>
-								{% endif %}
-							</div>
-						{% endfor %}
-					</div>
+							{% endif %}
+							{% if duration %}
+								<div class="meta-item">
+									<strong>Duration:</strong>
+									<span class="badge bg-secondary">{{ duration }}</span>
+								</div>
+							{% endif %}
+						</div>
+					{% endif %}
 				</div>
-			{% endif %}
 
-			{# Related Testimonials #}
-			{% set related_testimonials = post.get_field('related_testimonials') %}
-			{% if related_testimonials %}
-				<div class="related-testimonials-section mb-5">
-					<h2 class="section-title">Client Testimonials</h2>
-					<div class="testimonials-row">
-						{% for testimonial in related_testimonials|slice(0, 3) %}
-							<div class="testimonial-card-single">
-								{# Rating #}
-								{% set rating = testimonial.get_field('testimonial_rating')|default(5) %}
-								<div class="testimonial-rating mb-2">
-									{% for i in 1..rating %}
-										<span class="star">★</span>
-									{% endfor %}
-								</div>
+				{# Main Content #}
+				<div class="service-content mb-5">
+					{{ post.content }}
+				</div>
 
-								{# Quote #}
-								<p class="testimonial-quote">
-									"{{ testimonial.get_field('testimonial_text')|slice(0, 150) }}..."
-								</p>
-
-								{# Author #}
-								<div class="testimonial-author">
-									<strong>{{ testimonial.title }}</strong>
-									{% set location = testimonial.get_field('testimonial_location') %}
-									{% if location %}
-										<br /><small>{{ location }}</small>
+				{# Features Section #}
+				{% set features = post.get_field('service_features') %}
+				{% if features %}
+					<div class="service-features-section mb-5">
+						<h2 class="section-title">Key Features & Benefits</h2>
+						<div class="features-list">
+							{% for feature in features %}
+								<div class="feature-item mb-3">
+									<div class="feature-header">
+										<span class="feature-icon">✓</span>
+										<h4 class="feature-title">{{ feature.feature_title }}</h4>
+									</div>
+									{% if feature.feature_description %}
+										<p class="feature-description ms-4">{{ feature.feature_description }}</p>
 									{% endif %}
 								</div>
-							</div>
-						{% endfor %}
+							{% endfor %}
+						</div>
 					</div>
-				</div>
-			{% endif %}
+				{% endif %}
 
-			{# Related Services #}
-			{% set related_services = Timber.get_posts({
+				{# Related Testimonials #}
+				{% set related_testimonials = post.get_field('related_testimonials') %}
+				{% if related_testimonials %}
+					<div class="related-testimonials-section mb-5">
+						<h2 class="section-title">Client Testimonials</h2>
+						<div class="testimonials-row">
+							{% for testimonial in related_testimonials|slice(0, 3) %}
+								<div
+									class="testimonial-card-single">
+									{# Rating #}
+									{% set rating = testimonial.get_field('testimonial_rating')|default(5) %}
+									<div class="testimonial-rating mb-2">
+										{% for i in 1..rating %}
+											<span class="star">★</span>
+										{% endfor %}
+									</div>
+
+									{# Quote #}
+									<p class="testimonial-quote">
+										"{{ testimonial.get_field('testimonial_text')|slice(0, 150) }}..."
+									</p>
+
+									{# Author #}
+									<div class="testimonial-author">
+										<strong>{{ testimonial.title }}</strong>
+										{% set location = testimonial.get_field('testimonial_location') %}
+										{% if location %}
+											<br/><small>{{ location }}</small>
+										{% endif %}
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+
+				{# Related Services #}
+				{% set related_services = Timber.get_posts({
 				'post_type': 'services',
 				'posts_per_page': 3,
 				'post__not_in': [post.id],
 				'orderby': 'date',
 			}) %}
-			{% if related_services %}
-				<div class="related-services-section mb-5">
-					<h2 class="section-title">Related Services</h2>
-					<div class="related-services-grid">
-						{% for service in related_services %}
-							<div class="related-service-card">
-								<h4>{{ service.title }}</h4>
-								<p>{{ service.excerpt }}</p>
-								<a href="{{ service.link }}" class="btn btn-sm btn-outline-primary">View Service</a>
-							</div>
-						{% endfor %}
+				{% if related_services %}
+					<div class="related-services-section mb-5">
+						<h2 class="section-title">Related Services</h2>
+						<div class="related-services-grid">
+							{% for service in related_services %}
+								<div class="related-service-card">
+									<h4>{{ service.title }}</h4>
+									<p>{{ service.excerpt }}</p>
+									{% include 'components/button.twig' with {
+									href: service.link,
+									text: 'View Service',
+									class: 'btn-sm btn-outline-primary'
+								} %}
+								</div>
+							{% endfor %}
+						</div>
 					</div>
-				</div>
-			{% endif %}
-		</div>
+				{% endif %}
+			</div>
 
-		{# Sidebar #}
-		<div class="col-lg-4">
 			{# Service CTA Box #}
 			<div class="service-cta-box card mb-4">
 				<div class="card-body">
@@ -145,23 +145,30 @@
 
 					{% set cta_text = post.get_field('service_cta_text')|default('Get Started') %}
 					{% set cta_link = post.get_field('service_cta_link')|default('#inquiry-form') %}
-					<a href="{{ cta_link }}" class="btn btn-primary btn-lg btn-block mb-3">{{ cta_text }}</a>
-
-					{# Quick Info #}
+					{% include 'components/button.twig' with {
+							href: cta_link,
+							text: cta_text,
+							class: 'btn-primary btn-lg btn-block mb-3'
+						} %}
 					{% set duration = post.get_field('service_duration') %}
 					{% if duration %}
 						<div class="quick-info mb-3">
-							<strong>Timeline:</strong> {{ duration }}
+							<strong>Timeline:</strong>
+							{{ duration }}
 						</div>
 					{% endif %}
 
 					{# Contact Info #}
-					<a href="mailto:info@example.com" class="btn btn-outline-secondary btn-sm btn-block mb-2">
-						Email Us
-					</a>
-					<a href="tel:+1234567890" class="btn btn-outline-secondary btn-sm btn-block">
-						Call Us
-					</a>
+					{% include 'components/button.twig' with {
+							href: 'mailto:info@example.com',
+							text: 'Email Us',
+							class: 'btn-outline-secondary btn-sm btn-block mb-2'
+						} %}
+					{% include 'components/button.twig' with {
+							href: 'tel:+1234567890',
+							text: 'Call Us',
+							class: 'btn-outline-secondary btn-sm btn-block'
+						} %}
 				</div>
 			</div>
 
@@ -173,20 +180,22 @@
 				<div class="card-body">
 					{# Use Contact Form 7 shortcode if CF7 is active #}
 					{# [contact-form-7 id="123" title="Service Inquiry"] #}
-					<p class="text-muted small">
-						Fill out the form below and we'll get back to you shortly.
+						<p class="text-muted small"> Fill out the form below and we'll get back to you shortly.
 					</p>
 					<form class="inquiry-form">
 						<div class="mb-3">
-							<input type="text" class="form-control" placeholder="Your Name" required />
+							<input type="text" class="form-control" placeholder="Your Name" required/>
 						</div>
 						<div class="mb-3">
-							<input type="email" class="form-control" placeholder="Your Email" required />
+							<input type="email" class="form-control" placeholder="Your Email" required/>
 						</div>
 						<div class="mb-3">
 							<textarea class="form-control" rows="3" placeholder="Your Message" required></textarea>
 						</div>
-						<button type="submit" class="btn btn-primary btn-block">Send Inquiry</button>
+						{% include 'components/button.twig' with {
+						text: 'Send Inquiry',
+						class: 'btn-primary btn-block'
+					} %}
 					</form>
 				</div>
 			</div>
@@ -226,5 +235,4 @@
 		padding-left: 1rem;
 		margin-bottom: 1rem;
 	}
-</style>
-{% endblock %}
+</style>{% endblock %}

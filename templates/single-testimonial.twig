@@ -1,0 +1,48 @@
+{#
+ Single Testimonial Template
+ 
+ Displays a single testimonial with person details
+ #}
+
+{% extends "base.twig" %}
+
+{% block content %}
+	<article class="post-type-testimonial wrapper wrapper--narrow" id="post-{{ post.ID }}">
+		<div class="testimonial-container">
+			{% if post.meta('person_image') %}
+				<div class="testimonial-image">
+					{% set image = post.meta('person_image') %}
+					<img src="{{ image.url }}" alt="{{ post.meta('name') }}" class="testimonial-avatar"/>
+				</div>
+			{% endif %}
+
+			<div class="testimonial-content">
+				{% if post.meta('testimonial') %}
+					<blockquote class="testimonial-quote">
+						<p>{{ post.meta('testimonial') }}</p>
+					</blockquote>
+				{% endif %}
+
+				<div class="testimonial-author">
+					{% if post.meta('name') %}
+						<h2 class="testimonial-name">{{ post.meta('name') }}</h2>
+					{% endif %}
+
+					{% if post.meta('job_title') %}
+						<p class="testimonial-job-title">{{ post.meta('job_title') }}</p>
+					{% endif %}
+
+					{% if post.meta('organization') %}
+						<p class="testimonial-organization">{{ post.meta('organization') }}</p>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+
+		{% if post.content %}
+			<section class="testimonial-additional">
+				{{ post.content }}
+			</section>
+		{% endif %}
+	</article>
+{% endblock %}

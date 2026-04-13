@@ -1,0 +1,28 @@
+.image-pair {
+  margin: 4rem 0;
+  &__grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(24, 1fr);
+    grid-column-gap: 2rem;
+  }
+  &__image-1 {
+    grid-column: 5 / 13;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+  &__image-2 {
+    grid-column: 13 / 25;
+    overflow: hidden;
+    will-change: transform;
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+}

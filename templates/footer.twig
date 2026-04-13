@@ -1,13 +1,48 @@
+<div class="footer-overlay"></div>
 <div class="wrapper">
 	<div class="footer-content">
-		<div class="footer-section">
-			<h3>{{ site.name }}</h3>
-			<p>&copy;
+		<div class="footer-left">
+			<h3>&copy;
 				{{ 'now'|date('Y') }}
-				{{ site.name }}. All rights reserved.</p>
+				{{ site.name }}</h3>
+
+
+			{% set facebook = function('get_field', 'facebook_url', 'option') %}
+			{% set twitter = function('get_field', 'twitter_url', 'option') %}
+			{% set instagram = function('get_field', 'instagram_url', 'option') %}
+			{% set linkedin = function('get_field', 'linkedin_url', 'option') %}
+
+			{% if facebook or twitter or instagram or linkedin %}
+				<div class="footer-social">
+
+					<ul>
+						{% if facebook %}
+							<li>
+								<a href="{{ facebook }}" target="_blank" rel="noopener noreferrer">{{ _e('Facebook') }}</a>
+							</li>
+						{% endif %}
+						{% if twitter %}
+							<li>
+								<a href="{{ twitter }}" target="_blank" rel="noopener noreferrer">{{ _e('Twitter') }}</a>
+							</li>
+						{% endif %}
+						{% if instagram %}
+							<li>
+								<a href="{{ instagram }}" target="_blank" rel="noopener noreferrer">{{ _e('Instagram') }}</a>
+							</li>
+						{% endif %}
+						{% if linkedin %}
+							<li>
+								<a href="{{ linkedin }}" target="_blank" rel="noopener noreferrer">{{ _e('LinkedIn') }}</a>
+							</li>
+						{% endif %}
+					</ul>
+				</div>
+			{% endif %}
+
 		</div>
 		<nav aria-label="Footer Navigation">
-			<h3>{{ _e('Links') }}</h3>
+
 			{% set footer_menu = function('wp_get_nav_menu_items', function('get_nav_menu_locations')['footer'] ?? 0) %}
 			{% if footer_menu %}
 				<ul>
@@ -20,64 +55,8 @@
 			{% endif %}
 		</nav>
 
-		<div>
-			<h3>{{ _e('Contact') }}</h3>
-			{% set contact_email = function('get_field', 'contact_email', 'option') %}
-			{% if contact_email %}
-				<p>
-					<strong>{{ _e('Email') }}:</strong>
-					<a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
-				</p>
-			{% endif %}
 
-			{% set phone = function('get_field', 'phone_number', 'option') %}
-			{% if phone %}
-				<p>
-					<strong>{{ _e('Phone') }}:</strong>
-					<a href="tel:{{ phone|replace({' ': '', '-': '', '(': '', ')': ''}) }}">{{ phone }}</a>
-				</p>
-			{% endif %}
-
-			{% set address = function('get_field', 'address', 'option') %}
-			{% if address %}
-				<p>
-					<strong>{{ _e('Address') }}:</strong><br>
-					{{ address }}
-				</p>
-			{% endif %}
-		</div>
-
-		{% set facebook = function('get_field', 'facebook_url', 'option') %}
-		{% set twitter = function('get_field', 'twitter_url', 'option') %}
-		{% set instagram = function('get_field', 'instagram_url', 'option') %}
-		{% set linkedin = function('get_field', 'linkedin_url', 'option') %}
-
-		{% if facebook or twitter or instagram or linkedin %}
-			<div>
-				<h3>{{ _e('Follow Us') }}</h3>
-				<ul>
-					{% if facebook %}
-						<li>
-							<a href="{{ facebook }}" target="_blank" rel="noopener noreferrer">{{ _e('Facebook') }}</a>
-						</li>
-					{% endif %}
-					{% if twitter %}
-						<li>
-							<a href="{{ twitter }}" target="_blank" rel="noopener noreferrer">{{ _e('Twitter') }}</a>
-						</li>
-					{% endif %}
-					{% if instagram %}
-						<li>
-							<a href="{{ instagram }}" target="_blank" rel="noopener noreferrer">{{ _e('Instagram') }}</a>
-						</li>
-					{% endif %}
-					{% if linkedin %}
-						<li>
-							<a href="{{ linkedin }}" target="_blank" rel="noopener noreferrer">{{ _e('LinkedIn') }}</a>
-						</li>
-					{% endif %}
-				</ul>
-			</div>
-		{% endif %}
 	</div>
+</div>
+<div class="watermark">
 </div>

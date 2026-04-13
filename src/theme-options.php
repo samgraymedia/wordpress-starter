@@ -44,6 +44,15 @@ acf_add_local_field_group( array(
 			'rows'          => 3,
 			'placeholder'   => '123 Main Street, City, State 12345',
 		),
+		array(
+			'key'           => 'field_footer_image',
+			'label'         => 'Footer Image',
+			'name'          => 'footer_image',
+			'type'          => 'image',
+			'return_format' => 'url',
+			'preview_size'  => 'medium',
+		),
+		
 
 		// Social Media Section
 		array(

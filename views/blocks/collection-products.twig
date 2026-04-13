@@ -1,0 +1,47 @@
+{#
+Title: Collection Products
+Description: Display collection products in a responsive grid
+Category: widgets
+Icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><grid width="3" height="3" x="1" y="1"/></svg>
+Keywords: products collection grid display
+Mode: auto
+PostTypes: page post
+SupportsAlign: left right center wide full
+SupportsMode: true
+SupportsMultiple: true
+#}
+
+<div id="collection-products-{{ block.id }}" class="block collection-products {{ block.classes }}" data-speed="0.5">
+	<div class="wrapper">
+		{% if fields.collection %}
+			<div class="collection-products__grid">
+				{% for product_id in fields.collection %}
+					{% set product = TimberPost(product_id) %}
+					{% if product %}
+						{% if loop.first %}
+							<div class="collection-product-item">
+							{% else %}
+								<div class="collection-product-item js-scroll-translate" data-index="{{ loop.index }}" style="translate: none; rotate: none; scale: none; transform: translate(0%, 50%);">
+								{% endif %}
+
+								<div class="collection-product-image">
+									<a href="{{ product.link }}" class='show-cursor'>
+										<img src="{{ product.thumbnail.src }}" alt="{{ product.post_title }}" loading="lazy"/>
+										<h3 class="collection-product-title">
+											{{ product.post_title }}
+										</h3>
+									</a>
+								</div>
+
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			{% else %}
+				<div class="notice">
+					<p>No collection products selected. Add products in the block settings.</p>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</div>

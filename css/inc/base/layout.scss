@@ -1,0 +1,30 @@
+html,
+body {
+  background-color: $cream;
+}
+* {
+  padding: 0;
+  margin: 0;
+  font-family: $font-family-base;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+
+.wrapper {
+  max-width: 1824px;
+  margin: 0 auto;
+  width: 100%;
+  overflow: hidden;
+}
+#content {
+  background: var(--color-cream);
+  inset: 0;
+  overflow: hidden;
+  overflow-y: auto;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+}
+.breadcrumb {
+  display: none;
+}

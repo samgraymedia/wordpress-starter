@@ -2,7 +2,7 @@
 
 	{% include 'html-header.twig' %}
 	{% block head %}{% endblock %}
-</head>{% endblock %}<body class="{{body_class}}" data-template="base.twig">
+</head>{% endblock %}<body class="{{ body_class }}" data-template="base.twig">
 <a class="skip-link screen-reader-text" href="#content">{{ _e('Skip to content') }}</a>
 {% include 'components/theme-toggle.twig' with {'position': 'fixed', 'placement': 'top-right'} %}
 <header class="header" role="banner">
@@ -17,7 +17,11 @@
 	{% endblock %}
 </header>
 
-<main id="content" class="content-wrapper">
+<main id="content" class="content-wrapper" style="">
+	<div class="cursor">
+		<div class="label">View</div>
+	</div>
+
 
 	{% if breadcrumb_trail and breadcrumb_trail|length > 1 %}
 		<div class="wrapper">
@@ -25,22 +29,108 @@
 		</div>
 	{% endif %}
 
-	<div class="{{sidebar_class}}">
+	<div class="{{ sidebar_class }}">
 		{% block content %}
 			Sorry, no content
 		{% endblock %}
 	</div>
+
 	{% if sidebar %}
 		<aside class="layout-sidebar">
-			{{sidebar}}
+			{{ sidebar }}
 		</aside>
 	{% endif %}
+
+	{% block footer %}
+		{% set footer_image = function('get_field', 'footer_image', 'option') %}
+
+		<footer id="footer" class="site-footer" role="contentinfo">
+			<div class="site-footer__bg js-parallax" style="background-image: url('{{ footer_image }}');" data-parallax-speed="3"></div>
+
+			<div class="site-footer__content">
+				{% include 'footer.twig' %}
+			</div>
+		</footer>
+
+		{% include 'components/cookie-consent.twig' %}
+		{{ function('wp_footer') }}
+	{% endblock %}
+
 </main>
 
-{% block footer %}
-	<footer id="footer" role="contentinfo">
-		{% include 'footer.twig' %}
-	</footer>
-	{% include 'components/cookie-consent.twig' %}
-	{{ function('wp_footer') }}
-{% endblock %}</body></html>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+const parallaxElements = document.querySelectorAll('.js-parallax');
+const content = document.getElementById('content');
+
+function updateParallax() {
+parallaxElements.forEach((el) => {
+const speed = parseFloat(el.dataset.parallaxSpeed || 0.2);
+const parent = el.parentElement;
+
+if (! parent) {
+return;
+}
+
+const rect = parent.getBoundingClientRect();
+const viewportHeight = window.innerHeight;
+
+if (rect.bottom > 0 && rect.top<viewportHeight) {
+					const progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+					const offset = (progress - 0.5) * 120 * speed;
+					el.style.transform = `translate3d(0, ${offset}px, 0) scale(1.08)`;
+				}
+			});
+		}
+
+		if (content) {
+			content.addEventListener('scroll', updateParallax, { passive: true });
+		} else {
+			window.addEventListener('scroll', updateParallax, { passive: true });
+		}
+
+		window.addEventListener('resize', updateParallax, { passive: true });
+		updateParallax();
+	});
+
+	// Momentum Scroll Effect
+	(function () {
+		const content = document.getElementById('content');
+		let scrollVelocity = 0;
+		let lastScrollY = 0;
+		let momentum = 0;
+		let animationId = null;
+
+		function applyMomentum() {
+			if (Math.abs(momentum)> 0.1) {
+momentum *= 0.95;
+const offsetY = content.scrollTop + momentum;
+content.scrollTop = Math.max(0, Math.min(offsetY, content.scrollHeight - window.innerHeight));
+animationId = requestAnimationFrame(applyMomentum);
+} else {
+momentum = 0;
+animationId = null;
+}
+} content.addEventListener('scroll', () => {
+const currentScrollY = content.scrollTop;
+scrollVelocity = currentScrollY - lastScrollY;
+lastScrollY = currentScrollY;
+});
+
+let scrollTimeout;
+content.addEventListener('scroll', () => {
+clearTimeout(scrollTimeout);
+scrollTimeout = setTimeout(() => {
+if (Math.abs(scrollVelocity) > 1) {
+momentum = scrollVelocity * 0.5;
+if (!animationId) {
+applyMomentum();
+}
+}
+}, 100);
+}, {passive: true});
+}
+)();
+</script>
+</body>
+</html>

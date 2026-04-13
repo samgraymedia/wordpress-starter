@@ -1,0 +1,30 @@
+{#
+Title: Image Pair
+Description: Display up to two images
+Category: media
+Icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+Keywords: images gallery photos
+Mode: auto
+PostTypes: page post
+SupportsAlign: left right center wide full
+SupportsMode: true
+SupportsMultiple: true
+#}
+
+<div class="block image-pair" data-block-id="{{ block.id }}">
+	<div class="wrapper">
+		<div class="image-pair__grid">
+			{% if fields.image_1 %}
+				<div class="image-pair__image-1">
+					<img src="{{ fields.image_1.url }}" alt="{{ fields.image_1.alt }}"/>
+				</div>
+			{% endif %}
+
+			{% if fields.image_2 %}
+				<div class="image-pair__image-2">
+					<img src="{{ fields.image_2.url }}" alt="{{ fields.image_2.alt }}"/>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</div>

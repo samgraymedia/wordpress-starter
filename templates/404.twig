@@ -36,13 +36,17 @@
 			{# Primary CTA Button #}
 			<div class="error-404__actions">
 				{% if error_404_cta_text and error_404_cta_url %}
-					<a href="{{ error_404_cta_url }}" class="error-404__button error-404__button--primary">
-						{{ error_404_cta_text }}
-					</a>
+					{% include 'components/button.twig' with {
+						href: error_404_cta_url,
+						text: error_404_cta_text,
+						class: 'btn--primary'
+					} %}
 				{% else %}
-					<a href="{{ site.link }}" class="error-404__button error-404__button--primary">
-						{{ _e('Return to Home', 'starter-theme-1.x') }}
-					</a>
+					{% include 'components/button.twig' with {
+						href: site.link,
+						text: _e('Return to Home', 'starter-theme-1.x'),
+					class: 'btn--primary'
+				} %}
 				{% endif %}
 			</div>
 
@@ -70,5 +74,4 @@
 			{% endif %}
 
 		</div>
-	</div>
-{% endblock %}
+	{% endblock %}

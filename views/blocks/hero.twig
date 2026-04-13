@@ -1,0 +1,67 @@
+{#
+Title: Hero
+Description: A Custom Hero block
+Category: formatting
+Icon: <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" fill="#fff"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+Keywords: Hero Block
+Mode: auto
+Align: center
+PostTypes: page post
+SupportsAlign: left right center wide full
+SupportsMode: true
+SupportsMultiple: true
+#}
+<div id="hero-{{ block.id }}" class="block hero {{ block.classes }}">
+	<div class="hero__bg js-parallax" style="background-image: url('{{ fields.hero_image.url }}');" data-parallax-speed="3"></div>
+
+	<div class="wrapper">
+		<div class="hero__wrapper">
+			<div class="hero__top">
+				<h1>{{ fields.hero_title }}</h1>
+			</div>
+
+			<div class="hero__bottom">
+				<div class="hero__intro">
+					<h2>{{ fields.hero_lead }}</h2>
+					<p>{{ fields.hero_description }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+const parallaxElements = document.querySelectorAll('.js-parallax');
+const content = document.getElementById('content');
+
+function updateParallax() {
+parallaxElements.forEach((el) => {
+const speed = parseFloat(el.dataset.parallaxSpeed || 0.2);
+const parent = el.closest('.hero');
+
+if (! parent) {
+return;
+}
+
+const rect = parent.getBoundingClientRect();
+const viewportHeight = window.innerHeight;
+
+if (rect.bottom > 0 && rect.top < viewportHeight) {
+const progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+const offset = (progress - 0.5) * 120 * speed;
+el.style.transform = `translate3d(0, ${offset}px, 0) scale(1.08)`;
+}
+});
+}
+
+if (content) {
+content.addEventListener('scroll', updateParallax, {passive: true});
+} else {
+window.addEventListener('scroll', updateParallax, {passive: true});
+}
+
+window.addEventListener('resize', updateParallax, {passive: true});
+updateParallax();
+});
+</script>

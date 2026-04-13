@@ -1,0 +1,18 @@
+{#
+  Animated Button Component
+  Reusable button with animated arrow
+  
+  Usage:
+    {% include 'components/button.twig' with {
+      href: '/link',
+      text: 'Button Text',
+      class: 'btn btn--primary'
+    } %}
+#}
+<a href="{{ href }}" class="btn{% if class %} {{ class }}{% endif %}">
+	<svg viewbox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-svg animated-arrow">
+		<path d="M0.600006 0V6H13.1" stroke="currentcolor" stroke-width="1.2" style="stroke-dashoffset: 0; stroke-dasharray: 18.5px, 0.1px; transition: stroke-dashoffset 0.3s ease, stroke-dasharray 0.3s ease;"></path>
+		<rect x="9.18887" y="2.2251" width="5.56065" height="5.56065" transform="rotate(45 9.18887 2.2251)" stroke="currentcolor" stroke-width="1.2" style="stroke-dashoffset: 0; stroke-dasharray: 11.1213px, 11.2213px; transition: stroke-dashoffset 0.3s ease, stroke-dasharray 0.3s ease;"></rect>
+	</svg>
+	{{ text }}
+</a>

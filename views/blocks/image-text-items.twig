@@ -1,0 +1,34 @@
+{#
+	Title: Image + Text Items
+	Description: Repeating items with lead, text, and image
+	Category: Content
+	Icon: dashicons-images-alt2
+#}
+
+<div class="block image-text-items" data-block-id="{{ block.id }}">
+	<div class="wrapper">
+		{% if fields.items %}
+			<div class="image-text-items__list">
+				{% for item in fields.items %}
+					<div class="image-text-item">
+						<div class='left'>
+							{% if item.lead %}
+								<p class="image-text-item__lead">{{ item.lead }}</p>
+							{% endif %}
+
+							{% if item.text %}
+								<div class="image-text-item__text">{{ item.text }}</div>
+							{% endif %}
+						</div>
+						{% if item.image %}
+							{% set image = TimberImage(item.image) %}
+							<div class="image-text-item__image">
+								<img src="{{ image.src }}" alt="{{ item.lead }}"/>
+							</div>
+						{% endif %}
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+</div>

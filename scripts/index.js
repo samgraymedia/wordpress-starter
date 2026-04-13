@@ -56,6 +56,13 @@ import "./announcement.js";
 import "./share-buttons.js";
 import "./tabs.js";
 import "./hamburger.js";
+import "./collection-products.js";
+import "./cta-scroll.js";
+import "./image-text-items-scroll.js";
+import "./testimonial-scroll.js";
+import "./image-pair.js";
+import "./cursor-follower.js";
+import "./components/AnimatedArrow.js";
 
 /**
  * Initialize all theme components and modules

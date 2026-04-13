@@ -46,20 +46,13 @@
  * Large Error Code Display
  */
 .error-404__code {
-  font-size: clamp(80px, 15vw, 200px);
-  font-weight: 900;
+  font-family: $font-family-heading;
+  font-size: 19.2rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: -0.0322916667em;
   line-height: 1;
-  margin-bottom: $spacing-3;
-  background: linear-gradient(
-    135deg,
-    var(--color-primary) 0%,
-    var(--color-secondary) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -2px;
-
+  color: $black;
   @media (max-width: $breakpoint-md) {
     margin-bottom: $spacing-2;
   }
@@ -125,7 +118,9 @@
   font-size: $font-base;
   color: var(--color-text);
   background-color: var(--color-background);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 
   &::placeholder {
     color: var(--color-text-secondary);
@@ -147,7 +142,9 @@
   font-size: $font-base;
   font-weight: $font-semibold;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 
   &:hover {
     background-color: var(--color-primary-dark);
