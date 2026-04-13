@@ -675,6 +675,28 @@ function theme_allow_custom_file_types( array $file_types ): array {
 add_filter( 'upload_mimes', 'theme_allow_custom_file_types' );
 
 /**
+ * Allow SVG uploads for admin users
+ * Handles pre-upload validation
+ */
+add_filter( 'wp_check_filetype_and_ext', function( $check, $file, $filename, $mimes ) {
+	if ( current_user_can( 'manage_options' ) && preg_match( '/\.svg$/i', $filename ) ) {
+		$check['ext']  = 'svg';
+		$check['type'] = 'image/svg+xml';
+	}
+	return $check;
+}, 10, 4 );
+
+/**
+ * Allow SVG uploads in media library
+ */
+add_filter( 'wp_handle_upload_prefilter', function( $file ) {
+	if ( current_user_can( 'manage_options' ) && preg_match( '/\.svg$/i', $file['name'] ) ) {
+		$file['name'] = sanitize_file_name( $file['name'] );
+	}
+	return $file;
+} );
+
+/**
  * Initialize ACF Options Page
  * Uses configuration from Theme_Config
  */
