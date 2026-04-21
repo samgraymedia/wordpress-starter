@@ -84,10 +84,25 @@ function setupEventListeners() {
     savePrefsBtn.addEventListener("click", handleSavePreferences);
   }
 
-  // Preferences modal close
-  const closePrefsBtn = querySelector("[data-close-preferences]");
+  // Preferences modal close buttons (overlay + close button)
+  const closePrefsBtn = querySelectorAll("[data-close-preferences]");
   if (closePrefsBtn) {
-    closePrefsBtn.addEventListener("click", closePreferencesModal);
+    closePrefsBtn.forEach((btn) => {
+      btn.addEventListener("click", closePreferencesModal);
+    });
+  }
+
+  // Load previously saved preferences into checkboxes
+  const prefs = getConsentPreferences();
+  if (prefs) {
+    const analyticsCheckbox = querySelector("[data-pref-analytics]");
+    const marketingCheckbox = querySelector("[data-pref-marketing]");
+    const preferencesCheckbox = querySelector("[data-pref-preferences]");
+
+    if (analyticsCheckbox) analyticsCheckbox.checked = prefs.analytics || false;
+    if (marketingCheckbox) marketingCheckbox.checked = prefs.marketing || false;
+    if (preferencesCheckbox)
+      preferencesCheckbox.checked = prefs.preferences || false;
   }
 }
 

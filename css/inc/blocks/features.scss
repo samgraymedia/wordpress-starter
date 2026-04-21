@@ -1,0 +1,105 @@
+/**
+ * Features Block Styles
+ */
+
+.features {
+  &__content {
+    display: flex;
+    justify-content: space-between !important;
+  }
+  &__items,
+  &__right {
+    flex: 0 0 41.66667%;
+    max-width: 41.66667%;
+  }
+  &__items {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    .features__item-title {
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+    .features__item-number {
+      font-size: 60px;
+    }
+    h3 {
+      font-size: 60px;
+      margin-bottom: 0;
+    }
+    .features__item-text {
+      display: flex;
+      align-items: center;
+      gap: 90px;
+    }
+  }
+
+  &__right {
+    img {
+      margin-bottom: 32px;
+    }
+  }
+  &__description {
+    margin-bottom: 24px;
+  }
+
+  &__buttons {
+    gap: 16px;
+    display: flex;
+    flex-flow: column;
+    .btn {
+    }
+  }
+}
+
+.features .features-animate,
+.features .features-item-animate {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease,
+    visibility 0.8s ease;
+  will-change: opacity, transform;
+}
+
+.features .features-animate--up,
+.features .features-item-animate {
+  transform: translateY(50px);
+}
+
+.features .features-animate--right {
+  transform: translateX(80px);
+}
+
+.features .features-animate--delay-1 {
+  transition-delay: 0.15s;
+}
+
+.features .features-animate--delay-2 {
+  transition-delay: 0.3s;
+}
+
+.features.features-in-view .features-animate {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, 0);
+}
+
+.features .features__item.features-item-in-view {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .features .features-animate,
+  .features .features-item-animate {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+}

@@ -8,7 +8,7 @@
 // Colors - Static Hex
 $black: black;
 $white: white;
-$primary: #0066cc;
+$primary: #1a1a1a;
 $secondary: #6c757d;
 $success: #28a745;
 $warning: #ffc107;
@@ -39,112 +39,12 @@ $gray-100: #f8f9fa;
 $gray-50: #f9fafb;
 
 // Aliases - Static Hex
-$text-color: $gray-900;
+$text-color: $white;
 $text-muted: $gray-600;
 $border-color: $gray-300;
 $bg-light: $gray-50;
 $bg-default: $white;
 $bg-hover: $gray-100;
-
-// ============================================================================
-// CSS CUSTOM PROPERTIES (Light Mode Defaults)
-// ============================================================================
-// These variables are defined as CSS custom properties to support runtime
-// theme switching without recompiling SCSS. Light mode is the default.
-// Dark mode variants are applied via [data-theme="dark"] or prefers-color-scheme.
-// ============================================================================
-
-:root {
-  // Colors - Light Mode (Default)
-  --color-black: black;
-  --color-white: white;
-  --color-primary: #0066cc;
-  --color-secondary: #6c757d;
-  --color-success: #28a745;
-  --color-warning: #ffc107;
-  --color-danger: #dc3545;
-  --color-info: #17a2b8;
-
-  // Validation States - Light Mode
-  --color-error: #dc3545;
-  --color-error-bg: #f8d7da;
-  --color-error-border: #f5c6cb;
-  --color-success-text: #155724;
-  --color-success-bg: #d4edda;
-  --color-success-border: #c3e6cb;
-  --color-warning-text: #856404;
-  --color-warning-bg: #fff3cd;
-  --color-warning-border: #ffeaa7;
-
-  // Grays - Light Mode
-  --color-gray-900: #212529;
-  --color-gray-800: #343a40;
-  --color-gray-700: #495057;
-  --color-gray-600: #6c757d;
-  --color-gray-500: #adb5bd;
-  --color-gray-400: #ced4da;
-  --color-gray-300: #dee2e6;
-  --color-gray-200: #e9ecef;
-  --color-gray-100: #f8f9fa;
-  --color-gray-50: #f9fafb;
-
-  // Semantic Colors - Light Mode
-  --color-text: var(--color-gray-900);
-  --color-text-muted: var(--color-gray-600);
-  --color-text-inverted: var(--color-white);
-  --color-border: var(--color-gray-300);
-  --color-bg-light: var(--color-gray-50);
-  --color-bg-default: var(--color-white);
-  --color-bg-hover: var(--color-gray-100);
-}
-
-// ============================================================================
-// SCSS VARIABLE ALIASES (use CSS custom properties)
-// ============================================================================
-// These SCSS variables reference the CSS custom properties, allowing you to
-// continue using SCSS in components. At runtime, these resolve to CSS variables.
-// ============================================================================
-
-// Colors
-$black: #000;
-$white: #fff;
-$primary: #0066cc;
-$secondary: #6c757d;
-$success: #28a745;
-$warning: #ffc107;
-$danger: #dc3545;
-$info: #17a2b8;
-
-// Validation States
-$error-color: #dc3545;
-$error-bg: #f8d7da;
-$error-border: #f5c6cb;
-$success-color: #155724;
-$success-bg: #d4edda;
-$success-border: #c3e6cb;
-$warning-color: #856404;
-$warning-bg: #fff3cd;
-$warning-border: #ffeaa7;
-
-// Grays (Static hex for darken/lighten functions)
-$gray-900: #212529;
-$gray-800: #343a40;
-$gray-700: #495057;
-$gray-600: #6c757d;
-$gray-500: #adb5bd;
-$gray-400: #ced4da;
-$gray-300: #dee2e6;
-$gray-200: #e9ecef;
-$gray-100: #f8f9fa;
-$gray-50: #f9fafb;
-
-// Aliases (Static hex)
-$text-color: #212529;
-$text-muted: #6c757d;
-$border-color: #dee2e6;
-$bg-light: #f9fafb;
-$bg-default: #fff;
-$bg-hover: #f8f9fa;
 
 // Typography
 $font-xs: 0.875rem; // 14px - Body Small
@@ -193,7 +93,7 @@ $breakpoint-2xl: 1400px; // 2X Extra large devices (larger desktops)
 
 // layout
 $site-max-width: 1700px;
-$block-padding: 2rem;
+$block-padding: 120px 0;
 $grid-gap: 2rem;
 
 // Border Radius
@@ -202,9 +102,10 @@ $border-radius-sm: 0.25rem; // 4px
 $border-radius-lg: 0.5rem; // 8px
 
 // Typography
-$font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-  "Helvetica Neue", Arial, sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300..700&display=swap");
+$font-family-base: "Space Grotesk", sans-serif;
 $font-family-heading: $font-family-base;
+$font-family-alt: "Instrument Serif", serif;
 $line-height-base: 1.5;
 $line-height-heading: 1.2;
 

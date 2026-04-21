@@ -20,11 +20,11 @@
 
 			<!-- Comments Section -->
 			<section
-				class="comment-box" aria-label="{{ _e('Comments') }}">
+				class="comment-box" aria-label="{{ fn('__', 'Comments') }}">
 				<!-- Comments Display -->
 				<div class="comments">
 					{% if post.comments %}
-						<h2>{{ _ngettext('Comment', 'Comments', post.comments|length) }}</h2>
+						<h2>{{ fn('_ngettext', 'Comment', 'Comments', post.comments|length) }}</h2>
 						<ul class="comments-list">
 							{% for cmt in post.comments %}
 								{% include "comment.twig" with {comment: cmt} %}

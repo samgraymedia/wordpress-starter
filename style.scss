@@ -22,13 +22,20 @@ Theme Name: Starter Theme
 @import "./css/inc/global/footer";
 // 5. Block-specific styles
 @import "./css/inc/blocks/text";
+@import "./css/inc/blocks/hero";
+@import "./css/inc/blocks/stats";
+@import "./css/inc/blocks/expertise";
+@import "./css/inc/blocks/contact-us";
+@import "./css/inc/blocks/features";
 
 // 6. Page/Post Type specific styles
 @import "./css/inc/pages/404.scss";
 @import "./css/inc/pages/blog.scss";
 @import "./css/inc/pages/woocommerce.scss";
 @import "./css/inc/pages/checkout.scss";
+@import "./css/inc/pages/single-expertise.scss";
 
 // 7. Utilities and helper classes
 @import "./css/inc/utilities/helpers";
 @import "./css/inc/utilities/lazy-loading";
+@import "./css/inc/utilities/cookie-consent";

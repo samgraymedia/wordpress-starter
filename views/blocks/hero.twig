@@ -1,0 +1,32 @@
+{#
+	Title: Hero
+	Description: Hero block with background media and title
+	Category: common
+	Icon: dashicons-cover-image
+#}
+<div class='wrapper'>
+	{% if fields.background_media %}
+		{% set media = Image(fields.background_media) %}
+		{% set file_type = media.src | split('.') | last | lower %}
+		{% if file_type in ['mp4', 'webm', 'ogg'] %}
+			<div id="hero-{{block.id}}" class="block hero {{block.classes}}" style="background: url({{ media.src }}) center/cover no-repeat;">
+				<video class="hero__video" autoplay muted loop>
+					<source src="{{ media.src }}" type="video/{{ file_type }}">
+				</video>
+			{% else %}
+				<div id="hero-{{block.id}}" class="block hero {{block.classes}}" style="background-image: url({{ media.src }}); background-size: cover; background-position: center;">
+				{% endif %}
+			{% else %}
+				<div id="hero-{{block.id}}" class="block hero {{block.classes}}">
+				{% endif %}
+				<div class="hero__overlay"></div>
+				<div class="hero__content">
+					{% if fields.title %}
+						<h1 class="hero__title">{{ fields.title }}
+							<span>{{fields.title_styled}}</span>
+						</h1>
+
+					{% endif %}
+				</div>
+			</div>
+		</div>

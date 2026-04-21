@@ -1,0 +1,18 @@
+body {
+  background-color: #1a1a1a;
+}
+
+.wrapper {
+  padding: 0 70px;
+
+  @media (max-width: $breakpoint-lg) {
+    padding: 0 40px;
+  }
+  @media (max-width: $breakpoint-md) {
+    padding: 0 20px;
+  }
+}
+
+.block {
+  padding: $block-padding;
+}

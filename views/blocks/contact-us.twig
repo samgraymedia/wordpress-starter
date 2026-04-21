@@ -1,0 +1,52 @@
+{#
+	Title: Contact Us
+	Description: Contact block with title, right title, and Contact Form 7
+	Category: common
+	Icon: dashicons-email-alt
+#}
+<div id="contact-us-{{block.id}}" class="block contact-us {{block.classes}}">
+	<div class="wrapper">
+		<div class="contact-us__content">
+			{% if fields.show_map %}
+				<div
+					class="contact-us__map">
+					<!-- Map will be rendered here -->
+					<div id="contact-us-map-{{block.id}}" class="contact-us__map-container">
+						<iframe width="600" height="450" style="border:0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=API_KEY
+														    &q=Space+Needle,Seattle+WA"></iframe>
+					</div>
+
+				</div>
+			{% endif %}
+
+			<div class="contact-us__wrapper">
+
+				<div class="contact-us__header">
+					{% if fields.title %}
+						<div class="contact-us__main-title">
+							<h2>{{ fields.title }}</h2>
+						</div>
+					{% endif %}
+
+				</div>
+
+
+				{% if fields.contact_form %}
+
+
+					<div class="contact-us__form">
+						{% if fields.right_title %}
+							<div class="contact-us__right-title">
+								<h3>{{ fields.right_title }}</h3>
+							</div>
+						{% endif %}
+
+						{{ fn('do_shortcode', '[contact-form-7 id="' ~ fields.contact_form ~ '"]')|raw }}
+					</div>
+				{% endif %}
+
+			</div>
+		</div>
+
+	</div>
+</div>

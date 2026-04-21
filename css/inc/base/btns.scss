@@ -11,3 +11,47 @@
  *     <span class="btn__text">Click Me</span>
  * </button>
  */
+.btn,
+input[type="submit"] {
+  width: fit-content;
+  font-size: 40px;
+  position: relative;
+  -webkit-transition: all 0.125s linear;
+  -o-transition: all 0.125s linear;
+  transition: all 0.125s linear;
+  text-decoration: none !important;
+  display: inline-block;
+  will-change: transform;
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: block;
+    border-bottom: 1px solid #fff;
+    -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.1, 0.5, 0.05, 1);
+    transition: -webkit-transform 0.4s cubic-bezier(0.1, 0.5, 0.05, 1);
+    -o-transition: -o-transform 0.4s cubic-bezier(0.1, 0.5, 0.05, 1);
+    transition: transform 0.4s cubic-bezier(0.1, 0.5, 0.05, 1);
+    transition:
+      transform 0.4s cubic-bezier(0.1, 0.5, 0.05, 1),
+      -webkit-transform 0.4s cubic-bezier(0.1, 0.5, 0.05, 1),
+      -o-transform 0.4s cubic-bezier(0.1, 0.5, 0.05, 1);
+  }
+
+  &:hover:before,
+  &:focus:before {
+    -webkit-transform: scaleX(0.5);
+    -moz-transform: scaleX(0.5);
+    transform: scaleX(0.5);
+  }
+
+  &:hover:after,
+  &:focus:after {
+    -webkit-transform: scaleX(0.5);
+    -moz-transform: scaleX(0.5);
+    transform: scaleX(0.5);
+  }
+}

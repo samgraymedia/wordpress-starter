@@ -56,6 +56,10 @@ import "./announcement.js";
 import "./share-buttons.js";
 import "./tabs.js";
 import "./hamburger.js";
+import "./expertise-scroll.js";
+import "./features.js";
+import "./hero.js";
+import "./stats.js";
 
 /**
  * Initialize all theme components and modules

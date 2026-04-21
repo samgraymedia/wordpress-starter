@@ -1,0 +1,22 @@
+{#
+	Title: Stats
+	Description: Stats block with title and repeating statistics
+	Category: common
+	Icon: dashicons-chart-bar
+#}
+<div id="stats-{{block.id}}" class="block stats {{block.classes}}">
+	<div class='wrapper'>
+		<div class="stats__title">
+			<h3>{{ fields.title }}</h3>
+		</div>
+		<div class="stats__list">
+			{% for stat in fields.stats %}
+				<div class="stats__item stat">
+					<span class="stat__number">{{ stat.number }}</span>
+					<span class="stat__title">{{ stat.title }}</span>
+				</div>
+			{% endfor %}
+			<div></div>
+		</div>
+	</div>
+</div>

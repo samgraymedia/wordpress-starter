@@ -1,0 +1,63 @@
+{#
+	Title: Features
+	Description: Features block with title, image, description, items repeater, and buttons
+	Category: common
+	Icon: dashicons-image-alt
+#}
+<div id="features-{{block.id}}" class="block features {{block.classes}}">
+	<div class="wrapper">
+		<div class="features__header">
+			{% if fields.title %}
+				<div class="features__title">
+					<h2>{{ fields.title }}</h2>
+				</div>
+			{% endif %}
+		</div>
+		<div class="features__content">
+			{% if fields.items %}
+				<div class="features__items">
+					{% for item in fields.items %}
+						<div class="features__item">
+							{% if item.item_title %}
+								<div class="features__item-title">
+
+									<div class="features__item-number">{{ loop.index }}</div>
+									<h3 class="">{{ item.item_title }}</h3>
+								</div>
+							{% endif %}
+
+							{% if item.item_text %}
+								<div class="features__item-text">
+									<div class="features__item-sep"></div>
+									<p>{{ item.item_text }}</p>
+								</div>
+							{% endif %}
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+			<div class="features__right">
+				{% if fields.image %}
+					<div class="features__image">
+						<img src="{{ fields.image.url }}" alt="{{ fields.image.alt ?: fields.title }}">
+					</div>
+				{% endif %}
+
+				{% if fields.description %}
+					<div class="features__description">
+						{{ fields.description }}
+					</div>
+				{% endif %}
+				{% if fields.buttons %}
+					<div class="features__buttons">
+						{% for button in fields.buttons %}
+							<a href="{{ button.button_url }}" class="btn btn--link">
+								{{ button.button_text }}
+							</a>
+						{% endfor %}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>

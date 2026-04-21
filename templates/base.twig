@@ -19,12 +19,6 @@
 
 <main id="content" class="content-wrapper">
 
-	{% if breadcrumb_trail and breadcrumb_trail|length > 1 %}
-		<div class="wrapper">
-			{% include 'components/breadcrumb.twig' %}
-		</div>
-	{% endif %}
-
 	<div class="{{sidebar_class}}">
 		{% block content %}
 			Sorry, no content

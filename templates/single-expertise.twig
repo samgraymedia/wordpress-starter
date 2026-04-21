@@ -1,0 +1,37 @@
+{#
+    Expertise Single Post Template
+    Displays individual expertise post
+#}
+{% extends "base.twig" %}
+
+{% block content %}
+	<div class="single-expertise">
+		<div class="wrapper">
+			{% if post.thumbnail %}
+				<div class="single-expertise__image">
+					<img src="{{ post.thumbnail.src }}" alt="{{ post.thumbnail.alt ?: post.title }}">
+				</div>
+			{% endif %}
+
+			<div class="single-expertise__header">
+				<h1 class="single-expertise__title">{{ post.title }}</h1>
+
+				{% if post.post_excerpt %}
+					<div class="single-expertise__excerpt">
+						{{ post.post_excerpt }}
+					</div>
+				{% endif %}
+			</div>
+
+			<div class="single-expertise__content">
+				{{ fn('Timber::get_post', post).get_field('description') }}
+			</div>
+
+			{% if post.content %}
+				<div class="single-expertise__body">
+					{{ post.content }}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

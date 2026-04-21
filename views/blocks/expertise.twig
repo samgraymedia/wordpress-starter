@@ -1,0 +1,51 @@
+{#
+	Title: Expertise
+	Description: Expertise block with title and relationship to expertise posts
+	Category: common
+	Icon: dashicons-star-filled
+#}
+<div id="expertise-{{block.id}}" class="block expertise {{block.classes}}">
+	<div class='wrapper'>
+		{% if fields.title %}
+			<div class='expertise__title'>
+				<h2>{{ fields.title }}</h2>
+			</div>
+		{% endif %}
+		<div class='expertise__list'>
+
+			{% for post in fields.expertise %}
+				<div class='expertise__wrapper'>
+
+					{% set expertise_post = fn('Timber::get_post', post) %}
+					{% set featured_image = expertise_post.thumbnail %}
+
+					<div class='expertise__item-title expertise-animate expertise-animate--up'>
+						<h3>{{ expertise_post.post_title }}</h3>
+					</div>
+
+					<div class='expertise__item'>
+						{% if featured_image and featured_image.src %}
+							<div class='expertise__left expertise-animate expertise-animate--left'>
+								<div style="background-image: url({{ featured_image.src }}); background-size: cover; background-position: center; width: 100%; height: 100%;"></div>
+							</div>
+						{% endif %}
+
+						<div class='expertise__right expertise-animate expertise-animate--right'>
+							<div class='expertise__info expertise-animate expertise-animate--up expertise-animate--delay-1'>
+								<span>info</span>
+							</div>
+
+							<div class='expertise__info-desc expertise-animate expertise-animate--up expertise-animate--delay-2'>
+								<div class='expertise__content expertise-animate expertise-animate--up expertise-animate--delay-3'>
+									{{ expertise_post.get_field('description')|default(expertise_post.post_excerpt)|default('') }}
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			{% endfor %}
+
+		</div>
+	</div>
+</div>
