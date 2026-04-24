@@ -1,0 +1,77 @@
+.social {
+  &__images {
+    display: flex;
+    position: relative;
+    perspective: 1200px;
+    .callout-socials-card-w {
+      backface-visibility: hidden;
+      will-change: transform;
+      transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-radius: 3.31625rem;
+      flex: none;
+      width: 20rem;
+      height: 35rem;
+      overflow: clip;
+      transform: rotate(-21deg) rotateX(var(--rotate-x, 0deg))
+        rotateY(var(--rotate-y, 0deg));
+      z-index: 1;
+      --rotate-x: 0deg;
+      --rotate-y: 0deg;
+      animation: cardEntrance 0.8s ease-out both;
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0.1);
+      position: absolute;
+      transform: translateX(-20%) rotate(-21deg) scale(0.7756, 0.7756);
+      left: 20%;
+      translate: none;
+      rotate: none;
+      scale: none;
+      opacity: 1;
+      top: 15%;
+      transition: all 0.5s ease;
+      &:hover {
+        box-shadow: $primary 0px 0px 10px;
+      }
+      &:nth-child(2) {
+        transform: translateX(-30%) rotate(-14deg) scale(0.8785);
+        left: 30%;
+        z-index: 5;
+        top: 10%;
+      }
+      &:nth-child(3) {
+        transform: translateX(-40%) rotate(-7deg) scale(0.9522);
+        left: 40%;
+        z-index: 6;
+        top: 5%;
+      }
+      &:nth-child(4) {
+        left: 50%;
+        transform: translateX(-50%) rotate(0deg) scale(1);
+        z-index: 7;
+        top: 0;
+      }
+      &:nth-child(5) {
+        transform: translateX(-60%) rotate(7deg) scale(0.9522);
+        left: 60%;
+        z-index: 6;
+        top: 5%;
+      }
+      &:nth-child(6) {
+        z-index: 5;
+        transform: translateX(-70%) rotate(14deg) scale(0.8785);
+        left: 70%;
+        top: 10%;
+      }
+      &:nth-child(7) {
+        z-index: 4;
+        transform: translateX(-80%) rotate(21deg) scale(0.7756);
+        left: 80%;
+        top: 15%;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+.marquee {
+  &__wrapper {
+    position: relative;
+    overflow: hidden; /* CRITICAL: clip items as they scroll */
+    width: 100%;
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      z-index: 1000;
+      top: 0;
+      width: 100px;
+      height: 100%;
+
+      pointer-events: none;
+    }
+    &::before {
+      background: linear-gradient(to right, $white, transparent);
+      left: 0;
+    }
+    &::after {
+      background: linear-gradient(to left, $white, transparent);
+      right: 0;
+    }
+  }
+  &__content {
+    display: flex;
+    gap: $gap;
+    /* Don't set width - let it be as wide as it needs for all items */
+    /* width will be set dynamically by JS */
+    flex-wrap: nowrap; /* CRITICAL: prevent wrapping */
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    flex: 0 0 auto; /* CRITICAL: don't shrink/grow, exact size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__image {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
+}

@@ -22,6 +22,11 @@ Theme Name: Starter Theme
 @import "./css/inc/global/footer";
 // 5. Block-specific styles
 @import "./css/inc/blocks/text";
+@import "./css/inc/blocks/marquee";
+@import "./css/inc/blocks/social";
+@import "./css/inc/blocks/collection";
+@import "./css/inc/blocks/otot-cta";
+@import "./css/inc/blocks/image";
 
 // 6. Page/Post Type specific styles
 @import "./css/inc/pages/404.scss";

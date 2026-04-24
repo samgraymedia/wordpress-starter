@@ -1,0 +1,13 @@
+{#
+Title: Image
+Description: Single image block with responsive sizing
+Category: Media
+Icon: image
+Keywords: image, media
+#}
+
+<div id="image-{{block.id}}" class="block image {{block.classes}}">
+	<div class="image__container">
+		<img src="{{ fields.image.url }}" alt="{{ fields.image.alt | default('') }}" class="image__img">
+	</div>
+</div>

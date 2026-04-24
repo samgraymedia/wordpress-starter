@@ -6,7 +6,59 @@
 /* ============================================================================
    Heading Styles (Using Felipa font)
    ============================================================================ */
+h1 {
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 0;
+}
 
+h2 {
+  font-variation-settings:
+    "wght" 750,
+    "wdth" 93;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-left: 40px;
+}
+
+li {
+  font-size: 1em;
+  list-style-type: disc;
+}
+
+label {
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+  display: block;
+}
 h1 {
   font-family: $font-family-heading;
   font-size: $font-5xl; // 60px

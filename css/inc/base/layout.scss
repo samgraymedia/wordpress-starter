@@ -1,0 +1,17 @@
+.wrapper {
+  padding: 0 $padding-wrapper;
+}
+.block {
+  padding: $gap 0;
+}
+
+.sticky-track {
+  position: relative;
+}
+.sticky-item {
+  position: sticky;
+  top: 0;
+
+  width: 100%; // Ensure it has width
+  z-index: 10; // Optional: stack it above other content
+}

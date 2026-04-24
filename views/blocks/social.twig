@@ -1,0 +1,50 @@
+{#
+Title: Social
+Description: Social media block
+Category: formatting
+Icon: networking
+Keywords: social media links
+Mode: auto
+Align: center left right wide full
+PostTypes: page post
+SupportsAlign: true
+SupportsMode: true
+SupportsMultiple: true
+#}
+<div class="block social {{ block.classes }}" id="social-{{ block.id }}">
+	<div class="wrapper">
+
+		<h2 class="social__title">{{ fields.title }}</h2>
+		<div class="social__images">
+			{% for image in fields.images %}
+				<div class="callout-socials-card-w">
+					<img src="{{ image.image.url }}" alt="{{ image.alt }}" class="social__image">
+				</div>
+			{% endfor %}
+		</div>
+		<p class="social__lead">Follow Lando on social media</p>
+		<ul class="social__links">
+			<li>
+				<a href="#">Instagram</a>
+			</li>
+			<li>
+				<a href="#">Facebook</a>
+			</li>
+			<li>
+				<a href="#">Twitter</a>
+			</li>
+		</ul>
+
+		{% if fields.social_links %}
+			<ul class="social__links">
+				{% for link in fields.social_links %}
+					<li class="social__link">
+						<a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">
+							{{ link.name }}
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</div>
+</div>

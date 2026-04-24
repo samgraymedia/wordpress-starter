@@ -1,17 +1,51 @@
-/**
- * Navigation Component - BEM Methodology
- *
- * Block: .nav-main
- * Elements: .nav-main__list, .nav-main__item, .nav-main__link, .nav-main__submenu
- * Modifiers: .nav-main--active
- *
- * Navigation is responsive and includes:
- * - Main menu with hover states
- * - Dropdown submenus
- * - Search form integration
- * - Mobile responsive design
- */
+// /**
+//  * Navigation Component - BEM Methodology
+//  *
+//  * Block: .nav-main
+//  * Elements: .nav-main__list, .nav-main__item, .nav-main__link, .nav-main__submenu
+//  * Modifiers: .nav-main--active
+//  *
+//  * Navigation is responsive and includes:
+//  * - Main menu with hover states
+//  * - Dropdown submenus
+//  * - Search form integration
+//  * - Mobile responsive design
+//  */
 
-// ============================================
-// Header Layout
-// ============================================
+// // ============================================
+// // Header Layout
+// // ============================================
+// header.header {
+//   z-index: 120;
+//   pointer-events: none;
+//   justify-content: space-between;
+//   align-items: center;
+//   display: flex;
+//   position: fixed;
+//   inset: 0% 0% auto;
+//   nav {
+//     z-index: 50;
+//     padding: $gap;
+//     justify-content: space-between;
+//     align-items: center;
+//     width: 100%;
+//     display: flex;
+//     position: relative;
+//     inset: 0% 0% auto;
+//     .nav-menu {
+//       width: 100%;
+//       display: flex;
+//       justify-content: space-between;
+//       align-items: center;
+//       &__list {
+//         display: none;
+//       }
+//     }
+//   }
+// }
+.header {
+  .nav-menu {
+    display: flex;
+    list-style: none;
+  }
+}

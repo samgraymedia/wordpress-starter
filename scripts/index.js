@@ -56,6 +56,13 @@ import "./announcement.js";
 import "./share-buttons.js";
 import "./tabs.js";
 import "./hamburger.js";
+import "./marquee.js";
+import "./social.js";
+import "./social-interaction.js";
+import "./collection.js";
+import "./collection-hover.js";
+import "./image.js";
+import { initOTOTCTA } from "./otot-cta.js";
 
 /**
  * Initialize all theme components and modules
@@ -132,6 +139,11 @@ function initTheme() {
     Logger.debug("[Theme] Setting up global event listeners...");
     setupGlobalListeners();
     Logger.debug("[Theme] Global event listeners setup complete");
+
+    // Initialize OTOT CTA block scroll animations
+    Logger.debug("[Theme] Initializing OTOT CTA block...");
+    initOTOTCTA();
+    Logger.debug("[Theme] OTOT CTA block initialized");
 
     Logger.info("[Theme] Initialization complete");
   } catch (error) {

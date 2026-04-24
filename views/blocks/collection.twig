@@ -1,0 +1,46 @@
+{#
+Title: Collection
+Description: Display a collection of items with images, hover images, titles, and years
+Category: Gallery
+Icon: images-alt2
+Keywords: collection, gallery, portfolio
+#}
+
+<div id="collection-{{block.id}}" class="block collection {{block.classes}}">
+	<div class="wrapper">
+		<div class="collection__grid">
+			{% for item in fields.collection_items %}
+				<div class="collection__item--container">
+					<div class="collection__item">
+						<div class="collection__image--container">
+							<div class="collection__image">
+								{% if item.image %}
+									<img src="{{ item.image.url }}" alt="{{ item.image.alt | default(item.title) }}">
+								{% else %}
+									<img src="https://picsum.photos/452/457" alt="Collection Item Image">
+								{% endif %}
+							</div>
+							<div class="collection__image--hover">
+								{% if item.hover_image %}
+									<img src="{{ item.hover_image.url }}" alt="{{ item.hover_image.alt | default(item.title) }}">
+								{% else %}
+									<img src="https://picsum.photos/452/457?random" alt="Collection Item Hover Image">
+								{% endif %}
+							</div>
+						</div>
+					</div>
+					<div class="collection__content">
+						{% if item.title %}
+							<h3>{{ item.title }}</h3>
+						{% endif %}
+						<div class="collection__date">
+							{% if item.year %}
+								<div class="text-title-small-label date">{{ item.year }}</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>

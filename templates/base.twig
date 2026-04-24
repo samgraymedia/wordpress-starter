@@ -7,13 +7,13 @@
 {% include 'components/theme-toggle.twig' with {'position': 'fixed', 'placement': 'top-right'} %}
 <header class="header" role="banner">
 	{% block header %}
-		<div class="wrapper">
-			<nav id="nav-main" class="nav-main" aria-label="{{ _e('Main Navigation') }}">
-				{% set header_menu = function('wp_get_nav_menu_items', function('get_nav_menu_locations')['header'] ?? 0) %}
-				{% include "menu.twig" with {'items': header_menu} %}
-			</nav>
 
-		</div>
+		<nav id="nav-main" class="nav-main" aria-label="{{ _e('Main Navigation') }}">
+			{% set header_menu = function('wp_get_nav_menu_items', function('get_nav_menu_locations')['header'] ?? 0) %}
+			{% include "menu.twig" with {'items': header_menu} %}
+		</nav>
+
+
 	{% endblock %}
 </header>
 
